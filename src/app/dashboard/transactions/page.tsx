@@ -1,6 +1,6 @@
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import TransactionRow from "@/components/shared/TransactionRow/TransactionRow";
-import Image from "next/image";
+
 
 export default function TransactionsPage() {
   return (

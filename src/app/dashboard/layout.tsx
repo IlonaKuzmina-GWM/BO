@@ -1,4 +1,4 @@
-import SiderBar from "@/components/SideBar/SideBar";
+import SiderBar from "@/components/shared/SideBar/SideBar";
 import React, { useContext } from "react";
 
 interface ILayout {
@@ -11,9 +11,9 @@ export default function DasboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`flex bg-bg_white`}>
+    <div className={`flex bg-bgWhite`}>
       <SiderBar />
-      <main className="flex w-full flex-row h-full">{children}</main>
+      <main className="flex w-full flex-row h-full px-10 py-4">{children}</main>
     </div>
   );
 }

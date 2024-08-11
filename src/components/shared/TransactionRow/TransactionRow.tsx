@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../UI/Accordion";
+} from "../../ui/Accordion";
 
 const TransactionRow = () => {
   return (
@@ -13,7 +13,7 @@ const TransactionRow = () => {
         value="item-1"
        
       >
-        <AccordionTrigger  className="bg-white [&[data-state=open]]:bg-error_bg">Is it accessible?</AccordionTrigger>
+        <AccordionTrigger  className="bg-white [&[data-state=open]]:bg-errorBg">Is it accessible?</AccordionTrigger>
         <AccordionContent>
           Yes. It adheres to the WAI-ARIA design pattern.
         </AccordionContent>
@@ -23,3 +23,4 @@ const TransactionRow = () => {
 };
 
 export default TransactionRow;
+

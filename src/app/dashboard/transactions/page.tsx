@@ -1,12 +1,14 @@
-import TransactionRow from "@/components/TransactionRow/TransactionRow";
+import DashPageTitle from "@/components/shared/DashPageTitle";
+import TransactionRow from "@/components/shared/TransactionRow/TransactionRow";
 import Image from "next/image";
 
 export default function TransactionsPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24 w-full">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-          <TransactionRow />
+    <div className="flex min-h-screen w-full flex-col gap-6">
+      <DashPageTitle title="Transaction" />
 
+      <div className="w-full">
+        <TransactionRow />
       </div>
     </div>
   );

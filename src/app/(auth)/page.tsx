@@ -1,4 +1,5 @@
-import LogIn from "@/components/Authorisation/LogIn";
+
+import LogIn from "@/components/shared/LogIn";
 import Image from "next/image";
 
 export default function Home() {

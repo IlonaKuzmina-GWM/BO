@@ -5,7 +5,7 @@ export const UserSideInfo = () => {
   return (
     <div className="flex flex-row gap-3 px-8 py-4 ">
       <Image
-        src={""}
+        src={"/images/logo-small.png"}
         alt={"Profile icon"}
         width={50}
         height={50}

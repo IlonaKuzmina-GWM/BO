@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
@@ -14,6 +15,10 @@ const config = {
   prefix: "",
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['var(--font-heading)', ...fontFamily.sans],
+        body: ['var(--font-body)', ...fontFamily.sans]
+      },
       container: {
         center: true,
         padding: {
@@ -24,33 +29,6 @@ const config = {
         },
       },
       colors: {
-        // bg_white: "#F5F7F9",
-        // white: "#FFFFFF",
-        // main: "#495465",
-        // hover_bg: "#E9EDF5",
-        // // secondary: "#98989880",
-        // fill: "#E9EDF5B2",
-        // divider: "#E1E2E5",
-        // title: "#222834",
-        // error: "#D1293D",
-        // error_bg: "#FFEDEF",
-        // success: "#14804A",
-        // success_bg: "#E1FCEF",
-        // warning: "#AA5B00",
-        // warning_bg: "#FCF2E6",
-
-        // blue_50: "#EEF6FF",
-        // blue_100: "#D9EAFF",
-        // blue_200: "#BCDBFF",
-        // blue_300: "#8EC6FF",
-        // blue_400: "#59A5FF",
-        // blue_500: "#2F7FFF",
-        // blue_600: "#1B60F5",
-        // blue_700: "#144BE1",
-        // blue_800: "#173DB6",
-        // blue_900: "#19388F",
-        // blue_950: "#142357",
-
         bgWhite: "var(--bg-white)",
         white: "var(--white)",
         main: "var(--main)",
@@ -78,14 +56,12 @@ const config = {
         blue900: "var(--blue-900)",
         blue950: "var(--blue-950)",
 
-        border: "hsl(var(--border))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "hsl(var(--divider))",
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "12px",
+        md: "12px",
+        sm: "4px",
       },
       keyframes: {
         "accordion-down": {

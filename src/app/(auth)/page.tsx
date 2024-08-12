@@ -1,13 +1,9 @@
-
-import LogIn from "@/components/shared/LogIn";
-import Image from "next/image";
+import Authorisation from "@/components/shared/Authorisation/Authorisation";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <LogIn />
-      </div>
+    <main className="flex min-h-screen w-full flex-col items-center justify-center p-4">
+      <Authorisation />
     </main>
   );
 }

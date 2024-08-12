@@ -1,6 +1,6 @@
 import DashPageTitle from "@/components/shared/DashPageTitle";
-import TransactionRow from "@/components/shared/TransactionRow/TransactionRow";
-
+import TransactionsFilterBar from "@/components/shared/Transactions/TransactionsFilterBar";
+import TransactionsWrapper from "@/components/shared/Transactions/TransactionsWrapper";
 
 export default function TransactionsPage() {
   return (
@@ -8,7 +8,7 @@ export default function TransactionsPage() {
       <DashPageTitle title="Transaction" />
 
       <div className="w-full">
-        <TransactionRow />
+        <TransactionsWrapper />
       </div>
     </div>
   );

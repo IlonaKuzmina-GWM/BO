@@ -7,8 +7,9 @@ import ModeToggle from "./ModeToggle";
 import NextLink from "next/link";
 
 const SiderBar = () => {
+
   return (
-    <aside className={`${style.sidebar} min-w-[370px] bg-white py-4 flex flex-col justify-between`}>
+    <aside className={`${style.sidebar} w-[320px] bg-white py-4 flex flex-col justify-between`}>
       <div>
         <UserSideInfo />
         <div className="divider h-[1px] w-full bg-fill"></div>

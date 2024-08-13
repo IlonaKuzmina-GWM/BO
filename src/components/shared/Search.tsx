@@ -1,32 +1,18 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Image from "next/image";
 
 interface ISearch {
   aditionalClass?: string;
   placeholder: string;
+  onSearch: (term: string) => void;
 }
 
-export default function Search({ placeholder, aditionalClass }: ISearch) {
-  const searchParams = useSearchParams();
-  const { replace } = useRouter();
-  const pathname = usePathname();
-
+export default function Search({ placeholder, aditionalClass, onSearch }: ISearch) {
   const handleSearch = useDebouncedCallback((term: string) => {
-    console.log(`Searching... ${term}`);
-
-    const params = new URLSearchParams(searchParams);
-
-    params.set("page", "1");
-
-    if (term) {
-      params.set("query", term);
-    } else {
-      params.delete("query");
-    }
-    replace(`${pathname}?${params.toString()}`);
+    onSearch(term);
   }, 300);
 
   return (
@@ -37,7 +23,6 @@ export default function Search({ placeholder, aditionalClass }: ISearch) {
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
-        defaultValue={searchParams.get("query")?.toString()}
       />
       <Image
         src={"/icons/search.svg"}

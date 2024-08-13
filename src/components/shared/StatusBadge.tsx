@@ -2,25 +2,26 @@ import React from "react";
 
 interface IStatusBandge {
   name: string;
-  type: "error" | "success" | "warning";
+  type: "failed" |  "success" | "transferring" | "" | string;
 }
 
 const StatusBadge = ({ name, type }: IStatusBandge) => {
-  const typeStyles = {
-    error:
-      "bg-errorBg text-error",
-    success:
-      "bg-successBg text-success",
-    warning:
-      "bg-warningBg text-warning",
+  const typeStyles: { [key: string]: string } = {
+    failed: "bg-errorBg text-error",
+    success: "bg-successBg text-success",
+    transferring: "bg-warningBg text-warning",
+
+    default: "bg-gray-200 text-gray-700",
   };
 
-  const selectedStyle = typeStyles[type];
+  const selectedStyle = typeStyles[type] || typeStyles["default"];
 
   return (
     <div
-      className={`${selectedStyle} flex items-center max-w-fit max-h-fit text-[12px] font-medium rounded-sm px-2 py-1 tracking-[0.36px] capitalize `}
-    > {name}
+      className={`${selectedStyle} flex max-h-fit max-w-fit items-center rounded-sm px-2 py-1 text-[12px] font-medium capitalize tracking-[0.36px]`}
+    >
+      {" "}
+      {name}
     </div>
   );
 };

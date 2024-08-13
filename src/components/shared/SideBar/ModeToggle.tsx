@@ -24,7 +24,7 @@ export default function ModeToggle() {
 
   return (
     <div
-      className="px-8 py-4 text-lg font-medium capitalize hover:cursor-pointer hover:bg-hoverBg transition-all duration-500"
+      className="px-8 py-4 text-md text-main font-medium capitalize hover:cursor-pointer hover:bg-hoverBg transition-all duration-500"
       onClick={toggleTheme}
     >
       <Image

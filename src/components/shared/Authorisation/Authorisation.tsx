@@ -11,7 +11,7 @@ import {
 import React, { SetStateAction, useState } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
-import { Checkbox } from "@/components/UI/checkbox";
+import Checkbox from "@/components/UI/Checkbox";
 
 const Autorisation = () => {
   const [email, setEmail] = useState("");
@@ -128,7 +128,11 @@ const Autorisation = () => {
               htmlFor="remember"
               className="text-base leading-none text-main"
             >
-              <Checkbox id="remember" className="me-2 h-4 w-4 text-border" />
+              <Checkbox
+                className="me-2 h-4 w-4 text-border"
+                checked={false}
+                onChange={() => {}}
+              />
               Remember me
             </label>
           </div>

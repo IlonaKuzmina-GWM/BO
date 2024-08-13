@@ -9,9 +9,9 @@ import {
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Checkbox from "@/components/UI/Checkbox";
 import { Transaction } from "@/types";
 import StatusBadge from "../StatusBadge";
+import Checkbox from "../Checkbox";
 
 interface ITransactionRow {
   transaction: Transaction;

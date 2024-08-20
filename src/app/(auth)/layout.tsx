@@ -9,5 +9,5 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className='bg-auth_bg'>{children}</div>;
+  return <div className='bg-auth_bg bg-center bg-no-repeat bg-cover'>{children}</div>;
 }

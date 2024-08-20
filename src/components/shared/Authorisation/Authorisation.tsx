@@ -60,7 +60,7 @@ const Autorisation = () => {
   };
 
   return (
-    <Card className="flex w-full flex-col rounded-md border-none bg-white px-[10px] py-[40px] sm:max-w-[390px] md:px-[36px]">
+    <Card className="flex w-full flex-col rounded-md border-none bg-white px-[10px] py-[40px] sm:max-w-[580px] md:px-[36px]">
       <CardHeader className="text-center">
         <Image
           src={"/images/logo-small.png"}
@@ -69,11 +69,11 @@ const Autorisation = () => {
           height={44}
           className="mx-auto mb-6"
         />
-        <CardTitle className="text-[36px] leading-[48px]">
+        <CardTitle className="text-[36px] leading-[48px] font-bold">
           Welcome Back
         </CardTitle>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className="pb-0">
         <form>
           <label htmlFor="email" className="text-md block text-main">
             <div>Email</div>
@@ -103,7 +103,7 @@ const Autorisation = () => {
               onBlur={handlePasswordBlur}
             ></input>
             <span
-              className="absolute bottom-1 right-4 -translate-y-1/2 transform cursor-pointer"
+              className="absolute bottom-0 right-4 -translate-y-1/2 transform cursor-pointer"
               onClick={toggleShowPassword}
             >
               <Image
@@ -126,10 +126,10 @@ const Autorisation = () => {
           <div className="mt-4 flex flex-col justify-between">
             <label
               htmlFor="remember"
-              className="text-base leading-none text-main"
+              className="text-base leading-none text-main flex flex-row items-center"
             >
               <Checkbox
-                className="me-2 h-4 w-4 text-border"
+                className="me-2 h-4 w-4 text-border border-border"
                 checked={false}
                 onChange={() => {}}
               />
@@ -138,10 +138,10 @@ const Autorisation = () => {
           </div>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="mt-10">
         <NextLink href={"/dashboard/"} className="w-full rounded-sm bg-blue500">
-          <button className="w-full px-8 py-2 text-[20px] font-semibold capitalize leading-[24px] text-white">
-            sign up
+          <button className="w-full px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white">
+            sign in
           </button>
         </NextLink>
       </CardFooter>

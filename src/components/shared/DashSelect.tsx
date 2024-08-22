@@ -17,6 +17,7 @@ interface ICustomMultiSelect {
   items: IItem[];
   searchInput: boolean;
   searchContext: string;
+  onSelectHandler?: () => void;
 }
 
 const CustomMultiSelect = ({

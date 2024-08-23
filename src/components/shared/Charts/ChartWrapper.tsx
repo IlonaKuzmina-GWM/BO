@@ -3,7 +3,7 @@ import React from "react";
 interface IChartWrapper {
   title: string;
   dataInterval: string;
-  shortOverview: { title: string; description: string }[]; // Adjusted to an array of objects
+  shortOverview?: { title: string; description: string }[]; // Adjusted to an array of objects
   children: React.ReactNode;
 }
 
@@ -14,7 +14,7 @@ const ChartWrapper = ({
   children,
 }: IChartWrapper) => {
   return (
-    <div className="h-full bg-white p-5 rounded-md shadow-sm">
+    <div className="h-full bg-white p-5 rounded-sm shadow-sm">
       <div className="flex flex-col justify-between gap-4 md:flex-row">
         <div>
           <h2 className="text-2xl font-semibold text-main">{title}</h2>

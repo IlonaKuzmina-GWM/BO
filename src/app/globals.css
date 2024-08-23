@@ -19,6 +19,9 @@
     --success-bg: #e1fcef;
     --warning: #aa5b00;
     --warning-bg: #fcf2e6;
+    --bar-1: #0052CE;
+    --bar-2:  #8C8AFE;
+   
 
     /* Blue shades */
     --blue-50: #eef6ff;
@@ -49,6 +52,9 @@
     --success-bg: #1f3d2d; /* Dark success background */
     --warning: #ffbb33; /* Light warning color */
     --warning-bg: #3e2f1c; /* Dark warning background */
+    --bar-1: #6699FF;
+    --bar-2:  #A0A0FF;
+
 
     /* Blue shades - darker base, lighter text */
     --blue-50: #19388f;

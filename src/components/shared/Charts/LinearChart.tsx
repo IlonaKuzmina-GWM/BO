@@ -6,7 +6,19 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Bar,
+  Legend,
 } from "recharts";
+
+interface ILinearChart {
+  data: {
+    date: string;
+    successCount?: number;
+    failedCount?: number;
+    acceptedAmount?: number;
+    successAmount?: number;
+  }[];
+}
 
 const formatXAxis = (tickItem: Date) => {
   const date = new Date(tickItem);
@@ -16,17 +28,21 @@ const formatXAxis = (tickItem: Date) => {
   });
 };
 
-const LinearChart = ({ data }: any) => {
+const LinearChart = ({ data }: ILinearChart) => {
   return (
     <ResponsiveContainer width="100%" height={407}>
       <LineChart data={data}>
+        <Legend align="left" verticalAlign="top" />
         <CartesianGrid />
         <XAxis
           dataKey="date"
           tickFormatter={formatXAxis}
           className="text-[10px] leading-5 text-secondary"
         />
-        <YAxis />
+        <YAxis
+          dataKey="totalAmount"
+          className="text-[10px] leading-5 text-secondary"
+        />
         <Tooltip />
         <Line
           type="monotone"

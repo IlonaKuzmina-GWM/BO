@@ -6,13 +6,20 @@ import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
 import LinearChart from "@/components/shared/Charts/LinearChart";
+import SimpleBarChart from "@/components/shared/Charts/SimpleBarChart";
+import VerticalComposedChart from "@/components/shared/Charts/VerticalComposedChart";
+import DatePickerWithRange from "@/components/shared/DataPickerWithRange";
 import { Transaction } from "@/types";
-import { DatePickerWithRange } from "@/components/shared/DataPickerWithRange";
-// import DatePickerWithRange from "@/components/shared/DataPickerWithRange";
 
 const MainDashPage = () => {
   const [chartData, setChartData] = useState<
     { date: string; successAmount: string; acceptedAmount: string }[]
+  >([]);
+  const [barChartData, setBarChartData] = useState<
+    { date: string; successCount: number; failedCount: number }[]
+  >([]);
+  const [merchantChartData, setMerchantChartData] = useState<
+    { merchant: string; successCount: number; failedCount: number }[]
   >([]);
   const [selectedInterval, setSelectedInterval] = useState("this-year");
   const [selectedDateRange, setSelectedDateRange] = useState<
@@ -30,12 +37,15 @@ const MainDashPage = () => {
         const transactions: Transaction[] = await response.json();
 
         const groupedData: { [date: string]: any } = {};
+        const merchantData: { [merchant: string]: { successCount: number; failedCount: number } } = {};
+        const barData: { [date: string]: { successCount: number; failedCount: number } } = {};
 
         transactions.forEach((transaction) => {
           const date = new Date(transaction.createdAt)
             .toISOString()
             .split("T")[0];
 
+          // Group by date
           if (!groupedData[date]) {
             groupedData[date] = {
               date,
@@ -43,7 +53,13 @@ const MainDashPage = () => {
               acceptedAmount: 0,
               totalAmount: 0,
               transactionCount: 0,
+              successCount: 0,
+              failedCount: 0,
             };
+          }
+
+          if (!barData[date]) {
+            barData[date] = { successCount: 0, failedCount: 0 };
           }
 
           const amount = parseFloat(transaction.amount);
@@ -52,8 +68,25 @@ const MainDashPage = () => {
 
           if (transaction.status === "PAYMENT_SUCCESS") {
             groupedData[date].successAmount += amount;
+            groupedData[date].successCount += 1;
+            barData[date].successCount += 1;
           } else if (transaction.status === "PAYMENT_ACCEPTED") {
             groupedData[date].acceptedAmount += amount;
+          } else if (transaction.status === "PAYMENT_FAILED") {
+            groupedData[date].failedCount += 1;
+            barData[date].failedCount += 1;
+          }
+
+          // Group by merchant
+          const merchantName = transaction.merchant?.name || "Unknown Merchant";
+          if (!merchantData[merchantName]) {
+            merchantData[merchantName] = { successCount: 0, failedCount: 0 };
+          }
+
+          if (transaction.status === "PAYMENT_SUCCESS") {
+            merchantData[merchantName].successCount += 1;
+          } else if (transaction.status === "PAYMENT_FAILED") {
+            merchantData[merchantName].failedCount += 1;
           }
         });
 
@@ -63,17 +96,45 @@ const MainDashPage = () => {
           acceptedAmount: item.acceptedAmount.toFixed(2),
         }));
 
+        let formattedBarData = Object.entries(barData).map(([date, counts]) => ({
+          date,
+          ...counts,
+        }));
+
         formattedData = formattedData.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
         );
 
-        if (selectedDateRange) {
+        formattedBarData = formattedBarData.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
+
+        if (
+          selectedDateRange &&
+          selectedDateRange.from &&
+          selectedDateRange.to
+        ) {
           formattedData = filterDataByDateRange(
             formattedData,
             selectedDateRange,
           );
-        } else {
+          formattedBarData = filterDataByDateRange(
+            formattedBarData,
+            selectedDateRange,
+          );
+        } else if (selectedInterval) {
           formattedData = filterDataByInterval(formattedData, selectedInterval);
+          formattedBarData = filterDataByInterval(
+            formattedBarData,
+            selectedInterval,
+          );
+        } else {
+          // Default: Use "this-year" if no interval or date range is selected
+          formattedData = filterDataByInterval(formattedData, "this-year");
+          formattedBarData = filterDataByInterval(
+            formattedBarData,
+            "this-year",
+          );
         }
 
         // Calculate totals
@@ -89,6 +150,13 @@ const MainDashPage = () => {
         setTotalTransactions(totalTransactions);
         setTotalAmount(totalAmount.toFixed(2));
         setChartData(formattedData);
+        setBarChartData(formattedBarData);
+
+        // Set merchant data for the vertical composed chart
+        setMerchantChartData(Object.keys(merchantData).map(merchant => ({
+          merchant,
+          ...merchantData[merchant],
+        })));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -98,7 +166,7 @@ const MainDashPage = () => {
   }, [selectedInterval, selectedDateRange]);
 
   const filterDataByInterval = (
-    data: { date: string; successAmount: string; acceptedAmount: string }[],
+    data: { date: string }[],
     interval: string,
   ) => {
     const now = new Date();
@@ -152,7 +220,7 @@ const MainDashPage = () => {
   };
 
   const filterDataByDateRange = (
-    data: { date: string; successAmount: string; acceptedAmount: string }[],
+    data: { date: string }[],
     dateRange: DateRange,
   ) => {
     const { from, to } = dateRange;
@@ -167,12 +235,12 @@ const MainDashPage = () => {
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setSelectedInterval(event.target.value);
-    setSelectedDateRange(undefined); // Reset date range if interval changes
+    setSelectedDateRange(undefined);
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
     setSelectedDateRange(range);
-    setSelectedInterval(""); // Reset interval if date range is selected
+    setSelectedInterval("");
   };
 
   return (
@@ -183,11 +251,11 @@ const MainDashPage = () => {
       />
 
       <div className="flex flex-col md:flex-row">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-sm">
           <select
             value={selectedInterval}
             onChange={handleIntervalChange}
-            className="rounded-sm border border-divider bg-white p-2 text-start text-sm text-main"
+            className="rounded-sm border border-divider bg-white px-2 py-[9px] text-start text-sm text-main"
           >
             <option value="today">Today</option>
             <option value="yesterday">Yesterday</option>
@@ -199,15 +267,15 @@ const MainDashPage = () => {
           </select>
         </div>
 
-        {/* <DatePickerWithRange onDateChange={handleDateRangeChange} /> */}
+        <DatePickerWithRange onDateChange={handleDateRangeChange} />
 
-        <DatePickerWithRange/>
+        {/* <DatePickerWithRange /> */}
       </div>
 
-      <div className="w-full">
+      <div className="flex w-full flex-col gap-10">
         <ChartWrapper
           title={`Transaction Overview (${totalTransactions} Transactions)`}
-          dataInterval={`Total Amount: $${totalAmount}`}
+          dataInterval={selectedInterval}
           shortOverview={[
             {
               title: `$${totalAmount}`,
@@ -216,6 +284,23 @@ const MainDashPage = () => {
           ]}
         >
           <LinearChart data={chartData} />
+        </ChartWrapper>
+
+        <ChartWrapper
+          title={"Payments Rate"}
+          dataInterval={selectedInterval}
+          shortOverview={[
+            {
+              title: `$${totalAmount}`,
+              description: `${totalAmount} success/decline`,
+            },
+          ]}
+        >
+          <SimpleBarChart data={barChartData} />
+        </ChartWrapper>
+
+        <ChartWrapper title={"Providers Success Rate"} dataInterval={""}>
+          <VerticalComposedChart data={merchantChartData} />
         </ChartWrapper>
       </div>
     </div>

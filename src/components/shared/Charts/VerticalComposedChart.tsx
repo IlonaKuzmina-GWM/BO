@@ -39,26 +39,30 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           top: 20,
           right: 20,
           bottom: 20,
-          left: 20,
+          left: 70,
         }}
       >
-
-          <Legend align="left" verticalAlign="top" />
-          <XAxis type="number" />
-          <YAxis dataKey="merchant" type="category" scale="band" className="text-5"/>
-          <Tooltip />
-          <Bar
-            dataKey="successCount"
-            fill="#0052CE"
-            stackId="a"
-            name="Payment Success"
-          />
-          <Bar
-            dataKey="failedCount"
-            fill="#8C8AFE"
-            stackId="a"
-            name="Payment Failed"
-          />
+        <Legend align="left" verticalAlign="top" />
+        <XAxis type="number" />
+        <YAxis
+          dataKey="merchant"
+          type="category"
+          scale="band"
+          className="text-5"
+        />
+        <Tooltip />
+        <Bar
+          dataKey="successCount"
+          fill="#0052CE"
+          stackId="a"
+          name="Payment Success"
+        />
+        <Bar
+          dataKey="failedCount"
+          fill="#8C8AFE"
+          stackId="a"
+          name="Payment Failed"
+        />
       </ComposedChart>
     </ResponsiveContainer>
   );

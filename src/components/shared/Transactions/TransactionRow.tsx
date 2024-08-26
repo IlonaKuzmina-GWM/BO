@@ -48,7 +48,8 @@ const TransactionRow = ({ transaction }: ITransactionRow) => {
             />
           </div>
           <div className="w-1/12 text-center">
-            {transaction.txId.slice(0, 4)}
+            {/* {transaction.txId.slice(0, 4)} */}
+            {transaction.id}
           </div>
           <div className="w-1/12">
             <StatusBadge

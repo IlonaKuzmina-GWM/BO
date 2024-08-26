@@ -6504,38 +6504,7 @@
       "provider": { "name": "Monerchy", "apiSlug": "crwn" },
       "webhooks": []
     },
-    {
-      "id": 193,
-      "txId": "db4f3ed1af0e3ec1b9b39f98",
-      "txReferenceId": "",
-      "providerId": 5,
-      "additionalInfo": null,
-      "amount": "9351.56",
-      "status": "PAYMENT_CREATED",
-      "initialRequest": {
-        "email": "alexanmiro@gmail.com",
-        "firstName": "alex",
-        "lastName": "anmiro",
-        "merchantId": "civis"
-      },
-      "returnUrl": "null",
-      "webhookUrl": "null",
-      "rawStatus": "",
-      "createdAt": "2024-02-04T20:54:44.423Z",
-      "updatedAt": "2024-06-29T23:38:14.224Z",
-      "sandbox": true,
-      "isSettled": false,
-      "settlementDate": null,
-      "settlementAmount": "0.00",
-      "statusChecks": 4,
-      "merchant": {
-        "name": "testMerch",
-        "host": "testMerch.com",
-        "label": "testMerch"
-      },
-      "provider": { "name": "Monerchy", "apiSlug": "crwn" },
-      "webhooks": []
-    },
+    
     {
       "id": 194,
       "txId": "35df962fdf06516d3efa3cc4",

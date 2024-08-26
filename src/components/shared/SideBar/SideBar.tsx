@@ -9,7 +9,7 @@ import NextLink from "next/link";
 const SiderBar = () => {
   return (
     <aside
-      className={`${style.sidebar} flex w-[320px] flex-col justify-between bg-white py-4`}
+      className={`${style.sidebar} flex w-[280px] flex-col justify-between bg-white py-4`}
     >
       <div>
         <div className="px-8 pb-[14px]">

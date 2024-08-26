@@ -10,10 +10,17 @@ import SimpleBarChart from "@/components/shared/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/Charts/VerticalComposedChart";
 import DatePickerWithRange from "@/components/shared/DataPickerWithRange";
 import { Transaction } from "@/types";
+import { count } from "console";
 
 const MainDashPage = () => {
   const [chartData, setChartData] = useState<
-    { date: string; successAmount: string; acceptedAmount: string }[]
+    {
+      date: string;
+      successAmount: number;
+      acceptedAmount: number;
+      successCount: number;
+      failedCount: number;
+    }[]
   >([]);
   const [barChartData, setBarChartData] = useState<
     { date: string; successCount: number; failedCount: number }[]
@@ -37,8 +44,12 @@ const MainDashPage = () => {
         const transactions: Transaction[] = await response.json();
 
         const groupedData: { [date: string]: any } = {};
-        const merchantData: { [merchant: string]: { successCount: number; failedCount: number } } = {};
-        const barData: { [date: string]: { successCount: number; failedCount: number } } = {};
+        const merchantData: {
+          [merchant: string]: { successCount: number; failedCount: number };
+        } = {};
+        const barData: {
+          [date: string]: { successCount: number; failedCount: number };
+        } = {};
 
         transactions.forEach((transaction) => {
           const date = new Date(transaction.createdAt)
@@ -96,10 +107,13 @@ const MainDashPage = () => {
           acceptedAmount: item.acceptedAmount.toFixed(2),
         }));
 
-        let formattedBarData = Object.entries(barData).map(([date, counts]) => ({
-          date,
-          ...counts,
-        }));
+        let formattedBarData = Object.entries(barData).map(
+          ([date, counts]) => ({
+            date,
+            successCount: counts.successCount,
+            failedCount: counts.failedCount,
+          }),
+        );
 
         formattedData = formattedData.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
@@ -153,10 +167,12 @@ const MainDashPage = () => {
         setBarChartData(formattedBarData);
 
         // Set merchant data for the vertical composed chart
-        setMerchantChartData(Object.keys(merchantData).map(merchant => ({
-          merchant,
-          ...merchantData[merchant],
-        })));
+        setMerchantChartData(
+          Object.keys(merchantData).map((merchant) => ({
+            merchant,
+            ...merchantData[merchant],
+          })),
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -166,7 +182,11 @@ const MainDashPage = () => {
   }, [selectedInterval, selectedDateRange]);
 
   const filterDataByInterval = (
-    data: { date: string }[],
+    data: {
+      date: string;
+      successCount: number;
+      failedCount: number;
+    }[],
     interval: string,
   ) => {
     const now = new Date();
@@ -220,7 +240,7 @@ const MainDashPage = () => {
   };
 
   const filterDataByDateRange = (
-    data: { date: string }[],
+    data: { date: string; successCount: number; failedCount: number }[],
     dateRange: DateRange,
   ) => {
     const { from, to } = dateRange;

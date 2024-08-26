@@ -13,10 +13,10 @@ import {
 interface ILinearChart {
   data: {
     date: string;
-    successCount?: number;
-    failedCount?: number;
-    acceptedAmount?: number;
-    successAmount?: number;
+    successCount: number;
+    failedCount: number;
+    acceptedAmount: number;
+    successAmount: number;
   }[];
 }
 

@@ -29,6 +29,11 @@ const SiderBar = () => {
             link={"/dashboard/transactions"}
             iconLink={"transaction"}
           />
+            <SideBarLi
+            name={"settings"}
+            link={"/dashboard/settings"}
+            iconLink={"settings"}
+          />
         </ul>
         <div className="divider my-4 h-[1px] w-full bg-fill"></div>
       </div>

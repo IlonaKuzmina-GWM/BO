@@ -15,6 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/UI/pagination";
+import PaginationComponent from "../PaginationComponent ";
 
 const TransactionsListWrapper = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -48,7 +49,7 @@ const TransactionsListWrapper = () => {
     const data = await response.json();
 
     setTransactions(data.transactions); // Set transactions state with fetched data
-    setTotalPages(data.totalPages); 
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -130,36 +131,11 @@ const TransactionsListWrapper = () => {
       </div>
 
       <div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  href="#"
-                  isActive={currentPage === index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            {totalPages > 3 && <PaginationEllipsis />}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={() =>
-                  handlePageChange(Math.min(currentPage + 1, totalPages))
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );

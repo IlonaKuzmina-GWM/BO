@@ -23,7 +23,7 @@ const SettingsPage = () => {
         description="Comprehensive transaction history: track and manage all your payments"
       />
 
-      <div className="w-full min-h-[690px]">
+      <div className="w-full ">
         <Tabs
           tabList={tabList}
           onTabChange={handleTabChange}

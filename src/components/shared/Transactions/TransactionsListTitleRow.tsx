@@ -1,13 +1,16 @@
 
 import React from "react";
+import Checkbox from "../Checkbox";
 
 const TransactionsListTitleRow = () => {
   return (
     <div className="flex flex-row justify-between gap-4 border-b-divider bg-hoverBg py-[10px] text-sm font-semibold text-main">
       <div className="flex max-w-10 px-4 items-center justify-center">
-        {/* <Checkbox className="h-4 w-4 rounded-sm border-divider bg-white" /> */}
+        <Checkbox className="h-4 w-4 rounded-sm border-divider bg-white" checked={false} onChange={function (checked: boolean): void {
+          throw new Error("Function not implemented.");
+        } } />
       </div>
-      <div className="w-1/12 text-center">ID</div>
+      <div className="w-1/12 ">ID</div>
       <div className="w-1/12">Status</div>
       <div className="w-1/12">Amount</div>
       <div className="w-1/12">Client</div>

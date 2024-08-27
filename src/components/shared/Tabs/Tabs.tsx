@@ -15,7 +15,7 @@ const Tabs = ({tabList, activeTab, onTabChange}: ITabs) => {
                 <div
                     key={tab}
                     onClick={() => onTabChange(tab)}
-                    className={`tab ${activeTab === tab ? 'bg-[white]' : 'bg-[hoverBg]'}`}
+                    className={`tab ${activeTab === tab ? 'bg-white' : 'bg-hoverBg'}`}
                 >
                     {tab}
                 </div>

@@ -40,4 +40,24 @@ export interface InitialRequest {
     provider: Provider;
     webhooks: any[];
   }
+  export interface Rule {
+    merchant: string;
+    ruleType: string;
+    limitType: string;
+    action: string;
+    limitValue: string;
+    comment: string;
+  }
   
+  export interface Header {
+    title: string;
+    key: string;
+    width: string;
+  }
+
+  export interface APIKey {
+    merchant: string;
+    headerKey: string;
+    signatureKey: string;
+  }
+    

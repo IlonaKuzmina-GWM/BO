@@ -59,7 +59,7 @@ const Rules = () => {
   );
 
   return (
-    <div className="h-full bg-white pt-[20px]">
+    <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="Limits with Flexible Rules and Actions" />
         <div className="flex flex-row gap-[2px]">

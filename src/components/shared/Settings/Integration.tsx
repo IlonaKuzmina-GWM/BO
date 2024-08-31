@@ -4,7 +4,7 @@ import CustomTable from "../CustomTable/CustomTable";
 import Dashbutton from "../DashButton";
 import Paragraph from "../Paragraph";
 import IntegrationRows from "./IntegrationRows";
-//TODO: Blur
+
 const Integration = () => {
   const [apiKeys, setApiKeys] = useState<APIKey[]>([
     {
@@ -29,21 +29,49 @@ const Integration = () => {
     },
   ]);
 
+  const [blurStates, setBlurStates] = useState<boolean[]>(apiKeys.map(() => true));
+
   const deleteEntry = (index: number) => {
     const newRules = [...apiKeys];
     newRules.splice(index, 1);
     setApiKeys(newRules);
+
+    const newBlurStates = [...blurStates];
+    newBlurStates.splice(index, 1);
+    setBlurStates(newBlurStates);
   };
-  
+
   const copyEntry = (index: number) => {
-    const newRules = [...apiKeys];
-    const entry = newRules[index];
+    const entry = apiKeys[index];
     const text = `Merchant: ${entry.merchant}\nHeader Key: ${entry.headerKey}\nSignature Key: ${entry.signatureKey}`;
     navigator.clipboard.writeText(text);
   };
 
+  const handleShow = (index: number) => {
+    const newBlurStates = [...blurStates];
+    newBlurStates[index] = false;
+    setBlurStates(newBlurStates);
+  };
+
+  const generateKey = () => {
+    const newKey: APIKey = {
+      merchant: "New Merchant",
+      headerKey: "New Header Key",
+      signatureKey: "New Signature Key",
+    };
+    setApiKeys([newKey, ...apiKeys]);
+    setBlurStates([true, ...blurStates]);
+  };
+
   const renderRow = (apiKey: APIKey, index: number) => (
-    <IntegrationRows apiKey={apiKey} index={index} deleteEntry={deleteEntry} copyEntry={copyEntry}/>
+    <IntegrationRows
+      apiKey={apiKey}
+      index={index}
+      deleteEntry={deleteEntry}
+      copyEntry={copyEntry}
+      isBlurred={blurStates[index]}
+      handleShow={() => handleShow(index)}
+    />
   );
 
   const header: Header[] = [
@@ -53,15 +81,13 @@ const Integration = () => {
     { title: "Action", key: "show", width: "13%" },
   ];
 
-  const generateKey = () => {};
-
   return (
-    <div className="h-full bg-white pt-[20px]">
+    <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="Generate API Keys: Secure Access to Your Application" />
         <div className="flex flex-row gap-[2px]">
           <Dashbutton
-            name="Add new rule"
+            name="Generate API key"
             type="filled"
             onClickHandler={generateKey}
           />
@@ -71,4 +97,5 @@ const Integration = () => {
     </div>
   );
 };
+
 export default Integration;

@@ -45,6 +45,10 @@ const Integration = () => {
     const entry = apiKeys[index];
     const text = `Merchant: ${entry.merchant}\nHeader Key: ${entry.headerKey}\nSignature Key: ${entry.signatureKey}`;
     navigator.clipboard.writeText(text);
+
+    const newBlurStates = [...blurStates];
+    newBlurStates[index] = true;
+    setBlurStates(newBlurStates);
   };
 
   const handleShow = (index: number) => {
@@ -75,10 +79,10 @@ const Integration = () => {
   );
 
   const header: Header[] = [
-    { title: "MerchantID", key: "MerchantID", width: "29%" },
-    { title: "Your header key", key: "HeaderKey", width: "29%" },
-    { title: "Your signature key", key: "SignatureKey", width: "29%" },
-    { title: "Action", key: "show", width: "13%" },
+    { title: "MerchantID", key: "MerchantID", width: "27%" },
+    { title: "Your header key", key: "HeaderKey", width: "27%" },
+    { title: "Your signature key", key: "SignatureKey", width: "27%" },
+    { title: "Action", key: "show", width: "19%" },
   ];
 
   return (

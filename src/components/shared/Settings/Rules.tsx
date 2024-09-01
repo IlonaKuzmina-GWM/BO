@@ -69,6 +69,7 @@ const Rules = () => {
             items={items}
             searchInput
             searchContext="merchant"
+            isMulti={false}
             onSelectHandler={setSelectedValues}
           />
           <Dashbutton

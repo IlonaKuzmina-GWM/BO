@@ -19,13 +19,32 @@ const IntegrationRows = ({
 }: IIntegrationRowProps) => {
   return (
     <>
-      <td className={`pl-3 pr-2 lg:pl-8 ${isBlurred ? "blur-sm" : ""}`}>{apiKey.merchant}</td>
-      <td className={`pr-2 ${isBlurred ? "blur-sm" : ""}`}>{apiKey.headerKey}</td>
-      <td className={`pr-2 ${isBlurred ? "blur-sm" : ""}`}>{apiKey.signatureKey}</td>
+      <td className={`pl-3 pr-2 lg:pl-8 ${isBlurred ? "blur-sm" : ""}`}>
+        {apiKey.merchant}
+      </td>
+      <td className={`pr-2 ${isBlurred ? "blur-sm" : ""}`}>
+        {apiKey.headerKey}
+      </td>
+      <td className={`pr-2 ${isBlurred ? "blur-sm" : ""}`}>
+        {apiKey.signatureKey}
+      </td>
       <td className="pr-2">
-        <button className="pr-8" onClick={handleShow}>Show</button>
-        <button className="pr-8" onClick={() => copyEntry(index)}>Copy</button>
-        <button className="pr-3 text-[--error] lg:pr-8" onClick={() => deleteEntry(index)}>Delete</button>
+        <button className="pr-8" onClick={handleShow}>
+          Show
+        </button>
+        <button
+          className={`pr-8 ${isBlurred ? "blur-sm" : ""}`}
+          onClick={() => copyEntry(index)}
+          disabled={isBlurred}
+        >
+          Copy
+        </button>
+        <button
+          className="pr-3 text-[--error] lg:pr-8"
+          onClick={() => deleteEntry(index)}
+        >
+          Delete
+        </button>
       </td>
     </>
   );

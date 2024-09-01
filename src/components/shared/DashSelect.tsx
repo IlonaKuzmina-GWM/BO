@@ -17,6 +17,7 @@ interface ICustomMultiSelect {
   items: IItem[];
   searchInput: boolean;
   searchContext: string;
+  isMulti?: boolean;
   onSelectHandler?: (selectedValues: string[]) => void;
 }
 
@@ -26,7 +27,8 @@ const CustomMultiSelect = ({
   items,
   searchInput,
   searchContext,
-  onSelectHandler
+  isMulti = true,
+  onSelectHandler,
 }: ICustomMultiSelect) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -61,9 +63,14 @@ const CustomMultiSelect = ({
   }, []);
 
   const toggleValue = (itemValue: string) => {
-    const newSelectedValues = selectedValues.includes(itemValue)
-      ? selectedValues.filter((item) => item !== itemValue)
-      : [...selectedValues, itemValue];
+    let newSelectedValues: string[];
+    if (isMulti) {
+      newSelectedValues = selectedValues.includes(itemValue)
+        ? selectedValues.filter((item) => item !== itemValue)
+        : [...selectedValues, itemValue];
+    } else {
+      newSelectedValues = selectedValues.includes(itemValue) ? [] : [itemValue];
+    }
     setSelectedValues(newSelectedValues);
 
     if (onSelectHandler) {

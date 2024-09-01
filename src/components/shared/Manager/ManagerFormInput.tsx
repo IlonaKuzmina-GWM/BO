@@ -5,6 +5,7 @@ interface IManagerFormInputProps {
   value: string;
   placeholder: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isInvalid?: boolean;
 }
 
 const ManagerFormInput = ({
@@ -14,6 +15,7 @@ const ManagerFormInput = ({
   value,
   placeholder,
   onChange,
+  isInvalid = false,
 }: IManagerFormInputProps) => {
   return (
     <div className="mt-[10px]">
@@ -24,9 +26,15 @@ const ManagerFormInput = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="h-[40px] w-[279px] border border-divider px-[10px] py[12px] rounded-[4px]"
+        className={`py[12px] h-[40px] w-[279px] rounded-[4px] border px-[10px] ${
+          isInvalid ? "border-error" : "border-divider"
+        }`}
       />
+      {isInvalid && (
+        <div className="text-[12px] text-error">This field is required.</div>
+      )}
     </div>
   );
 };
+
 export default ManagerFormInput;

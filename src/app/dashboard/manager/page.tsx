@@ -1,16 +1,17 @@
 'use client';
 
 import DashPageTitle from "@/components/shared/DashPageTitle";
-import Rules from "@/components/shared/Settings/Rules";
-import Integration from "@/components/shared/Settings/Integration";
-import Authentication from "@/components/shared/Settings/Authentication";
+import AllUsers from "@/components/shared/Manager/AllUsers";
+import Create from "@/components/shared/Manager/Create";
+import KYSUserList from "@/components/shared/Manager/KYSUserList";
+import Merchants from "@/components/shared/Manager/Merchants";
 import Tabs from "@/components/shared/Tabs/Tabs";
 import { useState } from "react";
 
-const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState("Rules");
+const ManagerPage = () => {
+  const [activeTab, setActiveTab] = useState("Create");
 
-  const tabList = ["Rules", "Integration", "Authentication"];
+  const tabList = ["Create", "Merchants", "All Users", "KYS User List"];
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -29,11 +30,12 @@ const SettingsPage = () => {
           onTabChange={handleTabChange}
           activeTab={activeTab}
         />
-        {activeTab === "Rules" && <Rules />}
-        {activeTab === "Integration" && <Integration />}
-        {activeTab === "Authentication" && <Authentication />}
+        {activeTab === "Create" && <Create />}
+        {activeTab === "Merchants" && <Merchants />}
+        {activeTab === "All Users" && <AllUsers />}
+        {activeTab === "KYS User List" && <KYSUserList />}
       </div>
     </div>
   );
 };
-export default SettingsPage;
+export default ManagerPage;

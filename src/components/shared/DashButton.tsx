@@ -26,8 +26,9 @@ const DashButton = ({
 
   return (
     <button
+      disabled={disabled}
       onClick={onClickHandler}
-      className={`${selectedStyle} ${aditionlStyle} ${disabled ? "cursor-not-allowed bg-fill text-secondary" : ""} text-md leading-normal rounded-sm px-8 py-2 font-semibold capitalize transition-all duration-300`}
+      className={`${selectedStyle} ${aditionlStyle} ${disabled ? "cursor-not-allowed bg-fill text-secondary" : ""} text-md rounded-sm px-8 py-2 font-semibold capitalize leading-normal transition-all duration-300`}
     >
       {name}
     </button>

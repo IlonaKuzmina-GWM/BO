@@ -1,5 +1,3 @@
-import './tabs.css';
-
 interface ITabs {
     tabList: string[];
     activeTab: string;
@@ -15,7 +13,7 @@ const Tabs = ({tabList, activeTab, onTabChange}: ITabs) => {
                 <div
                     key={tab}
                     onClick={() => onTabChange(tab)}
-                    className={`tab ${activeTab === tab ? 'bg-white' : 'bg-hoverBg'}`}
+                    className={`flex py-[16px] px-[32px] justify-center items-center gap-[8px] cursor-pointer text-main text-[18px] font-normal leading-[150%] ${activeTab === tab ? 'bg-white' : 'bg-hoverBg'}`}
                 >
                     {tab}
                 </div>

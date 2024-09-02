@@ -30,6 +30,11 @@ const SiderBar = () => {
             iconLink={"transaction"}
           />
             <SideBarLi
+            name={"manager"}
+            link={"/dashboard/manager"}
+            iconLink={"manager"}
+          />
+            <SideBarLi
             name={"settings"}
             link={"/dashboard/settings"}
             iconLink={"settings"}

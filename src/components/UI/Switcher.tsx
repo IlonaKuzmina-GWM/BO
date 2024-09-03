@@ -1,5 +1,5 @@
 import React from 'react';
-import './Switcher.css';
+import './switcher.css';
 
 interface SwitcherProps {
   checked: boolean;

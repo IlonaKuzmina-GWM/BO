@@ -72,6 +72,7 @@ const Create = () => {
       settlementFixingFee: "",
     });
     setSubmitted(true);
+    setValidationErrors([]);
     setTimeout(() => {
       setSubmitted(false);
     }, 3000);

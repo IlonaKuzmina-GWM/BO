@@ -67,3 +67,17 @@ export interface InputField {
   type: string;
   placeholder: string;
 }
+
+export interface Merchant {
+  id: string;
+  name: string;
+  host: string;
+  label: string;
+  store: string;
+  feePercent: string;
+  feeEur: string;
+  setl: string;
+  amount: string;
+  providers: string;
+  status: string;
+}

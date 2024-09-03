@@ -29,18 +29,21 @@ const IntegrationRows = ({
         {apiKey.signatureKey}
       </td>
       <td className="pr-2">
-        <button className="pr-8" onClick={handleShow}>
+        <button
+          className={`pr-8 font-semibold ${!isBlurred ? "text-secondary" : ""}`}
+          onClick={handleShow}
+        >
           Show
         </button>
         <button
-          className={`pr-8 ${isBlurred ? "blur-sm" : ""}`}
+          className={`pr-8 font-semibold ${isBlurred ? "text-secondary" : ""}`}
           onClick={() => copyEntry(index)}
           disabled={isBlurred}
         >
           Copy
         </button>
         <button
-          className="pr-3 text-[--error] lg:pr-8"
+          className="pr-3 font-semibold text-[--error] lg:pr-8"
           onClick={() => deleteEntry(index)}
         >
           Delete

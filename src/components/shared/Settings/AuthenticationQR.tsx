@@ -71,26 +71,26 @@ const AuthenticationQR = ({ setIs2FAEnabled }: IAuthenticationQRProps) => {
   const isCodeMatch = inputValues.join("") === randomCode;
 
   return (
-    <div className="flex flex-col justify-center text-center p-[20px] text-main">
-      <p>Scan QR Code in Google App</p>
-      <p>Authentication App</p>
-      <div className="flex flex-col items-center gap-[32px]">
-        <QRCode randomCode={randomCode} />
-        <div className="flex flex-col justify-center">
-          <Paragraph text="Enter code from app" />
-          <SixDigitInput
-            inputValues={inputValues}
-            handleChange={handleChange}
-            handleKeyDown={handleKeyDown}
-          />
-        </div>
-        <Dashbutton
-          name="Enable 2FA"
-          type="filled"
-          disabled={!isCodeComplete || !isCodeMatch}
-          onClickHandler={handleSubmit}
+    <div className="flex flex-col items-center justify-center gap-[32px] p-[20px] text-center text-main">
+      <div>
+        <p>Scan QR Code in Google App</p>
+        <p>Authentication App</p>
+      </div>
+      <QRCode randomCode={randomCode} />
+      <div>
+        <Paragraph text="Enter code from app" />
+        <SixDigitInput
+          inputValues={inputValues}
+          handleChange={handleChange}
+          handleKeyDown={handleKeyDown}
         />
       </div>
+      <Dashbutton
+        name="Enable 2FA"
+        type="filled"
+        disabled={!isCodeComplete || !isCodeMatch}
+        onClickHandler={handleSubmit}
+      />
     </div>
   );
 };

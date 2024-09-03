@@ -1,7 +1,6 @@
 import React from "react";
 import Switcher from "@/components/UI/Switcher";
 import { Merchant } from "@/types";
-import DashSelect from "../DashSelect";
 import TableRowSelect from "@/components/UI/TableRowSelect";
 
 interface IMerchantRowProps {

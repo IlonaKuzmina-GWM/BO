@@ -4,7 +4,11 @@ import QRCode from "./QRCode";
 import Dashbutton from "../DashButton";
 import SixDigitInput from "./SixDigitInput";
 
-const AuthenticationQR = () => {
+interface IAuthenticationQRProps {
+  setIs2FAEnabled: () => void;
+}
+
+const AuthenticationQR = ({ setIs2FAEnabled }: IAuthenticationQRProps) => {
   const [randomCode, setRandomCode] = useState<string>("");
   const [inputValues, setInputValues] = useState<string[]>(Array(6).fill(""));
 
@@ -59,7 +63,7 @@ const AuthenticationQR = () => {
   const handleSubmit = () => {
     const enteredCode = inputValues.join("");
     if (enteredCode === randomCode) {
-      alert("2FA enabled successfully!");
+      setIs2FAEnabled();
     }
   };
 
@@ -67,29 +71,25 @@ const AuthenticationQR = () => {
   const isCodeMatch = inputValues.join("") === randomCode;
 
   return (
-    <div className="bg-white pb-[20px] pt-[20px]">
-      <div className="pl-[20px]">
-        <Paragraph text="Protect your account with two-step verification codes" />
-        <Paragraph text="Scan QR code in app" />
-        <div className="flex gap-[42px]">
-          <QRCode randomCode={randomCode} />
-          <div className="flex flex-col justify-center">
-            <Paragraph text="Enter code from app" />
-            <div className="flex flex-row gap-[16px]">
-              <SixDigitInput
-                inputValues={inputValues}
-                handleChange={handleChange}
-                handleKeyDown={handleKeyDown}
-              />
-              <Dashbutton
-                name="Enable 2FA"
-                type="filled"
-                disabled={!isCodeComplete || !isCodeMatch}
-                onClickHandler={handleSubmit}
-              />
-            </div>
-          </div>
+    <div className="flex flex-col justify-center text-center p-[20px] text-main">
+      <p>Scan QR Code in Google App</p>
+      <p>Authentication App</p>
+      <div className="flex flex-col items-center gap-[32px]">
+        <QRCode randomCode={randomCode} />
+        <div className="flex flex-col justify-center">
+          <Paragraph text="Enter code from app" />
+          <SixDigitInput
+            inputValues={inputValues}
+            handleChange={handleChange}
+            handleKeyDown={handleKeyDown}
+          />
         </div>
+        <Dashbutton
+          name="Enable 2FA"
+          type="filled"
+          disabled={!isCodeComplete || !isCodeMatch}
+          onClickHandler={handleSubmit}
+        />
       </div>
     </div>
   );

@@ -81,7 +81,9 @@ const Rules = () => {
         </div>
       </div>
       <CustomTable columns={header} data={rules} renderRow={renderRow} />
-      <Modal isOpen={isModalOpen} onClose={closeModal} />
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Make new Rule">
+      <p>Here you can make new rule.</p>
+      </Modal>
     </div>
   );
 };

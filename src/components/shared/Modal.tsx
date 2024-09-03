@@ -3,9 +3,11 @@ import React, { useEffect, useRef } from "react";
 interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
+  children?: React.ReactNode;
 }
 
-const Modal = ({ isOpen, onClose }: IModalProps) => {
+const Modal = ({ isOpen, onClose, title, children }: IModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,14 +17,23 @@ const Modal = ({ isOpen, onClose }: IModalProps) => {
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
@@ -30,12 +41,9 @@ const Modal = ({ isOpen, onClose }: IModalProps) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div ref={modalRef} className="bg-white p-4 rounded shadow-lg">
-        <h2 className="text-lg font-semibold mb-4">Make new rule</h2>
-        <p>Here you can make new rule.</p>
-        <button onClick={onClose} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-          Close
-        </button>
+      <div ref={modalRef} className="bg-white rounded shadow-lg text-white">
+        {title && <h2 className="text-lg font-semibold p-[20px] bg-blue700">{title}</h2>}
+        {children}
       </div>
     </div>
   );

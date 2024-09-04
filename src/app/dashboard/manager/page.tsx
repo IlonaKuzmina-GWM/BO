@@ -3,7 +3,7 @@
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import AllUsers from "@/components/shared/Manager/AllUsers";
 import Create from "@/components/shared/Manager/Create";
-import KYSUserList from "@/components/shared/Manager/KYSUserList";
+import KYCUserList from "@/components/shared/Manager/KYCUserList";
 import Merchants from "@/components/shared/Manager/Merchants";
 import Tabs from "@/components/shared/Tabs/Tabs";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import { useState } from "react";
 const ManagerPage = () => {
   const [activeTab, setActiveTab] = useState("Create");
 
-  const tabList = ["Create", "Merchants", "All Users", "KYS User List"];
+  const tabList = ["Create", "Merchants", "All Users", "KYC User List"];
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -20,7 +20,7 @@ const ManagerPage = () => {
   return (
     <div className="flex min-h-screen w-full flex-col gap-6">
       <DashPageTitle
-        title="Settings"
+        title="Manager"
         description="Comprehensive transaction history: track and manage all your payments"
       />
 
@@ -33,7 +33,7 @@ const ManagerPage = () => {
         {activeTab === "Create" && <Create />}
         {activeTab === "Merchants" && <Merchants />}
         {activeTab === "All Users" && <AllUsers />}
-        {activeTab === "KYS User List" && <KYSUserList />}
+        {activeTab === "KYC User List" && <KYCUserList />}
       </div>
     </div>
   );

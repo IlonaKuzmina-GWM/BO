@@ -86,7 +86,6 @@ const Merchants = () => {
   };
 
   const updateProvider = (id: string, provider: string) => {
-    console.log(id, provider);
     setMerchants(prevMerchants =>
       prevMerchants.map(merchant =>
         merchant.id === id

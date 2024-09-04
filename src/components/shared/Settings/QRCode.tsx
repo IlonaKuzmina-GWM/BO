@@ -13,7 +13,7 @@ const QRCodeComponent = ({ randomCode }: { randomCode: string }) => {
 
   return (
     <>
-      <Image src={qrSrc} alt="qrCode" width={172} height={168} />
+      <Image src={qrSrc} alt="qrCode" width={294} height={290} />
     </>
   );
 };

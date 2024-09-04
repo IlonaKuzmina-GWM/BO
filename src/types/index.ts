@@ -53,6 +53,7 @@ export interface Header {
   title: string;
   key: string;
   width: string;
+  centered?: boolean;
 }
 
 export interface APIKey {
@@ -66,4 +67,39 @@ export interface InputField {
   name: string;
   type: string;
   placeholder: string;
+}
+
+export interface Merchant {
+  id: string;
+  name: string;
+  host: string;
+  label: string;
+  store: string;
+  feePercent: string;
+  feeEur: string;
+  setl: string;
+  amount: string;
+  providers: string;
+  status: string;
+}
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isEmailVerified: boolean;
+  merchant: string;
+  role: string;
+  created: string;
+  isDisabled: boolean;
+}
+
+export interface KYCUser {
+  name: string;
+  status: string;
+  surname: string;
+  checkRequired: string;
+  created: string;
+  updated: string;
 }

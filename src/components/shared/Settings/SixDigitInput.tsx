@@ -22,7 +22,7 @@ const SixDigitInput = ({ inputValues, handleChange, handleKeyDown }: ISixDigitIn
           ref={(el) => {
             inputRefs.current[index] = el;
           }}
-          className=" h-[40px] w-[30px] border border-hoverBg text-center rounded-[12px] "
+          className=" h-[40px] w-[30px] border border-secondary text-center rounded-[12px] "
         />
       ))}
     </div>

@@ -21,7 +21,9 @@ const CustomTable = <T,>({
                 key={col.key}
                 className={`${
                   index === 0 ? "pl-3 lg:pl-8" : ""
-                } ${index === columns.length - 1 ? "pr-3 lg:pr-8" : ""} pr-2`}
+                } ${index === columns.length - 1 ? "pr-3 lg:pr-8" : ""} ${
+                  col.centered ? "text-center" : ""
+                } pr-2`}
                 style={{ width: col.width }}
               >
                 {col.title}

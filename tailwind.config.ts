@@ -30,6 +30,7 @@ const config = {
       },
       colors: {
         bgWhite: "var(--bg-white)",
+        bgModal: "var(--bg-modal)",
         white: "var(--white)",
         main: "var(--main)",
         hoverBg: "var(--hover-bg)",

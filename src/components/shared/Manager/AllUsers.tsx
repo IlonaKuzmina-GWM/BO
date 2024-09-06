@@ -92,10 +92,10 @@ const AllUser = () => {
     { title: "Last name", key: "lastName", width: "11%" },
     { title: "Email", key: "email", width: "17%" },
     { title: "Email verification", key: "isEmailVerified", width: "10%" },
-    { title: "Merchant (label)", key: "merchant", width: "15%" },
-    { title: "Role", key: "role", width: "8%" },
-    { title: "Created at", key: "created", width: "12%" },
-    { title: "Disabled", key: "isDisabled", width: "8%" },
+    { title: "Merchant (label)", key: "merchant", width: "15%", centered: true },
+    { title: "Role", key: "role", width: "8%", centered: true },
+    { title: "Created at", key: "created", width: "12%", centered: true },
+    { title: "Disabled", key: "isDisabled", width: "8%", centered: true },
   ];
   return (
     <div className="bg-white pt-[20px]">

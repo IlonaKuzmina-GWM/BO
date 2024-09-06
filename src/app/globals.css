@@ -6,6 +6,7 @@
   :root {
     /* New HEX color variables */
     --bg-white: #f5f7f9;
+    --bg-modal: rgba(0, 0, 0, 0.500);
     --white: #ffffff;
     --main: #495465;
     --hover-bg: #e9edf5;
@@ -39,6 +40,7 @@
 
   .dark {
     --bg-white: #222834; /* Dark background */
+    --bg-modal: hsla(0, 0%, 100%, 0.500);
     --white: #11151a; /* Very dark elements */
     --main: #d1d8e0; /* Lighter main text */
     --hover-bg: #2c2f35; /* Dark hover */

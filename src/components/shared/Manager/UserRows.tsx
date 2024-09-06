@@ -29,7 +29,7 @@ const UserRows = ({ user, merchants, updateProvider }: IUserRowProps) => {
           {user.isEmailVerified ? "Verified" : "Not verified"}
         </div>
       </td>
-      <td className="flex py-2 pr-2">
+      <td className="flex p-2 border-x border-hoverBg text-center">
         <TableRowSelect
           value={user.merchant}
           label={"All Merchants"}
@@ -38,9 +38,9 @@ const UserRows = ({ user, merchants, updateProvider }: IUserRowProps) => {
           onSelectHandler={setSelectedValues}
         />
       </td>
-      <td className="pr-2">{user.role}</td>
-      <td className="pr-2">{user.created}</td>
-      <td className="pr-3 lg:pr-8">
+      <td className="border-x border-hoverBg text-center">{user.role}</td>
+      <td className="border-x border-hoverBg text-center">{user.created}</td>
+      <td className="pl-2 pr-3 lg:pr-8">
         <div
           className={`flex justify-center rounded-[4px] px-[4px] py-[8px] ${getSuccessAndErrorClass(user.isDisabled)}`}
         >

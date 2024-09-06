@@ -142,6 +142,7 @@ const Create = () => {
                   name={submitName}
                   type={"filled"}
                   disabled={submitted}
+                  isFullWidth
                 />
               </div>
             </div>

@@ -1,0 +1,7 @@
+.sidebar .sidebar__logo--wrapper .sidebar-arrow {
+  opacity: 0;
+}
+
+.sidebar .sidebar__logo--wrapper:hover .sidebar-arrow {
+  opacity: 1;
+}

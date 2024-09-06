@@ -5,7 +5,11 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function ModeToggle() {
+interface IModeToggle {
+  isSidebarOpen: boolean;
+}
+
+export default function ModeToggle({ isSidebarOpen }: IModeToggle) {
   const { theme, setTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
@@ -24,17 +28,25 @@ export default function ModeToggle() {
 
   return (
     <div
-      className="px-8 py-4 text-md text-main font-medium capitalize hover:cursor-pointer hover:bg-hoverBg transition-all duration-500"
+      className="block w-full cursor-pointer transition-all duration-500 ease-in-out hover:bg-hoverBg"
       onClick={toggleTheme}
     >
-      <Image
-        src="/icons/sun-moon.svg"
-        alt="Mode icon"
-        width={24}
-        height={24}
-        className="me-3 inline-block dark:invert"
-      />
-      {theme === "light" ? "Dark Theme" : "Light Theme"}
+      <div
+        className={`${isSidebarOpen ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap py-2 font-medium capitalize text-main`}
+      >
+        <Image
+          src={`/icons/sun-moon.svg`}
+          alt={"Side icon"}
+          width={16}
+          height={16}
+          className="inline-block dark:invert"
+        />
+        {isSidebarOpen && (
+          <span className={`${!isSidebarOpen && "opacity-0"} inline-block`}>
+            {theme === "light" ? "Dark Theme" : "Light Theme"}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

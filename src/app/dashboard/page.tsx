@@ -38,10 +38,12 @@ const MainDashPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/get-transactions", {
+        const response = await fetch("/api/get-all-transactions-data", {
           method: "GET",
         });
-        const transactions: Transaction[] = await response.json();
+        const { transactions }: { transactions: Transaction[] } = await response.json();
+
+        console.log(transactions)
 
         const groupedData: { [date: string]: any } = {};
         const merchantData: {

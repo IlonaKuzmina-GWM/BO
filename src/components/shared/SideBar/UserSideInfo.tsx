@@ -8,7 +8,7 @@ interface IUserSideInfo {
 
 export const UserSideInfo = ({ isSidebarOpen }: IUserSideInfo) => {
   return (
-    <div className={`${isSidebarOpen ? "ps-8" : "px-4 justify-center"}  flex flex-row gap-2 pt-4 flex-nowrap`}>
+    <div className={`${isSidebarOpen ? "ps-8" : "px-4 justify-center"}  flex flex-row gap-2 py-4 flex-nowrap  items-center h-[82px]`}>
       <Avatar className={`${isSidebarOpen ? "h-[50px] w-[50px] p-1" : "h-[30px] w-[30px] p-1"}`}>
         <AvatarImage src="/images/logo-small.png" alt="Avatar" />
         <AvatarFallback>AF</AvatarFallback>

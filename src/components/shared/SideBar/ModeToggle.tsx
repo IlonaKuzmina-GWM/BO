@@ -42,7 +42,7 @@ export default function ModeToggle({ isSidebarOpen }: IModeToggle) {
           className="inline-block dark:invert"
         />
         {isSidebarOpen && (
-          <span className={`${!isSidebarOpen && "opacity-0"} inline-block`}>
+          <span className={`${!isSidebarOpen && "opacity-0"} inline-block text-nowrap`}>
             {theme === "light" ? "Dark Theme" : "Light Theme"}
           </span>
         )}

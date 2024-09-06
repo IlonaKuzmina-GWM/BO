@@ -19,11 +19,11 @@ const SiderBar = () => {
 
   return (
     <aside
-      className={`sidebar ${openSideBar ? "w-[280px]" : "w-[88px]"} flex flex-col justify-between overflow-hidden overflow-y-auto bg-white py-4 transition-all duration-500 ease-in-out`}
+      className={`sidebar ${openSideBar ? "w-[280px]" : "w-[88px]"} flex flex-col justify-between overflow-hidden overflow-y-auto bg-white transition-all duration-500 ease-in-out`}
     >
       <div>
         <div
-          className={`sidebar__logo--wrapper relative flex cursor-pointer flex-row ${openSideBar ? "px-8" : "px-4 justify-center"} pb-[14px]`}
+          className={`sidebar__logo--wrapper relative flex cursor-pointer flex-row h-[96px] items-center ${openSideBar ? "px-8" : "px-4 justify-center"}`}
           onClick={toggleSidebar}
         >
           <div className="">
@@ -36,7 +36,7 @@ const SiderBar = () => {
             />
           </div>
 
-          <div className={`absolute bottom-1/2 ${openSideBar? "right-4" : "right-2"}`}>
+          <div className={`absolute bottom-[42px] ${openSideBar? "right-4" : "right-2"}`}>
             <Image
               src={"/icons/arrow.svg"}
               alt={""}
@@ -98,7 +98,7 @@ const SiderBar = () => {
               className="inline-block dark:invert"
             />
             {openSideBar && (
-              <span className={`${!openSideBar && "opacity-0"} inline-block`}>
+              <span className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}>
                 Log Out
               </span>
             )}

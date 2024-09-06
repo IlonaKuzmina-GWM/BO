@@ -21,7 +21,7 @@ const SideBarLi = ({ name, link, iconLink, isSidebarOpen }: ISideBarLi) => {
           alt={"Side icon"}
           width={16}
           height={16}
-          className=" inline-block dark:invert"
+          className="inline-block dark:invert w-[16px] h-auto"
         />
            {isSidebarOpen && <span className={`${!isSidebarOpen && "opacity-0 "} inline-block`}>{name}</span>}
       </li>

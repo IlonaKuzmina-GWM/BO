@@ -40,7 +40,7 @@
 
   .dark {
     --bg-white: #222834; /* Dark background */
-    --bg-modal: hsla(0, 0%, 100%, 0.500);
+    --bg-modal: rgba(255, 255, 255, 0.5);
     --white: #11151a; /* Very dark elements */
     --main: #d1d8e0; /* Lighter main text */
     --hover-bg: #2c2f35; /* Dark hover */

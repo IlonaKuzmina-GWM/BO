@@ -15,22 +15,46 @@ const CustomTransactionTable = ({
   data,
 }: ICustomTransactionTableProps) => {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
 
-  const toggleRow = (id: number) => {
+  const openAccordionBgColor = (status: string) => {
+    console.log(status);
+    switch (status) {
+      case "success":
+        return "successBg";
+      case "failed":
+        return "errorBg";
+      case "transferring":
+        return "warningBg";
+      default:
+        return "white";
+    }
+  };
+
+  const toggleRow = (transaction: Transaction) => {
+    const { id, status } = transaction;
+
     setExpandedRows((prevExpandedRows) =>
       prevExpandedRows.includes(id)
         ? prevExpandedRows.filter((rowId) => rowId !== id)
         : [...prevExpandedRows, id],
     );
+
+    if (!expandedRows.includes(id)) {
+      setRowBgColors((prevBgColors) => ({
+        ...prevBgColors,
+        [id]: openAccordionBgColor(transformStatus(status)),
+      }));
+    }
   };
 
   const transformStatus = (status: string): string => {
+    console.log(status);
     const parts = status.split("_");
 
     if (parts.length > 1) {
       parts.shift();
     }
-
     const transformed = parts.join("_").toLowerCase();
 
     return transformed.charAt(0) + transformed.slice(1);
@@ -46,19 +70,6 @@ const CustomTransactionTable = ({
         second: "2-digit",
       }),
     };
-  };
-
-  const openAccordionBgColor = (status: string) => {
-    switch (status) {
-      case "success":
-        return "successBg";
-      case "failed":
-        return "errorBg";
-      case "transferring":
-        return "warningBg";
-      default:
-        return "white";
-    }
   };
 
   return (
@@ -92,10 +103,9 @@ const CustomTransactionTable = ({
               <React.Fragment key={transaction.id}>
                 <tr
                   className={`relative border-none ${!isExpanded && "bg-white"} bg-${
-                    isExpanded &&
-                    openAccordionBgColor(transformStatus(transaction.status))
+                    isExpanded ? rowBgColors[transaction.id] : ""
                   } h-[50px] cursor-pointer border-b border-hoverBg last:border-none`}
-                  onClick={() => toggleRow(transaction.id)}
+                  onClick={() => toggleRow(transaction)}
                 >
                   <td className="pl-3">
                     <Checkbox checked={false} onChange={() => {}} />
@@ -133,7 +143,10 @@ const CustomTransactionTable = ({
 
                 {isExpanded && (
                   <tr>
-                    <td colSpan={columns.length + 1} className=" p-6">
+                    <td
+                      colSpan={columns.length + 1}
+                      className={`border-b-[3px] border-b-${rowBgColors} p-6`}
+                    >
                       <div className="felx-col flex justify-between gap-4">
                         <div className="">
                           <div className="flex flex-row">

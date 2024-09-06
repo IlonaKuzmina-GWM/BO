@@ -1,20 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import TransactionRow from "./TransactionRow";
-import TransactionsListTitleRow from "./TransactionsListTitleRow";
 import StatusFilteringBadge from "../StatusFilteringBadge";
 import { Header, Transaction } from "@/types";
-import transactionsData from "@/utils/myjsonfile.json";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/UI/pagination";
 import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
 
@@ -42,27 +30,13 @@ const TransactionsListWrapper = () => {
     { key: "setl", title: "Setl.", width: "5%",centered:true },
   ];
 
-  // Simulate data fetching
-  // useEffect(() => {
-  //   // Mock fetch function
-  //   const fetchTransactions = async () => {
-  //     // Simulate a network request
-  //     const data = transactionsData;
-  //     setTransactions(data.transactions);
-  //     setTotalPages(data.totalPages);
-  //   };
-
-  //   fetchTransactions();
-  // }, []);
-
   const fetchTransactions = async (page: number) => {
-    // Mock API call, replace with your actual backend API call
     const response = await fetch(
       `/api/get-transactions?page=${page}&limit=${limit}`,
     );
     const data = await response.json();
 
-    setTransactions(data.transactions); // Set transactions state with fetched data
+    setTransactions(data.transactions); 
     setTotalPages(data.totalPages);
   };
 

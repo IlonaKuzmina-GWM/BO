@@ -57,7 +57,7 @@ const CustomTransactionTable = ({
       case "transferring":
         return "warningBg";
       default:
-        return "hoverBg";
+        return "white";
     }
   };
 
@@ -133,7 +133,7 @@ const CustomTransactionTable = ({
 
                 {isExpanded && (
                   <tr>
-                    <td colSpan={columns.length + 1} className="bg-hoverBg p-6">
+                    <td colSpan={columns.length + 1} className=" p-6">
                       <div className="felx-col flex justify-between gap-4">
                         <div className="">
                           <div className="flex flex-row">

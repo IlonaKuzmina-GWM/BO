@@ -1,4 +1,4 @@
-import ManagerFormInput from "./ManagerFormInput";
+import Input from "@/components/UI/Input";
 import { InputField } from "@/types";
 
 interface InfoProps {
@@ -20,7 +20,7 @@ const Info = ({
     <div className="mt-[20px]">
       <p className="bg-hoverBg p-[4px] text-[16px] font-medium">{title}</p>
       {inputFields.map((field: InputField) => (
-        <ManagerFormInput
+        <Input
           key={field.name}
           label={field.label}
           name={field.name}

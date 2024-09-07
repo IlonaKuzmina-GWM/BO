@@ -1,4 +1,4 @@
-interface IManagerFormInputProps {
+interface IInputProps {
   label: string;
   name: string;
   type: string;
@@ -6,9 +6,10 @@ interface IManagerFormInputProps {
   placeholder: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isInvalid?: boolean;
+  width?: string; // Add optional width prop
 }
 
-const ManagerFormInput = ({
+const Input = ({
   label,
   name,
   type,
@@ -16,7 +17,8 @@ const ManagerFormInput = ({
   placeholder,
   onChange,
   isInvalid = false,
-}: IManagerFormInputProps) => {
+  width = "279px",
+}: IInputProps) => {
   return (
     <div className="mt-[10px]">
       <label className="block">{label}</label>
@@ -26,9 +28,10 @@ const ManagerFormInput = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`py[12px] h-[40px] w-[279px] rounded-[4px] border px-[10px] ${
+        className={`py[12px] h-[40px] rounded-[4px] border px-[10px] ${
           isInvalid ? "border-error" : "border-divider"
         }`}
+        style={{ width }}
       />
       {isInvalid && (
         <div className="text-[12px] text-error">This field is required.</div>
@@ -37,4 +40,4 @@ const ManagerFormInput = ({
   );
 };
 
-export default ManagerFormInput;
+export default Input;

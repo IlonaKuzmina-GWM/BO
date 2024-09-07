@@ -67,6 +67,7 @@ export interface InputField {
   name: string;
   type: string;
   placeholder: string;
+  inputWidth?: string;
 }
 
 export interface Merchant {
@@ -102,4 +103,14 @@ export interface KYCUser {
   checkRequired: string;
   created: string;
   updated: string;
+}
+
+export interface CSV {
+  name: string,
+  surname: string,
+  id: string,
+  iban: string,
+  amount: string,
+  details: string,
+  created: string,
 }

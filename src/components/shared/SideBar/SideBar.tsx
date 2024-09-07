@@ -30,6 +30,11 @@ const SiderBar = () => {
             iconLink={"transaction"}
           />
           <SideBarLi
+            name={"generateCSV"}
+            link={"/dashboard/generateCSV"}
+            iconLink={"generateCSV"}
+          />
+          <SideBarLi
             name={"settlement"}
             link={"/dashboard/settlement"}
             iconLink={"settlement"}

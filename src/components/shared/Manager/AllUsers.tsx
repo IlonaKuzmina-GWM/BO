@@ -3,8 +3,10 @@ import { useState } from "react";
 import CustomTable from "../CustomTable/CustomTable";
 import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
+import PaginationComponent from "../PaginationComponent ";
 
 const AllUser = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState<User[]>([
     {
       id: "1",
@@ -92,17 +94,30 @@ const AllUser = () => {
     { title: "Last name", key: "lastName", width: "11%" },
     { title: "Email", key: "email", width: "17%" },
     { title: "Email verification", key: "isEmailVerified", width: "10%" },
-    { title: "Merchant (label)", key: "merchant", width: "15%", centered: true },
+    {
+      title: "Merchant (label)",
+      key: "merchant",
+      width: "15%",
+      centered: true,
+    },
     { title: "Role", key: "role", width: "8%", centered: true },
     { title: "Created at", key: "created", width: "12%", centered: true },
     { title: "Disabled", key: "isDisabled", width: "8%", centered: true },
   ];
+
+  const totalPages = Math.ceil(users.length / 10);
+
   return (
     <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="All Users" />
       </div>
       <CustomTable columns={header} data={users} renderRow={renderRow} />
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

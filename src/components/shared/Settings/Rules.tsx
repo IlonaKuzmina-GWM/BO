@@ -6,8 +6,10 @@ import CustomTable from "../CustomTable/CustomTable";
 import Modal from "../Modal";
 import RuleRows from "./RuleRows";
 import { Header, Rule } from "@/types";
+import PaginationComponent from "../PaginationComponent ";
 
 const Rules = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rules, setRules] = useState<Rule[]>([
@@ -58,6 +60,8 @@ const Rules = () => {
     <RuleRows rule={rule} index={index} openModal={openModal} deleteEntry={deleteEntry} />
   );
 
+  const totalPages = Math.ceil(rules.length / 10);
+
   return (
     <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
@@ -81,6 +85,11 @@ const Rules = () => {
         </div>
       </div>
       <CustomTable columns={header} data={rules} renderRow={renderRow} />
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
       <Modal isOpen={isModalOpen} onClose={closeModal} title="Make new Rule">
       <p>Here you can make new rule.</p>
       </Modal>

@@ -4,8 +4,10 @@ import CustomTable from "../CustomTable/CustomTable";
 import Dashbutton from "../DashButton";
 import Paragraph from "../Paragraph";
 import IntegrationRows from "./IntegrationRows";
+import PaginationComponent from "../PaginationComponent ";
 
 const Integration = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [apiKeys, setApiKeys] = useState<APIKey[]>([
     {
       merchant: "IDEAL",
@@ -85,6 +87,8 @@ const Integration = () => {
     { title: "Action", key: "show", width: "19%" },
   ];
 
+  const totalPages = Math.ceil(apiKeys.length / 10);
+
   return (
     <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
@@ -98,6 +102,11 @@ const Integration = () => {
         </div>
       </div>
       <CustomTable columns={header} data={apiKeys} renderRow={renderRow} />
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

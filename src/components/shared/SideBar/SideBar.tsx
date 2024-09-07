@@ -29,12 +29,17 @@ const SiderBar = () => {
             link={"/dashboard/transactions"}
             iconLink={"transaction"}
           />
-            <SideBarLi
+          <SideBarLi
+            name={"settlement"}
+            link={"/dashboard/settlement"}
+            iconLink={"settlement"}
+          />
+          <SideBarLi
             name={"manager"}
             link={"/dashboard/manager"}
             iconLink={"manager"}
           />
-            <SideBarLi
+          <SideBarLi
             name={"settings"}
             link={"/dashboard/settings"}
             iconLink={"settings"}

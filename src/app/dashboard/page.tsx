@@ -8,7 +8,7 @@ import { DateRange } from "react-day-picker";
 import LinearChart from "@/components/shared/Charts/LinearChart";
 import SimpleBarChart from "@/components/shared/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/Charts/VerticalComposedChart";
-import DatePickerWithRange from "@/components/shared/DataPickerWithRange";
+import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
 import { Transaction } from "@/types";
 import { count } from "console";
 

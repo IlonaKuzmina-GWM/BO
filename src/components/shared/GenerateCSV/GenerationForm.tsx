@@ -4,7 +4,11 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import DashButton from "../DashButton";
 import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
 
-const GenerationForm = () => {
+interface GenerationFormProps {
+  onSubmit: (data: CSV) => void;
+}
+
+const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState<CSV>({
@@ -64,17 +68,28 @@ const GenerationForm = () => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-
+  
     let formattedValue = value;
-
+  
     if (name === "amount") {
       formattedValue = formattedValueForMoney(value);
     }
-
+  
+    const formatDate = (date: Date) => {
+      const pad = (num: number) => (num < 10 ? `0${num}` : num);
+      const year = date.getFullYear();
+      const month = pad(date.getMonth() + 1);
+      const day = pad(date.getDate());
+      const hours = pad(date.getHours());
+      const minutes = pad(date.getMinutes());
+      const seconds = pad(date.getSeconds());
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
+  
     setFormData((prevData) => ({
       ...prevData,
       [name]: formattedValue,
-      created: new Date().toISOString(),
+      created: formatDate(new Date()),
     }));
   };
 
@@ -89,6 +104,8 @@ const GenerationForm = () => {
       setValidationErrors(errors);
       return;
     }
+
+    onSubmit(formData);
 
     setFormData({
       name: "",
@@ -133,4 +150,5 @@ const GenerationForm = () => {
     </form>
   );
 };
+
 export default GenerationForm;

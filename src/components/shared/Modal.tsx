@@ -40,7 +40,7 @@ const Modal = ({ isOpen, onClose, title, children }: IModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-bgModal bg-opacity-50 flex items-center justify-center">
       <div ref={modalRef} className="bg-white rounded shadow-lg text-white">
         {title && <h2 className="text-lg font-semibold p-[20px] bg-blue700">{title}</h2>}
         {children}

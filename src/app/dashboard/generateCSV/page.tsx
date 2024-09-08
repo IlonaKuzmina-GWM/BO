@@ -60,23 +60,36 @@ const GenerateCSVPage = () => {
   ]);
 
   const header: Header[] = [
-    { title: "", key: "checkbox", width: "7%" },
-    { title: "ID", key: "id", width: "7%" },
-    { title: "Name", key: "name", width: "11%" },
-    { title: "Surname", key: "surname", width: "11%" },
-    { title: "IBAN", key: "iban", width: "17%" },
-    { title: "Amount", key: "amount", width: "10%" },
+    { title: "", key: "checkbox", width: "3%", centered: true },
+    { title: "ID", key: "id", width: "7%", centered: true },
+    { title: "Name", key: "name", width: "19%" },
+    { title: "Surname", key: "surname", width: "19%" },
+    { title: "IBAN", key: "iban", width: "19%" },
+    { title: "Amount", key: "amount", width: "7%" },
     {
       title: "Created",
       key: "created",
-      width: "15%",
+      width: "12%",
     },
     { title: "Action", key: "role", width: "8%" },
-    { title: "", key: "delete", width: "12%" },
+    { title: "", key: "delete", width: "6%" },
   ];
 
+  const deleteEntry = (index: number): void => {
+    const newRules = [...cSVs];
+    newRules.splice(index, 1);
+    setCSVs(newRules);
+  };
+
   const renderRow = (cSV: CSV, index: number) => (
-    <CSVRows key={cSV.id} cSV={cSV} checkAll={areAllChecked} />
+    <CSVRows
+      key={cSV.id}
+      cSV={cSV}
+      checkAll={areAllChecked}
+      index={index}
+      deleteEntry={deleteEntry}
+      downloadPDF={() => console.log(index)}
+    />
   );
 
   const totalPages = Math.ceil(cSVs.length / 10);
@@ -85,14 +98,18 @@ const GenerateCSVPage = () => {
     setAreAllChecked(!areAllChecked);
   };
 
+  const handleFormSubmit = (data: CSV) => {
+    setCSVs([data, ...cSVs]);
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col gap-6">
       <DashPageTitle
         title="CSV payout generator"
         description="Generate and Manage Payouts with CSV Generator"
       />
-      <GenerationForm />
-      <div className="w-full">
+      <GenerationForm onSubmit={handleFormSubmit} />
+      <div className="w-full bg-white">
         <CustomTable
           columns={header}
           data={cSVs}

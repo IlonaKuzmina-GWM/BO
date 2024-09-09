@@ -29,6 +29,7 @@ const TableRowSelect = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -45,6 +46,12 @@ const TableRowSelect = ({
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
+
+  useEffect(() => {
+    if (isOpen && buttonRef.current && dropdownRef.current) {
+      dropdownRef.current.style.width = `${buttonRef.current.offsetWidth}px`;
+    }
+  }, [isOpen]);
 
   const selectValue = (itemValue: string) => {
     setSelectedValue(itemValue);
@@ -64,8 +71,9 @@ const TableRowSelect = ({
   };
 
   return (
-    <div className="w-[100px] lg:w-[180px]" ref={dropdownRef}>
+    <div className="w-full">
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="relative w-full rounded-sm border border-divider bg-white p-2 text-start text-sm text-main"
       >
@@ -80,7 +88,10 @@ const TableRowSelect = ({
         )}
       </button>
       {isOpen && (
-        <div className="absolute z-50 mt-1 rounded-sm border border-divider bg-white shadow-lg w-[100px] lg:w-[180px]">
+        <div
+          className="absolute z-50 mt-1 rounded-sm border border-divider bg-white shadow-lg"
+          ref={dropdownRef}
+        >
           {searchInput && (
             <Search placeholder="Search" onSearch={handleSearch} />
           )}

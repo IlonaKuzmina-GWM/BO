@@ -23,7 +23,7 @@ const SiderBar = () => {
     >
       <div>
         <div
-          className={`sidebar__logo--wrapper relative flex h-[96px] cursor-pointer flex-row items-center ${openSideBar ? "px-8" : "justify-center px-4"}`}
+          className={`sidebar__logo--wrapper relative flex cursor-pointer flex-row h-[96px] items-center ${openSideBar ? "px-8" : "px-4 justify-center"}`}
           onClick={toggleSidebar}
         >
           <div className="">
@@ -36,9 +36,7 @@ const SiderBar = () => {
             />
           </div>
 
-          <div
-            className={`absolute bottom-[42px] ${openSideBar ? "right-4" : "right-2"}`}
-          >
+          <div className={`absolute bottom-[42px] ${openSideBar? "right-4" : "right-2"}`}>
             <Image
               src={"/icons/arrow.svg"}
               alt={""}
@@ -63,18 +61,23 @@ const SiderBar = () => {
             iconLink={"transaction"}
             isSidebarOpen={openSideBar}
           />
-
           <SideBarLi
             name={"generateCSV"}
             link={"/dashboard/generateCSV"}
             iconLink={"generateCSV"}
+            isSidebarOpen={openSideBar}
           />
           <SideBarLi
             name={"settlement"}
             link={"/dashboard/settlement"}
             iconLink={"settlement"}
+            isSidebarOpen={openSideBar}
           />
+        </ul>
+        <div className="divider my-4 h-[1px] w-full bg-fill"></div>
 
+        <ul className="flex flex-col gap-2">
+          {" "}
           <SideBarLi
             name={"manager"}
             link={"/dashboard/manager"}
@@ -107,9 +110,7 @@ const SiderBar = () => {
               className="inline-block dark:invert"
             />
             {openSideBar && (
-              <span
-                className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}
-              >
+              <span className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}>
                 Log Out
               </span>
             )}

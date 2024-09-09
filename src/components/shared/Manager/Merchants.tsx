@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Header, Merchant } from "@/types";
 import CustomTable from "../CustomTable/CustomTable";
 import Paragraph from "../Paragraph";
 import MerchantRows from "./MerchantRows";
+import PaginationComponent from "../PaginationComponent ";
 
 const Merchants = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [merchants, setMerchants] = useState<Merchant[]>([
     {
       id: "426",
@@ -76,22 +78,23 @@ const Merchants = () => {
   ];
 
   const toggleStatus = (id: string) => {
-    setMerchants(prevMerchants =>
-      prevMerchants.map(merchant =>
+    setMerchants((prevMerchants) =>
+      prevMerchants.map((merchant) =>
         merchant.id === id
-          ? { ...merchant, status: merchant.status === "Enabled" ? "Disabled" : "Enabled" }
-          : merchant
-      )
+          ? {
+              ...merchant,
+              status: merchant.status === "Enabled" ? "Disabled" : "Enabled",
+            }
+          : merchant,
+      ),
     );
   };
 
   const updateProvider = (id: string, provider: string) => {
-    setMerchants(prevMerchants =>
-      prevMerchants.map(merchant =>
-        merchant.id === id
-          ? { ...merchant, providers: provider }
-          : merchant
-      )
+    setMerchants((prevMerchants) =>
+      prevMerchants.map((merchant) =>
+        merchant.id === id ? { ...merchant, providers: provider } : merchant,
+      ),
     );
   };
 
@@ -113,12 +116,19 @@ const Merchants = () => {
     />
   );
 
+  const totalPages = Math.ceil(merchants.length / 10);
+
   return (
     <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="List of Merchants" />
       </div>
       <CustomTable columns={header} data={merchants} renderRow={renderRow} />
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

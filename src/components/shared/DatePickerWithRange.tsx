@@ -12,13 +12,18 @@ import { Button } from "../UI/button";
 
 interface IDatePickerWithRange extends React.HTMLAttributes<HTMLDivElement> {
   onDateChange: (range: DateRange | undefined) => void;
+  className?: string;
+  initialDate?: DateRange;
+  width?: string;
 }
 
 const DatePickerWithRange = ({
   className,
   onDateChange,
+  initialDate,
+  width = "300px",
 }: IDatePickerWithRange) => {
-  const [date, setDate] = React.useState<DateRange | undefined>({
+  const [date, setDate] = React.useState<DateRange | undefined>(initialDate || {
     from: addDays(new Date(), -5),
     to: new Date(),
   });
@@ -31,12 +36,15 @@ const DatePickerWithRange = ({
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
-        <PopoverTrigger asChild  className="rounded-sm border border-divider bg-white px-2 py-[9px] text-start text-sm text-main">
+        <PopoverTrigger
+          asChild
+          className="rounded-sm border border-divider bg-white px-2 py-[9px] text-start text-sm text-main"
+        >
           <Button
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              `w-[${width}] justify-start text-left font-normal`,
               !date && "text-main",
             )}
           >

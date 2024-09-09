@@ -1,0 +1,6 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="pointer-events-none absolute left-0 top-0">
+<g id="Status=Selected">
+<rect id="box" width="16" height="16" rx="2" fill="#2F7FFF"/>
+<path id="check icon" fill-rule="evenodd" clip-rule="evenodd" d="M11.8166 5.16931L5.99681 10.1274L4.31803 7.6232C4.0859 7.27796 3.63408 7.19492 3.30662 7.43965C2.97915 7.68439 2.90246 8.16074 3.13252 8.50599L5.25898 11.6766C5.37504 11.8492 5.55328 11.9629 5.75225 11.9934C5.78541 11.9978 5.81857 12 5.85173 12C6.01754 12 6.17713 11.941 6.3077 11.8296L12.7306 6.36021C13.0415 6.09581 13.0912 5.61289 12.8384 5.28513C12.5855 4.95517 12.1296 4.90492 11.8166 5.16931Z" fill="white"/>
+</g>
+</svg>

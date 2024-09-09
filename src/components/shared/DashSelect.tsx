@@ -47,6 +47,7 @@ const CustomMultiSelect = ({
   }, [searchContext, searchParams]);
 
   useEffect(() => {
+    setSelectedValues([]);
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         dropdownRef.current &&

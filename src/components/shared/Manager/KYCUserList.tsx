@@ -2,8 +2,11 @@ import { Header, KYCUser } from "@/types";
 import CustomTable from "../CustomTable/CustomTable";
 import Paragraph from "../Paragraph";
 import KYCUserListRows from "./KYCUserListRows";
+import { useState } from "react";
+import PaginationComponent from "../PaginationComponent ";
 
 const KYCUserList = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const users: KYCUser[] = [
     {
       name: "IDEAL",
@@ -52,12 +55,19 @@ const KYCUserList = () => {
     { title: "Updated", key: "updated", width: "17%", centered: true },
   ];
 
+  const totalPages = Math.ceil(users.length / 10);
+
   return (
     <div className="bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="KYC User List: Identity Verification and Data Validation" />
       </div>
       <CustomTable columns={header} data={users} renderRow={renderRow} />
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

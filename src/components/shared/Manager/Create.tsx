@@ -1,9 +1,10 @@
-import { useState, ChangeEvent, FormEvent } from "react";
-import SelectAccount from "./SelectAccount";
-import DashButton from "../DashButton";
-import Info from "./Info";
 import Spinner from "@/components/UI/Spinner";
 import { InputField } from "@/types";
+import { ChangeEvent, FormEvent, useState } from "react";
+import DashButton from "../DashButton";
+import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
+import Info from "./Info";
+import SelectAccount from "./SelectAccount";
 
 const Create = () => {
   const [formData, setFormData] = useState({
@@ -34,14 +35,7 @@ const Create = () => {
     if (name === "settlementFee") {
       formattedValue = value.replace(/[^0-9]/g, "");
     } else if (name === "settlementFixingFee") {
-      formattedValue = value.replace(/[^0-9.,]/g, "").replace(/,/g, ".");
-      if (formattedValue.includes(".")) {
-        const parts = formattedValue.split(".");
-        if (parts.length > 2) {
-          formattedValue = parts[0] + "." + parts.slice(1).join("");
-        }
-        formattedValue = parts[0] + "." + parts[1].slice(0, 2);
-      }
+      formattedValue = formattedValueForMoney(value);
     }
 
     setFormData((prevData) => ({

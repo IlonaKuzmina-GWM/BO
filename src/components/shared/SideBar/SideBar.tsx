@@ -61,23 +61,7 @@ const SiderBar = () => {
             iconLink={"transaction"}
             isSidebarOpen={openSideBar}
           />
-          <SideBarLi
-            name={"generateCSV"}
-            link={"/dashboard/generateCSV"}
-            iconLink={"generateCSV"}
-            isSidebarOpen={openSideBar}
-          />
-          <SideBarLi
-            name={"settlement"}
-            link={"/dashboard/settlement"}
-            iconLink={"settlement"}
-            isSidebarOpen={openSideBar}
-          />
-        </ul>
-        <div className="divider my-4 h-[1px] w-full bg-fill"></div>
 
-        <ul className="flex flex-col gap-2">
-          {" "}
           <SideBarLi
             name={"manager"}
             link={"/dashboard/manager"}

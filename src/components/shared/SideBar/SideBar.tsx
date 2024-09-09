@@ -23,7 +23,7 @@ const SiderBar = () => {
     >
       <div>
         <div
-          className={`sidebar__logo--wrapper relative flex cursor-pointer flex-row h-[96px] items-center ${openSideBar ? "px-8" : "px-4 justify-center"}`}
+          className={`sidebar__logo--wrapper relative flex h-[96px] cursor-pointer flex-row items-center ${openSideBar ? "px-8" : "justify-center px-4"}`}
           onClick={toggleSidebar}
         >
           <div className="">
@@ -36,7 +36,9 @@ const SiderBar = () => {
             />
           </div>
 
-          <div className={`absolute bottom-[42px] ${openSideBar? "right-4" : "right-2"}`}>
+          <div
+            className={`absolute bottom-[42px] ${openSideBar ? "right-4" : "right-2"}`}
+          >
             <Image
               src={"/icons/arrow.svg"}
               alt={""}
@@ -60,6 +62,17 @@ const SiderBar = () => {
             link={"/dashboard/transactions"}
             iconLink={"transaction"}
             isSidebarOpen={openSideBar}
+          />
+
+          <SideBarLi
+            name={"generateCSV"}
+            link={"/dashboard/generateCSV"}
+            iconLink={"generateCSV"}
+          />
+          <SideBarLi
+            name={"settlement"}
+            link={"/dashboard/settlement"}
+            iconLink={"settlement"}
           />
 
           <SideBarLi
@@ -94,7 +107,9 @@ const SiderBar = () => {
               className="inline-block dark:invert"
             />
             {openSideBar && (
-              <span className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}>
+              <span
+                className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}
+              >
                 Log Out
               </span>
             )}

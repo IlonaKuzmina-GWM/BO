@@ -18,16 +18,16 @@ const TransactionsListWrapper = () => {
   const limit = 10;
 
   const columns: Header[] = [
-    { key: "id", title: "ID", width: "5%"},
-    { key: "status", title: "Status", width: "10%" },
+    { key: "id", title: "ID", width: "7%", centered: true },
+    { key: "status", title: "Status", width: "8%" },
     { key: "amount", title: "Amount", width: "10%" },
     { key: "name", title: "Name", width: "10%" },
-    { key: "email", title: "Email", width: "15%" },
+    { key: "email", title: "Email", width: "17%" },
     { key: "merchant", title: "Merchant", width: "10%" },
     { key: "provider", title: "Provider", width: "10%" },
-    { key: "createdAt", title: "Created At", width: "10%",centered:true },
-    { key: "updatedAt", title: "Updated At", width: "10%",centered:true },
-    { key: "setl", title: "Setl.", width: "5%",centered:true },
+    { key: "createdAt", title: "Created", width: "8%", centered: true },
+    { key: "updatedAt", title: "Updated", width: "8%", centered: true },
+    { key: "setl", title: "Setl.", width: "5%", centered: true },
   ];
 
   const fetchTransactions = async (page: number) => {
@@ -36,7 +36,7 @@ const TransactionsListWrapper = () => {
     );
     const data = await response.json();
 
-    setTransactions(data.transactions); 
+    setTransactions(data.transactions);
     setTotalPages(data.totalPages);
   };
 
@@ -109,16 +109,7 @@ const TransactionsListWrapper = () => {
         ))}
       </div>
 
-      {/* <div>
-        <TransactionsListTitleRow />
-        <div>
-          {filteredTransactions.slice(0, limit).map((transaction) => (
-            <TransactionRow key={transaction.id} transaction={transaction} />
-          ))}
-        </div>
-      </div> */}
-
-      <CustomTransactionTable data={filteredTransactions} columns={columns}/>
+      <CustomTransactionTable data={filteredTransactions} columns={columns} />
 
       <div>
         <PaginationComponent

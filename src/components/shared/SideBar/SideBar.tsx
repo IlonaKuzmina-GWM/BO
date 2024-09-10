@@ -8,10 +8,14 @@ import SideBarLi from "./SideBarLi";
 import ModeToggle from "./ModeToggle";
 import NextLink from "next/link";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 const SiderBar = () => {
   const [openSideBar, setOpenSideBar] = useState(true);
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname()
+
+  console.log('pathname',pathname)
 
   const toggleSidebar = () => {
     setOpenSideBar(!openSideBar);
@@ -54,24 +58,28 @@ const SiderBar = () => {
             link={"/dashboard"}
             iconLink={"dash"}
             isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
           <SideBarLi
             name={"transactions"}
             link={"/dashboard/transactions"}
             iconLink={"transaction"}
             isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
           <SideBarLi
             name={"generateCSV"}
             link={"/dashboard/generateCSV"}
             iconLink={"generateCSV"}
             isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
           <SideBarLi
             name={"settlement"}
             link={"/dashboard/settlement"}
             iconLink={"settlement"}
             isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
         </ul>
         <div className="divider my-4 h-[1px] w-full bg-fill"></div>

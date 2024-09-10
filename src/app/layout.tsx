@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head></head>
       <body
-        className={cn("antialiased", fontHeading.variable, fontBody.variable)}
+        className={cn("antialiased overflow-hidden", fontHeading.variable, fontBody.variable)}
       >
         <ThemeProvider
           attribute="class"

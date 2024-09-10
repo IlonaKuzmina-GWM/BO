@@ -88,10 +88,7 @@ const TransactionRow = ({ transaction }: ITransactionRow) => {
             <div className="w-1/12"></div>
             <div className="w-1/12">{transaction.id}</div>
             <div className="w-1/12">
-              <StatusBadge
-                name={status}
-                type={status}
-              />
+              <StatusBadge name={status} type={status} />
             </div>
             <div className="w-1/12 font-semibold">{transaction.amount}</div>
             <div className="w-1/12">

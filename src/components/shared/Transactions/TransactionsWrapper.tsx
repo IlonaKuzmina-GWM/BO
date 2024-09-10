@@ -5,7 +5,7 @@ import TransactionsListWrapper from "./TransactionsListWrapper";
 
 const TransactionsWrapper = () => {
   return (
-    <div>
+    <div className="">
       <TransactionsFilterBar />
       <TransactionsListWrapper/>
     </div>

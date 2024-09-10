@@ -266,7 +266,7 @@ const MainDashPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col gap-6">
+    <div className="flex w-full flex-col gap-6 ">
       <DashPageTitle
         title="Overview"
         description="Explore total volumes, success rates, and country-specific statistics"

@@ -6,6 +6,8 @@ import DashButton from "../DashButton";
 import Search from "../Search";
 import StatusFilteringBadge from "../StatusFilteringBadge";
 import DashSelect from "../DashSelect";
+import DatePickerWithRange from "../DatePickerWithRange";
+import { DateRange } from "react-day-picker";
 
 const TransactionsFilterBar = () => {
   const [activeFilter, setActiveFilter] = useState("all");
@@ -13,6 +15,10 @@ const TransactionsFilterBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [selectedInterval, setSelectedInterval] = useState("this-year");
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
 
   const items = [
     { value: "apple", label: "Apple" },
@@ -33,6 +39,12 @@ const TransactionsFilterBar = () => {
     router.replace(`${pathname}?${params.toString()}`);
   };
 
+  
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setSelectedDateRange(range);
+    setSelectedInterval("");
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row justify-between">
@@ -42,6 +54,7 @@ const TransactionsFilterBar = () => {
             aditionalClass="max-w-[302px]"
             onSearch={handleSearch}
           />
+          <DatePickerWithRange onDateChange={handleDateRangeChange} />
           <DashSelect
             value={"Select Merchants"}
             label={"All Merchants"}

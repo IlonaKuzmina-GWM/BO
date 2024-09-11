@@ -9,8 +9,8 @@ import CustomTransactionTable from "./CustomTransactionTable";
 const TransactionsListWrapper = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [activeFilterBadge, setActiveFilterBage] = useState<string>("all");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
+const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);  
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);

@@ -13,9 +13,9 @@ import { usePathname } from "next/navigation";
 const SiderBar = () => {
   const [openSideBar, setOpenSideBar] = useState(true);
   const { theme, setTheme } = useTheme();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  console.log('pathname',pathname)
+  console.log("pathname", pathname);
 
   const toggleSidebar = () => {
     setOpenSideBar(!openSideBar);
@@ -27,7 +27,7 @@ const SiderBar = () => {
     >
       <div>
         <div
-          className={`sidebar__logo--wrapper relative flex cursor-pointer flex-row h-[96px] items-center ${openSideBar ? "px-8" : "px-4 justify-center"}`}
+          className={`sidebar__logo--wrapper relative flex h-[96px] cursor-pointer flex-row items-center ${openSideBar ? "px-8" : "justify-center px-4"}`}
           onClick={toggleSidebar}
         >
           <div className="">
@@ -40,7 +40,9 @@ const SiderBar = () => {
             />
           </div>
 
-          <div className={`absolute bottom-[42px] ${openSideBar? "right-4" : "right-2"}`}>
+          <div
+            className={`absolute bottom-[42px] ${openSideBar ? "right-4" : "right-2"}`}
+          >
             <Image
               src={"/icons/arrow.svg"}
               alt={""}
@@ -66,9 +68,16 @@ const SiderBar = () => {
             iconLink={"transaction"}
             isSidebarOpen={openSideBar}
             activePathName={pathname}
+          />{" "}
+          <SideBarLi
+            name={"SIINS"}
+            link={"/dashboard/siins"}
+            iconLink={"siins"}
+            isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
           <SideBarLi
-            name={"generateCSV"}
+            name={"generate CSV"}
             link={"/dashboard/generateCSV"}
             iconLink={"generateCSV"}
             isSidebarOpen={openSideBar}
@@ -101,7 +110,7 @@ const SiderBar = () => {
         </ul>
       </div>
 
-      <div>
+      <div className="mt-10">
         <ModeToggle isSidebarOpen={openSideBar} />
         <NextLink
           href={"/"}
@@ -118,7 +127,9 @@ const SiderBar = () => {
               className="inline-block dark:invert"
             />
             {openSideBar && (
-              <span className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}>
+              <span
+                className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}
+              >
                 Log Out
               </span>
             )}

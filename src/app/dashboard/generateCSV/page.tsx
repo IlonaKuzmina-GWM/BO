@@ -3,6 +3,7 @@
 import CustomTable from "@/components/shared/CustomTable/CustomTable";
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import CSVRows from "@/components/shared/GenerateCSV/CSVRows";
+import GenerationFilters from "@/components/shared/GenerateCSV/GenerationFilters";
 import GenerationForm from "@/components/shared/GenerateCSV/GenerationForm";
 import PaginationComponent from "@/components/shared/PaginationComponent ";
 import { CSV, Header } from "@/types";
@@ -109,6 +110,7 @@ const GenerateCSVPage = () => {
         description="Generate and Manage Payouts with CSV Generator"
       />
       <GenerationForm onSubmit={handleFormSubmit} />
+      <GenerationFilters />
       <div className="w-full bg-white">
         <CustomTable
           columns={header}

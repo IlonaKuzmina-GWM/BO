@@ -1,17 +1,17 @@
 import { DateRange } from "react-day-picker";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const GenerationFilters = () => {
+interface IGenerationFiltersProps {
+  onDateRangeChange: (range: DateRange | undefined) => void;
+}
+
+const GenerationFilters = ({onDateRangeChange}: IGenerationFiltersProps) => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
   });
-
-  const onDateChange = (range: DateRange | undefined) => {
-    setDateRange(range);
-  };
 
   const items = [
     { value: "0", label: "Today" },
@@ -19,6 +19,11 @@ const GenerationFilters = () => {
     { value: "7", label: "Last 7 days" },
     { value: "month", label: "1 month" },
   ];
+
+  const onDateChange = (range: DateRange | undefined) => {
+    setDateRange(range);
+    onDateRangeChange(range);
+  };
 
   const onDaysAmountChange = (selectedValues: string[]) => {
     const selectedValue = selectedValues[0];
@@ -43,11 +48,11 @@ const GenerationFilters = () => {
     }
 
     setDateRange({ from: fromDate, to: today });
-    // onDateChange({ from: fromDate, to: today });
+    onDateChange({ from: fromDate, to: today });
   };
 
   return (
-    <div>
+    <div className="flex flex-row">
       <DashSelect
         value={"Select Range"}
         label={"Ranges"}
@@ -57,11 +62,13 @@ const GenerationFilters = () => {
         isMulti={false}
         onSelectHandler={onDaysAmountChange}
       />
-      <DatePickerWithRange
-        initialDate={dateRange}
-        onDateChange={() => onDateChange(dateRange)}
-        width="max-w-[218px]"
-      />
+      <div className="w-[218px]">
+        <DatePickerWithRange
+          initialDate={dateRange}
+          onDateChange={onDateChange}
+          width="max-w-[218px]"
+        />
+      </div>
     </div>
   );
 };

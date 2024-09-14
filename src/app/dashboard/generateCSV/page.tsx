@@ -7,7 +7,8 @@ import GenerationFilters from "@/components/shared/GenerateCSV/GenerationFilters
 import GenerationForm from "@/components/shared/GenerateCSV/GenerationForm";
 import PaginationComponent from "@/components/shared/PaginationComponent ";
 import { CSV, Header } from "@/types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { DateRange } from "react-day-picker";
 
 const GenerateCSVPage = () => {
   const [areAllChecked, setAreAllChecked] = useState(false);
@@ -58,7 +59,21 @@ const GenerateCSVPage = () => {
       details: "Payment for services",
       created: "2019-12-30 18:00:00",
     },
+    {
+      id: "6",
+      name: "Kate",
+      surname: "Davis",
+      iban: "DE123456559",
+      amount: "5000",
+      details: "Payment for services",
+      created: "2024-09-13 18:00:00",
+    },
   ]);
+  const [filteredCSVs, setFilteredCSVs] = useState<CSV[]>(cSVs);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: new Date(),
+  });
 
   const header: Header[] = [
     { title: "", key: "checkbox", width: "3%", centered: true },
@@ -93,7 +108,7 @@ const GenerateCSVPage = () => {
     />
   );
 
-  const totalPages = Math.ceil(cSVs.length / 10);
+  const totalPages = Math.ceil(filteredCSVs.length / 10);
 
   const handleAllChecked = () => {
     setAreAllChecked(!areAllChecked);
@@ -103,6 +118,28 @@ const GenerateCSVPage = () => {
     setCSVs([data, ...cSVs]);
   };
 
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range);
+  };
+
+  const isDateRangeDefined = (
+    range: DateRange | undefined,
+  ): range is { from: Date; to: Date } => {
+    return range?.from !== undefined && range?.to !== undefined;
+  };
+
+  useEffect(() => {
+    if (isDateRangeDefined(dateRange)) {
+      const filtered = cSVs.filter((csv) => {
+        const createdDate = new Date(csv.created);
+        return createdDate >= dateRange.from && createdDate <= dateRange.to;
+      });
+      setFilteredCSVs(filtered);
+    } else {
+      setFilteredCSVs(cSVs);
+    }
+  }, [dateRange, cSVs]);
+
   return (
     <div className="flex min-h-screen w-full flex-col gap-6">
       <DashPageTitle
@@ -110,11 +147,11 @@ const GenerateCSVPage = () => {
         description="Generate and Manage Payouts with CSV Generator"
       />
       <GenerationForm onSubmit={handleFormSubmit} />
-      <GenerationFilters />
+      <GenerationFilters onDateRangeChange={handleDateRangeChange} />
       <div className="w-full bg-white">
         <CustomTable
           columns={header}
-          data={cSVs}
+          data={filteredCSVs}
           renderRow={renderRow}
           onCheckboxChange={handleAllChecked}
           checkAll={areAllChecked}
@@ -128,4 +165,5 @@ const GenerateCSVPage = () => {
     </div>
   );
 };
+
 export default GenerateCSVPage;

@@ -71,6 +71,7 @@ const CustomMultiSelect = ({
         : [...selectedValues, itemValue];
     } else {
       newSelectedValues = selectedValues.includes(itemValue) ? [] : [itemValue];
+      setIsOpen(false); // Close the menu after selecting a value in single-select mode
     }
     setSelectedValues(newSelectedValues);
 

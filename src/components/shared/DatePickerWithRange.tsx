@@ -28,6 +28,10 @@ const DatePickerWithRange = ({
     to: new Date(),
   });
 
+  React.useEffect(() => {
+    setDate(initialDate);
+  }, [initialDate]);
+
   const handleDateChange = (newRange: DateRange | undefined) => {
     setDate(newRange);
     onDateChange(newRange); // Notify parent of the date range change

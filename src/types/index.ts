@@ -106,11 +106,43 @@ export interface KYCUser {
 }
 
 export interface CSV {
-  name: string,
-  surname: string,
-  id: string,
-  iban: string,
-  amount: string,
-  details: string,
-  created: string,
+  name: string;
+  surname: string;
+  id: string;
+  iban: string;
+  amount: string;
+  details: string;
+  created: string;
+}
+
+export interface Siin {
+  additionalInfo: string|null;
+  amount: number;
+  createdAt: string;
+  id: number;
+  initialRequest: InitialRequest;
+  isSettled: number;
+  merchantId: number;
+  providerId: number;
+  rawStatus: string | null;
+  referenceCode: string;
+  returnUrl: string | null;
+  sandbox: number;
+  senderBankCountry: string;
+  senderIban: string;
+  senderName: string;
+  settlementAmount: number;
+  settlementDate: string | null;
+  status: string;
+  statusChecks: number;
+  transactionId: string;
+  txId: string;
+  txReferenceId: string | null;
+  updatedAt: string;
+  webhookUrl: string | null;
+}
+
+export interface DashTableData {
+  name: string;
+  amount: string;
 }

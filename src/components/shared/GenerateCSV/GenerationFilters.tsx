@@ -1,17 +1,24 @@
 import { DateRange } from "react-day-picker";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IGenerationFiltersProps {
   onDateRangeChange: (range: DateRange | undefined) => void;
 }
 
 const GenerationFilters = ({onDateRangeChange}: IGenerationFiltersProps) => {
+  const now = new Date();
+  const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
+    from: oneMonthAgo,
+    to: now,
   });
+
+  useEffect(() => {
+    onDateRangeChange(dateRange);
+  }, [dateRange]);
 
   const items = [
     { value: "0", label: "Today" },
@@ -54,7 +61,7 @@ const GenerationFilters = ({onDateRangeChange}: IGenerationFiltersProps) => {
   return (
     <div className="flex flex-row">
       <DashSelect
-        value={"Select Range"}
+        value={"1 month"}
         label={"Ranges"}
         items={items}
         searchInput={false}

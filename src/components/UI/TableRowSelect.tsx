@@ -75,7 +75,7 @@ const TableRowSelect = ({
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full rounded-sm border border-divider bg-white p-2 text-start text-sm text-main"
+        className="relative w-full rounded-sm border border-divider p-2 text-start text-sm text-main shadowed"
       >
         {selectedValue
           ? items.find((item) => item.value === selectedValue)?.label

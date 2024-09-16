@@ -5,7 +5,6 @@ import StatusBadge from "../StatusBadge";
 import Checkbox from "../Checkbox";
 import Image from "next/image";
 import React from "react";
-import CustomCheckbox from "@/components/UI/CustomCheckbox";
 import { Button } from "react-day-picker";
 import DashButton from "../DashButton";
 import {
@@ -141,13 +140,6 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
       <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
         <thead className="h-[50px] bg-hoverBg font-semibold">
           <tr>
-            <th className="w-[3%] min-w-[35px] pl-3 lg:pl-3">
-              {" "}
-              <CustomCheckbox
-                isChecked={allChecked}
-                handleCheckboxChange={handleAllCheckboxChange}
-              />
-            </th>
             {columns.map((col, index) => (
               <th
                 key={col.key}
@@ -172,14 +164,6 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
                   } h-[50px] cursor-pointer border-b border-hoverBg transition-all duration-300 last:border-none hover:bg-hoverBg`}
                   onClick={() => toggleRow(transaction)}
                 >
-                  <td className="pl-3">
-                    <CustomCheckbox
-                      isChecked={checkedTransactions[transaction.id] || false}
-                      handleCheckboxChange={(event) =>
-                        handleCheckboxChange(transaction.id, event)
-                      }
-                    />
-                  </td>
                   <td className="pe-2 text-center">{transaction.id}</td>
                   <td className="pe-2">
                     <StatusBadge

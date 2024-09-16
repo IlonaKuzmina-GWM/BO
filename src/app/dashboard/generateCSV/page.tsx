@@ -148,20 +148,23 @@ const GenerateCSVPage = () => {
       />
       <GenerationForm onSubmit={handleFormSubmit} />
       <GenerationFilters onDateRangeChange={handleDateRangeChange} />
-      <div className="w-full bg-white">
-        <CustomTable
-          columns={header}
-          data={filteredCSVs}
-          renderRow={renderRow}
-          onCheckboxChange={handleAllChecked}
-          checkAll={areAllChecked}
+      <div>
+        <div className="w-full bg-white">
+          <CustomTable
+            columns={header}
+            data={filteredCSVs}
+            renderRow={renderRow}
+            onCheckboxChange={handleAllChecked}
+            checkAll={areAllChecked}
+          />
+        </div>
+
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       </div>
-      <PaginationComponent
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
     </div>
   );
 };

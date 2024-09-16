@@ -4,9 +4,11 @@ import Paragraph from "../Paragraph";
 import KYCUserListRows from "./KYCUserListRows";
 import { useState } from "react";
 import PaginationComponent from "../PaginationComponent ";
+import DataLimitsSeter from "../DataLimitsSeter";
 
 const KYCUserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState<number>(10);
   const users: KYCUser[] = [
     {
       name: "IDEAL",
@@ -56,18 +58,27 @@ const KYCUserList = () => {
   ];
 
   const totalPages = Math.ceil(users.length / 10);
+  const handleLimitChange = (limit: number) => {
+    setLimit(limit);
+  };
 
   return (
-    <div className="bg-white pt-[20px]">
-      <div className="pb-[16px] pl-[20px]">
-        <Paragraph text="KYC User List: Identity Verification and Data Validation" />
+    <div>
+      <div className="bg-white pt-[20px]">
+        <div className="pb-[16px] pl-[20px]">
+          <Paragraph text="KYC User List: Identity Verification and Data Validation" />
+        </div>
+        <CustomTable columns={header} data={users} renderRow={renderRow} />
       </div>
-      <CustomTable columns={header} data={users} renderRow={renderRow} />
-      <PaginationComponent
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+
+      <div className="relative">
+        <DataLimitsSeter onChange={handleLimitChange} />
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };

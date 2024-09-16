@@ -100,12 +100,14 @@ const SiderBar = () => {
             link={"/dashboard/manager"}
             iconLink={"manager"}
             isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
           <SideBarLi
             name={"settings"}
             link={"/dashboard/settings"}
             iconLink={"settings"}
             isSidebarOpen={openSideBar}
+            activePathName={pathname}
           />
         </ul>
       </div>

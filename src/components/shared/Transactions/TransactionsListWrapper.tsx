@@ -5,17 +5,22 @@ import StatusFilteringBadge from "../StatusFilteringBadge";
 import { Header, Transaction } from "@/types";
 import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
+import DataLimitsSeter from "../DataLimitsSeter";
 
 const TransactionsListWrapper = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [activeFilterBadge, setActiveFilterBage] = useState<string>("all");
-const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);  
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);
 
-  const limit = 10;
+  const [limit, setLimit] = useState<number>(10);
+
+  console.log(limit)
+
+  // const limit = 10;
 
   const columns: Header[] = [
     { key: "id", title: "ID", width: "7%", centered: true },
@@ -42,7 +47,7 @@ const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     fetchTransactions(currentPage);
-  }, [currentPage]);
+  }, [currentPage,limit]);
 
   const transformStatus = (status: string): string => {
     const parts = status.split("_");
@@ -87,6 +92,10 @@ const [currentPage, setCurrentPage] = useState<number>(1);
     setCurrentPage(page);
   };
 
+  const handleLimitChange = (limit: number) => {
+    setLimit(limit);
+  };
+
   return (
     <div>
       <div className="mt-4 flex flex-row gap-6">
@@ -111,7 +120,8 @@ const [currentPage, setCurrentPage] = useState<number>(1);
 
       <CustomTransactionTable data={filteredTransactions} columns={columns} />
 
-      <div>
+      <div className="relative">
+        <DataLimitsSeter onChange={handleLimitChange} />
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}

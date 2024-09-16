@@ -4,6 +4,7 @@ import CustomTable from "../CustomTable/CustomTable";
 import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
 import PaginationComponent from "../PaginationComponent ";
+import DataLimitsSeter from "../DataLimitsSeter";
 
 const AllUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,6 +65,7 @@ const AllUser = () => {
       isDisabled: true,
     },
   ]);
+  const [limit, setLimit] = useState<number>(10);
 
   const merchants = [
     { value: "Merchant", label: "Merchant" },
@@ -106,18 +108,26 @@ const AllUser = () => {
   ];
 
   const totalPages = Math.ceil(users.length / 10);
+  const handleLimitChange = (limit: number) => {
+    setLimit(limit);
+  };
 
   return (
-    <div className="bg-white pt-[20px]">
-      <div className="pb-[16px] pl-[20px]">
-        <Paragraph text="All Users" />
+    <div>
+      <div className="bg-white pt-[20px]">
+        <div className="pb-[16px] pl-[20px]">
+          <Paragraph text="All Users" />
+        </div>
+        <CustomTable columns={header} data={users} renderRow={renderRow} />
       </div>
-      <CustomTable columns={header} data={users} renderRow={renderRow} />
-      <PaginationComponent
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      <div className="relative">
+        <DataLimitsSeter onChange={handleLimitChange} />
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };

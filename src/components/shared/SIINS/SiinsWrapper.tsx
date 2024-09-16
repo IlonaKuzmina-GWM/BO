@@ -12,6 +12,7 @@ import { DateRange } from "react-day-picker";
 import PaginationComponent from "../PaginationComponent ";
 import { Header, Transaction } from "@/types";
 import CustomSiinsTable from "./CustomSiinsTable";
+import DataLimitsSeter from "../DataLimitsSeter";
 
 const SiinsWrapper = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -30,7 +31,8 @@ const SiinsWrapper = () => {
     Transaction[]
   >([]);
 
-  const limit = 10;
+  const [limit, setLimit] = useState<number>(10);
+
   const items = [
     { value: "apple", label: "Apple" },
     { value: "banana", label: "Banana" },
@@ -78,6 +80,10 @@ const SiinsWrapper = () => {
     setSelectedInterval("");
   };
 
+  const handleLimitChange = (limit: number) => {
+    setLimit(limit);
+  };
+
   return (
     <div className="">
       <div className="flex flex-col gap-6">
@@ -97,11 +103,14 @@ const SiinsWrapper = () => {
         <div>
           <CustomSiinsTable data={filteredTransactions} columns={columns} />
 
-          <PaginationComponent
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          <div className="relative">
+            <DataLimitsSeter onChange={handleLimitChange} />
+            <PaginationComponent
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </div>
       </div>
     </div>

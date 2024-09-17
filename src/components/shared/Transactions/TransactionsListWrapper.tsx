@@ -7,6 +7,7 @@ import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
 import DataLimitsSeter from "../DataLimitsSeter";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
+import { useSearchParams } from "next/navigation";
 
 const TransactionsListWrapper = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -17,6 +18,8 @@ const TransactionsListWrapper = () => {
     Transaction[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [limit, setLimit] = useState<number>(10);
 
@@ -35,7 +38,7 @@ const TransactionsListWrapper = () => {
 
   const fetchTransactions = async (page: number) => {
     const response = await fetch(
-      `/api/get-transactions?page=${page}&limit=${limit}`,
+      `/api/get-transactions?page=${page}&limit=${limit}&query=${searchQuery}`,
     );
     const data = await response.json();
 
@@ -46,8 +49,12 @@ const TransactionsListWrapper = () => {
 
   useEffect(() => {
     fetchTransactions(currentPage);
-    setLoading(false);
   }, [currentPage,limit]);
+
+  useEffect(() => {
+    const queryParam = searchParams.get('query');
+    setSearchQuery(queryParam || ''); 
+  }, [searchParams]);
 
   const transformStatus = (status: string): string => {
     const parts = status.split("_");
@@ -97,7 +104,7 @@ const TransactionsListWrapper = () => {
   };
 
   if (loading) {
-    return <LoadingSpiner />;
+    return <div className="flex justify-center items-center w-full"><LoadingSpiner /></div>;
   }
 
   return (

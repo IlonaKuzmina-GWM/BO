@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import DashButton from "../DashButton";
 import Search from "../Search";
@@ -38,6 +38,8 @@ const TransactionsFilterBar = () => {
     }
     router.replace(`${pathname}?${params.toString()}`);
   };
+
+
 
   
   const handleDateRangeChange = (range: DateRange | undefined) => {

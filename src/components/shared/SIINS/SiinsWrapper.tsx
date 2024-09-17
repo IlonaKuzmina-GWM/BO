@@ -10,9 +10,10 @@ import DashButton from "../DashButton";
 // import { useRouter } from "next/router";
 import { DateRange } from "react-day-picker";
 import PaginationComponent from "../PaginationComponent ";
-import { Header, Transaction } from "@/types";
+import { Header, Siin, Transaction } from "@/types";
 import CustomSiinsTable from "./CustomSiinsTable";
 import DataLimitsSeter from "../DataLimitsSeter";
+import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 
 const SiinsWrapper = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -26,10 +27,11 @@ const SiinsWrapper = () => {
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
   >(undefined);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);
+  const [loading, setLoading] = useState(true);
 
   const [limit, setLimit] = useState<number>(10);
 
@@ -44,25 +46,53 @@ const SiinsWrapper = () => {
     { key: "id", title: "ID", width: "7%", centered: true },
     { key: "iban", title: "IBAN", width: "15%" },
     { key: "name", title: "Name", width: "15%" },
-    { key: "country", title: "Reference code", width: "15%" },
+    { key: "country", title: "Country", width: "15%" },
+    { key: "refcode", title: "Reference code", width: "15%" },
     { key: "amount", title: "Amount", width: "10%" },
     { key: "createdAt", title: "Created", width: "10%", centered: true },
     { key: "updatedAt", title: "Updated", width: "10%", centered: true },
   ];
 
-  const fetchTransactions = async (page: number) => {
-    const response = await fetch(
-      `/api/get-transactions?page=${page}&limit=${limit}`,
-    );
-    const data = await response.json();
+  useEffect(() => {
+    fetchCountriesData();
+  }, [selectedInterval, selectedDateRange]);
 
-    setTransactions(data.transactions);
-    setTotalPages(data.totalPages);
+  const fetchCountriesData = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
+        params.append("from", selectedDateRange.from.toISOString());
+        params.append("to", selectedDateRange.to.toISOString());
+      } else if (selectedInterval) {
+        params.append("interval", selectedInterval);
+      }
+
+      const response = await fetch(`/api/get-siin?${params.toString()}`, {
+        method: "GET",
+      });
+      const { siin }: { siin: Siin[] } = await response.json();
+      setSiinsTransactions(siin);
+      setLoading(false);
+      console.log("sins", siin)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  useEffect(() => {
-    fetchTransactions(currentPage);
-  }, [currentPage]);
+  // const fetchTransactions = async (page: number) => {
+  //   const response = await fetch(
+  //     `/api/get-transactions?page=${page}&limit=${limit}`,
+  //   );
+  //   const data = await response.json();
+
+  //   setTransactions(data.transactions);
+  //   setTotalPages(data.totalPages);
+  //   setLoading(false);
+  // };
+
+  // useEffect(() => {
+  //   fetchTransactions(currentPage);
+  // }, [currentPage]);
 
   const handleSearch = (term: string) => {
     // Update the search term in the URL query parameters
@@ -84,6 +114,14 @@ const SiinsWrapper = () => {
     setLimit(limit);
   };
 
+  if (loading) {
+    return (
+      <div className="flex w-full items-center justify-center">
+        <LoadingSpiner />
+      </div>
+    );
+  }
+
   return (
     <div className="">
       <div className="flex flex-col gap-6">
@@ -101,7 +139,7 @@ const SiinsWrapper = () => {
         </div>
 
         <div>
-          <CustomSiinsTable data={filteredTransactions} columns={columns} />
+          <CustomSiinsTable data={siinsTransactions} columns={columns} />
 
           <div className="relative">
             <DataLimitsSeter onChange={handleLimitChange} />

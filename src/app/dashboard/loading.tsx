@@ -2,8 +2,7 @@ import { LoadingSpiner } from "@/components/shared/LoadingUI/LoadingSpiner";
 
 const Loading = () => {
   return (
-    // <LoadingSpiner />
-    <div>Loading...</div>
+    <div className="flex justify-center items-center w-full"><LoadingSpiner /></div>
   );
 };
 

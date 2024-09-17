@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Image from "next/image";
 
@@ -10,7 +10,11 @@ interface ISearch {
   onSearch: (term: string) => void;
 }
 
-export default function Search({ placeholder, aditionalClass, onSearch }: ISearch) {
+export default function Search({
+  placeholder,
+  aditionalClass,
+  onSearch,
+}: ISearch) {
   const handleSearch = useDebouncedCallback((term: string) => {
     onSearch(term);
   }, 300);

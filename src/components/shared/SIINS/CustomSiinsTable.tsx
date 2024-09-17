@@ -1,5 +1,5 @@
 "use client";
-import { Header, Transaction } from "@/types";
+import { Header, Siin, Transaction } from "@/types";
 import { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
 import Checkbox from "../Checkbox";
@@ -15,14 +15,17 @@ import {
 } from "@/components/UI/collapsible";
 import { ChevronDown } from "lucide-react";
 
-interface ICustomTransactionTableProps {
+interface ICustomSiinsTransactionTableProps {
   columns: Header[];
-  data: Transaction[];
+  data: Siin[];
 }
 
-const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
-  // const [expandedRows, setExpandedRows] = useState<number[]>([]);
-  // const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
+const CustomSiinsTable = ({
+  columns,
+  data,
+}: ICustomSiinsTransactionTableProps) => {
+  const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
   const [checkedTransactions, setCheckedTransactions] = useState<{
     [key: number]: boolean;
   }>({});
@@ -46,22 +49,15 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
   //   }
   // };
 
-  // const toggleRow = (transaction: Transaction) => {
-  //   const { id, status } = transaction;
+  const toggleRow = (siinTransaction: Siin) => {
+    const { id } = siinTransaction;
 
-  //   setExpandedRows((prevExpandedRows) =>
-  //     prevExpandedRows.includes(id)
-  //       ? prevExpandedRows.filter((rowId) => rowId !== id)
-  //       : [...prevExpandedRows, id],
-  //   );
-
-  //   if (!expandedRows.includes(id)) {
-  //     setRowBgColors((prevBgColors) => ({
-  //       ...prevBgColors,
-  //       [id]: openAccordionBgColor(transformStatus(status)),
-  //     }));
-  //   }
-  // };
+    setExpandedRows((prevExpandedRows) =>
+      prevExpandedRows.includes(id)
+        ? prevExpandedRows.filter((rowId) => rowId !== id)
+        : [...prevExpandedRows, id],
+    );
+  };
 
   // const toggleWebhook = (index: number) => {
   //   setWebhookExpanded((prev) => ({
@@ -82,17 +78,17 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
   //   return transformed.charAt(0) + transformed.slice(1);
   // };
 
-  // const formatDateTime = (dateString: string) => {
-  //   const date = new Date(dateString);
-  //   return {
-  //     date: date.toLocaleDateString(),
-  //     time: date.toLocaleTimeString([], {
-  //       hour: "2-digit",
-  //       minute: "2-digit",
-  //       second: "2-digit",
-  //     }),
-  //   };
-  // };
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }),
+    };
+  };
 
   const handleAllCheckboxChange = () => {
     setAllChecked(!allChecked);
@@ -106,23 +102,23 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
     setCheckedTransactions(newCheckedState);
   };
 
-  // const handleCheckboxChange = (
-  //   transactionId: number,
-  //   event: React.MouseEvent,
-  // ) => {
-  //   event.stopPropagation();
+  const handleCheckboxChange = (
+    transactionId: number,
+    event: React.MouseEvent,
+  ) => {
+    event.stopPropagation();
 
-  //   setCheckedTransactions((prevState) => ({
-  //     ...prevState,
-  //     [transactionId]: !prevState[transactionId],
-  //   }));
-  // };
+    setCheckedTransactions((prevState) => ({
+      ...prevState,
+      [transactionId]: !prevState[transactionId],
+    }));
+  };
 
-  // useEffect(() => {
-  //   setAllChecked(
-  //     data.every((transaction) => checkedTransactions[transaction.id]),
-  //   );
-  // }, [checkedTransactions, data]);
+  useEffect(() => {
+    setAllChecked(
+      data.every((transaction) => checkedTransactions[transaction.id]),
+    );
+  }, [checkedTransactions, data]);
 
   // const handleCopyToClipboard = async (id: string) => {
   //   try {
@@ -162,61 +158,46 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
           </tr>
         </thead>
         <tbody>
-          {/* {data.map((transaction) => {
-            const isExpanded = expandedRows.includes(transaction.id);
+          {data.map((siin) => {
+            const isExpanded = expandedRows.includes(siin.id);
             return (
-              <React.Fragment key={transaction.id}>
+              <React.Fragment key={siin.id}>
                 <tr
                   className={`relative border-none ${!isExpanded && "bg-white"} bg-${
-                    isExpanded ? rowBgColors[transaction.id] : ""
+                    isExpanded ? rowBgColors[siin.id] : ""
                   } h-[50px] cursor-pointer border-b border-hoverBg transition-all duration-300 last:border-none hover:bg-hoverBg`}
-                  onClick={() => toggleRow(transaction)}
+                  onClick={() => toggleRow(siin)}
                 >
                   <td className="pl-3">
                     <CustomCheckbox
-                      isChecked={checkedTransactions[transaction.id] || false}
+                      isChecked={checkedTransactions[siin.id] || false}
                       handleCheckboxChange={(event) =>
-                        handleCheckboxChange(transaction.id, event)
+                        handleCheckboxChange(siin.id, event)
                       }
                     />
                   </td>
-                  <td className="pe-2 text-center">{transaction.id}</td>
-                  <td className="pe-2">
-                    <StatusBadge
-                      name={transformStatus(transaction.status)}
-                      type={transformStatus(transaction.status)}
-                    />
-                  </td>
-                  <td className="pe-8 font-semibold">{transaction.amount}</td>
-                  <td className="pe-2">{`${transaction.initialRequest.firstName} ${transaction.initialRequest.lastName}`}</td>
-                  <td className="pe-2">{transaction.initialRequest.email}</td>
-                  <td className="pe-2">{transaction.merchant.name}</td>
-                  <td className="pe-2">{transaction.provider.name}</td>
-                  <td className="pe-2">
+                  <td className="pe-2 text-center">{siin.id}</td>
+
+                 <td className="pe-8">{siin.senderIban}</td>
+                    <td className="pe-2">{`${siin.senderName}`}</td>
+                  <td className="pe-2">{siin.senderBankCountry}</td>
+                 <td className="pe-2">{siin.referenceCode}</td>
+                 <td className="pe-2 font-semibold">€ {siin.amount}</td>
+                 <td className="pe-2">
                     <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
-                      <span>{formatDateTime(transaction.createdAt).date}</span>{" "}
-                      <span>{formatDateTime(transaction.createdAt).time}</span>
+                      <span>{formatDateTime(siin.createdAt).date}</span>{" "}
+                      <span>{formatDateTime(siin.createdAt).time}</span>
                     </span>
                   </td>
                   <td className="pe-2">
                     <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
-                      <span>{formatDateTime(transaction.updatedAt).date}</span>{" "}
-                      <span>{formatDateTime(transaction.updatedAt).time}</span>
+                      <span>{formatDateTime(siin.updatedAt).date}</span>{" "}
+                      <span>{formatDateTime(siin.updatedAt).time}</span>
                     </span>
-                  </td>
-                  <td className="">
-                    {" "}
-                    <Image
-                      src={"/icons/status-yes.svg"}
-                      alt={"Setl icon"}
-                      height={16}
-                      width={16}
-                      className={`mx-auto h-4 w-4 ${!transaction.isSettled && "opacity-30"}`}
-                    />
-                  </td>
+               </td> 
                 </tr>
 
-                {isExpanded && (
+                {/* {isExpanded && (
                   <tr>
                     <td
                       colSpan={columns.length + 1}
@@ -620,10 +601,10 @@ const CustomSiinsTable = ({ columns, data }: ICustomTransactionTableProps) => {
                       </div>
                     </td>
                   </tr>
-                )}
+                )} */}
               </React.Fragment>
             );
-          })} */}
+          })}
         </tbody>
       </table>
     </div>

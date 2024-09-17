@@ -106,18 +106,20 @@ main::-webkit-scrollbar {
   width: 10px;
 }
 
-.webhook_wrapper {
+.webhook_wrapper,
+.log_wrapper {
   scrollbar-width: 5px;
   scrollbar-color: var(--blue-400);
 }
 
-.webhook_wrapper::-webkit-scrollbar {
+.webhook_wrapper::-webkit-scrollbar, .log_wrapper::-webkit-scrollbar {
   width: 5px;
 }
 
 .webhook_wrapper::-webkit-scrollbar-thumb,
 main::-webkit-scrollbar-thumb,
-aside::-webkit-scrollbar-thumb {
+aside::-webkit-scrollbar-thumb,
+.log_wrapper::-webkit-scrollbar-thumb {
   background-color: var(--blue-300);
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
@@ -125,14 +127,16 @@ aside::-webkit-scrollbar-thumb {
 
 .webhook_wrapper::-webkit-scrollbar-thumb:hover,
 main::-webkit-scrollbar-thumb:hover,
-aside::-webkit-scrollbar-thumb:hover {
+aside::-webkit-scrollbar-thumb:hover,
+.log_wrapper::-webkit-scrollbar-thumb:hover {
   background-color: var(--blue-500);
   cursor: pointer;
 }
 
 .webhook_wrapper::-webkit-scrollbar-track,
 main::-webkit-scrollbar-track,
-aside::-webkit-scrollbar-track {
+aside::-webkit-scrollbar-track,
+.log_wrapper::-webkit-scrollbar-track {
   background-color: var(--fill);
 }
 

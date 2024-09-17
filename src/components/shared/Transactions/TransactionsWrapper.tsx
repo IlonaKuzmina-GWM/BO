@@ -4,6 +4,8 @@ import TransactionsFilterBar from "./TransactionsFilterBar";
 import TransactionsListWrapper from "./TransactionsListWrapper";
 
 const TransactionsWrapper = () => {
+
+  
   return (
     <div className="">
       <TransactionsFilterBar />

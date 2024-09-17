@@ -6,6 +6,7 @@ import { Header, Transaction } from "@/types";
 import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
 import DataLimitsSeter from "../DataLimitsSeter";
+import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 
 const TransactionsListWrapper = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -15,12 +16,9 @@ const TransactionsListWrapper = () => {
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);
+  const [loading, setLoading] = useState(true);
 
   const [limit, setLimit] = useState<number>(10);
-
-  console.log(limit)
-
-  // const limit = 10;
 
   const columns: Header[] = [
     { key: "id", title: "ID", width: "7%", centered: true },
@@ -43,10 +41,12 @@ const TransactionsListWrapper = () => {
 
     setTransactions(data.transactions);
     setTotalPages(data.totalPages);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchTransactions(currentPage);
+    setLoading(false);
   }, [currentPage,limit]);
 
   const transformStatus = (status: string): string => {
@@ -95,6 +95,10 @@ const TransactionsListWrapper = () => {
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
   };
+
+  if (loading) {
+    return <LoadingSpiner />;
+  }
 
   return (
     <div>

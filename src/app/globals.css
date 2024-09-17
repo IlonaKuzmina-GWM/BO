@@ -8,6 +8,7 @@
     --bg-white: #f5f7f9;
     --bg-modal: rgba(0, 0, 0, 0.5);
     --white: #ffffff;
+    --white-bg: #ffffff;
     --main: #495465;
     --hover-bg: #e9edf5;
     --secondary: #98989880;
@@ -41,6 +42,7 @@
     --bg-white: #222834; /* Dark background */
     --bg-modal: rgba(255, 255, 255, 0.5);
     --white: #11151a; /* Very dark elements */
+    --white-bg: #11151a; /* Very dark elements */
     --main: #d1d8e0; /* Lighter main text */
     --hover-bg: #2c2f35; /* Dark hover */
     --secondary: #666a73; /* Dark secondary */

@@ -32,6 +32,7 @@ const config = {
         bgWhite: "var(--bg-white)",
         bgModal: "var(--bg-modal)",
         white: "var(--white)",
+        whiteBg: "var(--white-bg)",
         main: "var(--main)",
         hoverBg: "var(--hover-bg)",
         secondary: "var(--secondary)",

@@ -14,6 +14,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/UI/collapsible";
 import { ChevronDown } from "lucide-react";
+import LogHistory from "../LogHistory";
 
 interface ICustomTransactionTableProps {
   columns: Header[];
@@ -47,7 +48,7 @@ const CustomTransactionTable = ({
       case "transferring":
         return "warningBg";
       default:
-        return "white";
+        return "whiteBg";
     }
   };
 
@@ -178,7 +179,7 @@ const CustomTransactionTable = ({
             return (
               <React.Fragment key={transaction.id}>
                 <tr
-                  className={`relative h-[50px] cursor-pointer border-b-[1px] border-b-hoverBg transition-all duration-300 last:border-none ${!isExpanded ? "bg-white hover:bg-hoverBg" : `bg-${dynamicColor}`}`}
+                  className={`relative h-[50px] cursor-pointer border-b-[1px] border-b-hoverBg transition-all duration-300 last:border-none ${!isExpanded ? "bg-whiteBg hover:bg-hoverBg" : `bg-${dynamicColor}`}`}
                   onClick={() => toggleRow(transaction)}
                 >
                   <td className="pl-3">
@@ -227,9 +228,15 @@ const CustomTransactionTable = ({
 
                 {isExpanded && (
                   <tr>
-                    <td colSpan={columns.length + 1} className={`pt-6`}>
-                      <div className="flex flex-col flex-wrap justify-between gap-6 px-6 md:flex-row">
-                        <div className="flex w-6/12 max-w-[560px] flex-col gap-1 text-main">
+                    <td
+                      colSpan={columns.length + 1}
+                      className={`border-b-[3px] p-6`}
+                      style={{
+                        borderBottomColor: `var(--${dynamicColor.slice(0, -2)})`,
+                      }}
+                    >
+                      <div className="flex flex-col flex-wrap justify-between gap-6 md:flex-row">
+                        <div className="flex w-5/12 min-w-[250px] flex-col  gap-1 text-main">
                           <div className="relative mb-4 flex flex-row gap-2 py-1 text-[18px]">
                             <div className="flex flex-col gap-3 xl:flex-row">
                               {" "}
@@ -346,7 +353,7 @@ const CustomTransactionTable = ({
                           </div>
                         </div>
 
-                        <div className="w-3/12 min-w-[345px]">
+                        <div className="w-3/12 min-w-[250px]">
                           <h3 className="mb-4 py-1 text-[18px] font-medium">
                             Webhook
                           </h3>
@@ -432,45 +439,49 @@ const CustomTransactionTable = ({
                           </div>
                         </div>
 
-                        <div className="w-3/12 min-w-[345px]">
+                        <div className="w-3/12 min-w-[150px]">
                           <h3 className="mb-4 py-1 text-[18px] font-medium">
                             Log
                           </h3>
                           <div className="log_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
-                            <div className="flex flex-row gap-4">
-                              <div className="w-[9px] h-full relative flex flex-col items-center justify-center"><div className="w-2 h-2 bg-red-500 rounded-full"></div><div className="bg-hoverBg w-[2px] h-full"></div></div>
-                              <div>
-                                <StatusBadge
-                                  name={transformStatus(transaction.status)}
-                                  type={transformStatus(transaction.status)}
-                                />
-                                <p>
-                                  <span className="font-medium">
-                                    Last updated:
-                                  </span>{" "}
-                                  <span>
-                                    {formatDateTime(transaction.updatedAt).date}
-                                  </span>{" "}
-                                  <span>
-                                    {formatDateTime(transaction.updatedAt).time}
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
+                            <LogHistory
+                              color={dynamicColor}
+                              status={transformStatus(transaction.status)}
+                              date={formatDateTime(transaction.updatedAt).date}
+                              time={formatDateTime(transaction.updatedAt).time}
+                            />
+
+                            <LogHistory
+                              color={"errorBg"}
+                              status={"failed"}
+                              date={formatDateTime(transaction.updatedAt).date}
+                              time={formatDateTime(transaction.updatedAt).time}
+                            />
+
+                            <LogHistory
+                              color={"warningBg"}
+                              status={"warning"}
+                              date={formatDateTime(transaction.updatedAt).date}
+                              time={formatDateTime(transaction.updatedAt).time}
+                            />
+
+                            <LogHistory
+                              color={"successBg"}
+                              status={"success"}
+                              date={formatDateTime(transaction.updatedAt).date}
+                              time={formatDateTime(transaction.updatedAt).time}
+                            />
                           </div>
                         </div>
                       </div>
 
-                      <div className="mt-6 flex flex-row gap-4 px-6">
+                      <div className="mt-6 flex flex-row gap-4">
                         <DashButton
                           name={"Verify Transaction Status"}
                           type={"filled"}
                         />
                         <DashButton name={"Refund"} type={"empty"} />
                       </div>
-                      <div
-                        className={`h-[3px] w-full bg-${dynamicColor} mt-6`}
-                      ></div>
                     </td>
                   </tr>
                 )}

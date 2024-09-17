@@ -131,7 +131,7 @@ const CustomTransactionTable = ({
             const isExpanded = expandedRows.includes(transaction.id);
             const dynamicColor = rowBgColors[transaction.id];
             const expandedWebhooks = webhookExpanded[transaction.txId] || {};
-
+            
             return (
               <React.Fragment key={transaction.id}>
                 <tr
@@ -175,7 +175,7 @@ const CustomTransactionTable = ({
                 </tr>
 
                 {isExpanded && (
-                  <tr>
+                  <tr className={`border-b-[3px] border-${dynamicColor.substring(0, dynamicColor.length - 2)}`}>
                     <td colSpan={columns.length + 1} className={`pt-6`}>
                       <div className="flex flex-col flex-wrap justify-between gap-6 px-6 md:flex-row">
                         <div className="flex w-6/12 max-w-[560px] flex-col gap-1 text-main">
@@ -417,9 +417,6 @@ const CustomTransactionTable = ({
                         />
                         <DashButton name={"Refund"} type={"empty"} />
                       </div>
-                      <div
-                        className={`h-[3px] w-full bg-${dynamicColor} mt-6`}
-                      ></div>
                     </td>
                   </tr>
                 )}

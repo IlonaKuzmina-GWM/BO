@@ -106,7 +106,7 @@ const Create = () => {
   ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
       <div className="ml-[20px] max-w-[590px] pb-[72px] pt-[24px]">
         <form onSubmit={handleSubmit}>
           <SelectAccount

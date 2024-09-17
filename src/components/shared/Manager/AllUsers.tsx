@@ -114,7 +114,7 @@ const AllUser = () => {
 
   return (
     <div>
-      <div className="bg-white pt-[20px]">
+      <div className="bg-white pt-[20px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="All Users" />
         </div>

@@ -63,7 +63,7 @@ const Rules = () => {
   const totalPages = Math.ceil(rules.length / 10);
 
   return (
-    <div className="bg-white pt-[20px]">
+    <div className="bg-white pt-[20px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="Limits with Flexible Rules and Actions" />
         <div className="flex flex-row gap-[2px]">

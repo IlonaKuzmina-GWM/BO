@@ -20,16 +20,17 @@ const Info = ({
     <div className="mt-[20px]">
       <p className="bg-hoverBg p-[4px] text-[16px] font-medium">{title}</p>
       {inputFields.map((field: InputField) => (
-        <Input
-          key={field.name}
-          label={field.label}
-          name={field.name}
-          type={field.type}
-          value={formData[field.name as keyof typeof formData]}
-          placeholder={field.placeholder}
-          onChange={handleInputChange}
-          isInvalid={validationErrors.includes(field.name)}
-        />
+        <div key={field.name} className="mt-[16px]">
+          <Input
+            label={field.label}
+            name={field.name}
+            type={field.type}
+            value={formData[field.name as keyof typeof formData]}
+            placeholder={field.placeholder}
+            onChange={handleInputChange}
+            isInvalid={validationErrors.includes(field.name)}
+          />
+        </div>
       ))}
     </div>
   );

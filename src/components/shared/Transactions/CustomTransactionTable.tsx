@@ -2,10 +2,8 @@
 import { Header, Transaction } from "@/types";
 import { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
-import Checkbox from "../Checkbox";
 import Image from "next/image";
 import React from "react";
-import CustomCheckbox from "@/components/UI/CustomCheckbox";
 import { Button } from "react-day-picker";
 import DashButton from "../DashButton";
 import {
@@ -26,10 +24,6 @@ const CustomTransactionTable = ({
 }: ICustomTransactionTableProps) => {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
-  const [checkedTransactions, setCheckedTransactions] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const [allChecked, setAllChecked] = useState(false);
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
   const [webhookExpanded, setWebhookExpanded] = useState<{
     [key: number]: boolean;
@@ -97,36 +91,6 @@ const CustomTransactionTable = ({
     };
   };
 
-  const handleAllCheckboxChange = () => {
-    setAllChecked(!allChecked);
-    const newCheckedState = data.reduce(
-      (acc, transaction) => {
-        acc[transaction.id] = !allChecked;
-        return acc;
-      },
-      {} as { [key: number]: boolean },
-    );
-    setCheckedTransactions(newCheckedState);
-  };
-
-  const handleCheckboxChange = (
-    transactionId: number,
-    event: React.MouseEvent,
-  ) => {
-    event.stopPropagation();
-
-    setCheckedTransactions((prevState) => ({
-      ...prevState,
-      [transactionId]: !prevState[transactionId],
-    }));
-  };
-
-  useEffect(() => {
-    setAllChecked(
-      data.every((transaction) => checkedTransactions[transaction.id]),
-    );
-  }, [checkedTransactions, data]);
-
   const handleCopyToClipboard = async (id: string) => {
     try {
       await navigator.clipboard.writeText(id);
@@ -144,13 +108,6 @@ const CustomTransactionTable = ({
       <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
         <thead className="h-[50px] bg-hoverBg font-semibold">
           <tr>
-            <th className="w-[3%] min-w-[35px] pl-3 lg:pl-3">
-              {" "}
-              <CustomCheckbox
-                isChecked={allChecked}
-                handleCheckboxChange={handleAllCheckboxChange}
-              />
-            </th>
             {columns.map((col, index) => (
               <th
                 key={col.key}
@@ -175,14 +132,6 @@ const CustomTransactionTable = ({
                   } h-[50px] cursor-pointer border-b border-hoverBg transition-all duration-300 last:border-none hover:bg-hoverBg`}
                   onClick={() => toggleRow(transaction)}
                 >
-                  <td className="pl-3">
-                    <CustomCheckbox
-                      isChecked={checkedTransactions[transaction.id] || false}
-                      handleCheckboxChange={(event) =>
-                        handleCheckboxChange(transaction.id, event)
-                      }
-                    />
-                  </td>
                   <td className="pe-2 text-center">{transaction.id}</td>
                   <td className="pe-2">
                     <StatusBadge

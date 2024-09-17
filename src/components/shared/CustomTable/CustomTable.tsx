@@ -1,4 +1,3 @@
-import CustomCheckbox from "@/components/UI/CustomCheckbox";
 import { Header } from "@/types";
 import { ReactNode } from "react";
 
@@ -6,16 +5,12 @@ interface ICustomTableProps<T> {
   columns: Header[];
   data: T[];
   renderRow: (item: T, index: number) => ReactNode;
-  onCheckboxChange?: () => void;
-  checkAll?: boolean;
 }
 
 const CustomTable = <T,>({
   columns,
   data,
   renderRow,
-  onCheckboxChange,
-  checkAll = false,
 }: ICustomTableProps<T>) => {
   return (
     <div className="overflow-x-auto">
@@ -32,14 +27,7 @@ const CustomTable = <T,>({
                 } pr-2`}
                 style={{ width: col.width }}
               >
-                {col.key === "checkbox" && onCheckboxChange ? (
-                  <CustomCheckbox
-                    isChecked={checkAll}
-                    handleCheckboxChange={onCheckboxChange}
-                  />
-                ) : (
-                  col.title
-                )}
+                {col.title}
               </th>
             ))}
           </tr>

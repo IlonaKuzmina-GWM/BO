@@ -90,7 +90,7 @@ const Integration = () => {
   const totalPages = Math.ceil(apiKeys.length / 10);
 
   return (
-    <div className="bg-white pt-[20px]">
+    <div className="bg-white pt-[20px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="Generate API Keys: Secure Access to Your Application" />
         <div className="flex flex-row gap-[2px]">

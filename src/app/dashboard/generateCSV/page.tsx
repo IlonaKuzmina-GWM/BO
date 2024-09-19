@@ -11,7 +11,6 @@ import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 
 const GenerateCSVPage = () => {
-  const [areAllChecked, setAreAllChecked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [cSVs, setCSVs] = useState<CSV[]>([
     {
@@ -76,19 +75,18 @@ const GenerateCSVPage = () => {
   });
 
   const header: Header[] = [
-    { title: "", key: "checkbox", width: "3%", centered: true },
-    { title: "ID", key: "id", width: "7%", centered: true },
+    { title: "ID", key: "id", width: "8%"},
     { title: "Name", key: "name", width: "19%" },
     { title: "Surname", key: "surname", width: "19%" },
     { title: "IBAN", key: "iban", width: "19%" },
-    { title: "Amount", key: "amount", width: "7%" },
+    { title: "Amount", key: "amount", width: "8%" },
     {
       title: "Created",
       key: "created",
       width: "12%",
     },
     { title: "Action", key: "role", width: "8%" },
-    { title: "", key: "delete", width: "6%" },
+    { title: "", key: "delete", width: "7%" },
   ];
 
   const deleteEntry = (index: number): void => {
@@ -101,7 +99,6 @@ const GenerateCSVPage = () => {
     <CSVRows
       key={cSV.id}
       cSV={cSV}
-      checkAll={areAllChecked}
       index={index}
       deleteEntry={deleteEntry}
       downloadPDF={() => console.log(index)}
@@ -109,10 +106,6 @@ const GenerateCSVPage = () => {
   );
 
   const totalPages = Math.ceil(filteredCSVs.length / 10);
-
-  const handleAllChecked = () => {
-    setAreAllChecked(!areAllChecked);
-  };
 
   const handleFormSubmit = (data: CSV) => {
     setCSVs([data, ...cSVs]);
@@ -154,8 +147,6 @@ const GenerateCSVPage = () => {
             columns={header}
             data={filteredCSVs}
             renderRow={renderRow}
-            onCheckboxChange={handleAllChecked}
-            checkAll={areAllChecked}
           />
         </div>
 

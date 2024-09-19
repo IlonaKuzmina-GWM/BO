@@ -20,15 +20,15 @@ const Input = ({
   width = "279px",
 }: IInputProps) => {
   return (
-    <div className="mt-[10px]">
-      <label className="block">{label}</label>
+    <div>
+      <label className="block text-[14px] text-main mb-[8px]">{label}</label>
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`py[12px] h-[40px] rounded-[4px] border px-[10px] ${
+        className={`text-[14px] py[12px] h-[40px] rounded-[4px] border px-[10px] ${
           isInvalid ? "border-error" : "border-divider"
         }`}
         style={{ width }}

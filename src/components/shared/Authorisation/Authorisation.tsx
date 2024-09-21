@@ -12,6 +12,7 @@ import React, { SetStateAction, useState } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
 import Checkbox from "../Checkbox";
+import { useRouter } from "next/navigation";
 
 const Autorisation = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,61 @@ const Autorisation = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [notification, setNotification] = useState({
+    success: false,
+    message: "",
+  });
+
+  const router = useRouter();
+
+  const getProfile = async (token: string) => {
+    const response = await fetch("/api/profile", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+    } else {
+      setNotification({ success: false, message: data.error });
+    }
+  };
+
+  const signIn = async () => {
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Optionally: get the profile after login, if necessary
+        // await getProfile(data.token);
+
+        setNotification({ success: true, message: "Login successful!" });
+
+        router.push("/dashboard");
+      } else {
+        setNotification({ success: false, message: data.error });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setNotification({
+        success: false,
+        message: "An error occurred during login.",
+      });
+    }
+
+    setIsLoading(false);
+  };
 
   const handleEmailChange = (e: {
     target: { value: SetStateAction<string> };
@@ -69,7 +125,7 @@ const Autorisation = () => {
           height={44}
           className="mx-auto mb-6"
         />
-        <CardTitle className="text-[36px] leading-[48px] font-bold">
+        <CardTitle className="text-[36px] font-bold leading-[48px]">
           Welcome Back
         </CardTitle>
       </CardHeader>
@@ -126,10 +182,10 @@ const Autorisation = () => {
           <div className="mt-4 flex flex-col justify-between">
             <label
               htmlFor="remember"
-              className="text-base leading-none text-main flex flex-row items-center"
+              className="flex flex-row items-center text-base leading-none text-main"
             >
               <Checkbox
-                className="me-2 h-4 w-4 text-border border-border"
+                className="me-2 h-4 w-4 border-border text-border"
                 checked={false}
                 onChange={() => {}}
               />
@@ -139,11 +195,12 @@ const Autorisation = () => {
         </form>
       </CardContent>
       <CardFooter className="mt-10">
-        <NextLink href={"/dashboard/"} className="w-full rounded-sm bg-blue500">
-          <button className="w-full px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white">
-            sign in
-          </button>
-        </NextLink>
+        <button
+          onClick={signIn}
+          className="w-full rounded-sm bg-blue500 px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white"
+        >
+          sign in
+        </button>
       </CardFooter>
     </Card>
   );

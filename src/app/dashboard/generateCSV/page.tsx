@@ -1,5 +1,6 @@
 "use client";
 
+import ProtectedRoute from "@/components/ProtectedRoute";
 import CustomTable from "@/components/shared/CustomTable/CustomTable";
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import CSVRows from "@/components/shared/GenerateCSV/CSVRows";
@@ -75,7 +76,7 @@ const GenerateCSVPage = () => {
   });
 
   const header: Header[] = [
-    { title: "ID", key: "id", width: "8%"},
+    { title: "ID", key: "id", width: "8%" },
     { title: "Name", key: "name", width: "19%" },
     { title: "Surname", key: "surname", width: "19%" },
     { title: "IBAN", key: "iban", width: "19%" },

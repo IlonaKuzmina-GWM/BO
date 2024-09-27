@@ -17,7 +17,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col gap-6">
+    <div className="flex min-h-screen w-full flex-col gap-4 xl:gap-6">
       <DashPageTitle
         title="Settings"
         description="Comprehensive transaction history: track and manage all your payments"

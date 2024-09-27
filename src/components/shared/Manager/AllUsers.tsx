@@ -5,6 +5,7 @@ import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
 import PaginationComponent from "../PaginationComponent ";
 import DataLimitsSeter from "../DataLimitsSeter";
+import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
 
 const AllUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -90,23 +91,6 @@ const AllUser = () => {
     );
   };
 
-  const header: Header[] = [
-    { title: "ID", key: "id", width: "7%" },
-    { title: "First name", key: "firstName", width: "11%" },
-    { title: "Last name", key: "lastName", width: "11%" },
-    { title: "Email", key: "email", width: "17%" },
-    { title: "Email verification", key: "isEmailVerified", width: "10%" },
-    {
-      title: "Merchant (label)",
-      key: "merchant",
-      width: "15%",
-      centered: true,
-    },
-    { title: "Role", key: "role", width: "8%", centered: true },
-    { title: "Created at", key: "created", width: "12%", centered: true },
-    { title: "Disabled", key: "isDisabled", width: "8%", centered: true },
-  ];
-
   const totalPages = Math.ceil(users.length / 10);
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
@@ -118,7 +102,7 @@ const AllUser = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="All Users" />
         </div>
-        <CustomTable columns={header} data={users} renderRow={renderRow} />
+        <CustomTable columns={ManagerAllUsersTableHeader} data={users} renderRow={renderRow} />
       </div>
       <div className="relative">
         <DataLimitsSeter onChange={handleLimitChange} />

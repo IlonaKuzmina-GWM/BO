@@ -8,6 +8,7 @@ import GenerationFilters from "@/components/shared/GenerateCSV/GenerationFilters
 import GenerationForm from "@/components/shared/GenerateCSV/GenerationForm";
 import PaginationComponent from "@/components/shared/PaginationComponent ";
 import { CSV, Header } from "@/types";
+import { GenerateCSVTableHeader } from "@/utils/tableHeaders";
 import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -75,21 +76,6 @@ const GenerateCSVPage = () => {
     to: new Date(),
   });
 
-  const header: Header[] = [
-    { title: "ID", key: "id", width: "8%" },
-    { title: "Name", key: "name", width: "19%" },
-    { title: "Surname", key: "surname", width: "19%" },
-    { title: "IBAN", key: "iban", width: "19%" },
-    { title: "Amount", key: "amount", width: "8%" },
-    {
-      title: "Created",
-      key: "created",
-      width: "12%",
-    },
-    { title: "Action", key: "role", width: "8%" },
-    { title: "", key: "delete", width: "7%" },
-  ];
-
   const deleteEntry = (index: number): void => {
     const newRules = [...cSVs];
     newRules.splice(index, 1);
@@ -135,7 +121,7 @@ const GenerateCSVPage = () => {
   }, [dateRange, cSVs]);
 
   return (
-    <div className="flex min-h-screen w-full flex-col gap-6">
+    <div className="flex min-h-screen w-full flex-col gap-4 xl:gap-6">
       <DashPageTitle
         title="CSV payout generator"
         description="Generate and Manage Payouts with CSV Generator"
@@ -145,7 +131,7 @@ const GenerateCSVPage = () => {
       <div>
         <div className="w-full bg-white">
           <CustomTable
-            columns={header}
+            columns={GenerateCSVTableHeader}
             data={filteredCSVs}
             renderRow={renderRow}
           />

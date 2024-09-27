@@ -14,6 +14,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/UI/collapsible";
 import { ChevronDown } from "lucide-react";
+import { formatDateTime } from "@/helpers/dateFormater";
+import LoadingSiinTableSkeleton from "../LoadingUI/LoadingSiinTableSkeleton";
 
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
@@ -24,6 +26,7 @@ const CustomSiinsTable = ({
   columns,
   data,
 }: ICustomSiinsTransactionTableProps) => {
+  const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
   const [checkedTransactions, setCheckedTransactions] = useState<{
@@ -78,18 +81,6 @@ const CustomSiinsTable = ({
   //   return transformed.charAt(0) + transformed.slice(1);
   // };
 
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return {
-      date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-    };
-  };
-
   const handleAllCheckboxChange = () => {
     setAllChecked(!allChecked);
     const newCheckedState = data.reduce(
@@ -119,6 +110,12 @@ const CustomSiinsTable = ({
       data.every((transaction) => checkedTransactions[transaction.id]),
     );
   }, [checkedTransactions, data]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   // const handleCopyToClipboard = async (id: string) => {
   //   try {
@@ -157,47 +154,56 @@ const CustomSiinsTable = ({
             ))}
           </tr>
         </thead>
-        <tbody>
-          {data.map((siin) => {
-            const isExpanded = expandedRows.includes(siin.id);
-            return (
-              <React.Fragment key={siin.id}>
-                <tr
-                  className={`relative border-none ${!isExpanded && "bg-white"} bg-${
-                    isExpanded ? rowBgColors[siin.id] : ""
-                  } h-[50px] cursor-pointer border-b border-hoverBg transition-all duration-300 last:border-none hover:bg-hoverBg`}
-                  onClick={() => toggleRow(siin)}
-                >
-                  <td className="pl-3">
-                    <CustomCheckbox
-                      isChecked={checkedTransactions[siin.id] || false}
-                      handleCheckboxChange={(event) =>
-                        handleCheckboxChange(siin.id, event)
-                      }
-                    />
-                  </td>
-                  <td className="pe-2 text-center">{siin.id}</td>
+        {loading ? (
+          <LoadingSiinTableSkeleton />
+        ) : data.length === 0 ? (
+          <tr className="bg-white">
+            <td colSpan={columns.length + 1} className="py-4 text-center text-main font-medium">
+              No siins available.
+            </td>
+          </tr>
+        ) : (
+          <tbody>
+            {data.map((siin) => {
+              const isExpanded = expandedRows.includes(siin.id);
+              return (
+                <React.Fragment key={siin.id}>
+                  <tr
+                    className={`relative border-none ${!isExpanded && "bg-white"} bg-${
+                      isExpanded ? rowBgColors[siin.id] : ""
+                    } h-[50px] cursor-pointer border-b border-hoverBg transition-all duration-300 last:border-none hover:bg-hoverBg`}
+                    onClick={() => toggleRow(siin)}
+                  >
+                    <td className="pl-3">
+                      <CustomCheckbox
+                        isChecked={checkedTransactions[siin.id] || false}
+                        handleCheckboxChange={(event) =>
+                          handleCheckboxChange(siin.id, event)
+                        }
+                      />
+                    </td>
+                    <td className="pe-2 text-center">{siin.id}</td>
 
-                 <td className="pe-8">{siin.senderIban}</td>
+                    <td className="pe-8">{siin.senderIban}</td>
                     <td className="pe-2">{`${siin.senderName}`}</td>
-                  <td className="pe-2">{siin.senderBankCountry}</td>
-                 <td className="pe-2">{siin.referenceCode}</td>
-                 <td className="pe-2 font-semibold">€ {siin.amount}</td>
-                 <td className="pe-2">
-                    <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
-                      <span>{formatDateTime(siin.createdAt).date}</span>{" "}
-                      <span>{formatDateTime(siin.createdAt).time}</span>
-                    </span>
-                  </td>
-                  <td className="pe-2">
-                    <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
-                      <span>{formatDateTime(siin.updatedAt).date}</span>{" "}
-                      <span>{formatDateTime(siin.updatedAt).time}</span>
-                    </span>
-               </td> 
-                </tr>
+                    <td className="pe-2">{siin.senderBankCountry}</td>
+                    <td className="pe-2">{siin.referenceCode}</td>
+                    <td className="pe-2 font-semibold">€ {siin.amount}</td>
+                    <td className="pe-2">
+                      <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
+                        <span>{formatDateTime(siin.createdAt).date}</span>{" "}
+                        <span>{formatDateTime(siin.createdAt).time}</span>
+                      </span>
+                    </td>
+                    <td className="pe-2">
+                      <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
+                        <span>{formatDateTime(siin.updatedAt).date}</span>{" "}
+                        <span>{formatDateTime(siin.updatedAt).time}</span>
+                      </span>
+                    </td>
+                  </tr>
 
-                {/* {isExpanded && (
+                  {/* {isExpanded && (
                   <tr>
                     <td
                       colSpan={columns.length + 1}
@@ -602,10 +608,11 @@ const CustomSiinsTable = ({
                     </td>
                   </tr>
                 )} */}
-              </React.Fragment>
-            );
-          })}
-        </tbody>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        )}
       </table>
     </div>
   );

@@ -17,7 +17,7 @@ export default function Search({
 }: ISearch) {
   const handleSearch = useDebouncedCallback((term: string) => {
     onSearch(term);
-  }, 300);
+  }, 500);
 
   return (
     <div className={`relative flex flex-1 flex-shrink-0 ${aditionalClass}`}>

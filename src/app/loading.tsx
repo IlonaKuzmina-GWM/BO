@@ -1,5 +1,11 @@
+import { LoadingSpiner } from "@/components/shared/LoadingUI/LoadingSpiner";
+
 const Loading = () => {
-  return <div>Loading...</div>;
+  return (
+    <div>
+      <LoadingSpiner />
+    </div>
+  );
 };
 
 export default Loading;

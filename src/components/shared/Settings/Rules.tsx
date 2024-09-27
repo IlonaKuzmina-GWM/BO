@@ -7,6 +7,7 @@ import Modal from "../Modal";
 import RuleRows from "./RuleRows";
 import { Header, Rule } from "@/types";
 import PaginationComponent from "../PaginationComponent ";
+import { SettingsRulesTableHeaader } from "@/utils/tableHeaders";
 
 const Rules = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,17 +30,6 @@ const Rules = () => {
     { value: "blueberry", label: "Blueberry" },
     { value: "grapes", label: "Grapes" },
     { value: "pineapple", label: "Pineapple" },
-  ];
-
-  const header: Header[] = [
-    { title: "Merchant", key: "merchant", width: "13%" },
-    { title: "Rule Type", key: "ruleType", width: "10%" },
-    { title: "Limit Type", key: "limitType", width: "12%" },
-    { title: "Action", key: "action", width: "20%" },
-    { title: "Limit Value", key: "limitValue", width: "12%" },
-    { title: "Comment", key: "comment", width: "23%" },
-    { title: "", key: "edit", width: "4%" },
-    { title: "", key: "delete", width: "6%" },
   ];
 
   const openModal = () => {
@@ -84,7 +74,7 @@ const Rules = () => {
           />
         </div>
       </div>
-      <CustomTable columns={header} data={rules} renderRow={renderRow} />
+      <CustomTable columns={SettingsRulesTableHeaader} data={rules} renderRow={renderRow} />
       <PaginationComponent
         currentPage={currentPage}
         totalPages={totalPages}

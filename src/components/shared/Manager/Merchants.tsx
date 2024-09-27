@@ -5,6 +5,7 @@ import Paragraph from "../Paragraph";
 import MerchantRows from "./MerchantRows";
 import PaginationComponent from "../PaginationComponent ";
 import DataLimitsSeter from "../DataLimitsSeter";
+import { ManagerMerchantsTableHeader } from "@/utils/tableHeaders";
 
 const Merchants = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,21 +65,6 @@ const Merchants = () => {
   ]);
   const [limit, setLimit] = useState<number>(10);
 
-  const header: Header[] = [
-    { title: "ID", key: "id", width: "7%" },
-    { title: "Name", key: "name", width: "15%" },
-    { title: "Host", key: "host", width: "15%" },
-    { title: "Label", key: "label", width: "15%" },
-    { title: "Store", key: "store", width: "4%", centered: true },
-    { title: "Fee%", key: "feePercent", width: "4%", centered: true },
-    { title: "Fee€", key: "feeEur", width: "4%", centered: true },
-    { title: "Setl.", key: "setl", width: "4%", centered: true },
-    { title: "Setl.Amount", key: "amount", width: "7%", centered: true },
-    { title: "Providers", key: "providers", width: "14%" },
-    { title: "Status", key: "status", width: "7%" },
-    { title: "Action", key: "action", width: "4%" },
-  ];
-
   const toggleStatus = (id: string) => {
     setMerchants((prevMerchants) =>
       prevMerchants.map((merchant) =>
@@ -129,7 +115,7 @@ const Merchants = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="List of Merchants" />
         </div>
-        <CustomTable columns={header} data={merchants} renderRow={renderRow} />
+        <CustomTable columns={ManagerMerchantsTableHeader} data={merchants} renderRow={renderRow} />
       </div>
 
       <div className="relative">

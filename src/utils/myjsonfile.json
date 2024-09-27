@@ -1759,7 +1759,7 @@
       "amount": "11550.65",
       "status": "PAYMENT_FAILED",
       "initialRequest": {
-        "email": "alexanmiro@gmail.com",
+        "email": "alexanmirotest@gmail.com",
         "firstName": "alex",
         "lastName": "anmiro",
         "merchantId": "civis"
@@ -5393,7 +5393,7 @@
       "amount": "52954.24",
       "status": "PAYMENT_SUCCESS",
       "initialRequest": {
-        "email": "alexanmiro@gmail.com",
+        "email": "alexanmirotest@gmail.com",
         "firstName": "alex",
         "lastName": "anmiro",
         "merchantId": "civis"

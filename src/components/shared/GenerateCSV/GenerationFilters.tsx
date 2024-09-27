@@ -7,9 +7,13 @@ interface IGenerationFiltersProps {
   onDateRangeChange: (range: DateRange | undefined) => void;
 }
 
-const GenerationFilters = ({onDateRangeChange}: IGenerationFiltersProps) => {
+const GenerationFilters = ({ onDateRangeChange }: IGenerationFiltersProps) => {
   const now = new Date();
-  const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+  const oneMonthAgo = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    now.getDate(),
+  );
 
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: oneMonthAgo,
@@ -60,6 +64,7 @@ const GenerationFilters = ({onDateRangeChange}: IGenerationFiltersProps) => {
 
   return (
     <div className="flex flex-row">
+      {/* <IntervalSelect onIntervalChange={handleIntervalChange} selectedInterval={selectedInterval}/> */}
       <DashSelect
         value={"1 month"}
         label={"Ranges"}

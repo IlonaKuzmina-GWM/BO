@@ -8,6 +8,7 @@ import CustomTransactionTable from "./CustomTransactionTable";
 import DataLimitsSeter from "../DataLimitsSeter";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { useSearchParams } from "next/navigation";
+import { TransactionsTableHeader } from "@/utils/tableHeaders";
 
 const TransactionsListWrapper = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -22,19 +23,6 @@ const TransactionsListWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const [limit, setLimit] = useState<number>(10);
-
-  const columns: Header[] = [
-    { key: "id", title: "ID", width: "7%", centered: true },
-    { key: "status", title: "Status", width: "8%" },
-    { key: "amount", title: "Amount", width: "10%" },
-    { key: "name", title: "Name", width: "10%" },
-    { key: "email", title: "Email", width: "17%" },
-    { key: "merchant", title: "Merchant", width: "10%" },
-    { key: "provider", title: "Provider", width: "10%" },
-    { key: "createdAt", title: "Created", width: "8%", centered: true },
-    { key: "updatedAt", title: "Updated", width: "8%", centered: true },
-    { key: "setl", title: "Setl.", width: "5%", centered: true },
-  ];
 
   const fetchTransactions = async (page: number) => {
     const response = await fetch(
@@ -129,7 +117,7 @@ const TransactionsListWrapper = () => {
         ))}
       </div>
 
-      <CustomTransactionTable data={filteredTransactions} columns={columns} />
+      {/* <CustomTransactionTable data={filteredTransactions} columns={TransactionsTableHeader} /> */}
 
       <div className="relative">
         <DataLimitsSeter onChange={handleLimitChange} />

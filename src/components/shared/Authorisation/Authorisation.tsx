@@ -115,6 +115,16 @@ const Autorisation = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleEmailBlur();
+    handlePasswordBlur();
+
+    if (!emailError && !passwordError) {
+      signIn();
+    }
+  };
+
   return (
     <Card className="flex w-full flex-col rounded-md border-none bg-white px-[10px] py-[40px] sm:max-w-[580px] md:px-[36px]">
       <CardHeader className="text-center">
@@ -130,7 +140,7 @@ const Autorisation = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="pb-0">
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <label htmlFor="email" className="text-md block text-main">
             <div>Email</div>
             <input
@@ -143,7 +153,7 @@ const Autorisation = () => {
             ></input>
           </label>
           {emailError && (
-            <p className="pl-4 text-xs text-[#FF8080]">{emailError}</p>
+            <p className="pt-1 text-xs text-error">{emailError}</p>
           )}
           <label
             htmlFor="password"
@@ -174,12 +184,10 @@ const Autorisation = () => {
             </span>
           </label>
           {passwordError && (
-            <p className="pl-4 text-xs font-thin text-[#FF8080]">
-              {passwordError}
-            </p>
+            <p className="pt-1 text-xs text-error">{passwordError}</p>
           )}
 
-          <div className="mt-4 flex flex-col justify-between">
+          {/* <div className="mt-4 flex flex-col justify-between">
             <label
               htmlFor="remember"
               className="flex flex-row items-center text-base leading-none text-main"
@@ -191,17 +199,18 @@ const Autorisation = () => {
               />
               Remember me
             </label>
-          </div>
+          </div> */}
+
+          <button className="mt-10 w-full rounded-sm bg-blue500 px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white">
+            sign in
+          </button>
         </form>
       </CardContent>
-      <CardFooter className="mt-10">
-        <button
-          onClick={signIn}
-          className="w-full rounded-sm bg-blue500 px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white"
-        >
-          sign in
-        </button>
-      </CardFooter>
+      {notification.success === false && notification.message ? (
+        <CardFooter className="mx-auto mt-6 rounded-sm bg-errorBg p-4 text-center">
+          <p className="text-center text-error">{notification.message}</p>
+        </CardFooter>
+      ) : null}
     </Card>
   );
 };

@@ -5,6 +5,7 @@ import KYCUserListRows from "./KYCUserListRows";
 import { useState } from "react";
 import PaginationComponent from "../PaginationComponent ";
 import DataLimitsSeter from "../DataLimitsSeter";
+import { ManagerKYCUserTableHeader } from "@/utils/tableHeaders";
 
 const KYCUserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,15 +49,6 @@ const KYCUserList = () => {
     <KYCUserListRows key={index} user={user} />
   );
 
-  const header: Header[] = [
-    { title: "Nme", key: "name", width: "17%" },
-    { title: "Status", key: "status", width: "16%" },
-    { title: "Surname", key: "surname", width: "17%" },
-    { title: "Check Required", key: "isCHeckRequired", width: "16%" },
-    { title: "Create", key: "created", width: "17%", centered: true },
-    { title: "Updated", key: "updated", width: "17%", centered: true },
-  ];
-
   const totalPages = Math.ceil(users.length / 10);
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
@@ -68,7 +60,7 @@ const KYCUserList = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="KYC User List: Identity Verification and Data Validation" />
         </div>
-        <CustomTable columns={header} data={users} renderRow={renderRow} />
+        <CustomTable columns={ManagerKYCUserTableHeader} data={users} renderRow={renderRow} />
       </div>
 
       <div className="relative">

@@ -12,9 +12,9 @@ import { DateRange } from "react-day-picker";
 const TransactionsFilterBar = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
   const [selectedInterval, setSelectedInterval] = useState("this-year");
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
@@ -28,30 +28,27 @@ const TransactionsFilterBar = () => {
     { value: "pineapple", label: "Pineapple" },
   ];
 
-  const handleSearch = (term: string) => {
-    // Update the search term in the URL query parameters
-    const params = new URLSearchParams(searchParams.toString());
-    if (term) {
-      params.set("query", term);
-    } else {
-      params.delete("query");
-    }
-    router.replace(`${pathname}?${params.toString()}`);
-  };
+  // const handleSearch = (term: string) => {
+  // Update the search term in the URL query parameters
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   if (term) {
+  //     params.set("query", term);
+  //   } else {
+  //     params.delete("query");
+  //   }
+  //   router.replace(`${pathname}?${params.toString()}`);
+  // };
 
-
-
-  
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setSelectedDateRange(range);
-    setSelectedInterval("");
-  };
+  // const handleDateRangeChange = (range: DateRange | undefined) => {
+  //   setSelectedDateRange(range);
+  //   setSelectedInterval("");
+  // };
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row justify-between">
-        <div className="flex flex-row gap-5">
-          <Search
+        {/* <div className="flex flex-row gap-5"> */}
+        {/* <Search
             placeholder="Enter name, email, provider"
             aditionalClass="max-w-[302px]"
             onSearch={handleSearch}
@@ -71,7 +68,7 @@ const TransactionsFilterBar = () => {
             searchInput={false}
             searchContext="provider"
           />
-        </div>
+        </div> */}
 
         <DashButton name={"export"} type={"filled"} />
       </div>

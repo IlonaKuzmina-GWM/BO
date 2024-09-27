@@ -47,7 +47,7 @@ const SettlementPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col gap-6">
+    <div className="flex min-h-screen w-full flex-col gap-4 xl:gap-6">
       <DashPageTitle
         title="Settlement"
         description="Generate and Manage Payouts with CSV Generator"

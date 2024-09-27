@@ -33,21 +33,21 @@ const CustomMultiSelect = ({
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+  // const searchParams = useSearchParams();
+  // const router = useRouter();
+  // const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    const initialSelected = params.get(searchContext);
-    if (initialSelected) {
-      setSelectedValues(initialSelected.split(","));
-    }
-  }, [searchContext, searchParams]);
+  // useEffect(() => {
+  //   const params = new URLSearchParams(searchParams);
+  //   const initialSelected = params.get(searchContext);
+  //   if (initialSelected) {
+  //     setSelectedValues(initialSelected.split(","));
+  //   }
+  // }, [searchContext, searchParams]);
 
   useEffect(() => {
-    setSelectedValues([]);
+    // setSelectedValues([]);
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -79,20 +79,27 @@ const CustomMultiSelect = ({
       onSelectHandler(newSelectedValues); // Call the callback with the new selected values
     }
 
-    const params = new URLSearchParams(searchParams.toString());
-    if (newSelectedValues.length > 0) {
-      params.set(searchContext, newSelectedValues.join(","));
-    } else {
-      params.delete(searchContext);
-    }
-    router.replace(`${pathname}?${params.toString()}`);
+    // const params = new URLSearchParams(searchParams.toString());
+    // if (newSelectedValues.length > 0) {
+    //   params.set(searchContext, newSelectedValues.join(","));
+    // } else {
+    //   params.delete(searchContext);
+    // }
+    // router.replace(`${pathname}?${params.toString()}`);
   };
+
+  // const clearSelection = () => {
+  //   setSelectedValues([]);
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   params.delete(searchContext);
+  //   router.replace(`${pathname}?${params.toString()}`);
+  // };
 
   const clearSelection = () => {
     setSelectedValues([]);
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete(searchContext);
-    router.replace(`${pathname}?${params.toString()}`);
+    if (onSelectHandler) {
+      onSelectHandler([]);
+    }
   };
 
   const filteredItems = items.filter((item) =>
@@ -126,7 +133,7 @@ const CustomMultiSelect = ({
           {searchInput && (
             <Search placeholder="Search" onSearch={handleSearch} />
           )}
-          <div className="max-h-60 overflow-y-auto">
+          <div className="dash_select-options max-h-60 overflow-y-auto">
             <div
               className="cursor-pointer px-3 py-2 text-sm font-semibold hover:bg-divider"
               onClick={clearSelection}
@@ -147,7 +154,7 @@ const CustomMultiSelect = ({
                   {selectedValues.includes(item.value) && (
                     <Check className="text-accent-foreground h-4 w-4" />
                   )}
-                  <span className="ml-2">{item.label}</span>
+                  <span className="ml-2 text-[14px]">{item.label}</span>
                 </div>
               </div>
             ))}

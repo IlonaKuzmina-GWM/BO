@@ -6,11 +6,11 @@ export interface InitialRequest {
   merchantId: string;
 }
 
-export interface Merchant {
-  name: string;
-  host: string;
-  label: string;
-}
+// export interface Merchant {
+//   name: string;
+//   host: string;
+//   label: string;
+// }
 
 export interface Provider {
   name: string;

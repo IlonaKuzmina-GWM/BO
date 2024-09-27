@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es2015",
+    "downlevelIteration": true,
+    "lib": ["dom", "dom.iterable", "esnext", "es2015"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -21,6 +23,12 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/context/UserContext.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/context/UserContext.tsx"
+  ],
   "exclude": ["node_modules"]
 }

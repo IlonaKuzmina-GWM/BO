@@ -5,6 +5,7 @@ import Dashbutton from "../DashButton";
 import Paragraph from "../Paragraph";
 import IntegrationRows from "./IntegrationRows";
 import PaginationComponent from "../PaginationComponent ";
+import { SettingsIntegrationTableHeader } from "@/utils/tableHeaders";
 
 const Integration = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +32,9 @@ const Integration = () => {
     },
   ]);
 
-  const [blurStates, setBlurStates] = useState<boolean[]>(apiKeys.map(() => true));
+  const [blurStates, setBlurStates] = useState<boolean[]>(
+    apiKeys.map(() => true),
+  );
 
   const deleteEntry = (index: number) => {
     const newRules = [...apiKeys];
@@ -80,17 +83,10 @@ const Integration = () => {
     />
   );
 
-  const header: Header[] = [
-    { title: "MerchantID", key: "MerchantID", width: "27%" },
-    { title: "Your header key", key: "HeaderKey", width: "27%" },
-    { title: "Your signature key", key: "SignatureKey", width: "27%" },
-    { title: "Action", key: "show", width: "19%" },
-  ];
-
   const totalPages = Math.ceil(apiKeys.length / 10);
 
   return (
-    <div className="bg-white pt-[20px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
+    <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="Generate API Keys: Secure Access to Your Application" />
         <div className="flex flex-row gap-[2px]">
@@ -101,7 +97,11 @@ const Integration = () => {
           />
         </div>
       </div>
-      <CustomTable columns={header} data={apiKeys} renderRow={renderRow} />
+      <CustomTable
+        columns={SettingsIntegrationTableHeader}
+        data={apiKeys}
+        renderRow={renderRow}
+      />
       <PaginationComponent
         currentPage={currentPage}
         totalPages={totalPages}

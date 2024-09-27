@@ -75,7 +75,7 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Latvia"
   },
   {
     "id": 4,

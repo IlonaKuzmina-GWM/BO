@@ -6,6 +6,7 @@ interface ICustomTableProps<T> {
   columns: Header[];
   data: T[];
   renderRow: (item: T, index: number) => ReactNode;
+  dataName: string;
   onCheckboxChange?: () => void;
   checkAll?: boolean;
 }
@@ -14,6 +15,7 @@ const CustomTable = <T,>({
   columns,
   data,
   renderRow,
+  dataName = "data",
   onCheckboxChange,
   checkAll = false,
 }: ICustomTableProps<T>) => {
@@ -45,14 +47,25 @@ const CustomTable = <T,>({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr
-              className="h-[50px] border-b border-hoverBg last:border-none"
-              key={index}
-            >
-              {renderRow(item, index)}
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <tr
+                className="h-[50px] border-b border-hoverBg last:border-none"
+                key={index}
+              >
+                {renderRow(item, index)}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan={columns.length}
+                className="py-4 text-center"
+              >
+                No {dataName} available
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

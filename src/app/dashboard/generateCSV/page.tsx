@@ -132,6 +132,7 @@ const GenerateCSVPage = () => {
         <div className="w-full bg-white">
           <CustomTable
             columns={GenerateCSVTableHeader}
+            dataName="CSV"
             data={filteredCSVs}
             renderRow={renderRow}
           />

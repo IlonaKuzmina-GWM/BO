@@ -60,7 +60,7 @@ const KYCUserList = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="KYC User List: Identity Verification and Data Validation" />
         </div>
-        <CustomTable columns={ManagerKYCUserTableHeader} data={users} renderRow={renderRow} />
+        <CustomTable columns={ManagerKYCUserTableHeader} dataName="users" data={users} renderRow={renderRow} />
       </div>
 
       <div className="relative">

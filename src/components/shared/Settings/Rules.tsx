@@ -74,7 +74,7 @@ const Rules = () => {
           />
         </div>
       </div>
-      <CustomTable columns={SettingsRulesTableHeaader} data={rules} renderRow={renderRow} />
+      <CustomTable columns={SettingsRulesTableHeaader} dataName="rules" data={rules} renderRow={renderRow} />
       <PaginationComponent
         currentPage={currentPage}
         totalPages={totalPages}

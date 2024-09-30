@@ -99,6 +99,7 @@ const Integration = () => {
       </div>
       <CustomTable
         columns={SettingsIntegrationTableHeader}
+        dataName="api keys"
         data={apiKeys}
         renderRow={renderRow}
       />

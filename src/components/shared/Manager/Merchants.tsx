@@ -115,7 +115,7 @@ const Merchants = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="List of Merchants" />
         </div>
-        <CustomTable columns={ManagerMerchantsTableHeader} data={merchants} renderRow={renderRow} />
+        <CustomTable columns={ManagerMerchantsTableHeader} dataName="merchants" data={merchants} renderRow={renderRow} />
       </div>
 
       <div className="relative">

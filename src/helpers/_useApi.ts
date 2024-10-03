@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/auth"
+// import { useAuthStore } from "@/stores/auth"
 interface ApiOptions {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   headers?: Record<string, string>;

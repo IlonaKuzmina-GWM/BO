@@ -1,5 +1,5 @@
-export default (url) => {
-    const runtimeConfig = useRuntimeConfig()
+export const url= (url) => {
+    // const runtimeConfig = useRuntimeConfig()
     const mode = runtimeConfig.public.URL_MODE;
 
     if (mode === 'staging') {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import StatusFilteringBadge from "../StatusFilteringBadge";
+import StatusFilteringBadge from "../StatusFilter/StatusFilteringBadge";
 import { Header, Transaction } from "@/types";
 import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
@@ -20,7 +20,7 @@ const TransactionsListWrapper = () => {
   >([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [limit, setLimit] = useState<number>(10);
 
@@ -37,11 +37,11 @@ const TransactionsListWrapper = () => {
 
   useEffect(() => {
     fetchTransactions(currentPage);
-  }, [currentPage,limit]);
+  }, [currentPage, limit]);
 
   useEffect(() => {
-    const queryParam = searchParams.get('query');
-    setSearchQuery(queryParam || ''); 
+    const queryParam = searchParams.get("query");
+    setSearchQuery(queryParam || "");
   }, [searchParams]);
 
   const transformStatus = (status: string): string => {
@@ -92,7 +92,11 @@ const TransactionsListWrapper = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center w-full"><LoadingSpiner /></div>;
+    return (
+      <div className="flex w-full items-center justify-center">
+        <LoadingSpiner />
+      </div>
+    );
   }
 
   return (

@@ -57,14 +57,14 @@ const CustomTable = <T,>({
               </tr>
             ))
           ) : (
-            <tr>
-              <td
-                colSpan={columns.length}
-                className="py-4 text-center"
-              >
-                No {dataName} available
-              </td>
-            </tr>
+            <thead>
+              {" "}
+              <tr>
+                <td colSpan={columns.length} className="py-4 text-center">
+                  No {dataName} available
+                </td>
+              </tr>
+            </thead>
           )}
         </tbody>
       </table>

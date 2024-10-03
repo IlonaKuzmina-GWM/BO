@@ -134,6 +134,7 @@ const Autorisation = () => {
           width={44}
           height={44}
           className="mx-auto mb-6"
+          loading="lazy"
         />
         <CardTitle className="text-[36px] font-bold leading-[48px]">
           Welcome Back

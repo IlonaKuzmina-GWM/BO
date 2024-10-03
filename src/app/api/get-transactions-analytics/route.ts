@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
 
   let filteredTransactions = transactionsData.transactions;
 
-  // Filter by date range
   if (from && to) {
     const fromDate = new Date(from);
     const toDate = new Date(to);

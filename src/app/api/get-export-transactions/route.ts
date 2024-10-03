@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import transactionsData from "@/utils/myjsonfile.json"; // Adjust the path if necessary
 
-
 // export function getExportTransactionsRoute (role: string) {
 //   if (role === 'merchant') {
 //       return '/transactions/export';
@@ -16,8 +15,6 @@ import transactionsData from "@/utils/myjsonfile.json"; // Adjust the path if ne
 //   }
 // }
 
-
-
 export async function GET(request: NextRequest) {
   // Parsing query parameters from the request
   const { searchParams } = new URL(request.url);
@@ -26,21 +23,7 @@ export async function GET(request: NextRequest) {
   // Filter transactions based on the query
   let filteredTransactions = transactionsData.transactions;
 
-  if (query) {
-    const lowerCaseQuery = query.toLowerCase();
-
-    filteredTransactions = filteredTransactions.filter((transaction) =>
-      transaction.txId.includes(lowerCaseQuery),
-    );
-  }
-
-
-  // Total number of transactions for reference
-  const totalTransactions = filteredTransactions.length;
-
   return NextResponse.json({
-
-    totalTransactions
+    filteredTransactions,
   });
 }
-

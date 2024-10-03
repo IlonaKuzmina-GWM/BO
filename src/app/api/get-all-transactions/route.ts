@@ -14,36 +14,29 @@ export async function GET(request: NextRequest) {
   const paginated = searchParams.get("paginated") !== "false";
   const status = searchParams.get("status");
 
-  const merchants = searchParams.get("merchant")?.split(",") || [];
-  const providers = searchParams.get("provider")?.split(",") || [];
+  const merchants = searchParams.get("merchant") || [];
+  const providers = searchParams.get("provider") || [];
 
   let filteredTransactions = transactionsData.transactions;
 
-  // Helper function to extract unique values from an array of objects
-  // const getUniqueListBy = (arr:any, key:any) => {
-  //   return [...new Map(arr.map((item:string) => [item[key], item])).values()];
-  // };
-
-  // const providersList = getUniqueListBy(
-  //   transactionsData.transactions
-  //     .filter((item) => item.provider && item.provider.name) // Ensure provider exists
-  //     .map((item) => ({ name: item.provider.name })),
-  //   "name",
-  // ).map((item:any) => item.name);
-
-  // const merchantsList = getUniqueListBy(
-  //   transactionsData.transactions
-  //     .filter((item) => item.merchant && item.merchant.name) // Ensure merchant exists
-  //     .map((item) => ({ name: item.merchant.name })),
-  //   "name",
-  // ).map((item:any) => item.name);
-
-  // Collect all merchants and providers
   const merchantsList = Array.from(
     new Set(filteredTransactions.map((tx) => tx.merchant.name)),
   );
   const providersList = Array.from(
     new Set(filteredTransactions.map((tx) => tx.provider.name)),
+  );
+
+  const statusList = filteredTransactions.reduce(
+    (acc, tx) => {
+      const status = tx.status;
+
+      if (status) {
+        acc[status] = (acc[status] || 0) + 1;
+      }
+
+      return acc;
+    },
+    {} as Record<string, number>,
   );
 
   if (from && to) {
@@ -130,5 +123,6 @@ export async function GET(request: NextRequest) {
     filteredTransactions: filteredTransactions,
     merchantsList,
     providersList,
+    statusList,
   });
 }

@@ -1,12 +1,11 @@
 "use client";
+
 import { Header, Transaction } from "@/types";
 import { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
-import Checkbox from "../Checkbox";
 import Image from "next/image";
 import React from "react";
 import CustomCheckbox from "@/components/UI/CustomCheckbox";
-import { Button } from "react-day-picker";
 import DashButton from "../DashButton";
 import {
   Collapsible,
@@ -42,7 +41,6 @@ const CustomTransactionTable = ({
   }>({});
 
   const openAccordionBgColor = (status: string) => {
-    console.log(status);
     switch (status) {
       case "success":
         return "successBg";
@@ -83,7 +81,7 @@ const CustomTransactionTable = ({
   };
 
   const transformStatus = (status: string): string => {
-    console.log(status);
+    // console.log(status);
     const parts = status.split("_");
 
     if (parts.length > 1) {
@@ -124,7 +122,7 @@ const CustomTransactionTable = ({
         (transaction) => checkedTransactions[transaction.id],
       ),
     );
-  }, [checkedTransactions]);
+  }, [checkedTransactions, paginatedTransactions]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -173,11 +171,17 @@ const CustomTransactionTable = ({
         {loading ? (
           <LoadingTransactionTableSkeleton />
         ) : paginatedTransactions.length === 0 ? (
-          <tr className="bg-white">
-            <td colSpan={columns.length + 1} className="py-4 text-center text-main font-medium">
-              No transactions available.
-            </td>
-          </tr>
+          <thead>
+            {" "}
+            <tr className="bg-white">
+              <td
+                colSpan={columns.length + 1}
+                className="py-4 text-center font-medium text-main"
+              >
+                No transactions available.
+              </td>
+            </tr>
+          </thead>
         ) : (
           <tbody>
             {paginatedTransactions &&
@@ -220,7 +224,7 @@ const CustomTransactionTable = ({
                       <td className="pe-2">{transaction.merchant.name}</td>
                       <td className="pe-2">{transaction.provider.name}</td>
                       <td className="pe-2">
-                        <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
+                        <span className="flex flex-wrap items-center justify-center gap-x-1 rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
                           <span>
                             {formatDateTime(transaction.createdAt).date}
                           </span>{" "}
@@ -230,7 +234,7 @@ const CustomTransactionTable = ({
                         </span>
                       </td>
                       <td className="pe-2">
-                        <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
+                        <span className="flex flex-wrap items-center justify-center gap-x-1 rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
                           <span>
                             {formatDateTime(transaction.updatedAt).date}
                           </span>{" "}

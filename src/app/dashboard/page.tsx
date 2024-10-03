@@ -18,7 +18,7 @@ const MainDashPage = () => {
   const [merchnatsTableData, setMerchantsTableData] = useState<DashTableData[]>(
     [],
   );
-  const [selectedInterval, setSelectedInterval] = useState("this-year");
+  const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
   >(undefined);

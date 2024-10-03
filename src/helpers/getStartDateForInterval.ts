@@ -1,8 +1,8 @@
 const INTERVALS = {
-  TODAY: "today",
-  YESTERDAY: "yesterday",
-  LAST_3_DAYS: "last-3-days",
-  LAST_7_DAYS: "last-7-days",
+  TODAY: "0",
+  YESTERDAY: "1",
+  LAST_3_DAYS: "3",
+  LAST_7_DAYS: "7",
   LAST_14_DAYS: "last-14-days",
   THIS_MONTH: "this-month",
   THIS_YEAR: "this-year",

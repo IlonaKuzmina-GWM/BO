@@ -157,11 +157,17 @@ const CustomSiinsTable = ({
         {loading ? (
           <LoadingSiinTableSkeleton />
         ) : data.length === 0 ? (
-          <tr className="bg-white">
-            <td colSpan={columns.length + 1} className="py-4 text-center text-main font-medium">
-              No siins available.
-            </td>
-          </tr>
+          <thead>
+            {" "}
+            <tr className="bg-white">
+              <td
+                colSpan={columns.length + 1}
+                className="py-4 text-center font-medium text-main"
+              >
+                No siins available.
+              </td>
+            </tr>
+          </thead>
         ) : (
           <tbody>
             {data.map((siin) => {

@@ -1,10 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import TransactionRow from "./TransactionRow";
-import TransactionsFilterBar from "./_TransactionsFilterBar";
-import TransactionsListWrapper from "./_TransactionsListWrapper";
-import loading from "@/app/loading";
 import Search from "../Search";
 import { DateRange } from "react-day-picker";
 import DashButton from "../DashButton";
@@ -12,12 +8,13 @@ import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { Transaction } from "@/types";
-import StatusFilteringBadge from "../StatusFilteringBadge";
+import StatusFilteringBadge from "../StatusFilter/StatusFilteringBadge";
 import { TransactionsTableHeader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
-import { IntervalSelect } from "@/components/UI/IntervalSelect";
+import DashIntervalSelect from "../DashIntervalSelect";
+import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
 
 const TransactionsWrapper = () => {
   const [activeStatusBadge, setActiveStatusBadge] = useState<string>("all");
@@ -35,6 +32,7 @@ const TransactionsWrapper = () => {
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState<number>(10);
 
+  const [statusList, setStatusList] = useState<{}>({});
   const [merchantsList, setMerchantsList] = useState<string[]>([]);
   const [providersList, setProvidersList] = useState<string[]>([]);
   const [selectedMerchants, setSelectedMerchants] = useState<string[]>([]);
@@ -75,26 +73,28 @@ const TransactionsWrapper = () => {
           method: "GET",
         },
       );
+
       const {
         paginatedTransactions,
         totalPages,
         providersList,
         merchantsList,
+        statusList,
       }: {
         paginatedTransactions: Transaction[];
         totalPages: number;
         providersList: string[];
         merchantsList: string[];
+        statusList: string[];
       } = await response.json();
       setPaginatedTransactions(paginatedTransactions);
       setTotalPages(totalPages);
       setLoading(false);
       setMerchantsList(merchantsList);
       setProvidersList(providersList);
+      setStatusList(statusList);
 
-      console.log(merchantsList);
-      console.log("paginatedTransactions", paginatedTransactions);
-      // console.log("totalTransactions", totalTransactions);
+      console.log("status list", statusList);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -110,75 +110,58 @@ const TransactionsWrapper = () => {
     currentPage,
     selectedMerchants,
     selectedProviders,
+    activeStatusBadge,
   ]);
 
-  // const transformStatus = (status: string): string => {
-  //   const parts = status.split("_");
-
-  //   if (parts.length > 1) {
-  //     parts.shift();
-  //   }
-
-  //   const transformed = parts.join("_").toLowerCase();
-
-  //   return transformed.charAt(0) + transformed.slice(1);
-  // };
-
-  const transformStatus = (
-    status: string,
-  ): { originalStatus: string; transformedStatus: string } => {
-    const parts = status.split("_");
-
-    if (parts.length > 1) {
-      parts.shift();
-    }
-
-    const transformed = parts.join("_").toLowerCase();
-
-    return {
-      originalStatus: status,
-      transformedStatus: transformed.charAt(0) + transformed.slice(1),
-    };
-  };
-
-  const countTransactionsByStatus = (status: string) => {
-    return paginatedTransactions.filter(
-      (transaction) =>
-        transformStatus(transaction.status).transformedStatus === status,
-    ).length;
-  };
-
-  const uniqueStatuses = Array.from(
-    new Set(
-      paginatedTransactions.map((transaction) =>
-        transformStatus(transaction.status),
-      ),
-    ),
-  );
+  const statusFilters = [
+    {
+      label: "User Confirm Required",
+      value: "USER_CONFIRM_REQUIRED",
+    },
+    {
+      label: "Processing",
+      value: "PAYMENT_PROCESSING",
+    },
+    {
+      label: "Accepted",
+      value: "PAYMENT_ACCEPTED",
+    },
+    {
+      label: "Failed",
+      value: "PAYMENT_FAILED",
+    },
+    {
+      label: "Timeout",
+      value: "TIMEOUT",
+    },
+    {
+      label: "Aml blocked",
+      value: "AML_BLOCKED",
+    },
+    {
+      label: "Transferring",
+      value: "PAYMENT_TRANSFERRING",
+    },
+    {
+      label: "Success",
+      value: "PAYMENT_SUCCESS",
+    },
+    {
+      label: "Cancelled",
+      value: "PAYMENT_CANCELLED",
+    },
+  ];
 
   const activeFilterBageHandler = (name: string) => {
     setActiveStatusBadge(name);
   };
 
-  // useEffect(() => {
-  //   const filtered =
-  //     activeFilterBadge === "all"
-  //       ? paginatedTransactions
-  //       : paginatedTransactions.filter(
-  //           (transaction) =>
-  //             transformStatus(transaction.status) === activeFilterBadge,
-  //         );
-  //   setPaginatedTransactions(filtered);
-  // }, [activeFilterBadge, paginatedTransactions]);
-
   const handleSearch = (term: string) => {
     setSearchQuery(term);
   };
 
-  const handleIntervalChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSelectedInterval(event.target.value);
+  const handleIntervalChange = (interval: string) => {
+    setSelectedInterval(interval);
     setSelectedDateRange(undefined);
   };
 
@@ -209,7 +192,7 @@ const TransactionsWrapper = () => {
 
   return (
     <div className="">
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between gap-6">
         <div className="flex flex-row gap-5">
           <Search
             placeholder="Enter name, email, provider"
@@ -218,9 +201,10 @@ const TransactionsWrapper = () => {
           />
 
           <div className="flex">
-            <IntervalSelect
+            <DashIntervalSelect
+              value={"Select Interval"}
+              label="No Interval"
               onIntervalChange={handleIntervalChange}
-              selectedInterval={selectedInterval}
             />
             <DatePickerWithRange onDateChange={handleDateRangeChange} />
           </div>
@@ -251,25 +235,14 @@ const TransactionsWrapper = () => {
 
         <DashButton name={"export"} type={"filled"} />
       </div>
-      <div className="mt-4 flex flex-row gap-6">
-        <StatusFilteringBadge
-          name={"all"}
-          counter={transactions.length.toString()}
-          filterActive={activeStatusBadge}
-          onClickHandler={activeFilterBageHandler}
-        />
-        {/* {uniqueStatuses.slice(0, 10).map((status, index) => (
-          <StatusFilteringBadge
-            key={index}
-            name={transformStatus(status)}
-            counter={countTransactionsByStatus(
-              transformStatus(status),
-            ).toString()}
-            filterActive={activeFilterBadge}
-            onClickHandler={activeFilterBageHandler}
-          />
-        ))} */}
-      </div>
+
+      <StatusFilteringBadgeWrapper
+        statusList={statusList}
+        statusFilters={statusFilters}
+        counter={transactions.length.toString()}
+        activeStatusBadge={activeStatusBadge}
+        onClickHandler={activeFilterBageHandler}
+      />
 
       <CustomTransactionTable
         paginatedTransactions={paginatedTransactions}

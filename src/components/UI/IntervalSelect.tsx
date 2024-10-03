@@ -14,8 +14,9 @@ export const IntervalSelect = ({
       <select
         value={selectedInterval}
         onChange={onIntervalChange}
-        className="rounded-sm border border-divider bg-white px-2 py-[9px] text-start text-sm text-main"
+        className="rounded-sm border border-divider bg-white px-2 py-[10px] text-start text-sm text-main"
       >
+        <option value="today" className="font-semibold cursor-pointer">Select interval</option>
         <option value="today">Today</option>
         <option value="yesterday">Yesterday</option>
         <option value="last-3-days">Last 3 Days</option>

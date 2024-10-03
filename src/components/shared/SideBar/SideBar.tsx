@@ -15,7 +15,7 @@ const SiderBar = () => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
 
-  console.log("pathname", pathname);
+  // console.log("pathname", pathname);
 
   const toggleSidebar = () => {
     setOpenSideBar(!openSideBar);
@@ -119,14 +119,14 @@ const SiderBar = () => {
           className="block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg"
         >
           <div
-            className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap py-2 font-medium capitalize text-secondary`}
+            className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap items-center py-2 font-medium capitalize text-secondary`}
           >
             <Image
               src={`/icons/log-out.svg`}
               alt={"Side icon"}
               width={16}
               height={16}
-              className="inline-block dark:invert"
+              className="inline-block h-4 w-4 dark:invert"
             />
             {openSideBar && (
               <span

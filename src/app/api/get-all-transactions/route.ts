@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
   const paginated = searchParams.get("paginated") !== "false";
   const status = searchParams.get("status");
 
-  const merchants = searchParams.get("merchant") || [];
-  const providers = searchParams.get("provider") || [];
+  const merchants = searchParams.get("merchant") || [] as string[];
+  const providers = searchParams.get("provider") || [] as string[];
 
   let filteredTransactions = transactionsData.transactions;
 

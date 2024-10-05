@@ -4,16 +4,9 @@ interface ICSVRowProps {
   cSV: CSV;
   index: number;
   deleteEntry: (index: number) => void;
-  downloadPDF: (index: number) => void;
 }
 
-const CSVRows = ({
-  cSV,
-  index,
-  deleteEntry,
-  downloadPDF,
-}: ICSVRowProps) => {
-
+const CSVRows = ({ cSV, index, deleteEntry }: ICSVRowProps) => {
   const dateStyle =
     "bg-hoverBg text-center p-1 border border-hoverBg rounded-[4px]";
   return (
@@ -26,10 +19,7 @@ const CSVRows = ({
       <td className="pr-2">
         <div className={dateStyle}>{cSV.created}</div>
       </td>
-      <td className="pr-2 font-semibold">
-        <button onClick={() => downloadPDF(index)}>Download CSV</button>
-      </td>
-      <td className="pr-3 font-semibold text-[--error] lg:pr-8">
+      <td className="pr-3 text-center font-semibold text-[--error] lg:pr-8">
         <button onClick={() => deleteEntry(index)}>Delete</button>
       </td>
     </>

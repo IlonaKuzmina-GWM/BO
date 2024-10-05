@@ -9,7 +9,8 @@ import { DateRange } from "react-day-picker";
 
 const SettlementPage = () => {
   const [showSettlementInfo, setShowSettlementInfo] = useState(false);
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [selectedMerchants, setSelectedMerchants] = useState<string[]>([]);
+  const [manager, setManager] = useState<string>("");
   const [transactionData, setTransactionData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -18,17 +19,21 @@ const SettlementPage = () => {
   });
 
   const handleMerchantChange = (values: string[]) => {
-    setSelectedValues(values);
+    setSelectedMerchants(values);
+  };
+
+  const handleManagerChange = (values: string[]) => {
+    setManager(values[0]);
   };
 
   const handleDateChange = (range: DateRange | undefined) => {
     setDateRange(range);
   };
 
-  const handleCalculate = (selectedValues: string[], dateRange?: DateRange) => {
+  const handleCalculate = () => {
     setIsLoading(true);
-    console.log(selectedValues[0], dateRange);
     setShowSettlementInfo(true);
+
     setTransactionData({
       summary: [
         { label: "Non-settled transactions", value: "1" },
@@ -55,11 +60,13 @@ const SettlementPage = () => {
 
       <div className="w-full">
         <CalculationControls
-          selectedValues={selectedValues}
+          selectedValues={selectedMerchants}
           dateRange={dateRange}
           onMerchantChange={handleMerchantChange}
+          onManagerChange={handleManagerChange}
           onDateChange={handleDateChange}
-          onCalculate={() => handleCalculate(selectedValues, dateRange)}
+          onCalculate={() => handleCalculate()}
+          disabled={manager === "" || manager === null || manager === undefined}
         />
       </div>
       {showSettlementInfo && transactionData && (

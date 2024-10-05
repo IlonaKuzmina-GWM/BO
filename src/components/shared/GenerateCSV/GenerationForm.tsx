@@ -122,8 +122,6 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
     setTimeout(() => {
       setSubmitted(false);
     }, 3000);
-
-    console.log("Form Data:", formData);
   };
 
   return (
@@ -145,7 +143,7 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
         />
       ))}
       <div className="h-[40px] self-end ml-[16px]">
-        <DashButton name="Generate" type={"filled"} disabled={submitted} />
+        <DashButton name="Add new entry" type={"filled"} disabled={submitted} />
       </div>
     </form>
   );

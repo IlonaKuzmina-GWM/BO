@@ -18,6 +18,7 @@ interface ICustomMultiSelect {
   searchContext: string;
   isMulti?: boolean;
   onSelectHandler?: (selectedValues: string[]) => void;
+  disabled?: boolean;
 }
 
 const CustomMultiSelect = ({
@@ -28,6 +29,7 @@ const CustomMultiSelect = ({
   searchContext,
   isMulti = true,
   onSelectHandler,
+  disabled,
 }: ICustomMultiSelect) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -69,7 +71,7 @@ const CustomMultiSelect = ({
 
   const clearSelection = () => {
     setSelectedValues([]);
-    
+
     setIsOpen(false);
     if (onSelectHandler) {
       onSelectHandler([]);
@@ -85,10 +87,13 @@ const CustomMultiSelect = ({
   };
 
   return (
-    <div className="relative w-[180px] h-10" ref={dropdownRef}>
+    <div className="relative h-10 w-[180px]" ref={dropdownRef}>
       <button
+        disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full rounded-sm border border-divider bg-white p-2 pe-5 text-start text-sm text-main min-h-10"
+        className={`relative min-h-10 w-full rounded-sm border border-divider bg-white p-2 pe-5 text-start text-sm text-main ${
+          disabled ? "cursor-not-allowed text-secondary" : ""
+        }`}
       >
         {selectedValues.length === 0
           ? value

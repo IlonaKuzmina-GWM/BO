@@ -95,17 +95,23 @@ const CustomMultiSelect = ({
           disabled ? "cursor-not-allowed text-secondary" : ""
         }`}
       >
-        {selectedValues.length === 0
-          ? value
-          : selectedValues
-              .map((val) => items.find((item) => item.value === val)?.label)
-              .join(", ")}
+        <span
+          className={`block ${
+            !isOpen ? "overflow-hidden text-ellipsis whitespace-nowrap" : ""
+          }`}
+        >
+          {selectedValues.length === 0
+            ? value
+            : selectedValues
+                .map((val) => items.find((item) => item.value === val)?.label)
+                .join(", ")}
+        </span>
 
-        {isOpen ? (
-          <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-180" />
-        ) : (
-          <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2" />
-        )}
+        <ChevronDown
+          className={`absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
       </button>
       {isOpen && (
         <div className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg">

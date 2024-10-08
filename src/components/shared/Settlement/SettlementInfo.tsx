@@ -1,17 +1,45 @@
 import React from "react";
 import DashButton from "../DashButton";
+import { Transaction } from "@/types/transaction";
+import { exportExcelTransactions } from "@/utils/export-utils";
 
 interface SettlementInfoProps {
   data: {
     summary: { label: string; value: string }[];
     totalAmounts: { label: string; value: string }[];
     totalPayout: string;
+    transactions: Transaction[];
   };
 }
 
+const updateSettlementStatus = async (transactions: Transaction[]) => {
+  try {
+    for (const transaction of transactions) {
+      const response = await fetch("/api/some-kind-of-route", {
+        method: "POST",
+        body: JSON.stringify({ transactionId: transaction.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        transaction.isSettled = true;
+      } else {
+        console.error("Failed to update settlement status:", data.message);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 const SettlementInfo = ({ data }: SettlementInfoProps) => {
   return (
-    <div className="max-w-[560px] rounded-[4px] bg-white p-[20px] pr-[197px]">
+    <div className="w-[420px] rounded-[4px] bg-white p-[20px]">
       <div className="flex flex-col gap-[24px] pb-[32px]">
         <div className="flex flex-col gap-[16px]">
           <h3 className="font-medium text-main">
@@ -52,9 +80,9 @@ const SettlementInfo = ({ data }: SettlementInfoProps) => {
           <DashButton
             name="Set Settlement"
             type="filled"
-            onClickHandler={() => {}}
+            onClickHandler={() => updateSettlementStatus(data.transactions)}
           />
-          <DashButton name="Export" type="empty" onClickHandler={() => {}} />
+          <DashButton name="Export" type="empty" onClickHandler={() => exportExcelTransactions(data.transactions)} />
         </div>
       </div>
     </div>

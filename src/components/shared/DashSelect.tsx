@@ -18,6 +18,7 @@ interface ICustomMultiSelect {
   searchContext: string;
   isMulti?: boolean;
   onSelectHandler?: (selectedValues: string[]) => void;
+  disabled?: boolean;
 }
 
 const CustomMultiSelect = ({
@@ -28,6 +29,7 @@ const CustomMultiSelect = ({
   searchContext,
   isMulti = true,
   onSelectHandler,
+  disabled,
 }: ICustomMultiSelect) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -69,7 +71,7 @@ const CustomMultiSelect = ({
 
   const clearSelection = () => {
     setSelectedValues([]);
-    
+
     setIsOpen(false);
     if (onSelectHandler) {
       onSelectHandler([]);
@@ -85,22 +87,31 @@ const CustomMultiSelect = ({
   };
 
   return (
-    <div className="relative w-[180px] h-10" ref={dropdownRef}>
+    <div className="relative h-10 w-[180px]" ref={dropdownRef}>
       <button
+        disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full rounded-sm border border-divider bg-white p-2 pe-5 text-start text-sm text-main min-h-10"
+        className={`relative min-h-10 w-full rounded-sm border border-divider bg-white p-2 pe-5 text-start text-sm text-main ${
+          disabled ? "cursor-not-allowed text-secondary" : ""
+        }`}
       >
-        {selectedValues.length === 0
-          ? value
-          : selectedValues
-              .map((val) => items.find((item) => item.value === val)?.label)
-              .join(", ")}
+        <span
+          className={`block ${
+            !isOpen ? "overflow-hidden text-ellipsis whitespace-nowrap" : ""
+          }`}
+        >
+          {selectedValues.length === 0
+            ? value
+            : selectedValues
+                .map((val) => items.find((item) => item.value === val)?.label)
+                .join(", ")}
+        </span>
 
-        {isOpen ? (
-          <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-180" />
-        ) : (
-          <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2" />
-        )}
+        <ChevronDown
+          className={`absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
       </button>
       {isOpen && (
         <div className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg">

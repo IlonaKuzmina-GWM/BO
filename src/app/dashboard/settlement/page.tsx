@@ -6,44 +6,74 @@ import SettlementInfo from "@/components/shared/Settlement/SettlementInfo";
 import Spinner from "@/components/UI/Spinner";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
+import { justMockedSettlementData } from "./justmockedDataWhichShouldBeRemovedLater";
 
 const SettlementPage = () => {
   const [showSettlementInfo, setShowSettlementInfo] = useState(false);
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const [transactionData, setTransactionData] = useState<any>([]);
+  const [selectedMerchants, setSelectedMerchants] = useState<string[]>([]);
+  const [manager, setManager] = useState<string>("");
+  const [settlements, setSettlements] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
-  });
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [interval, setInterval] = useState<string>("");
 
   const handleMerchantChange = (values: string[]) => {
-    setSelectedValues(values);
+    setSelectedMerchants(values);
+  };
+
+  const handleManagerChange = (values: string[]) => {
+    setManager(values[0]);
+  };
+
+  const handleIntervalChange = (interval: string) => {
+    setInterval(interval);
+    setDateRange(undefined);
   };
 
   const handleDateChange = (range: DateRange | undefined) => {
     setDateRange(range);
+    setInterval("");
   };
 
-  const handleCalculate = (selectedValues: string[], dateRange?: DateRange) => {
+  const handleCalculate = () => {
     setIsLoading(true);
-    console.log(selectedValues[0], dateRange);
     setShowSettlementInfo(true);
-    setTransactionData({
-      summary: [
-        { label: "Non-settled transactions", value: "1" },
-        { label: "Fee percent", value: "3%" },
-        { label: "Fixed Fee", value: "0.80 EUR" },
-        { label: "Settlement Fee", value: "1.50%" },
-        { label: "Settlement Cost", value: "749.69 EUR" },
-      ],
-      totalAmounts: [
-        { label: "Total Amount Before Fees", value: "51525.01 EUR" },
-        { label: "Total Amount After Fees", value: "49979.25 EUR" },
-      ],
-      totalPayout: "49229.56 EUR",
-    });
+
+    setSettlements(justMockedSettlementData);
     setIsLoading(false);
+
+    // const fetchSettlementData = async () => {
+    //   try {
+    //     const params = new URLSearchParams();
+
+    //     params.append("manager", manager);
+
+    //     params.append("merchant", selectedMerchants.join(","));
+
+    //     if (dateRange && dateRange.from && dateRange.to) {
+    //       params.append("from", dateRange.from.toISOString());
+    //       params.append("to", dateRange.to.toISOString());
+    //     } else if (interval) {
+    //       params.append("interval", interval);
+    //     }
+
+    //     const response = await fetch(
+    //       `/api/get-all-settlements?${params.toString()}`, // there is no such route yet
+    //       {
+    //         method: "POST",
+    //       },
+    //     );
+
+    //     const {
+    //       settlements,
+    //     }: {
+    //       settlements: any[];
+    //     } = await response.json();
+    //     setSettlements(settlements);
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // };
   };
 
   return (
@@ -55,16 +85,24 @@ const SettlementPage = () => {
 
       <div className="w-full">
         <CalculationControls
-          selectedValues={selectedValues}
+          selectedValues={selectedMerchants}
           dateRange={dateRange}
+          interval={interval}
           onMerchantChange={handleMerchantChange}
+          onManagerChange={handleManagerChange}
           onDateChange={handleDateChange}
-          onCalculate={() => handleCalculate(selectedValues, dateRange)}
+          onIntervalChange={handleIntervalChange}
+          onCalculate={() => handleCalculate()}
+          disabled={manager === "" || manager === null || manager === undefined}
         />
       </div>
-      {showSettlementInfo && transactionData && (
-        <SettlementInfo data={transactionData} />
-      )}
+      <div className="flex flex-wrap gap-[45px]">
+        {showSettlementInfo &&
+          settlements &&
+          settlements.map((settlement: any, index: number) => (
+            <SettlementInfo key={index} data={settlement} />
+          ))}
+      </div>
       {isLoading && <Spinner />}
     </div>
   );

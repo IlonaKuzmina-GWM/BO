@@ -59,7 +59,7 @@ const CalculationControls = ({
   return (
     <div className="flex flex-row gap-[16px]">
       <DashSelect
-        value={interval ? interval : "Select Manager"}
+        value={"Select Manager"}
         label={"All Managers"}
         items={managers}
         searchInput
@@ -82,7 +82,7 @@ const CalculationControls = ({
       />
       <div className="flex">
         <DashIntervalSelect
-          value={"Select Interval"}
+          value={interval ? interval : "Select Interval"}
           label="No Interval"
           onIntervalChange={onIntervalChange}
         />

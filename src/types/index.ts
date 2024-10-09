@@ -1,3 +1,5 @@
+import { Webhook } from "./webhook";
+
 // types.ts
 export interface InitialRequest {
   email: string;
@@ -38,8 +40,9 @@ export interface Transaction {
   statusChecks: number;
   merchant: Merchant;
   provider: Provider;
-  webhooks: any[];
+  webhooks: Webhook[];
 }
+
 export interface Rule {
   merchant: string;
   ruleType: string;
@@ -116,7 +119,7 @@ export interface CSV {
 }
 
 export interface Siin {
-  additionalInfo: string|null;
+  additionalInfo: string | null;
   amount: number;
   createdAt: string;
   id: number;
@@ -136,6 +139,7 @@ export interface Siin {
   status: string;
   statusChecks: number;
   transactionId: string;
+  transaction: Transaction;
   txId: string;
   txReferenceId: string | null;
   updatedAt: string;

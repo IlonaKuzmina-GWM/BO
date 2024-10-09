@@ -23,7 +23,42 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {
+      "id": 1,
+      "txId": "bd73d2d8cab5fc8d6aa2c0ca",
+      "txReferenceId": "",
+      "providerId": 1,
+      "additionalInfo": null,
+      "amount": "11833.53",
+      "status": "PAYMENT_CREATED",
+      "initialRequest": {
+        "email": "alexanmiro@gmail.com",
+        "firstName": "alex",
+        "lastName": "anmiro",
+        "merchantId": "civis"
+      },
+      "returnUrl": "null",
+      "webhookUrl": "null",
+      "rawStatus": "",
+      "createdAt": "2025-04-27T07:42:15.487Z",
+      "updatedAt": "2025-06-23T14:00:34.896Z",
+      "sandbox": true,
+      "isSettled": true,
+      "settlementDate": null,
+      "settlementAmount": "0.00",
+      "statusChecks": 2,
+      "merchant": {
+        "name": "Kunde Inc",
+        "host": "gigantic-median.com",
+        "label": "despecto"
+      },
+      "provider": {
+        "name": "Bartell, Cole and Effertz",
+        "apiSlug": "volva-delibero-cogito-caute"
+      },
+      "webhooks": []
+    }
   },
   {
     "id": 2,
@@ -49,7 +84,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 3,
@@ -75,7 +111,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Latvia"
+    "senderBankCountry": "Latvia",
+    "transaction": {}
   },
   {
     "id": 4,
@@ -101,7 +138,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 5,
@@ -127,7 +165,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 6,
@@ -153,7 +192,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 7,
@@ -179,7 +219,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 8,
@@ -205,7 +246,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 9,
@@ -231,7 +273,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 10,
@@ -257,7 +300,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 11,
@@ -283,7 +327,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 12,
@@ -309,7 +354,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 13,
@@ -335,7 +381,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 14,
@@ -361,7 +408,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 15,
@@ -387,7 +435,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 16,
@@ -413,7 +462,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 17,
@@ -439,7 +489,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 18,
@@ -465,7 +516,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 19,
@@ -491,7 +543,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 20,
@@ -517,7 +570,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 21,
@@ -543,7 +597,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 22,
@@ -569,7 +624,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 23,
@@ -595,7 +651,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 24,
@@ -621,7 +678,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 25,
@@ -647,7 +705,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 26,
@@ -673,7 +732,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 27,
@@ -699,7 +759,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 28,
@@ -725,7 +786,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 29,
@@ -751,7 +813,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 30,
@@ -777,7 +840,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 31,
@@ -803,7 +867,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 32,
@@ -829,7 +894,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 33,
@@ -855,7 +921,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 34,
@@ -881,7 +948,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 35,
@@ -907,7 +975,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 36,
@@ -933,7 +1002,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 37,
@@ -959,7 +1029,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 38,
@@ -985,7 +1056,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 39,
@@ -1011,7 +1083,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 40,
@@ -1037,7 +1110,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 41,
@@ -1063,7 +1137,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 42,
@@ -1089,7 +1164,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 43,
@@ -1115,7 +1191,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 44,
@@ -1141,7 +1218,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 45,
@@ -1167,7 +1245,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 46,
@@ -1193,7 +1272,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 47,
@@ -1219,7 +1299,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 48,
@@ -1245,7 +1326,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 49,
@@ -1271,7 +1353,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 50,
@@ -1297,7 +1380,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 51,
@@ -1323,7 +1407,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 52,
@@ -1349,7 +1434,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 53,
@@ -1375,7 +1461,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 54,
@@ -1401,7 +1488,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 55,
@@ -1427,7 +1515,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 56,
@@ -1453,7 +1542,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 57,
@@ -1479,7 +1569,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 58,
@@ -1505,7 +1596,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 59,
@@ -1531,7 +1623,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 60,
@@ -1557,7 +1650,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 61,
@@ -1583,7 +1677,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 62,
@@ -1609,7 +1704,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 63,
@@ -1635,7 +1731,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 64,
@@ -1661,7 +1758,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 65,
@@ -1687,7 +1785,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 66,
@@ -1713,7 +1812,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 67,
@@ -1739,7 +1839,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 68,
@@ -1765,7 +1866,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 69,
@@ -1791,7 +1893,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 70,
@@ -1817,7 +1920,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 71,
@@ -1843,7 +1947,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 72,
@@ -1869,7 +1974,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 73,
@@ -1895,7 +2001,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 74,
@@ -1921,7 +2028,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 75,
@@ -1947,7 +2055,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 76,
@@ -1973,7 +2082,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 77,
@@ -1999,7 +2109,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 78,
@@ -2025,7 +2136,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 79,
@@ -2051,7 +2163,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 80,
@@ -2077,7 +2190,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 81,
@@ -2103,7 +2217,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 82,
@@ -2129,7 +2244,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 83,
@@ -2155,7 +2271,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 84,
@@ -2181,7 +2298,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 85,
@@ -2207,7 +2325,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 86,
@@ -2233,7 +2352,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 87,
@@ -2259,7 +2379,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 88,
@@ -2285,7 +2406,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 89,
@@ -2311,7 +2433,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 90,
@@ -2337,7 +2460,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 91,
@@ -2363,7 +2487,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 92,
@@ -2389,7 +2514,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 93,
@@ -2415,7 +2541,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 94,
@@ -2441,7 +2568,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 95,
@@ -2467,7 +2595,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 96,
@@ -2493,7 +2622,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 97,
@@ -2519,7 +2649,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 98,
@@ -2545,7 +2676,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   },
   {
     "id": 99,
@@ -2571,7 +2703,8 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Belgium"
+    "senderBankCountry": "Belgium",
+    "transaction": {}
   },
   {
     "id": 100,
@@ -2597,6 +2730,7 @@
     "initialRequest": "{\"email\":\"alexanmiro@gmail.com\",\"firstName\":\"alex\",\"lastName\":\"anmiro\",\"merchantId\":\"civis\"}",
     "settlementDate": null,
     "settlementAmount": 0,
-    "senderBankCountry": "Germany"
+    "senderBankCountry": "Germany",
+    "transaction": {}
   }
 ]

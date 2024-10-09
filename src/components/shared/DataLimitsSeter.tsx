@@ -1,5 +1,4 @@
 import React from "react";
-import { Label } from "@/components/UI/label";
 import { Button } from "../UI/button";
 
 interface DataLimitsSeterProps {
@@ -12,7 +11,7 @@ export default function DataLimitsSeter({
   onChange,
 }: DataLimitsSeterProps) {
   const [activeLimit, setActiveLimit] = React.useState(defaultValue);
-  const limits = [5, 10, 15, 20];
+  const limits = [10, 25, 50, 100];
 
   const handleLimitChange = (limit: number) => {
     setActiveLimit(limit);

@@ -202,11 +202,14 @@ const TransactionsWrapper = () => {
 
           <div className="flex">
             <DashIntervalSelect
-              value={"Select Interval"}
+              value={selectedInterval ? selectedInterval : "Select Interval"}
               label="No Interval"
               onIntervalChange={handleIntervalChange}
             />
-            <DatePickerWithRange onDateChange={handleDateRangeChange} />
+            <DatePickerWithRange
+              initialDate={selectedDateRange}
+              onDateChange={handleDateRangeChange}
+            />
           </div>
 
           <DashSelect

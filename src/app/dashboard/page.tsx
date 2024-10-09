@@ -10,8 +10,8 @@ import SimpleBarChart from "@/components/shared/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/Charts/VerticalComposedChart";
 import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
 import DashSideTable from "@/components/shared/Transactions/DashSideTable";
-import { DashTableData, Merchant, Siin, Transaction } from "@/types";
-import { IntervalSelect } from "@/components/UI/IntervalSelect";
+import { DashTableData, Siin, Transaction } from "@/types";
+import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
 
 const MainDashPage = () => {
   const [countryTableData, setCountryTableData] = useState<DashTableData[]>([]);
@@ -393,10 +393,8 @@ const MainDashPage = () => {
     // }
   };
 
-  const handleIntervalChange = (
-    interval: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSelectedInterval(interval.target.value);
+  const handleIntervalChange = (interval: string) => {
+    setSelectedInterval(interval);
     setSelectedDateRange(undefined);
   };
 
@@ -413,9 +411,10 @@ const MainDashPage = () => {
       />
 
       <div className="flex flex-col md:flex-row">
-        <IntervalSelect
+        <DashIntervalSelect
+          value={"Select Interval"}
+          label="No Interval"
           onIntervalChange={handleIntervalChange}
-          selectedInterval={selectedInterval}
         />
 
         <DatePickerWithRange onDateChange={handleDateRangeChange} />

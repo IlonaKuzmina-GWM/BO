@@ -6,7 +6,7 @@ const LoadingSiinTableSkeleton = () => {
       {[...Array(5)].map((_, index) => (
         <tr
           key={index}
-          className="relative h-[50px] animate-pulse border-b border-hoverBg last:border-none"
+          className="relative h-[50px] animate-pulse cursor-pointer border-b-[1px] border-b-hoverBg bg-whiteBg transition-all last:border-none hover:bg-hoverBg"
         >
           <td className="pl-3">
             <div className="h-4 w-4 rounded-sm bg-gray-200"></div>

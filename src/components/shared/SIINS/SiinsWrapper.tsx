@@ -12,13 +12,13 @@ import CustomSiinsTable from "./CustomSiinsTable";
 import DataLimitsSeter from "../DataLimitsSeter";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
-import { IntervalSelect } from "@/components/UI/IntervalSelect";
+import DashIntervalSelect from "../DashIntervalSelect";
 
 const SiinsWrapper = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedInterval, setSelectedInterval] = useState("this-year");
+  const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
   >(undefined);
@@ -29,15 +29,15 @@ const SiinsWrapper = () => {
   const fetchSiinsData = async () => {
     try {
       const params = new URLSearchParams();
+      params.append("limit", limit.toString());
+      params.append("page", currentPage.toString());
+
       if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
         params.append("from", selectedDateRange.from.toISOString());
         params.append("to", selectedDateRange.to.toISOString());
-        params.append("limit", limit.toString());
-        params.append("page", currentPage.toString());
+
       } else if (selectedInterval) {
         params.append("interval", selectedInterval);
-        params.append("limit", limit.toString());
-        params.append("page", currentPage.toString());
       }
 
       if (searchQuery) {
@@ -68,16 +68,14 @@ const SiinsWrapper = () => {
     setSearchQuery(term);
   };
 
-  const handleIntervalChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSelectedInterval(event.target.value);
+  const handleIntervalChange = (interval: string) => {
+    setSelectedInterval(interval);
     setSelectedDateRange(undefined);
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
     setSelectedDateRange(range);
-    setSelectedInterval("");
+    setSelectedInterval('Select Interval');
   };
 
   const handleLimitChange = (limit: number) => {
@@ -103,11 +101,12 @@ const SiinsWrapper = () => {
           />
 
           <div className="flex flex-col md:flex-row">
-            <IntervalSelect
+            <DashIntervalSelect
+              value={selectedInterval ? selectedInterval : "Select Interval"}
+              label="No Interval"
               onIntervalChange={handleIntervalChange}
-              selectedInterval={selectedInterval}
             />
-            <DatePickerWithRange onDateChange={handleDateRangeChange} />
+            <DatePickerWithRange initialDate={selectedDateRange} onDateChange={handleDateRangeChange} />
           </div>
         </div>
 

@@ -21,4 +21,5 @@ export type Transaction<T = InitialRequestData> = {
 	txId: string;
 	initialRequest: T;
 	merchant: Merchant;
+	webhooks: Webhook[];
 }

@@ -2,6 +2,13 @@ import { CSV } from "@/types";
 import { Transaction } from "@/types/transaction";
 import ExcelJS from "exceljs";
 
+const formatDate = (date: Date | string) => {
+  if (typeof date === 'string') {
+    date = new Date(date);
+  }
+  return date.toISOString().split("T")[0];
+};
+
 export const exportExcelPayout = (data: CSV[]) => {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Payouts");
@@ -66,39 +73,53 @@ export const exportExcelTransactions = (data: Transaction[]) => {
 
   const headers = [
     "ID",
-    "AMOUNT",
+    "TXID",
     "STATUS",
-    "CREATED",
-    "SETTLED",
-    "MERCHANT",
     "PROVIDER",
+    "WEBHOOK CODE DESCR",
+    "WEBHOOK COMPOUND STATE",
+    "DATE OF CREATION",
+    "UPDATE DATE",
+    "AMOUNT",
+    "MERCHANT ID",
+    "MERCHANT NAME",
   ];
 
   worksheet.addRow(headers);
 
   worksheet.columns = [
     { header: "ID", key: "id", width: 10 },
-    { header: "AMOUNT", key: "amount", width: 15 },
+    { header: "TXID", key: "txId", width: 25 },
     { header: "STATUS", key: "status", width: 25 },
-    { header: "CREATED", key: "created", width: 30 },
-    { header: "SETTLED", key: "settled", width: 15 },
-    { header: "MERCHANT_NAME", key: "merchant_name", width: 20 },
-    { header: "MERCHANT_HOST", key: "merchant_host", width: 20 },
-    { header: "MERCHANT_LABEL", key: "merchant_label", width: 20 },
-    { header: "PROVIDER", key: "provider", width: 30 },
+    { header: "PROVIDER", key: "provider_name", width: 25 },
+    { header: "WEBHOOK CODE DESCR", key: "webhook_code_descr", width: 25 },
+    {
+      header: "WEBHOOK COMPOUND STATE",
+      key: "webhook_compound_state",
+      width: 30,
+    },
+    { header: "DATE OF CREATION", key: "date_of_creation", width: 25 },
+    { header: "UPDATE DATE", key: "update_date", width: 25 },
+    { header: "AMOUNT", key: "amount", width: 15 },
+    { header: "MERCHANT ID", key: "merchant_id", width: 15 },
+    { header: "MERCHANT NAME", key: "merchant_name", width: 25 },
   ];
 
-  data.forEach((transaction) => {
+  data?.forEach((transaction) => {
     const rowData = [
       transaction.id,
-      transaction.amount,
+      transaction.txId,
       transaction.status,
-      transaction.createdAt,
-      transaction.isSettled ? "YES" : "NO",
-      transaction.merchant.name,
-      transaction.merchant.host,
-      transaction.merchant.label,
       transaction.provider.name,
+      transaction.webhooks[transaction.webhooks.length - 1]?.originalRequest
+        ?.response_code_description,
+      transaction.webhooks[transaction.webhooks.length - 1]?.originalRequest
+        ?.compound_state,
+      formatDate(transaction.createdAt),
+      formatDate(transaction.updatedAt),
+      Number(transaction.amount),
+      transaction.merchant.merchantId,
+      transaction.merchant.name,
     ];
     worksheet.addRow(rowData);
   });

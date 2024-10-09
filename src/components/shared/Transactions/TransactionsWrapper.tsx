@@ -37,6 +37,7 @@ const TransactionsWrapper = () => {
   const [providersList, setProvidersList] = useState<string[]>([]);
   const [selectedMerchants, setSelectedMerchants] = useState<string[]>([]);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
 
   const fetchTransactionsData = async () => {
     try {
@@ -67,6 +68,10 @@ const TransactionsWrapper = () => {
         params.append("provider", selectedProviders.join(","));
       }
 
+      if (selectedStatus.length > 0) {
+        params.append("statusSelect", selectedStatus.join(", "));
+      }
+
       const response = await fetch(
         `/api/get-all-transactions?${params.toString()}`,
         {
@@ -93,8 +98,6 @@ const TransactionsWrapper = () => {
       setMerchantsList(merchantsList);
       setProvidersList(providersList);
       setStatusList(statusList);
-
-      console.log("status list", statusList);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -111,6 +114,7 @@ const TransactionsWrapper = () => {
     selectedMerchants,
     selectedProviders,
     activeStatusBadge,
+    selectedStatus,
   ]);
 
   const statusFilters = [
@@ -167,7 +171,7 @@ const TransactionsWrapper = () => {
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
     setSelectedDateRange(range);
-    setSelectedInterval("");
+    setSelectedInterval("Select Interval");
   };
 
   const handleLimitChange = (limit: number) => {
@@ -180,6 +184,10 @@ const TransactionsWrapper = () => {
 
   const handleProviderSelect = (providers: string[]) => {
     setSelectedProviders(providers);
+  };
+
+  const handleStatusSelect = (status: string[]) => {
+    setSelectedStatus(status);
   };
 
   if (loading) {
@@ -230,9 +238,20 @@ const TransactionsWrapper = () => {
               value: provider,
               label: provider,
             }))}
-            searchInput={false}
+            searchInput
             searchContext="provider"
             onSelectHandler={handleProviderSelect}
+          />
+          <DashSelect
+            value={"Select Status"}
+            label={"All Status Fields"}
+            items={statusFilters.map((status) => ({
+              value: status.value,
+              label: status.label,
+            }))}
+            searchInput
+            searchContext="status"
+            onSelectHandler={handleStatusSelect}
           />
         </div>
 

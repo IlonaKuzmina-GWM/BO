@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
   const query = searchParams.get("query");
   const paginated = searchParams.get("paginated") !== "false";
   const status = searchParams.get("status");
+  const statusSelect = searchParams.get("statusSelect") || [] as string[];;
 
   const merchants = searchParams.get("merchant") || [] as string[];
   const providers = searchParams.get("provider") || [] as string[];
@@ -100,6 +101,12 @@ export async function GET(request: NextRequest) {
   if (status && status !== "all") {
     filteredTransactions = filteredTransactions.filter(
       (transaction) => transaction.status === status,
+    );
+  }
+
+  if (statusSelect.length > 0){
+    filteredTransactions = filteredTransactions.filter((transaction) =>
+      statusSelect.includes(transaction.status),
     );
   }
 

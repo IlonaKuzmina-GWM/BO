@@ -17,7 +17,7 @@ interface ICustomMultiSelect {
   searchInput: boolean;
   searchContext: string;
   isMulti?: boolean;
-  onSelectHandler?: (selectedValues: string[]) => void;
+  onSelectHandler: (selectedValues: string[]) => void;
   disabled?: boolean;
 }
 

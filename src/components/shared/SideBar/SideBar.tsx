@@ -63,6 +63,13 @@ const SiderBar = () => {
             activePathName={pathname}
           />
           <SideBarLi
+            name={"Logs"}
+            link={"/dashboard/logs"}
+            iconLink={"logs"}
+            isSidebarOpen={openSideBar}
+            activePathName={pathname}
+          />
+          <SideBarLi
             name={"transactions"}
             link={"/dashboard/transactions"}
             iconLink={"transaction"}

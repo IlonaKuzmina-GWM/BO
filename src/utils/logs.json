@@ -1,0 +1,122 @@
+[
+  {
+    "person": "Alice Johnson",
+    "action": "logged in",
+    "createdAt": "2025-04-27T07:42:15.487Z",
+    "type": "authentication"
+  },
+  {
+    "person": "Bob Smith",
+    "action": "updated profile",
+    "createdAt": "2025-04-27T08:15:30.123Z",
+    "type": "profile management"
+  },
+  {
+    "person": "Charlie Davis",
+    "action": "changed password",
+    "createdAt": "2025-04-27T09:00:45.789Z",
+    "type": "security"
+  },
+  {
+    "person": "Diana Evans",
+    "action": "logged out",
+    "createdAt": "2025-04-27T10:25:00.456Z",
+    "type": "authentication"
+  },
+  {
+    "person": "Ethan Brown",
+    "action": "deleted account",
+    "createdAt": "2025-04-27T11:40:15.678Z",
+    "type": "account management"
+  },
+  {
+    "person": "Fiona Green",
+    "action": "created a new project",
+    "createdAt": "2025-04-27T12:55:30.901Z",
+    "type": "project management"
+  },
+  {
+    "person": "George Harris",
+    "action": "added a comment",
+    "createdAt": "2025-04-27T13:10:45.234Z",
+    "type": "interaction"
+  },
+  {
+    "person": "Hannah Lee",
+    "action": "uploaded a file",
+    "createdAt": "2025-04-27T14:25:00.567Z",
+    "type": "file management"
+  },
+  {
+    "person": "Ian Martin",
+    "action": "logged in",
+    "createdAt": "2025-04-27T15:40:15.890Z",
+    "type": "authentication"
+  },
+  {
+    "person": "Julia Nelson",
+    "action": "registered a new account",
+    "createdAt": "2025-04-27T16:55:31.123Z",
+    "type": "registration"
+  },
+  {
+    "person": "Kevin O'Connor",
+    "action": "reset password",
+    "createdAt": "2025-04-27T17:10:45.456Z",
+    "type": "security"
+  },
+  {
+    "person": "Laura Perez",
+    "action": "updated settings",
+    "createdAt": "2025-04-27T18:25:00.789Z",
+    "type": "settings"
+  },
+  {
+    "person": "Michael Quinn",
+    "action": "logged out",
+    "createdAt": "2025-04-27T19:40:16.012Z",
+    "type": "authentication"
+  },
+  {
+    "person": "Natalie Rodriguez",
+    "action": "changed email",
+    "createdAt": "2025-04-27T20:55:31.345Z",
+    "type": "profile management"
+  },
+  {
+    "person": "Oliver Scott",
+    "action": "deleted a project",
+    "createdAt": "2025-04-27T22:10:46.678Z",
+    "type": "project management"
+  },
+  {
+    "person": "Paula Taylor",
+    "action": "updated profile picture",
+    "createdAt": "2025-04-27T23:25:01.901Z",
+    "type": "profile management"
+  },
+  {
+    "person": "Ryan Walker",
+    "action": "added a new contact",
+    "createdAt": "2025-04-28T00:40:17.234Z",
+    "type": "contact management"
+  },
+  {
+    "person": "Samantha Young",
+    "action": "sent a message",
+    "createdAt": "2025-04-28T01:55:32.567Z",
+    "type": "communication"
+  },
+  {
+    "person": "Thomas Zhang",
+    "action": "joined a group",
+    "createdAt": "2025-04-28T03:10:47.890Z",
+    "type": "group management"
+  },
+  {
+    "person": "Victoria Allen",
+    "action": "updated password",
+    "createdAt": "2025-04-28T04:25:03.123Z",
+    "type": "security"
+  }
+]

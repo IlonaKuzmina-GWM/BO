@@ -112,6 +112,8 @@ main::-webkit-scrollbar {
 .log_wrapper,.dash_select-options {
   scrollbar-width: 5px;
   scrollbar-color: var(--blue-400);
+
+  /* background-color: rgba(13, 13, 13, 0.282); */
 }
 
 .webhook_wrapper::-webkit-scrollbar, .log_wrapper::-webkit-scrollbar, .dash_select-options::-webkit-scrollbar {

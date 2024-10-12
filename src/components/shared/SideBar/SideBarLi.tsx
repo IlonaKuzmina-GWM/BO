@@ -34,19 +34,21 @@ const SideBarLi = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Image
-                src={`/icons/${iconLink}.svg`}
-                alt={"Side icon"}
-                width={16}
-                height={16}
-                className="me-2 inline-block h-auto w-[16px] dark:invert"
-              />
+              <div className="h-4 w-4 flex align-middle">
+                <Image
+                  src={`/icons/${iconLink}.svg`}
+                  alt={"Side icon"}
+                  width={16}
+                  height={16}
+                  className="me-2 inline-block h-auto w-[16px] dark:invert"
+                />
+              </div>
             </TooltipTrigger>
             <TooltipContent className="ms-2">
               <p> {name}</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>{" "}
+        </TooltipProvider>
         {isSidebarOpen && (
           <span className={`${!isSidebarOpen && "opacity-0"} inline-block`}>
             {name}
@@ -58,14 +60,3 @@ const SideBarLi = ({
 };
 
 export default SideBarLi;
-
-{
-  /* <TooltipProvider>
-  <Tooltip>
-    <TooltipTrigger>Hover</TooltipTrigger>
-    <TooltipContent>
-      <p>Add to library</p>
-    </TooltipContent>
-  </Tooltip>
-</TooltipProvider> */
-}

@@ -87,3 +87,10 @@ export const SettingsIntegrationTableHeader: Header[] = [
   { title: "Your signature key", key: "SignatureKey", width: "27%" },
   { title: "Action", key: "show", width: "19%" },
 ];
+
+export const LogsTableHeader: Header[] = [
+  { title: "Person", key: "person", width: "24%" },
+  { title: "Action", key: "action", width: "24%" },
+  { title: "Created at", key: "createdAt", width: "15%" },
+  { title: "Type", key: "type", width: "24%",centered: true },
+];

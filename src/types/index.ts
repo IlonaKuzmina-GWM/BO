@@ -103,6 +103,7 @@ export interface KYCUser {
   name: string;
   status: string;
   surname: string;
+  email: string;
   checkRequired: string;
   created: string;
   updated: string;

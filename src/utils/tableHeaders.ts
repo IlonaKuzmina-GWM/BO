@@ -62,12 +62,13 @@ export const ManagerAllUsersTableHeader: Header[] = [
 ];
 
 export const ManagerKYCUserTableHeader: Header[] = [
-  { title: "Nme", key: "name", width: "17%" },
-  { title: "Status", key: "status", width: "16%" },
-  { title: "Surname", key: "surname", width: "17%" },
-  { title: "Check Required", key: "isCHeckRequired", width: "16%" },
-  { title: "Create", key: "created", width: "17%", centered: true },
-  { title: "Updated", key: "updated", width: "17%", centered: true },
+  { title: "Status", key: "status", width: "14%" },
+  { title: "Name", key: "name", width: "15%" },
+  { title: "Surname", key: "surname", width: "15%" },
+  { title: "Email", key: "email", width: "15%" },
+  { title: "Check Required", key: "isCHeckRequired", width: "11%" },
+  { title: "Create", key: "created", width: "15%", centered: true },
+  { title: "Updated", key: "updated", width: "15%", centered: true },
 ];
 
 export const SettingsRulesTableHeaader: Header[] = [

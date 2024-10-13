@@ -1,6 +1,6 @@
 import Spinner from "@/components/UI/Spinner";
 import { InputField } from "@/types";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import DashButton from "../DashButton";
 import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
 import Info from "./Info";
@@ -8,11 +8,15 @@ import SelectAccount from "./SelectAccount";
 
 const Create = () => {
   const [formData, setFormData] = useState({
-    selectedAccount: "",
+    selectedAccount: "merchant",
     name: "",
     host: "",
     label: "",
     email: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    merchants: "",
     settlementFee: "",
     settlementFixingFee: "",
   });
@@ -44,12 +48,32 @@ const Create = () => {
     }));
   };
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = () => {
+    let relevantInputFields: InputField[] = [];
 
-    const errors = Object.entries(formData)
-      .filter(([key, value]) => value.trim() === "")
-      .map(([key]) => key);
+    switch (formData.selectedAccount) {
+      case "merchant":
+        relevantInputFields = merchantGeneralInfoInputFields;
+        break;
+      case "agent":
+        relevantInputFields = agentGeneralInfoInputFields;
+        break;
+      case "support":
+      case "manager":
+      case "user":
+        relevantInputFields = generalInfoInputFields;
+        break;
+      default:
+        relevantInputFields = [];
+    }
+
+    relevantInputFields = [...relevantInputFields, ...feesInputFields];
+
+    const errors = relevantInputFields
+      .filter(
+        (field) => formData[field.name as keyof typeof formData].trim() === "",
+      )
+      .map((field) => field.name);
 
     if (errors.length > 0) {
       setValidationErrors(errors);
@@ -57,11 +81,15 @@ const Create = () => {
     }
 
     setFormData({
-      selectedAccount: "",
+      selectedAccount: "merchant",
       name: "",
       host: "",
       label: "",
       email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      merchants: "",
       settlementFee: "",
       settlementFixingFee: "",
     });
@@ -70,15 +98,20 @@ const Create = () => {
     setTimeout(() => {
       setSubmitted(false);
     }, 3000);
-
-    console.log("Form Data:", formData);
   };
 
-  const accountTypes = ["merchant", "support", "manager", "user"];
+  const setManager = (selectedValues: string[]) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      merchants: selectedValues.join(", "),
+    }));
+  };
+
+  const accountTypes = ["merchant", "support", "manager", "user", "agent"];
 
   const submitName = submitted ? "Account created" : "Create new account";
 
-  const generalInfoInputFields: InputField[] = [
+  const merchantGeneralInfoInputFields: InputField[] = [
     { label: "Name", name: "name", type: "text", placeholder: "Enter name" },
     { label: "Host", name: "host", type: "text", placeholder: "Enter host" },
     { label: "Label", name: "label", type: "text", placeholder: "Enter label" },
@@ -87,6 +120,43 @@ const Create = () => {
       name: "email",
       type: "email",
       placeholder: "Enter email",
+    },
+  ];
+
+  const generalInfoInputFields: InputField[] = [
+    {
+      label: "Email",
+      name: "email",
+      type: "email",
+      placeholder: "Enter email",
+    },
+    {
+      label: "Fist name",
+      name: "firstName",
+      type: "text",
+      placeholder: "Enter first name",
+    },
+    {
+      label: "Last name",
+      name: "lastName",
+      type: "text",
+      placeholder: "Enter last name",
+    },
+    {
+      label: "Password",
+      name: "password",
+      type: "text",
+      placeholder: "Enter password",
+    },
+  ];
+
+  const agentGeneralInfoInputFields: InputField[] = [
+    ...generalInfoInputFields,
+    {
+      label: "Select merchant(-s)",
+      name: "merchants",
+      type: "",
+      placeholder: "",
     },
   ];
 
@@ -105,9 +175,17 @@ const Create = () => {
     },
   ];
 
+  const merchants = [
+    { value: "apple", label: "Apple" },
+    { value: "banana", label: "Banana" },
+    { value: "blueberry", label: "Blueberry" },
+    { value: "grapes", label: "Grapes" },
+    { value: "pineapple", label: "Pineapple" },
+  ];
+
   return (
-    <div className="bg-white rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
-      <div className="ml-[20px] max-w-[590px] pb-[72px] pt-[24px]">
+    <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white">
+      <div className="ml-[20px] max-w-[630px] pb-[72px] pt-[24px]">
         <form onSubmit={handleSubmit}>
           <SelectAccount
             accountTypes={accountTypes}
@@ -115,14 +193,38 @@ const Create = () => {
             onAccountChange={handleAccountChange}
             isInvalid={validationErrors.includes("selectedAccount")}
           />
-          <div className="flex flex-row gap-[32px]">
-            <Info
-              title="General Information"
-              inputFields={generalInfoInputFields}
-              formData={formData}
-              handleInputChange={handleInputChange}
-              validationErrors={validationErrors}
-            />
+          <div className="flex flex-row gap-[72px]">
+            {formData.selectedAccount === "merchant" && (
+              <Info
+                title="General Information"
+                inputFields={merchantGeneralInfoInputFields}
+                formData={formData}
+                handleInputChange={handleInputChange}
+                validationErrors={validationErrors}
+              />
+            )}
+            {formData.selectedAccount === "agent" && (
+              <Info
+                title="General Information"
+                inputFields={agentGeneralInfoInputFields}
+                formData={formData}
+                merchants={merchants}
+                onMerchantChange={setManager}
+                handleInputChange={handleInputChange}
+                validationErrors={validationErrors}
+              />
+            )}
+            {(formData.selectedAccount === "support" ||
+              formData.selectedAccount === "manager" ||
+              formData.selectedAccount === "user") && (
+              <Info
+                title="General Information"
+                inputFields={generalInfoInputFields}
+                formData={formData}
+                handleInputChange={handleInputChange}
+                validationErrors={validationErrors}
+              />
+            )}
             <div>
               <Info
                 title="Fees information"

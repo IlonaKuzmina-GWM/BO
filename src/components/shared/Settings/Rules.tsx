@@ -5,7 +5,7 @@ import { useState } from "react";
 import CustomTable from "../CustomTable/CustomTable";
 import Modal from "../Modal";
 import RuleRows from "./RuleRows";
-import { Header, Rule } from "@/types";
+import { Rule } from "@/types";
 import PaginationComponent from "../PaginationComponent ";
 import { SettingsRulesTableHeaader } from "@/utils/tableHeaders";
 

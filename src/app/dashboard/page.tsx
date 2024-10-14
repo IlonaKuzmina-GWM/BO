@@ -27,9 +27,7 @@ const MainDashPage = () => {
   const [merchantChartData, setMerchantChartData] = useState<
     { merchant: string; successCount: number; failedCount: number }[]
   >([]);
-  const [transactions, setTransactions] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState<
     {
@@ -45,6 +43,18 @@ const MainDashPage = () => {
   >([]);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
+
+  const data = [
+    { x: 1, y: 23, z: 122 },
+    { x: 2, y: 3, z: 73 },
+    { x: 3, y: 15, z: 32 },
+    { x: 4, y: 35, z: 23 },
+    { x: 5, y: 45, z: 20 },
+    { x: 6, y: 25, z: 29 },
+    { x: 7, y: 17, z: 61 },
+    { x: 8, y: 32, z: 45 },
+    { x: 9, y: 43, z: 93 },
+];
 
   const fetchTransactionsData = async () => {
     setIsLoading(true);

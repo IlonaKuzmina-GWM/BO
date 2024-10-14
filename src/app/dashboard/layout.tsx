@@ -1,5 +1,5 @@
 import SiderBar from "@/components/shared/SideBar/SideBar";
-import React, { useContext } from "react";
+import React from "react";
 
 interface ILayout {
   children: React.ReactNode;

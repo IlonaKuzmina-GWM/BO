@@ -7,14 +7,13 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/UI/card";
-
 import React, { SetStateAction, useState } from "react";
-import NextLink from "next/link";
 import Image from "next/image";
-import Checkbox from "../Checkbox";
 import { useRouter } from "next/navigation";
+import { useStore } from "@/stores/StoreProvider";
 
 const Autorisation = () => {
+  const { authStore } = useStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -37,7 +36,10 @@ const Autorisation = () => {
     });
 
     const data = await response.json();
+
     if (response.ok) {
+      authStore.setLogged(data);
+      router.push("/dashboard");
     } else {
       setNotification({ success: false, message: data.error });
     }
@@ -53,17 +55,14 @@ const Autorisation = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        // Optionally: get the profile after login, if necessary
-        // await getProfile(data.token);
+        const { token } = await response.json();
+
+        getProfile(token);
 
         setNotification({ success: true, message: "Login successful!" });
-
-        router.push("/dashboard");
       } else {
-        setNotification({ success: false, message: data.error });
+        setNotification({ success: false, message: "Login failed" });
       }
     } catch (error) {
       console.error("Login error:", error);

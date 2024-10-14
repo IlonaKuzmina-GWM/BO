@@ -8,7 +8,7 @@ const RoleSwitcher: React.FC = observer(() => {
   const { authStore } = useStore();
 
 //   Only show the role switcher if the user is a developer
-  if (authStore.role !== 'developer') {
+  if (authStore.role !== 'developer' || 'admin') {
     return null;
   }
 

@@ -1,20 +1,20 @@
-
 import { NextRequest, NextResponse } from "next/server";
-import { userUrl } from "@/helpers/useUrl"; 
+import { userUrl } from "@/helpers/useUrl";
 
 export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return new NextResponse(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401, headers: { "Content-Type": "application/json" } }
-      );
+      return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const token = authHeader.split(" ")[1];
 
-    const apiUrl = userUrl("/auth/profile");
+    // const apiUrl = userUrl("/auth/profile");
+    const apiUrl = "https://pay.siquro.com/auth/profile";
 
     const data = await fetch(apiUrl, {
       method: "GET",
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
     }
 
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 }

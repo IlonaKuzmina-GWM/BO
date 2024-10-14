@@ -54,7 +54,7 @@ const SiinsWrapper = () => {
       setSiinsTransactions(paginatedSiins);
       setLoading(false);
       setTotalPages(totalPages);
-      console.log("sins", paginatedSiins);
+      // console.log("sins", paginatedSiins);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

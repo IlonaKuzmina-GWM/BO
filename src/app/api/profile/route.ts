@@ -13,8 +13,9 @@ export async function GET(request: NextRequest) {
 
     const token = authHeader.split(" ")[1];
 
-    // const apiUrl = userUrl("/auth/profile");
-    const apiUrl = "https://pay.siquro.com/auth/profile";
+    const apiUrl = userUrl("/auth/profile");
+
+    // const apiUrl ='https://pay.siquro.com/auth/profile';
 
     const data = await fetch(apiUrl, {
       method: "GET",
@@ -41,12 +42,26 @@ export async function GET(request: NextRequest) {
 
     const responseData = await data.json();
 
-    return new NextResponse(JSON.stringify(responseData), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const userId = responseData.id;
+
+    // Ensure userId is available
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User ID not found in response data" },
+        { status: 500 }
+      );
+    }
+
+    const response = NextResponse.json(responseData, { status: 200 });
+
+    response.cookies.set("userId", String(userId), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
     });
+
+    return response;
   } catch (error) {
     console.error("Failed to process profile request", error);
     return new NextResponse(

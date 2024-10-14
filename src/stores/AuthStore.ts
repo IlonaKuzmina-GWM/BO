@@ -1,5 +1,6 @@
 import { User } from "@/types/user";
 import { autorun, makeAutoObservable, runInAction } from "mobx";
+import { cookies } from "next/headers";
 
 export class AuthStore {
   logged = false;
@@ -9,13 +10,6 @@ export class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.hydrate();
-
-    if (typeof window !== "undefined") {
-      autorun(() => {
-        this.saveState();
-      });
-    }
   }
 
   setLogged(payload: any) {
@@ -24,17 +18,14 @@ export class AuthStore {
     this.secondRole = payload.role.toLowerCase();
     this.user = payload;
 
-    // Store userId in a cookie
-    // cookies().set("userId", `${payload.id}`);
-
-    // response.cookies.set("authToken", token, {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   sameSite: "lax",
-    //   path: "/",
-    // });
-
-    console.log("setLogged", payload);
+    // console.log("setLogged", payload);
+    console.log(
+      "setLogged two",
+      this.logged,
+      this.role,
+      this.secondRole,
+      this.user,
+    );
   }
 
   setLogOut() {
@@ -43,16 +34,31 @@ export class AuthStore {
     this.secondRole = null;
     this.user = null;
 
-    // here we shoul to delete cookies (userId, authToken, auth)
-    // cookies().delete("userId");
+    console.log(
+      "setLogOut",
+      this.logged,
+      this.role,
+      this.secondRole,
+      this.user,
+    );
   }
+
+  // setSecondRole(role: string) {
+  //   if (this.role === "developer") {
+  //     this.secondRole = this.secondRole === role ? "developer" : role;
+  //     return this.secondRole === role;
+  //   }
+  //   return false;
+  // }
 
   setSecondRole(role: string) {
     if (this.role === "developer") {
-      this.secondRole = this.secondRole === role ? "developer" : role;
-      return this.secondRole === role;
+      if (this.secondRole === role) {
+        this.secondRole = "developer";
+      } else {
+        this.secondRole = role;
+      }
     }
-    return false;
   }
 
   setSecondRoleAdmin() {
@@ -110,30 +116,5 @@ export class AuthStore {
     }
 
     return arrRoles.includes(this.role);
-  }
-
-  hydrate() {
-    if (typeof window !== "undefined") {
-      const logged = localStorage.getItem("logged");
-      const role = localStorage.getItem("role");
-      const secondRole = localStorage.getItem("secondRole");
-      const user = localStorage.getItem("user");
-
-      runInAction(() => {
-        this.logged = logged === "true";
-        this.role = role || null;
-        this.secondRole = secondRole || null;
-        this.user = user ? JSON.parse(user) : null;
-      });
-    }
-  }
-
-  saveState() {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("logged", String(this.logged));
-      localStorage.setItem("role", this.role || "");
-      localStorage.setItem("secondRole", this.secondRole || "");
-      localStorage.setItem("user", JSON.stringify(this.user));
-    }
   }
 }

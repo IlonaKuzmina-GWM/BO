@@ -37,6 +37,8 @@ const Autorisation = () => {
 
     const data = await response.json();
 
+    console.log ('what i got from profile route',data)
+
     if (response.ok) {
       authStore.setLogged(data);
       router.push("/dashboard");

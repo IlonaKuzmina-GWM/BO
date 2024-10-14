@@ -129,7 +129,7 @@ const MainDashPage = () => {
       //   })),
       // );
 
-      console.log("transactions in dashboard:", filteredTransactions);
+      // console.log("transactions in dashboard:", filteredTransactions);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

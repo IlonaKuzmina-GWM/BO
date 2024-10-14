@@ -33,11 +33,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiUrl = userUrl('/auth/login');
+    // const apiUrl = userUrl('/auth/login');
 
 
-    // const apiUrl ='https://pay.siquro.com/auth/login';
-    
+    const apiUrl ='https://pay.siquro.com/auth/login';
+
     const data = await fetch(apiUrl, {
       method: "POST",
       headers: {

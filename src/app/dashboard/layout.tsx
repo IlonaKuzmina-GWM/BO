@@ -1,5 +1,4 @@
-
-import RoleSwitcher from "@/components/roleSwitcher";
+import RoleSwitcher from "@/components/RoleSwitcher";
 import SiderBar from "@/components/shared/SideBar/SideBar";
 import React from "react";
 

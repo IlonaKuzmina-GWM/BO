@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
+import { Providers } from "@/components/Providers";
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -34,7 +35,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head></head>
       <body
-        className={cn("antialiased overflow-hidden", fontHeading.variable, fontBody.variable)}
+        className={cn(
+          "overflow-hidden antialiased",
+          fontHeading.variable,
+          fontBody.variable,
+        )}
       >
         <ThemeProvider
           attribute="class"
@@ -42,7 +47,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Providers>{children} </Providers>
         </ThemeProvider>
       </body>
     </html>

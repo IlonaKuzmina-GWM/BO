@@ -8,7 +8,6 @@ const INTERVALS = {
   THIS_YEAR: "this-year",
 };
 
-// Helper function to calculate start date based on interval
 export const getStartDateForInterval = (interval: string): Date | null => {
   const now = new Date();
   let startDate = null;

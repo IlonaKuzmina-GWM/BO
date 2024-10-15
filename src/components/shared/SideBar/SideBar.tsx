@@ -8,17 +8,24 @@ import SideBarLi from "./SideBarLi";
 import ModeToggle from "./ModeToggle";
 import NextLink from "next/link";
 import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { observer } from 'mobx-react-lite';
+import { useStore } from "@/stores/StoreProvider";
 
-const SiderBar = () => {
+const SiderBar: React.FC = observer(() => {
+  const { authStore } = useStore();
   const [openSideBar, setOpenSideBar] = useState(true);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
-
-  // console.log("pathname", pathname);
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setOpenSideBar(!openSideBar);
+  };
+
+  const logOut = () => {
+    authStore.setLogOut();
+    router.push("/");
   };
 
   return (
@@ -121,9 +128,9 @@ const SiderBar = () => {
 
       <div className="mt-10">
         <ModeToggle isSidebarOpen={openSideBar} />
-        <NextLink
-          href={"/"}
-          className="block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg"
+        <div
+          onClick={() => logOut()}
+          className="cursor-pointer block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg"
         >
           <div
             className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap items-center py-2 font-medium capitalize text-secondary`}
@@ -143,12 +150,12 @@ const SiderBar = () => {
               </span>
             )}
           </div>
-        </NextLink>
+        </div>
         <div className="divider h-[1px] w-full bg-fill"></div>
         <UserSideInfo isSidebarOpen={openSideBar} />
       </div>
     </aside>
   );
-};
+});
 
 export default SiderBar;

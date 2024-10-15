@@ -1,9 +1,6 @@
+import RoleSwitcher from "@/components/RoleSwitcher";
 import SiderBar from "@/components/shared/SideBar/SideBar";
-import React, { useContext } from "react";
-
-interface ILayout {
-  children: React.ReactNode;
-}
+import React from "react";
 
 export default function DasboardLayout({
   children,
@@ -11,9 +8,13 @@ export default function DasboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`flex bg-bgWhite h-svh`}>
+    <div className={`relative flex h-svh bg-bgWhite`}>
       <SiderBar />
-      <main className="flex w-full flex-row px-4 xl:px-10 py-4 overflow-y-auto">{children}</main>
+      <main className="flex w-full flex-row overflow-y-auto px-4 py-4 xl:px-10">
+        {children}
+      </main>
+
+      <RoleSwitcher />
     </div>
   );
 }

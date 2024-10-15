@@ -19,15 +19,13 @@ const SiderBar: React.FC = observer(() => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // console.log("pathname", pathname);
-
   const toggleSidebar = () => {
     setOpenSideBar(!openSideBar);
   };
 
   const logOut = () => {
     authStore.setLogOut();
-    router.push("/dashboard");
+    router.push("/");
   };
 
   return (
@@ -132,7 +130,7 @@ const SiderBar: React.FC = observer(() => {
         <ModeToggle isSidebarOpen={openSideBar} />
         <div
           onClick={() => logOut()}
-          className="block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg"
+          className="cursor-pointer block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg"
         >
           <div
             className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap items-center py-2 font-medium capitalize text-secondary`}

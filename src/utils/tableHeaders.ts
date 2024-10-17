@@ -72,11 +72,12 @@ export const ManagerKYCUserTableHeader: Header[] = [
 ];
 
 export const SettingsRulesTableHeaader: Header[] = [
-  { title: "Merchant", key: "merchant", width: "13%" },
-  { title: "Rule Type", key: "ruleType", width: "10%" },
-  { title: "Limit Type", key: "limitType", width: "12%" },
-  { title: "Action", key: "action", width: "20%" },
-  { title: "Limit Value", key: "limitValue", width: "12%" },
+  { title: "Merchant", key: "merchant", width: "12%" },
+  { title: "Provider", key: "provider", width: "13%" },
+  { title: "Rule Type", key: "ruleType", width: "9%" },
+  { title: "Limit Type", key: "limitType", width: "11%" },
+  { title: "Action", key: "action", width: "12%" },
+  { title: "Limit Value", key: "limitValue", width: "10%" },
   { title: "Comment", key: "comment", width: "23%" },
   { title: "", key: "edit", width: "4%" },
   { title: "", key: "delete", width: "6%" },

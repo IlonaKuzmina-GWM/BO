@@ -12,6 +12,7 @@ const RuleRows = ({ rule, index, openModal, deleteEntry }: IRuleRowProps) => {
   return (
     <>
       <td className="pl-3 pr-2 lg:pl-8">{rule.merchant}</td>
+      <td className="pr-2">{rule.provider}</td>
       <td className="pr-2">{rule.ruleType}</td>
       <td className="pr-2">{rule.limitType}</td>
       <td className="pr-2">{rule.action}</td>

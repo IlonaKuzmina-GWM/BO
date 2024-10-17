@@ -50,6 +50,16 @@ export interface Rule {
   action: string;
   limitValue: string;
   comment: string;
+  provider?: string;
+}
+
+export interface RuleRow {
+  selectLabel: string;
+  label: string;
+  description: string;
+  items: { value: string; label: string }[];
+  field: string;
+  value?: string;
 }
 
 export interface Header {

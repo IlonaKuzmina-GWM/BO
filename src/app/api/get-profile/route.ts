@@ -13,9 +13,9 @@ export async function GET(request: NextRequest) {
 
     const token = authHeader.split(" ")[1];
 
-    // const apiUrl = userUrl("/auth/profile");
+    const apiUrl = userUrl("/auth/profile");
 
-    const apiUrl ='https://pay.siquro.com/auth/profile';
+    // const apiUrl ='https://pay.siquro.com/auth/profile';
 
     const data = await fetch(apiUrl, {
       method: "GET",
@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
     const responseData = await data.json();
 
     const userId = responseData.id;
+    // const auth = responseData;
 
     // Ensure userId is available
     if (!userId) {
@@ -60,6 +61,13 @@ export async function GET(request: NextRequest) {
       sameSite: "lax",
       path: "/",
     });
+
+    // response.cookies.set("auth", JSON.stringify(auth), {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "lax",
+    //   path: "/",
+    // });
 
     return response;
   } catch (error) {

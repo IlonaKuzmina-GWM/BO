@@ -1,6 +1,5 @@
 import { User } from "@/types/user";
 import { autorun, makeAutoObservable, runInAction } from "mobx";
-import { cookies } from "next/headers";
 
 export class AuthStore {
   logged = false;
@@ -52,6 +51,8 @@ export class AuthStore {
   // }
 
   setSecondRole(role: string) {
+console.log("setSecondRole", this.secondRole);
+
     if (this.role === "developer") {
       if (this.secondRole === role) {
         this.secondRole = "developer";

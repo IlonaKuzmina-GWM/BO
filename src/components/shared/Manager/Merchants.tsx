@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import { Header, Merchant } from "@/types";
-import CustomTable from "../CustomTable/CustomTable";
-import Paragraph from "../Paragraph";
-import MerchantRows from "./MerchantRows";
-import PaginationComponent from "../PaginationComponent ";
-import DataLimitsSeter from "../DataLimitsSeter";
+import { Merchant } from "@/types";
 import { ManagerMerchantsTableHeader } from "@/utils/tableHeaders";
+import { useState } from "react";
+import CustomTable from "../CustomTable/CustomTable";
+import DataLimitsSeter from "../DataLimitsSeter";
+import PaginationComponent from "../PaginationComponent ";
+import Paragraph from "../Paragraph";
+import Search from "../Search";
+import MerchantRows from "./MerchantRows";
 
 const Merchants = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [merchants, setMerchants] = useState<Merchant[]>([
     {
       id: "426",
@@ -63,7 +65,6 @@ const Merchants = () => {
       status: "Enabled",
     },
   ]);
-  const [limit, setLimit] = useState<number>(10);
 
   const toggleStatus = (id: string) => {
     setMerchants((prevMerchants) =>
@@ -105,21 +106,32 @@ const Merchants = () => {
   );
 
   const totalPages = Math.ceil(merchants.length / 10);
-  const handleLimitChange = (limit: number) => {
-    setLimit(limit);
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
   };
 
   return (
     <div>
-      <div className="bg-white pt-[20px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
-        <div className="pb-[16px] pl-[20px]">
+      <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white pt-[20px]">
+        <div className="flex justify-between pb-[16px] pl-[20px]">
           <Paragraph text="List of Merchants" />
+          <Search
+            placeholder="Enter name, host, label"
+            aditionalClass="max-w-[302px]"
+            onSearch={handleSearch}
+          />
         </div>
-        <CustomTable columns={ManagerMerchantsTableHeader} dataName="merchants" data={merchants} renderRow={renderRow} />
+        <CustomTable
+          columns={ManagerMerchantsTableHeader}
+          dataName="merchants"
+          data={merchants}
+          renderRow={renderRow}
+        />
       </div>
 
       <div className="relative">
-        <DataLimitsSeter onChange={handleLimitChange} />
+        <DataLimitsSeter />
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}

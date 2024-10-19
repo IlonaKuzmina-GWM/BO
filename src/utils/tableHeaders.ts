@@ -62,20 +62,22 @@ export const ManagerAllUsersTableHeader: Header[] = [
 ];
 
 export const ManagerKYCUserTableHeader: Header[] = [
-  { title: "Nme", key: "name", width: "17%" },
-  { title: "Status", key: "status", width: "16%" },
-  { title: "Surname", key: "surname", width: "17%" },
-  { title: "Check Required", key: "isCHeckRequired", width: "16%" },
-  { title: "Create", key: "created", width: "17%", centered: true },
-  { title: "Updated", key: "updated", width: "17%", centered: true },
+  { title: "Status", key: "status", width: "14%" },
+  { title: "Name", key: "name", width: "15%" },
+  { title: "Surname", key: "surname", width: "15%" },
+  { title: "Email", key: "email", width: "15%" },
+  { title: "Check Required", key: "isCHeckRequired", width: "11%" },
+  { title: "Create", key: "created", width: "15%", centered: true },
+  { title: "Updated", key: "updated", width: "15%", centered: true },
 ];
 
 export const SettingsRulesTableHeaader: Header[] = [
-  { title: "Merchant", key: "merchant", width: "13%" },
-  { title: "Rule Type", key: "ruleType", width: "10%" },
-  { title: "Limit Type", key: "limitType", width: "12%" },
-  { title: "Action", key: "action", width: "20%" },
-  { title: "Limit Value", key: "limitValue", width: "12%" },
+  { title: "Merchant", key: "merchant", width: "12%" },
+  { title: "Provider", key: "provider", width: "13%" },
+  { title: "Rule Type", key: "ruleType", width: "9%" },
+  { title: "Limit Type", key: "limitType", width: "11%" },
+  { title: "Action", key: "action", width: "12%" },
+  { title: "Limit Value", key: "limitValue", width: "10%" },
   { title: "Comment", key: "comment", width: "23%" },
   { title: "", key: "edit", width: "4%" },
   { title: "", key: "delete", width: "6%" },

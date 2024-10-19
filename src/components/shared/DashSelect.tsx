@@ -19,6 +19,8 @@ interface ICustomMultiSelect {
   isMulti?: boolean;
   onSelectHandler: (selectedValues: string[]) => void;
   disabled?: boolean;
+  width?: string;
+  isInvalid?: boolean;
 }
 
 const CustomMultiSelect = ({
@@ -30,6 +32,8 @@ const CustomMultiSelect = ({
   isMulti = true,
   onSelectHandler,
   disabled,
+  width = "180px",
+  isInvalid = false,
 }: ICustomMultiSelect) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -87,13 +91,14 @@ const CustomMultiSelect = ({
   };
 
   return (
-    <div className="relative h-10 w-[180px]" ref={dropdownRef}>
+    <div className={`relative h-10 w-[${width}]`} ref={dropdownRef}>
       <button
+        type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`relative min-h-10 w-full rounded-sm border border-divider bg-white p-2 pe-5 text-start text-sm text-main ${
+        className={`relative min-h-10 w-full rounded-sm border bg-white p-2 pe-5 text-start text-sm text-main ${
           disabled ? "cursor-not-allowed text-secondary" : ""
-        }`}
+        } ${isInvalid ? "border-error" : "border-divider"}`}
       >
         <span
           className={`block ${
@@ -113,6 +118,9 @@ const CustomMultiSelect = ({
           }`}
         />
       </button>
+      {isInvalid && (
+        <div className="text-[12px] text-error">This field is required.</div>
+      )}
       {isOpen && (
         <div className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg">
           {searchInput && (

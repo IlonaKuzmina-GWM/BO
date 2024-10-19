@@ -13,9 +13,9 @@ export async function GET(request: NextRequest) {
 
     const token = authHeader.split(" ")[1];
 
-    const apiUrl = userUrl("/auth/profile");
+    // const apiUrl = userUrl("/auth/profile");
 
-    // const apiUrl ='https://pay.siquro.com/auth/profile';
+    const apiUrl ='https://pay.siquro.com/auth/profile';
 
     const data = await fetch(apiUrl, {
       method: "GET",

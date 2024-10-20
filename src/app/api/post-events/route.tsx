@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const filters = await request.json();
 
-    console.log("events route filter", filters);
+    // console.log("events route filter", filters);
 
     const apiUrl = userUrl("/events");
 

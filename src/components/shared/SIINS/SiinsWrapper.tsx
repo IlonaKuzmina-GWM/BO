@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 
 import Search from "../Search";
 import DatePickerWithRange from "../DatePickerWithRange";
@@ -13,74 +13,96 @@ import DataLimitsSeter from "../DataLimitsSeter";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
+import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { filterReducer, initialFilterState } from "./filterSiinsReducer";
 
 const SiinsWrapper = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedInterval, setSelectedInterval] = useState("");
-  const [selectedDateRange, setSelectedDateRange] = useState<
-    DateRange | undefined
-  >(undefined);
+  const [state, dispatch] = useReducer(filterReducer, initialFilterState);
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
-  const [limit, setLimit] = useState<number>(10);
 
   const fetchSiinsData = async () => {
+    setLoading(true);
+
+    let createdDateRange: [number, number] | boolean = false;
+    if (state.selectedDateRange?.from && state.selectedDateRange.to) {
+      const adjustedToDate = new Date(state.selectedDateRange.to);
+      adjustedToDate.setHours(23, 59, 59, 999);
+      createdDateRange = [
+        state.selectedDateRange.from.getTime(),
+        adjustedToDate.getTime(),
+      ];
+    }
+
+    const updatedDateRange: [number, number] | boolean = false;
+
     try {
-      const params = new URLSearchParams();
-      params.append("limit", limit.toString());
-      params.append("page", currentPage.toString());
-
-      if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
-        params.append("from", selectedDateRange.from.toISOString());
-        params.append("to", selectedDateRange.to.toISOString());
-
-      } else if (selectedInterval) {
-        params.append("interval", selectedInterval);
-      }
-
-      if (searchQuery) {
-        params.append("query", searchQuery);
-      }
-
-      const response = await fetch(`/api/get-siin?${params.toString()}`, {
-        method: "GET",
+      const response = await fetch("/api/post-siin-all", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          searchInput: state.searchQuery || "",
+          createdDateRange,
+          updatedDateRange,
+          paginationPage: state.currentPage,
+          paginationPerPage: state.limit,
+        }),
       });
-      const {
-        paginatedSiins,
-        totalPages,
-      }: { paginatedSiins: Siin[]; totalPages: number } = await response.json();
-      setSiinsTransactions(paginatedSiins);
-      setLoading(false);
-      setTotalPages(totalPages);
-      // console.log("sins", paginatedSiins);
+
+      if (response.ok) {
+        const res = await response.json();
+
+        setSiinsTransactions(res.response.siins);
+        setTotalPages(res.response.totalPages);
+      } else {
+        console.log("Siins response failed");
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchSiinsData();
-  }, [selectedInterval, selectedDateRange, limit, searchQuery, currentPage]);
+  }, [
+    state.searchQuery,
+    state.selectedDateRange,
+    state.limit,
+    state.currentPage,
+  ]);
 
   const handleSearch = (term: string) => {
-    setSearchQuery(term);
+    dispatch({ type: "SET_SEARCH_QUERY", payload: term });
   };
 
   const handleIntervalChange = (interval: string) => {
-    setSelectedInterval(interval);
-    setSelectedDateRange(undefined);
+    dispatch({ type: "SET_INTERVAL", payload: interval });
+
+    const startDate = getStartDateForInterval(interval);
+    const now = new Date();
+
+    if (startDate) {
+      const dateRange: DateRange = { from: startDate, to: now };
+      dispatch({ type: "SET_DATE_RANGE", payload: dateRange });
+    } else {
+      dispatch({ type: "SET_DATE_RANGE", payload: undefined });
+    }
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
-    setSelectedDateRange(range);
-    setSelectedInterval('Select Interval');
+    dispatch({ type: "SET_DATE_RANGE", payload: range });
   };
 
   const handleLimitChange = (limit: number) => {
-    setLimit(limit);
+    dispatch({ type: "SET_LIMIT", payload: limit });
   };
+
+  console.log(siinsTransactions)
 
   if (loading) {
     return (
@@ -102,11 +124,14 @@ const SiinsWrapper = () => {
 
           <div className="flex flex-col md:flex-row">
             <DashIntervalSelect
-              value={selectedInterval ? selectedInterval : "Select Interval"}
+              value={state.selectedInterval || "Select Interval"}
               label="No Interval"
               onIntervalChange={handleIntervalChange}
             />
-            <DatePickerWithRange initialDate={selectedDateRange} onDateChange={handleDateRangeChange} />
+            <DatePickerWithRange
+              initialDate={state.selectedDateRange}
+              onDateChange={handleDateRangeChange}
+            />
           </div>
         </div>
 
@@ -117,11 +142,13 @@ const SiinsWrapper = () => {
         <CustomSiinsTable data={siinsTransactions} columns={SiinsTableHeader} />
 
         <div className="relative">
-          <DataLimitsSeter onChange={handleLimitChange} />
+          <DataLimitsSeter defaultValue={siinsTransactions.length} onChange={handleLimitChange} />
           <PaginationComponent
-            currentPage={currentPage}
+            currentPage={state.currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={(page) =>
+              dispatch({ type: "SET_CURRENT_PAGE", payload: page })
+            }
           />
         </div>
       </div>

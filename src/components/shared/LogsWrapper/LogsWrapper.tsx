@@ -113,7 +113,7 @@ const LogsWrapper = () => {
   }
 
   return (
-    <div className="flex max-w-[1440px] flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-5">
           <Search

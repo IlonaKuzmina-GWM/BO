@@ -3,7 +3,7 @@ import React from "react";
 const LoadingLogsTableSkeleton = () => {
   return (
     <React.Fragment>
-      {[...Array(5)].map((_, index) => (
+      {[...Array(10)].map((_, index) => (
         <tr
           key={index}
           className="relative h-[50px] animate-pulse cursor-pointer border-b-[1px] border-b-hoverBg bg-whiteBg transition-all last:border-none hover:bg-hoverBg"

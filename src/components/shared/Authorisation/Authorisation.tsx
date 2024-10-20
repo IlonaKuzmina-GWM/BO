@@ -27,12 +27,9 @@ const Autorisation = () => {
 
   const router = useRouter();
 
-  const getProfile = async (token: string) => {
+  const getProfile = async () => {
     const response = await fetch("/api/get-profile", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
 
     const data = await response.json();
@@ -53,9 +50,7 @@ const Autorisation = () => {
       });
 
       if (response.ok) {
-        const { token } = await response.json();
-
-        getProfile(token);
+        getProfile();
 
         setNotification({ success: true, message: "Login successful!" });
       } else {

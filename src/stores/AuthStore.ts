@@ -18,13 +18,13 @@ export class AuthStore {
     this.user = payload;
 
     // console.log("setLogged", payload);
-    console.log(
-      "setLogged two",
-      this.logged,
-      this.role,
-      this.secondRole,
-      this.user,
-    );
+    // console.log(
+    //   "setLogged two",
+    //   this.logged,
+    //   this.role,
+    //   this.secondRole,
+    //   this.user,
+    // );
   }
 
   setLogOut() {
@@ -51,8 +51,6 @@ export class AuthStore {
   // }
 
   setSecondRole(role: string) {
-console.log("setSecondRole", this.secondRole);
-
     if (this.role === "developer") {
       if (this.secondRole === role) {
         this.secondRole = "developer";
@@ -60,31 +58,32 @@ console.log("setSecondRole", this.secondRole);
         this.secondRole = role;
       }
     }
+    // console.log("setSecondRole", this.secondRole);
   }
 
-  setSecondRoleAdmin() {
-    return this.setSecondRole("admin");
-  }
+  // setSecondRoleAdmin() {
+  //   return this.setSecondRole("admin");
+  // }
 
-  setSecondRoleMerchant() {
-    return this.setSecondRole("merchant");
-  }
+  // setSecondRoleMerchant() {
+  //   return this.setSecondRole("merchant");
+  // }
 
-  setSecondRoleManager() {
-    return this.setSecondRole("manager");
-  }
+  // setSecondRoleManager() {
+  //   return this.setSecondRole("manager");
+  // }
 
-  isSecondRoleAdmin() {
-    return this.secondRole === "admin";
-  }
+  // isSecondRoleAdmin() {
+  //   return this.secondRole === "admin";
+  // }
 
-  isSecondRoleMerchant() {
-    return this.secondRole === "merchant";
-  }
+  // isSecondRoleMerchant() {
+  //   return this.secondRole === "merchant";
+  // }
 
-  isSecondRoleManager() {
-    return this.secondRole === "manager";
-  }
+  // isSecondRoleManager() {
+  //   return this.secondRole === "manager";
+  // }
 
   get userId() {
     return this.user ? this.user.id : null;
@@ -117,5 +116,14 @@ console.log("setSecondRole", this.secondRole);
     }
 
     return arrRoles.includes(this.role);
+  }
+
+  saveState() {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("logged", String(this.logged));
+      localStorage.setItem("role", this.role || "");
+      localStorage.setItem("secondRole", this.secondRole || "");
+      localStorage.setItem("user", JSON.stringify(this.user));
+    }
   }
 }

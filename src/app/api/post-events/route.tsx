@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
 
     console.log("events route filter", filters);
 
-    // const apiUrl = userUrl("/events");
+    const apiUrl = userUrl("/events");
 
-    const apiUrl ='https://pay.siquro.com/events';
+    // const apiUrl ='https://pay.siquro.com/events';
 
     const data = await fetch(apiUrl, {
       method: "POST",

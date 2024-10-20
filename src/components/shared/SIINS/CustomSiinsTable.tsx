@@ -174,7 +174,7 @@ const CustomSiinsTable = ({
           <tbody>
             {data.map((siin) => {
               const transactionsTableHeader =
-                Object.keys(siin.transaction).length > 0 ? true : false;
+                siin.transaction && typeof siin.transaction === "object";
               const isExpanded =
                 expandedRows.includes(siin.id) && transactionsTableHeader;
 
@@ -193,23 +193,21 @@ const CustomSiinsTable = ({
                       />
                     </td>
                     <td className="relative text-center">
-                      {
-                        transactionsTableHeader ? (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger className="h-full w-full">
-                                <span className="absolute right-2/3 top-1/2 h-1 w-1 rounded-full bg-slate-600" />
-                                {siin.id}
-                              </TooltipTrigger>
-                              <TooltipContent className="ms-2">
-                                <p> SIIN contain transaction</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        ) : (
-                          siin.id
-                        )
-                      }
+                      {transactionsTableHeader ? (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger className="h-full w-full">
+                              <span className="absolute right-2/3 top-1/2 h-1 w-1 rounded-full bg-slate-600" />
+                              {siin.id}
+                            </TooltipTrigger>
+                            <TooltipContent className="ms-2">
+                              <p> SIIN contain transaction</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      ) : (
+                        siin.id
+                      )}
                     </td>
 
                     <td className="pe-8">{siin.senderIban}</td>
@@ -218,13 +216,13 @@ const CustomSiinsTable = ({
                     <td className="pe-2">{siin.referenceCode}</td>
                     <td className="pe-2 font-semibold">€ {siin.amount}</td>
                     <td className="pe-2">
-                      <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4 gap-[4px]">
+                      <span className="flex flex-wrap items-center justify-center gap-[4px] rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
                         <span>{formatDateTime(siin.createdAt).date}</span>{" "}
                         <span>{formatDateTime(siin.createdAt).time}</span>
                       </span>
                     </td>
                     <td className="pe-2">
-                      <span className="flex flex-wrap items-center justify-center rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4 gap-[4px]">
+                      <span className="flex flex-wrap items-center justify-center gap-[4px] rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
                         <span>{formatDateTime(siin.updatedAt).date}</span>{" "}
                         <span>{formatDateTime(siin.updatedAt).time}</span>
                       </span>

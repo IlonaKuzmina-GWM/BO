@@ -1,7 +1,7 @@
 import DashSelect from "../DashSelect";
 import Paragraph from "../Paragraph";
 import Dashbutton from "../DashButton";
-import { useState } from "react";
+import { use, useState } from "react";
 import CustomTable from "../CustomTable/CustomTable";
 import Modal from "../Modal";
 import RuleRows from "./RuleRows";
@@ -73,7 +73,7 @@ const Rules = () => {
           <Paragraph text="Limits with Flexible Rules and Actions" />
           <div className="flex flex-row gap-[15px]">
             <DashSelect
-              value={"Select Merchant"}
+              value={selectedValues.length > 0 ? selectedValues[0] : "Select Merchant"}
               label={"All Merchants"}
               items={items}
               searchInput

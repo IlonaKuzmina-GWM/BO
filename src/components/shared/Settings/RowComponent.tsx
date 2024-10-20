@@ -22,7 +22,7 @@ const RowComponent = ({
   return (
     <div className="mb-[16px] flex gap-[16px]">
       <div className="flex w-[212px] flex-col gap-[8px]">
-        <label className="block text-[14px] text-[#333]">{selectLabel}</label>
+        <label className="block text-[14px] text-main">{selectLabel}</label>
         <TableRowSelect
           value={value}
           label={label}

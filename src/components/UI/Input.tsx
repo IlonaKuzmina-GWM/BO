@@ -6,7 +6,7 @@ interface IInputProps {
   placeholder: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isInvalid?: boolean;
-  width?: string; // Add optional width prop
+  width?: string;
 }
 
 const Input = ({

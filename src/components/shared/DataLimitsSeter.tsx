@@ -7,7 +7,7 @@ interface DataLimitsSeterProps {
 }
 
 export default function DataLimitsSeter({
-  defaultValue = 10,
+  defaultValue,
   onChange,
 }: DataLimitsSeterProps) {
   const [activeLimit, setActiveLimit] = React.useState(defaultValue);

@@ -1,21 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { userUrl } from "@/helpers/useUrl";
+import { cookies } from "next/headers";
 
 export async function GET(request: NextRequest) {
+  const cookiesStore = cookies();
+
+  const token = cookiesStore.get("authToken")?.value;
+
   try {
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+    // const authHeader = request.headers.get("Authorization");
+    // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    //   return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+    //     status: 401,
+    //     headers: { "Content-Type": "application/json" },
+    //   });
+    // }
 
-    const token = authHeader.split(" ")[1];
+    // const token = authHeader.split(" ")[1];
 
-    // const apiUrl = userUrl("/auth/profile");
+    const apiUrl = userUrl("/auth/profile");
 
-    const apiUrl ='https://pay.siquro.com/auth/profile';
+    // const apiUrl ='https://pay.siquro.com/auth/profile';
 
     const data = await fetch(apiUrl, {
       method: "GET",
@@ -43,6 +48,7 @@ export async function GET(request: NextRequest) {
     const responseData = await data.json();
 
     const userId = responseData.id;
+    // const auth = responseData;
 
     // Ensure userId is available
     if (!userId) {

@@ -27,17 +27,12 @@ const Autorisation = () => {
 
   const router = useRouter();
 
-  const getProfile = async (token: string) => {
-    const response = await fetch("/api/profile", {
+  const getProfile = async () => {
+    const response = await fetch("/api/get-profile", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
 
     const data = await response.json();
-
-    console.log ('what i got from profile route',data)
 
     if (response.ok) {
       authStore.setLogged(data);
@@ -49,18 +44,13 @@ const Autorisation = () => {
 
   const signIn = async () => {
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/post-login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
-        const { token } = await response.json();
-
-        getProfile(token);
+        getProfile();
 
         setNotification({ success: true, message: "Login successful!" });
       } else {

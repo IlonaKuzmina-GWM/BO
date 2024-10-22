@@ -12,13 +12,10 @@ import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
 import DashSideTable from "@/components/shared/Transactions/DashSideTable";
 import { DashTableData, Siin, Transaction } from "@/types";
 import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
-import { useStore } from "@/stores/StoreProvider";
-import { observer } from "mobx-react-lite";
+
 import { useRouter } from "next/navigation";
 
-
-const MainDashPage = observer(() => {
-  const { authStore } = useStore();
+const MainDashPage = () => {
   const [countryTableData, setCountryTableData] = useState<DashTableData[]>([]);
   const [merchnatsTableData, setMerchantsTableData] = useState<DashTableData[]>(
     [],
@@ -49,12 +46,6 @@ const MainDashPage = observer(() => {
   >([]);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-
-    useEffect(() => {
-    if (!authStore.isLogged) {
-      router.push("/");
-    }
-  }, [authStore.isLogged, router]);
 
   const data = [
     { x: 1, y: 23, z: 122 },
@@ -220,8 +211,6 @@ const MainDashPage = observer(() => {
     setSelectedInterval("");
   };
 
-
-
   return (
     <div className="flex w-full flex-col gap-4 xl:gap-6">
       <DashPageTitle
@@ -290,6 +279,6 @@ const MainDashPage = observer(() => {
       </div>
     </div>
   );
-});
+};
 
 export default MainDashPage;

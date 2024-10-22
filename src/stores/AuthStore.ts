@@ -1,5 +1,5 @@
 import { User } from "@/types/user";
-import { autorun, makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export class AuthStore {
   logged = false;
@@ -9,6 +9,7 @@ export class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadState();
   }
 
   setLogged(payload: any) {
@@ -17,14 +18,7 @@ export class AuthStore {
     this.secondRole = payload.role.toLowerCase();
     this.user = payload;
 
-    // console.log("setLogged", payload);
-    // console.log(
-    //   "setLogged two",
-    //   this.logged,
-    //   this.role,
-    //   this.secondRole,
-    //   this.user,
-    // );
+    this.saveState();
   }
 
   setLogOut() {
@@ -33,72 +27,53 @@ export class AuthStore {
     this.secondRole = null;
     this.user = null;
 
-    console.log(
-      "setLogOut",
-      this.logged,
-      this.role,
-      this.secondRole,
-      this.user,
-    );
+    this.saveState();
   }
-
-  // setSecondRole(role: string) {
-  //   if (this.role === "developer") {
-  //     this.secondRole = this.secondRole === role ? "developer" : role;
-  //     return this.secondRole === role;
-  //   }
-  //   return false;
-  // }
 
   setSecondRole(role: string) {
     if (this.role === "developer") {
       if (this.secondRole === role) {
+        // If the selected role is already set as secondRole, reset it to "developer"
         this.secondRole = "developer";
       } else {
+        // Set the new role as secondRole
         this.secondRole = role;
       }
+      this.saveState();
+      console.log("setSecondRole", this.secondRole);
     }
-    // console.log("setSecondRole", this.secondRole);
   }
 
-  // setSecondRoleAdmin() {
-  //   return this.setSecondRole("admin");
-  // }
-
-  // setSecondRoleMerchant() {
-  //   return this.setSecondRole("merchant");
-  // }
-
-  // setSecondRoleManager() {
-  //   return this.setSecondRole("manager");
-  // }
-
-  // isSecondRoleAdmin() {
-  //   return this.secondRole === "admin";
-  // }
-
-  // isSecondRoleMerchant() {
-  //   return this.secondRole === "merchant";
-  // }
-
-  // isSecondRoleManager() {
-  //   return this.secondRole === "manager";
-  // }
-
-  get userId() {
-    return this.user ? this.user.id : null;
+  isSecondRoleOwner() {
+    return this.secondRole === "owner";
   }
 
-  get isLogged() {
-    return this.logged;
+  isSecondRoleAdmin() {
+    return this.secondRole === "admin";
   }
 
-  get userRole() {
-    return this.role;
+  isSecondRoleMerchant() {
+    return this.secondRole === "merchant";
   }
 
-  get userSecondRole() {
-    return this.secondRole;
+  isSecondRoleManager() {
+    return this.secondRole === "manager";
+  }
+
+  isSecondRoleUser() {
+    return this.secondRole === "user";
+  }
+
+  isSecondRoleAgent() {
+    return this.secondRole === "agent";
+  }
+
+  isSecondRoleSupport() {
+    return this.secondRole === "support";
+  }
+
+  isSecondRoleFinance() {
+    return this.secondRole === "finance";
   }
 
   isRoleGranted(roles?: string): boolean {
@@ -124,6 +99,28 @@ export class AuthStore {
       localStorage.setItem("role", this.role || "");
       localStorage.setItem("secondRole", this.secondRole || "");
       localStorage.setItem("user", JSON.stringify(this.user));
+    }
+  }
+
+  loadState() {
+    if (typeof window !== "undefined") {
+      const logged = localStorage.getItem("logged") === "true";
+      const role = localStorage.getItem("role");
+      const secondRole = localStorage.getItem("secondRole");
+      const user = localStorage.getItem("user");
+
+      if (logged && user) {
+        this.logged = true;
+        this.role = role;
+        this.secondRole = secondRole;
+        this.user = JSON.parse(user);
+      } else {
+        // Ensure state is reset if no valid data is found
+        this.logged = false;
+        this.role = null;
+        this.secondRole = null;
+        this.user = null;
+      }
     }
   }
 }

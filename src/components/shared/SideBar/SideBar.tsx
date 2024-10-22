@@ -97,6 +97,7 @@ const SiderBar: React.FC = observer(() => {
             isSidebarOpen={openSideBar}
             activePathName={pathname}
           />
+
           <SideBarLi
             name={"settlement"}
             link={"/dashboard/settlement"}

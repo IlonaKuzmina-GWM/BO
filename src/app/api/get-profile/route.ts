@@ -8,19 +8,7 @@ export async function GET(request: NextRequest) {
   const token = cookiesStore.get("authToken")?.value;
 
   try {
-    // const authHeader = request.headers.get("Authorization");
-    // if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    //   return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
-    //     status: 401,
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    // }
-
-    // const token = authHeader.split(" ")[1];
-
     const apiUrl = userUrl("/auth/profile");
-
-    // const apiUrl ='https://pay.siquro.com/auth/profile';
 
     const data = await fetch(apiUrl, {
       method: "GET",
@@ -48,19 +36,18 @@ export async function GET(request: NextRequest) {
     const responseData = await data.json();
 
     const userId = responseData.id;
-    // const auth = responseData;
-
-    // Ensure userId is available
-    if (!userId) {
-      return NextResponse.json(
-        { error: "User ID not found in response data" },
-        { status: 500 }
-      );
-    }
+    const userRole = responseData.role;
 
     const response = NextResponse.json(responseData, { status: 200 });
 
     response.cookies.set("userId", String(userId), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+
+    response.cookies.set("userRole", String(userRole), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

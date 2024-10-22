@@ -17,11 +17,21 @@ const RoleSwitcher: React.FC = observer(() => {
     }
   }, []);
 
-  if (authStore.role !== "developer" && authStore.role !== "admin") {
+  if (authStore.role !== "developer" && authStore.role !== "owner") {
     return null;
   }
 
-  const roles = ["developer", "admin", "merchant", "manager"];
+  const roles = [
+    "developer",
+    "owner",
+    "admin",
+    "merchant",
+    "manager",
+    "user",
+    "agent",
+    "support",
+    "finance",
+  ];
 
   const handleRoleSwitch = (role: string) => {
     authStore.setSecondRole(role);
@@ -29,10 +39,9 @@ const RoleSwitcher: React.FC = observer(() => {
 
   return (
     <div className="relative">
-
       <div
-        className={`absolute right-0 top-4 overflow-hidden bg-blue100 rounded-l-sm transition-all duration-300 ease-in-out ${
-          isExpanded ? "opacity-100 w-[200px]" : "opacity-0"
+        className={`absolute right-0 top-4 overflow-hidden rounded-l-sm bg-blue100 transition-all duration-300 ease-in-out ${
+          isExpanded ? "w-[200px] opacity-100" : "opacity-0"
         }`}
         style={{
           maxHeight: isExpanded ? `${contentHeight}px` : "40px",
@@ -40,8 +49,8 @@ const RoleSwitcher: React.FC = observer(() => {
         aria-expanded={isExpanded}
       >
         <div className="relative p-4 pe-8" ref={contentRef}>
-          <h3 className="mb-4 text-md font-semibold text-main">Switch Role</h3>
-     
+          <h3 className="text-md mb-4 font-semibold text-main">Switch Role</h3>
+
           <div
             className="absolute right-2 top-2 cursor-pointer"
             onClick={() => {
@@ -56,10 +65,10 @@ const RoleSwitcher: React.FC = observer(() => {
               className="dark:invert"
             />
           </div>
-   
+
           <div>
             {roles.map((role) => (
-              <label key={role} className="block mb-2">
+              <label key={role} className="mb-2 block cursor-pointer">
                 <input
                   type="checkbox"
                   checked={authStore.secondRole === role}
@@ -73,10 +82,9 @@ const RoleSwitcher: React.FC = observer(() => {
         </div>
       </div>
 
-
       {!isExpanded && (
         <div
-          className="absolute right-0 top-4 cursor-pointer bg-blue100 p-2 rounded-l-sm w-[50px]"
+          className="absolute right-0 top-4 w-[50px] cursor-pointer rounded-l-sm bg-blue100 p-2"
           onClick={() => {
             setIsExpanded(true);
           }}

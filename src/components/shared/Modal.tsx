@@ -63,9 +63,8 @@ const Modal = ({
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  fill="white"
+                  style={{ fill: 'var(--white)', stroke: 'var(--white)' }}
                   className="w-6 h-6"
-                  stroke="white"
                   strokeWidth="2"
                 >
                   <path

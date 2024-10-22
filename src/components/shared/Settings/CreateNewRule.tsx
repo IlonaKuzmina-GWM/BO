@@ -2,6 +2,7 @@ import { Rule, RuleRow } from "@/types";
 import { useState } from "react";
 import DashButton from "../DashButton";
 import RowComponent from "./RowComponent";
+import Input from "@/components/UI/Input";
 
 const ruleTypes = [
   { value: "country", label: "Country" },
@@ -53,7 +54,9 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
     }));
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target;
     setRule((prevRule) => ({
       ...prevRule,
@@ -76,7 +79,7 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
   const firstSectionRows: RuleRow[] = [
     {
       selectLabel: "Rule Types",
-      label: "All Rule Types",
+      label: "Select type",
       description:
         "Select the type of restriction to apply, such as limiting transactions by country, provider, or user.",
       items: ruleTypes,
@@ -85,7 +88,7 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
     },
     {
       selectLabel: "Providers",
-      label: "All Providers",
+      label: "Select provider",
       description: "Choose the payment provider to apply this rule to.",
       items: providers,
       field: "provider",
@@ -93,7 +96,7 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
     },
     {
       selectLabel: "Limit Type",
-      label: "All Limit Types",
+      label: "Select limit",
       description:
         "Select the limit type, such as per day, or per transaction.",
       items: limitTypes,
@@ -102,7 +105,7 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
     },
     {
       selectLabel: "Limit Value",
-      label: "All Limit Values",
+      label: "Enter value",
       description:
         "Enter the limit value, such as the maximum number of transactions or amount allowed.",
       items: limitValues,
@@ -116,7 +119,7 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
       selectLabel: "Action",
       label: "All Actions",
       description:
-        "Select the action to take when the limit is reached, such as blocking transactions, sending alerts, or applying limits.",
+        "Choose the action to be taken when the limit is reached, such as blocking transactions or switching providers.",
       items: actions,
       field: "action",
       value: rule.action,
@@ -137,18 +140,39 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
   return (
     <div className="w-[554px] px-[20px] py-[25px] text-main">
       <h3 className="mb-[16px] font-semibold">Conditions of Execution</h3>
-      {firstSectionRows.map((row, index) => (
-        <RowComponent
-          selectLabel={row.selectLabel}
-          key={index}
-          label={row.label}
-          description={row.description}
-          items={row.items}
-          field={row.field}
-          value={row.value!}
-          onSelectHandler={handleSelectChange}
-        />
-      ))}
+      {firstSectionRows.map((row, index) =>
+        row.field !== "limitValue" ? (
+          <RowComponent
+            selectLabel={row.selectLabel}
+            key={index}
+            label={row.label}
+            description={row.description}
+            items={row.items}
+            field={row.field}
+            value={row.value!}
+            onSelectHandler={handleSelectChange}
+          />
+        ) : (
+          <div className="mb-[16px] flex gap-[16px]" key={index}>
+            <div className="flex w-[212px] flex-col gap-[8px]">
+              <Input
+                key={index}
+                label="Limit value"
+                name={row.field}
+                type="text"
+                value={row.value!}
+                placeholder="Enter value"
+                onChange={handleInputChange}
+                width="212px"
+              />
+            </div>
+            <div className="w-[286px] self-end text-[12px] text-secondary">
+              {row.description}
+            </div>
+          </div>
+        ),
+      )}
+
       <h3 className="mb-[16px] mt-[25px] font-semibold">
         Action When Limit Is Reached
       </h3>
@@ -166,16 +190,19 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
       ))}
       <div className="mb-[21px] mt-[25px] flex-col gap-[8px]">
         <div className="flex w-[340px] flex-col">
-          <label className="mb-[8px] block text-[14px] text-[#333]">
+          <label className="mb-[8px] block text-[14px] text-main">
             Comment (optional):
           </label>
-          <textarea
-            name="comment"
-            value={rule.comment}
-            onChange={handleInputChange}
-            placeholder="Enter comment"
-            className="w-full rounded border p-2"
-          />
+          <div>
+            <textarea
+              name="comment"
+              value={rule.comment}
+              onChange={handleInputChange}
+              placeholder="Enter text"
+              className="w-full resize-none rounded border border-divider p-2"
+              style={{ width: "340px", height: "126px" }}
+            />
+          </div>
         </div>
         <div className="mt-[8px] w-[286px] self-end text-[12px] text-secondary">
           Add any additional comments or notes about this rule.

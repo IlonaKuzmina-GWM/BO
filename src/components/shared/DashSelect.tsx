@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Check, ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import Search from "./Search";
 
 interface IItem {
@@ -105,8 +105,7 @@ const CustomMultiSelect = ({
             !isOpen ? "overflow-hidden text-ellipsis whitespace-nowrap" : ""
           }`}
         >
-          {selectedValues.length === 0
-            ? value
+          {value ? value
             : selectedValues
                 .map((val) => items.find((item) => item.value === val)?.label)
                 .join(", ")}

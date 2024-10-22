@@ -50,8 +50,8 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-bgModal bg-opacity-50">
-      <div ref={modalRef} className="rounded bg-white text-white shadow-lg">
+    <div className="fixed inset-0 flex bg-bgModal bg-opacity-50 ">
+      <div ref={modalRef} className="rounded bg-white text-white shadow-lg mx-auto my-10 overflow-y-auto max-h-fit">
         {title && (
           <div className="flex justify-between bg-blue700 p-[20px] text-lg font-semibold">
             <div>{title}</div>

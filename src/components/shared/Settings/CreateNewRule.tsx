@@ -138,7 +138,7 @@ const CreateNewRule = ({ onAddNewRule }: CreateNewRuleProps) => {
   };
 
   return (
-    <div className="w-[554px] px-[20px] py-[25px] text-main">
+    <div className="max-w-554px px-[20px] py-[25px] text-main">
       <h3 className="mb-[16px] font-semibold">Conditions of Execution</h3>
       {firstSectionRows.map((row, index) =>
         row.field !== "limitValue" ? (

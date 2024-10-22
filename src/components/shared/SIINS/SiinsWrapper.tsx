@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 
 import Search from "../Search";
 import DatePickerWithRange from "../DatePickerWithRange";
@@ -14,23 +14,29 @@ import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
-import { filterReducer, initialFilterState } from "./filterSiinsReducer";
 
 const SiinsWrapper = () => {
-  const [state, dispatch] = useReducer(filterReducer, initialFilterState);
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [limit, setLimit] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectedInterval, setSelectedInterval] = useState("");
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
 
   const fetchSiinsData = async () => {
     setLoading(true);
 
     let createdDateRange: [number, number] | boolean = false;
-    if (state.selectedDateRange?.from && state.selectedDateRange.to) {
-      const adjustedToDate = new Date(state.selectedDateRange.to);
+    if (selectedDateRange?.from && selectedDateRange.to) {
+      const adjustedToDate = new Date(selectedDateRange.to);
       adjustedToDate.setHours(23, 59, 59, 999);
       createdDateRange = [
-        state.selectedDateRange.from.getTime(),
+        selectedDateRange.from.getTime(),
         adjustedToDate.getTime(),
       ];
     }
@@ -44,11 +50,11 @@ const SiinsWrapper = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          searchInput: state.searchQuery || "",
+          searchInput: searchQuery || "",
           createdDateRange,
           updatedDateRange,
-          paginationPage: state.currentPage,
-          paginationPerPage: state.limit,
+          paginationPage: currentPage,
+          paginationPerPage: limit,
         }),
       });
 
@@ -69,40 +75,37 @@ const SiinsWrapper = () => {
 
   useEffect(() => {
     fetchSiinsData();
-  }, [
-    state.searchQuery,
-    state.selectedDateRange,
-    state.limit,
-    state.currentPage,
-  ]);
+  }, [searchQuery, limit, currentPage, selectedDateRange]);
 
   const handleSearch = (term: string) => {
-    dispatch({ type: "SET_SEARCH_QUERY", payload: term });
+    setSearchQuery(term);
   };
 
   const handleIntervalChange = (interval: string) => {
-    dispatch({ type: "SET_INTERVAL", payload: interval });
+    setCurrentPage(1);
+    setSelectedInterval(interval);
 
     const startDate = getStartDateForInterval(interval);
     const now = new Date();
 
     if (startDate) {
       const dateRange: DateRange = { from: startDate, to: now };
-      dispatch({ type: "SET_DATE_RANGE", payload: dateRange });
+      setSelectedDateRange(dateRange);
     } else {
-      dispatch({ type: "SET_DATE_RANGE", payload: undefined });
+      setSelectedDateRange(undefined);
     }
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
-    dispatch({ type: "SET_DATE_RANGE", payload: range });
+    setSelectedDateRange(range);
+    setSelectedInterval("");
   };
 
   const handleLimitChange = (limit: number) => {
-    dispatch({ type: "SET_LIMIT", payload: limit });
+    setLimit(limit);
   };
 
-  console.log(siinsTransactions)
+  console.log(siinsTransactions);
 
   if (loading) {
     return (
@@ -124,12 +127,12 @@ const SiinsWrapper = () => {
 
           <div className="flex flex-col md:flex-row">
             <DashIntervalSelect
-              value={state.selectedInterval || "Select Interval"}
+              value={selectedInterval || "Select Interval"}
               label="No Interval"
               onIntervalChange={handleIntervalChange}
             />
             <DatePickerWithRange
-              initialDate={state.selectedDateRange}
+              initialDate={selectedDateRange}
               onDateChange={handleDateRangeChange}
             />
           </div>
@@ -142,13 +145,14 @@ const SiinsWrapper = () => {
         <CustomSiinsTable data={siinsTransactions} columns={SiinsTableHeader} />
 
         <div className="relative">
-          <DataLimitsSeter defaultValue={siinsTransactions.length} onChange={handleLimitChange} />
+          <DataLimitsSeter
+            defaultValue={siinsTransactions.length}
+            onChange={handleLimitChange}
+          />
           <PaginationComponent
-            currentPage={state.currentPage}
+            currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page) =>
-              dispatch({ type: "SET_CURRENT_PAGE", payload: page })
-            }
+            onPageChange={setCurrentPage}
           />
         </div>
       </div>

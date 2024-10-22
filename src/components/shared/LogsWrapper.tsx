@@ -1,41 +1,40 @@
 "use client";
 
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Log } from "@/types/logs";
 import { LogsTableHeader } from "@/utils/tableHeaders";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 
-import {
-  filterReducer,
-  initialFilterState,
-} from "./filterReducer";
-
-import CustomLogsTable from "../CustomLogsTable";
-import DashIntervalSelect from "../DashIntervalSelect";
-import DataLimitsSeter from "../DataLimitsSeter";
-import DatePickerWithRange from "../DatePickerWithRange";
-import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
-import PaginationComponent from "../PaginationComponent ";
-import Search from "../Search";
+import CustomLogsTable from "./CustomLogsTable";
+import DashIntervalSelect from "./DashIntervalSelect";
+import DataLimitsSeter from "./DataLimitsSeter";
+import DatePickerWithRange from "./DatePickerWithRange";
+import { LoadingSpiner } from "./LoadingUI/LoadingSpiner";
+import PaginationComponent from "./PaginationComponent ";
+import Search from "./Search";
 
 const LogsWrapper = () => {
-  const [state, dispatch] = useReducer(filterReducer, initialFilterState);
   const [logsData, setLogsData] = useState<Log[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [limit, setLimit] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectedInterval, setSelectedInterval] = useState("");
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
 
   const fetchLogsData = async () => {
     setLoading(true);
 
     let dateRange: number[] = [];
-    if (state.selectedDateRange?.from && state.selectedDateRange.to) {
-      const adjustedToDate = new Date(state.selectedDateRange.to);
+    if (selectedDateRange?.from && selectedDateRange.to) {
+      const adjustedToDate = new Date(selectedDateRange.to);
       adjustedToDate.setHours(23, 59, 59, 999);
-      dateRange = [
-        state.selectedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
+      dateRange = [selectedDateRange.from.getTime(), adjustedToDate.getTime()];
     }
 
     try {
@@ -45,11 +44,11 @@ const LogsWrapper = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          search: state.searchQuery,
+          search: searchQuery,
           dateRange,
           type: [],
-          paginationPage: state.currentPage,
-          paginationPerPage: state.limit,
+          paginationPage: currentPage,
+          paginationPerPage: limit,
         }),
       });
 
@@ -71,37 +70,34 @@ const LogsWrapper = () => {
 
   useEffect(() => {
     fetchLogsData();
-  }, [
-    state.searchQuery,
-    state.selectedDateRange,
-    state.limit,
-    state.currentPage,
-  ]);
+  }, [searchQuery, limit, currentPage, selectedDateRange]);
 
   const handleSearch = (term: string) => {
-    dispatch({ type: "SET_SEARCH_QUERY", payload: term });
+    setSearchQuery(term);
   };
 
   const handleIntervalChange = (interval: string) => {
-    dispatch({ type: "SET_INTERVAL", payload: interval });
+    setCurrentPage(1);
+    setSelectedInterval(interval);
 
     const startDate = getStartDateForInterval(interval);
     const now = new Date();
 
     if (startDate) {
       const dateRange: DateRange = { from: startDate, to: now };
-      dispatch({ type: "SET_DATE_RANGE", payload: dateRange });
+      setSelectedDateRange(dateRange);
     } else {
-      dispatch({ type: "SET_DATE_RANGE", payload: undefined });
+      setSelectedDateRange(undefined);
     }
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
-    dispatch({ type: "SET_DATE_RANGE", payload: range });
+    setSelectedDateRange(range);
+    setSelectedInterval("");
   };
 
   const handleLimitChange = (limit: number) => {
-    dispatch({ type: "SET_LIMIT", payload: limit });
+    setLimit(limit);
   };
 
   if (loading) {
@@ -124,12 +120,12 @@ const LogsWrapper = () => {
 
           <div className="flex flex-col md:flex-row">
             <DashIntervalSelect
-              value={state.selectedInterval || "Select Interval"}
+              value={selectedInterval || "Select Interval"}
               label="No Interval"
               onIntervalChange={handleIntervalChange}
             />
             <DatePickerWithRange
-              initialDate={state.selectedDateRange}
+              initialDate={selectedDateRange}
               onDateChange={handleDateRangeChange}
             />
           </div>
@@ -145,11 +141,9 @@ const LogsWrapper = () => {
             onChange={handleLimitChange}
           />
           <PaginationComponent
-            currentPage={state.currentPage}
+            currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page) =>
-              dispatch({ type: "SET_CURRENT_PAGE", payload: page })
-            }
+            onPageChange={setCurrentPage}
           />
         </div>
       </div>

@@ -1,25 +1,25 @@
 export const dashRoute = "/dashboard";
 export const roleRoutes: { [key: string]: string[] } = {
     merchant: [
-      `${dashRoute}/`,
+      `${dashRoute}`,
       `${dashRoute}/transactions`,
       `${dashRoute}/settings`,
       `${dashRoute}/logs`,
       `${dashRoute}/manager`,
     ],
     manager: [
-      `${dashRoute}/`,
+      `${dashRoute}`,
       `${dashRoute}/transactions`,
       `${dashRoute}/settings`,
       `${dashRoute}/logs`,
       `${dashRoute}/manager`,
     ],
-    user: [`${dashRoute}/`, `${dashRoute}/transactions`],
-    agent: [`${dashRoute}/`, `${dashRoute}/transactions`, `${dashRoute}/manager`],
-    support: [`${dashRoute}/`, `${dashRoute}/transactions`, `${dashRoute}/logs`],
-    finance: [`${dashRoute}/`, `${dashRoute}/transactions`],
+    user: [`${dashRoute}`, `${dashRoute}/transactions`],
+    agent: [`${dashRoute}`, `${dashRoute}/transactions`, `${dashRoute}/manager`],
+    support: [`${dashRoute}`, `${dashRoute}/transactions`, `${dashRoute}/logs`],
+    finance: [`${dashRoute}`, `${dashRoute}/transactions`],
     admin: [
-      `${dashRoute}/`,
+      `${dashRoute}`,
       `${dashRoute}/transactions`,
       `${dashRoute}/settings`,
       `${dashRoute}/logs`,
@@ -28,7 +28,7 @@ export const roleRoutes: { [key: string]: string[] } = {
       `${dashRoute}/manager`,
     ],
     owner: [
-      `${dashRoute}/`,
+      `${dashRoute}`,
       `${dashRoute}/transactions`,
       `${dashRoute}/settings`,
       `${dashRoute}/logs`,

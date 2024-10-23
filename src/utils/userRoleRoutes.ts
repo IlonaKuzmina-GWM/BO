@@ -39,3 +39,15 @@ export const roleRoutes: { [key: string]: string[] } = {
     ],
     developer: [],
   };
+
+  export const protectedRoutes = [
+    `${dashRoute}`,
+    `${dashRoute}/transactions`,
+    `${dashRoute}/logs`,
+    `${dashRoute}/siins`,
+    `${dashRoute}/generateCSV`,
+    `${dashRoute}/settlement`,
+    `${dashRoute}/manager`,
+    `${dashRoute}/settings`,
+  ];
+  

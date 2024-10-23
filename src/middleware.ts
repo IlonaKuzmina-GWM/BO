@@ -1,23 +1,21 @@
 // middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { dashRoute, roleRoutes } from "./utils/userRoleRoutes";
+import { dashRoute, protectedRoutes, roleRoutes } from "./utils/userRoleRoutes";
 
-const protectedRoutes = [
-  `${dashRoute}`,
-  `${dashRoute}/transactions`,
-  `${dashRoute}/logs`,
-  `${dashRoute}/siins`,
-  `${dashRoute}/generateCSV`,
-  `${dashRoute}/settlement`,
-  `${dashRoute}/manager`,
-  `${dashRoute}/settings`,
-];
+function normalizePath(path: string): string {
+  if (path.length > 1 && path.endsWith("/")) {
+    return path.slice(0, -1);
+  }
+  return path;
+}
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const pathname = normalizePath(request.nextUrl.pathname);
 
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+  const normalizedProtectedRoutes = protectedRoutes.map(normalizePath);
+
+  if (normalizedProtectedRoutes.includes(pathname)) {
     const authToken = request.cookies.get("authToken");
 
     if (!authToken) {
@@ -43,9 +41,9 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl);
       }
 
-      const allowedRoutes = roleRoutes[userRole];
+      const allowedRoutes = roleRoutes[userRole].map(normalizePath);
 
-      if (!allowedRoutes.some((route: string) => pathname.startsWith(route))) {
+      if (!allowedRoutes.includes(pathname)) {
         const unauthorizedUrl = new URL(`${dashRoute}`, request.url);
         return NextResponse.redirect(unauthorizedUrl);
       }

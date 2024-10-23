@@ -24,7 +24,7 @@ const SiderBar: React.FC = observer(() => {
   const menuItems = [
     {
       name: "Dashboard",
-      link: "/dashboard/",
+      link: "/dashboard",
       iconLink: "dash",
     },
     {
@@ -73,7 +73,7 @@ const SiderBar: React.FC = observer(() => {
   }
 
   const filteredMenuItems = menuItems.filter((item) =>
-    allowedRoutes.some((route) => item.link.startsWith(route)),
+    allowedRoutes.includes(item.link),
   );
 
   const toggleSidebar = () => {
@@ -81,7 +81,7 @@ const SiderBar: React.FC = observer(() => {
   };
 
   const logOut = async () => {
-    await fetch('/api/post-logout', { method: 'POST' });
+    await fetch("/api/post-logout", { method: "POST" });
     authStore.setLogOut();
     router.push("/");
   };

@@ -1,23 +1,80 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import Image from "next/image";
 import { UserSideInfo } from "./UserSideInfo";
 import SideBarLi from "./SideBarLi";
 import ModeToggle from "./ModeToggle";
-import NextLink from "next/link";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
-import { observer } from 'mobx-react-lite';
+import { observer } from "mobx-react-lite";
 import { useStore } from "@/stores/StoreProvider";
+import { roleRoutes } from "@/utils/userRoleRoutes";
 
 const SiderBar: React.FC = observer(() => {
   const { authStore } = useStore();
+  const userRole = authStore.effectiveRole || "";
+
   const [openSideBar, setOpenSideBar] = useState(true);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
+
+  const menuItems = [
+    {
+      name: "Dashboard",
+      link: "/dashboard/",
+      iconLink: "dash",
+    },
+    {
+      name: "Logs",
+      link: "/dashboard/logs",
+      iconLink: "logs",
+    },
+    {
+      name: "Transactions",
+      link: "/dashboard/transactions",
+      iconLink: "transaction",
+    },
+    {
+      name: "SIINS",
+      link: "/dashboard/siins",
+      iconLink: "siins",
+    },
+    {
+      name: "Generate CSV",
+      link: "/dashboard/generateCSV",
+      iconLink: "generateCSV",
+    },
+    {
+      name: "Settlement",
+      link: "/dashboard/settlement",
+      iconLink: "settlement",
+    },
+    {
+      name: "Manager",
+      link: "/dashboard/manager",
+      iconLink: "manager",
+    },
+    {
+      name: "Settings",
+      link: "/dashboard/settings",
+      iconLink: "settings",
+    },
+  ];
+
+  let allowedRoutes: string[] = roleRoutes[userRole] || [];
+
+  console.log("allowedRoutes", allowedRoutes);
+
+  if (userRole === "developer") {
+    allowedRoutes = menuItems.map((item) => item.link);
+  }
+
+  const filteredMenuItems = menuItems.filter((item) =>
+    allowedRoutes.some((route) => item.link.startsWith(route)),
+  );
 
   const toggleSidebar = () => {
     setOpenSideBar(!openSideBar);
@@ -27,6 +84,10 @@ const SiderBar: React.FC = observer(() => {
     authStore.setLogOut();
     router.push("/");
   };
+
+  useEffect(() => {}, [allowedRoutes]);
+
+  console.log("user role in sidebar", userRole);
 
   return (
     <aside
@@ -61,7 +122,21 @@ const SiderBar: React.FC = observer(() => {
         </div>
 
         <div className="divider h-[1px] w-full bg-fill"></div>
+
         <ul className="flex flex-col gap-2 pt-6">
+          {filteredMenuItems.map((item) => (
+            <SideBarLi
+              key={item.link}
+              name={item.name}
+              link={item.link}
+              iconLink={item.iconLink}
+              isSidebarOpen={openSideBar}
+              activePathName={pathname}
+            />
+          ))}
+        </ul>
+
+        {/* <ul className="flex flex-col gap-2 pt-6">
           <SideBarLi
             name={"Dashboard"}
             link={"/dashboard"}
@@ -97,7 +172,6 @@ const SiderBar: React.FC = observer(() => {
             isSidebarOpen={openSideBar}
             activePathName={pathname}
           />
-
           <SideBarLi
             name={"settlement"}
             link={"/dashboard/settlement"}
@@ -105,7 +179,7 @@ const SiderBar: React.FC = observer(() => {
             isSidebarOpen={openSideBar}
             activePathName={pathname}
           />
-        </ul>
+          </ul>
         <div className="divider my-4 h-[1px] w-full bg-fill"></div>
 
         <ul className="flex flex-col gap-2">
@@ -124,14 +198,14 @@ const SiderBar: React.FC = observer(() => {
             isSidebarOpen={openSideBar}
             activePathName={pathname}
           />
-        </ul>
+        </ul> */}
       </div>
 
       <div className="mt-10">
         <ModeToggle isSidebarOpen={openSideBar} />
         <div
           onClick={() => logOut()}
-          className="cursor-pointer block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg"
+          className="block w-full cursor-pointer transition-all duration-500 ease-in-out hover:bg-hoverBg"
         >
           <div
             className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap items-center py-2 font-medium capitalize text-secondary`}

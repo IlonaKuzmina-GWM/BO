@@ -33,47 +33,23 @@ export class AuthStore {
   setSecondRole(role: string) {
     if (this.role === "developer") {
       if (this.secondRole === role) {
-        // If the selected role is already set as secondRole, reset it to "developer"
+
         this.secondRole = "developer";
       } else {
-        // Set the new role as secondRole
         this.secondRole = role;
       }
       this.saveState();
-      console.log("setSecondRole", this.secondRole);
     }
   }
 
-  isSecondRoleOwner() {
-    return this.secondRole === "owner";
+  get userRole() {
+    return this.role;
   }
 
-  isSecondRoleAdmin() {
-    return this.secondRole === "admin";
-  }
-
-  isSecondRoleMerchant() {
-    return this.secondRole === "merchant";
-  }
-
-  isSecondRoleManager() {
-    return this.secondRole === "manager";
-  }
-
-  isSecondRoleUser() {
-    return this.secondRole === "user";
-  }
-
-  isSecondRoleAgent() {
-    return this.secondRole === "agent";
-  }
-
-  isSecondRoleSupport() {
-    return this.secondRole === "support";
-  }
-
-  isSecondRoleFinance() {
-    return this.secondRole === "finance";
+  get effectiveRole() {
+    return (this.role === "developer" && this.secondRole)
+      ? this.secondRole
+      : this.role || "";
   }
 
   isRoleGranted(roles?: string): boolean {
@@ -106,7 +82,8 @@ export class AuthStore {
     if (typeof window !== "undefined") {
       const logged = localStorage.getItem("logged") === "true";
       const role = localStorage.getItem("role");
-      const secondRole = localStorage.getItem("secondRole");
+      const secondRoleString = localStorage.getItem("secondRole");
+      const secondRole = secondRoleString ? secondRoleString : null;
       const user = localStorage.getItem("user");
 
       if (logged && user) {

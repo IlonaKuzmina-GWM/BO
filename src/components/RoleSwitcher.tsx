@@ -22,7 +22,6 @@ const RoleSwitcher: React.FC = observer(() => {
   }
 
   const roles = [
-    "developer",
     "owner",
     "admin",
     "merchant",
@@ -49,8 +48,8 @@ const RoleSwitcher: React.FC = observer(() => {
         aria-expanded={isExpanded}
       >
         <div className="relative p-4 pe-8" ref={contentRef}>
-          <h3 className="text-md mb-4 font-semibold text-main">Switch Role</h3>
-
+          <h3 className="text-md font-semibold text-main">Switch Role</h3>
+          <p className="mb-4 text-main text-[11px]">Current Role: {authStore.effectiveRole}</p>
           <div
             className="absolute right-2 top-2 cursor-pointer"
             onClick={() => {

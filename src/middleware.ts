@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 import { dashRoute, roleRoutes } from "./utils/userRoleRoutes";
 
 const protectedRoutes = [
-  `${dashRoute}/`,
+  `${dashRoute}`,
   `${dashRoute}/transactions`,
   `${dashRoute}/logs`,
   `${dashRoute}/siins`,

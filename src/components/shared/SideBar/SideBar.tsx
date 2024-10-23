@@ -80,12 +80,11 @@ const SiderBar: React.FC = observer(() => {
     setOpenSideBar(!openSideBar);
   };
 
-  const logOut = () => {
+  const logOut = async () => {
+    await fetch('/api/post-logout', { method: 'POST' });
     authStore.setLogOut();
     router.push("/");
   };
-
-  useEffect(() => {}, [allowedRoutes]);
 
   console.log("user role in sidebar", userRole);
 

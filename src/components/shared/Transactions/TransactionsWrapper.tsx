@@ -8,15 +8,12 @@ import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { Transaction } from "@/types";
-import StatusFilteringBadge from "../StatusFilter/StatusFilteringBadge";
 import { TransactionsTableHeader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
 import DashIntervalSelect from "../DashIntervalSelect";
-import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
-import { createFilters } from "@/auxiliary/createTxFilters";
 import { useStore } from "@/stores/StoreProvider";
 
 const TransactionsWrapper = () => {
@@ -37,7 +34,6 @@ const TransactionsWrapper = () => {
   const [paginatedTransactions, setPaginatedTransactions] = useState<
     Transaction[]
   >([]);
-
 
   const [statusList, setStatusList] = useState<{}>({});
   const [merchantsList, setMerchantsList] = useState<string[]>([]);
@@ -78,7 +74,7 @@ const TransactionsWrapper = () => {
           createdDateRange,
           updatedDateRange,
           paginationPage: currentPage,
-          paginationPerPage:  limit,
+          paginationPerPage: limit,
           merchIds: [],
           providerIds: [],
           currency: [],

@@ -40,6 +40,8 @@ const CustomSiinsTable = ({
     [key: number]: boolean;
   }>({});
 
+  // console.log("data", data)
+
   // const openAccordionBgColor = (status: string) => {
   //   console.log(status);
   //   switch (status) {
@@ -197,8 +199,8 @@ const CustomSiinsTable = ({
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger className="h-full w-full">
-                              <span className="absolute right-2/3 top-1/2 h-1 w-1 rounded-full bg-slate-600" />
-                              {siin.id}
+                              <span className="absolute right-[90%] top-1/2 h-1 w-1 rounded-full bg-slate-600" />
+                             {siin.id}
                             </TooltipTrigger>
                             <TooltipContent className="ms-2">
                               <p> SIIN contain transaction</p>

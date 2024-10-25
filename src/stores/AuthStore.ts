@@ -6,6 +6,7 @@ export class AuthStore {
   role: string | null = null;
   secondRole: null | string = null;
   user: null | User = null;
+  userId: null | string = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -17,6 +18,7 @@ export class AuthStore {
     this.role = payload.role.toLowerCase();
     this.secondRole = payload.role.toLowerCase();
     this.user = payload;
+    this.userId = payload.id;
 
     this.saveState();
   }
@@ -26,6 +28,7 @@ export class AuthStore {
     this.role = null;
     this.secondRole = null;
     this.user = null;
+    this.userId = null;
 
     this.saveState();
   }
@@ -51,6 +54,10 @@ export class AuthStore {
       ? this.secondRole
       : this.role || "";
   }
+
+  // get userId() {
+  //   return this.userId;
+  // }
 
   isRoleGranted(roles?: string): boolean {
     if (!roles) {
@@ -92,7 +99,6 @@ export class AuthStore {
         this.secondRole = secondRole;
         this.user = JSON.parse(user);
       } else {
-        // Ensure state is reset if no valid data is found
         this.logged = false;
         this.role = null;
         this.secondRole = null;

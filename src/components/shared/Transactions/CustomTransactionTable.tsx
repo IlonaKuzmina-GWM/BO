@@ -116,13 +116,15 @@ const CustomTransactionTable = ({
     }));
   };
 
-  useEffect(() => {
-    setAllChecked(
-      paginatedTransactions.every(
-        (transaction) => checkedTransactions[transaction.id],
-      ),
-    );
-  }, [checkedTransactions, paginatedTransactions]);
+  // useEffect(() => {
+  //   setAllChecked(
+  //     paginatedTransactions.every(
+  //       (transaction) => checkedTransactions[transaction.id],
+  //     ),
+  //   );
+  // }, [checkedTransactions, paginatedTransactions]);
+
+  useEffect(() => {}, [paginatedTransactions]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -149,10 +151,7 @@ const CustomTransactionTable = ({
           <tr>
             <th className="w-[3%] min-w-[35px] pl-3 lg:pl-3">
               {" "}
-              <CustomCheckbox
-                isChecked={allChecked}
-                handleCheckboxChange={handleAllCheckboxChange}
-              />
+              <CustomCheckbox handleCheckboxChange={handleAllCheckboxChange} />
             </th>
             {columns.map((col, index) => (
               <th
@@ -170,7 +169,7 @@ const CustomTransactionTable = ({
 
         {loading ? (
           <LoadingTransactionTableSkeleton />
-        ) : paginatedTransactions.length === 0 ? (
+        ) : paginatedTransactions?.length === 0 ? (
           <thead>
             {" "}
             <tr className="bg-white">
@@ -394,16 +393,15 @@ const CustomTransactionTable = ({
                                 Webhook
                               </h3>
                               <div className="webhook_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
-                                {[
-                                  "PAYMENT_CREATED",
-                                  "PAYMENT_DISPUTED",
-                                  "PAYMENT_CANCELLED",
-                                ].map((webhookName, index) => (
+                                {transaction.webhooks.map((webhook) => (
                                   <Collapsible
-                                    key={index}
-                                    open={expandedWebhooks[index] || false}
+                                    key={webhook.id}
+                                    open={expandedWebhooks[webhook.id] || false}
                                     onOpenChange={() =>
-                                      toggleWebhook(transaction.txId, index)
+                                      toggleWebhook(
+                                        transaction.txId,
+                                        webhook.id,
+                                      )
                                     }
                                     className="w-full space-y-2"
                                   >
@@ -414,11 +412,11 @@ const CustomTransactionTable = ({
                                       <div className="">
                                         {" "}
                                         <h4 className="text-sm font-semibold">
-                                          {webhookName}
+                                          {webhook.status}
                                         </h4>
                                         <ChevronDown
                                           className={`${
-                                            expandedWebhooks[index]
+                                            expandedWebhooks[webhook.id]
                                               ? "rotate-180"
                                               : ""
                                           } absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
@@ -432,26 +430,50 @@ const CustomTransactionTable = ({
                                           <span className="font-medium">
                                             Created:
                                           </span>{" "}
+                                          <span>
+                                            {
+                                              formatDateTime(webhook.createdAt)
+                                                .date
+                                            }
+                                          </span>{" "}
+                                          <span>
+                                            {
+                                              formatDateTime(webhook.createdAt)
+                                                .time
+                                            }
+                                          </span>
                                         </p>
                                       </div>
                                       <div>
                                         <p>
                                           <span className="font-medium">
-                                            Retries:
+                                            Retries: {webhook.retries}
                                           </span>{" "}
                                         </p>
                                       </div>
                                       <div>
                                         <p>
                                           <span className="font-medium">
-                                            Last updated:
+                                            Updated:
                                           </span>{" "}
+                                          <span>
+                                            {
+                                              formatDateTime(webhook.updatedAt)
+                                                .date
+                                            }
+                                          </span>{" "}
+                                          <span>
+                                            {
+                                              formatDateTime(webhook.updatedAt)
+                                                .time
+                                            }
+                                          </span>
                                         </p>
                                       </div>
                                       <div>
                                         <p>
                                           <span className="font-medium">
-                                            Status:
+                                            Status: {webhook.status}
                                           </span>{" "}
                                         </p>
                                       </div>
@@ -465,7 +487,7 @@ const CustomTransactionTable = ({
                                       <div>
                                         <p>
                                           <span className="font-medium">
-                                            Compound state::
+                                            Compound state: {webhook.state}
                                           </span>{" "}
                                         </p>
                                       </div>
@@ -480,49 +502,18 @@ const CustomTransactionTable = ({
                                 Log
                               </h3>
                               <div className="log_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
-                                <LogHistory
-                                  color={dynamicColor}
-                                  status={transformStatus(transaction.status)}
-                                  date={
-                                    formatDateTime(transaction.updatedAt).date
-                                  }
-                                  time={
-                                    formatDateTime(transaction.updatedAt).time
-                                  }
-                                />
-
-                                <LogHistory
-                                  color={"errorBg"}
-                                  status={"failed"}
-                                  date={
-                                    formatDateTime(transaction.updatedAt).date
-                                  }
-                                  time={
-                                    formatDateTime(transaction.updatedAt).time
-                                  }
-                                />
-
-                                <LogHistory
-                                  color={"warningBg"}
-                                  status={"warning"}
-                                  date={
-                                    formatDateTime(transaction.updatedAt).date
-                                  }
-                                  time={
-                                    formatDateTime(transaction.updatedAt).time
-                                  }
-                                />
-
-                                <LogHistory
-                                  color={"successBg"}
-                                  status={"success"}
-                                  date={
-                                    formatDateTime(transaction.updatedAt).date
-                                  }
-                                  time={
-                                    formatDateTime(transaction.updatedAt).time
-                                  }
-                                />
+                                {transaction.webhooks.map((log) => (
+                                  <div key={log.id}>
+                                    <LogHistory
+                                      color={openAccordionBgColor(
+                                        transformStatus(log.status),
+                                      )}
+                                      status={log.status}
+                                      date={formatDateTime(log.createdAt).date}
+                                      time={formatDateTime(log.updatedAt).time}
+                                    />
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           </div>

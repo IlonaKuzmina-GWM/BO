@@ -66,7 +66,7 @@ const SiderBar: React.FC = observer(() => {
 
   let allowedRoutes: string[] = roleRoutes[userRole] || [];
 
-  console.log("allowedRoutes", allowedRoutes);
+  // console.log("allowedRoutes", allowedRoutes);
 
   if (userRole === "developer") {
     allowedRoutes = menuItems.map((item) => item.link);
@@ -86,7 +86,7 @@ const SiderBar: React.FC = observer(() => {
     router.push("/");
   };
 
-  console.log("user role in sidebar", userRole);
+  // console.log("user role in sidebar", userRole);
 
   return (
     <aside
@@ -134,70 +134,6 @@ const SiderBar: React.FC = observer(() => {
             />
           ))}
         </ul>
-
-        {/* <ul className="flex flex-col gap-2 pt-6">
-          <SideBarLi
-            name={"Dashboard"}
-            link={"/dashboard"}
-            iconLink={"dash"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-          <SideBarLi
-            name={"Logs"}
-            link={"/dashboard/logs"}
-            iconLink={"logs"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-          <SideBarLi
-            name={"transactions"}
-            link={"/dashboard/transactions"}
-            iconLink={"transaction"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />{" "}
-          <SideBarLi
-            name={"SIINS"}
-            link={"/dashboard/siins"}
-            iconLink={"siins"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-          <SideBarLi
-            name={"generate CSV"}
-            link={"/dashboard/generateCSV"}
-            iconLink={"generateCSV"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-          <SideBarLi
-            name={"settlement"}
-            link={"/dashboard/settlement"}
-            iconLink={"settlement"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-          </ul>
-        <div className="divider my-4 h-[1px] w-full bg-fill"></div>
-
-        <ul className="flex flex-col gap-2">
-          {" "}
-          <SideBarLi
-            name={"manager"}
-            link={"/dashboard/manager"}
-            iconLink={"manager"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-          <SideBarLi
-            name={"settings"}
-            link={"/dashboard/settings"}
-            iconLink={"settings"}
-            isSidebarOpen={openSideBar}
-            activePathName={pathname}
-          />
-        </ul> */}
       </div>
 
       <div className="mt-10">
@@ -207,7 +143,7 @@ const SiderBar: React.FC = observer(() => {
           className="block w-full cursor-pointer transition-all duration-500 ease-in-out hover:bg-hoverBg"
         >
           <div
-            className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap items-center py-2 font-medium capitalize text-secondary`}
+            className={`${openSideBar ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap items-center py-2 font-medium capitalize text-secondary hover:text-main  transition-all duration-500 ease-in-out`}
           >
             <Image
               src={`/icons/log-out.svg`}
@@ -218,7 +154,7 @@ const SiderBar: React.FC = observer(() => {
             />
             {openSideBar && (
               <span
-                className={`${!openSideBar && "opacity-0"} inline-block text-nowrap`}
+                className={`${!openSideBar && "opacity-0"} inline-block text-nowrap `}
               >
                 Log Out
               </span>

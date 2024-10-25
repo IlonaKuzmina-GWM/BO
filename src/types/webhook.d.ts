@@ -10,8 +10,8 @@ export type Webhook = {
     originalRequest: originalRequest;
     amount: string;
     status: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     state: string;
     retries: number;
     transactionId: string;

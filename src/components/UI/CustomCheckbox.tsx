@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 interface ICustomCheckboxProps {
-  isChecked: boolean;
+  isChecked?: boolean;
   handleCheckboxChange: (event:any) => void;
 }
 

@@ -2,10 +2,11 @@ import React from "react";
 
 interface IStatusBandge {
   name: string;
-  type: "failed" |  "success" | "transferring" | "" | string;
+  type: "failed" | "success" | "transferring" | "" | string;
+  color?: string;
 }
 
-const StatusBadge = ({ name, type }: IStatusBandge) => {
+const StatusBadge = ({ name, type, color }: IStatusBandge) => {
   const typeStyles: { [key: string]: string } = {
     failed: "bg-errorBg text-error",
     success: "bg-successBg text-success",
@@ -14,7 +15,15 @@ const StatusBadge = ({ name, type }: IStatusBandge) => {
     default: "bg-gray-200 text-gray-700",
   };
 
-  const selectedStyle = typeStyles[type] || typeStyles["default"];
+  let selectedStyle = "";
+
+  if (color) {
+    // Use the provided color for background and a default text color
+    selectedStyle = `bg-${color} text-defaultTextColor`;
+  } else {
+    // Use styles based on the type
+    selectedStyle = typeStyles[type] || typeStyles["default"];
+  }
 
   return (
     <div

@@ -1,22 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+
 
 export async function GET(request: NextRequest) {
-  // Function to extract cookie value by name
-  const getCookieValue = (cookieName: string) => {
-    const cookieValue = request.headers
-      .get("cookie")
-      ?.split("; ")
-      .find((cookie) => cookie.startsWith(`${cookieName}=`));
-    return cookieValue ? cookieValue.split("=")[1] : undefined;
-  };
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("authToken")?.value;
+  const userId = cookiesStore.get("userId")?.value;
 
-  // Specify the cookie names you want to get
-  const userId = getCookieValue("userId");
-  const authToken = getCookieValue("authToken");
-
-  // Return the values as JSON
   return NextResponse.json({
     userId: userId,
-    authToken: authToken,
+    authToken: token,
   });
 }

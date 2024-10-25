@@ -15,22 +15,29 @@ import PaginationComponent from "../PaginationComponent ";
 import CustomTransactionTable from "./CustomTransactionTable";
 import DashIntervalSelect from "../DashIntervalSelect";
 import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
+import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { createFilters } from "@/auxiliary/createTxFilters";
+import { useStore } from "@/stores/StoreProvider";
 
 const TransactionsWrapper = () => {
-  const [activeStatusBadge, setActiveStatusBadge] = useState<string>("all");
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const { authStore } = useStore();
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [loading, setLoading] = useState(true);
+  const userId = authStore.user?.id;
+
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [limit, setLimit] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
   >(undefined);
+
+  const [activeStatusBadge, setActiveStatusBadge] = useState<string>("all");
   const [paginatedTransactions, setPaginatedTransactions] = useState<
     Transaction[]
   >([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [limit, setLimit] = useState<number>(10);
+
 
   const [statusList, setStatusList] = useState<{}>({});
   const [merchantsList, setMerchantsList] = useState<string[]>([]);
@@ -40,73 +47,65 @@ const TransactionsWrapper = () => {
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
 
   const fetchTransactionsData = async () => {
+    setLoading(true);
+
+    let createdDateRange: [number, number] | boolean = false;
+
+    if (selectedDateRange?.from && selectedDateRange.to) {
+      const adjustedToDate = new Date(selectedDateRange.to);
+      adjustedToDate.setHours(23, 59, 59, 999);
+      createdDateRange = [
+        selectedDateRange.from.getTime(),
+        adjustedToDate.getTime(),
+      ];
+    }
+
+    const updatedDateRange: [number, number] | boolean = false;
+
     try {
-      const params = new URLSearchParams();
-      params.append("limit", limit.toString());
-      params.append("page", currentPage.toString());
-
-      if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
-        params.append("from", selectedDateRange.from.toISOString());
-        params.append("to", selectedDateRange.to.toISOString());
-      } else if (selectedInterval) {
-        params.append("interval", selectedInterval);
-      }
-
-      if (searchQuery) {
-        params.append("query", searchQuery);
-      }
-
-      if (activeStatusBadge) {
-        params.append("status", activeStatusBadge);
-      }
-
-      if (selectedMerchants.length > 0) {
-        params.append("merchant", selectedMerchants.join(","));
-      }
-
-      if (selectedProviders.length > 0) {
-        params.append("provider", selectedProviders.join(","));
-      }
-
-      if (selectedStatus.length > 0) {
-        params.append("statusSelect", selectedStatus.join(", "));
-      }
-
-      const response = await fetch(
-        `/api/get-all-transactions?${params.toString()}`,
-        {
-          method: "GET",
+      const response = await fetch("/api/post-filtered-transactions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          userId: userId,
+          searchInput: searchQuery || "",
+          amountSort: false,
+          createdSort: false,
+          updatedSort: false,
+          statusSort: [],
+          createdDateRange,
+          updatedDateRange,
+          paginationPage: currentPage,
+          paginationPerPage:  limit,
+          merchIds: [],
+          providerIds: [],
+          currency: [],
+          txList: [],
+          paymentIds: [],
+        }),
+      });
 
-      const {
-        paginatedTransactions,
-        totalPages,
-        providersList,
-        merchantsList,
-        statusList,
-      }: {
-        paginatedTransactions: Transaction[];
-        totalPages: number;
-        providersList: string[];
-        merchantsList: string[];
-        statusList: string[];
-      } = await response.json();
-      setPaginatedTransactions(paginatedTransactions);
-      setTotalPages(totalPages);
-      setLoading(false);
-      setMerchantsList(merchantsList);
-      setProvidersList(providersList);
-      setStatusList(statusList);
+      if (response.ok) {
+        const res = await response.json();
+
+        setPaginatedTransactions(res.transactions);
+        setTotalPages(res.totalPages);
+        console.log("transactions in trasnactions page", res.transactions);
+      } else {
+        console.log("Transactions response failed");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchTransactionsData();
   }, [
-    selectedInterval,
     selectedDateRange,
     limit,
     searchQuery,
@@ -165,13 +164,23 @@ const TransactionsWrapper = () => {
   };
 
   const handleIntervalChange = (interval: string) => {
+    setCurrentPage(1);
     setSelectedInterval(interval);
-    setSelectedDateRange(undefined);
+
+    const startDate = getStartDateForInterval(interval);
+    const now = new Date();
+
+    if (startDate) {
+      const dateRange: DateRange = { from: startDate, to: now };
+      setSelectedDateRange(dateRange);
+    } else {
+      setSelectedDateRange(undefined);
+    }
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
     setSelectedDateRange(range);
-    setSelectedInterval("Select Interval");
+    setSelectedInterval("");
   };
 
   const handleLimitChange = (limit: number) => {
@@ -201,10 +210,10 @@ const TransactionsWrapper = () => {
   return (
     <div className="">
       <div className="flex flex-row justify-between gap-6">
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row flex-wrap gap-5">
           <Search
             placeholder="Enter name, email, provider"
-            aditionalClass="max-w-[302px]"
+            aditionalClass="max-w-[302px] min-w-[250px]"
             onSearch={handleSearch}
           />
 
@@ -258,13 +267,13 @@ const TransactionsWrapper = () => {
         <DashButton name={"export"} type={"filled"} />
       </div>
 
-      <StatusFilteringBadgeWrapper
+      {/* <StatusFilteringBadgeWrapper
         statusList={statusList}
         statusFilters={statusFilters}
         counter={transactions.length.toString()}
         activeStatusBadge={activeStatusBadge}
         onClickHandler={activeFilterBageHandler}
-      />
+      /> */}
 
       <CustomTransactionTable
         paginatedTransactions={paginatedTransactions}

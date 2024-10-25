@@ -8,23 +8,27 @@ interface ISearch {
   aditionalClass?: string;
   placeholder: string;
   onSearch: (term: string) => void;
+  searchValue?: string;
 }
 
 const Search: React.FC<ISearch> = ({
   placeholder,
   aditionalClass,
   onSearch,
+  searchValue,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(searchValue);
 
-  const debouncedOnSearch = useDebouncedCallback((term: string) => {
-    onSearch(term);
-  }, 500);
+  // const debouncedOnSearch = useDebouncedCallback((term: string) => {
+  //   onSearch(term);
+  // }, 1500);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value;
     setInputValue(term);
-    debouncedOnSearch(term);
+
+    // debouncedOnSearch(inputValue);
+    onSearch(term);
   };
 
   return (
@@ -34,7 +38,7 @@ const Search: React.FC<ISearch> = ({
       <input
         className="peer block w-full rounded-sm border border-divider px-3 py-[10px] pl-[38px] text-sm outline-2 placeholder:text-secondary"
         placeholder={placeholder}
-        value={inputValue}
+        value={searchValue}
         onChange={handleChange}
       />
       <Image
@@ -46,6 +50,6 @@ const Search: React.FC<ISearch> = ({
       />
     </div>
   );
-}
+};
 
 export default Search;

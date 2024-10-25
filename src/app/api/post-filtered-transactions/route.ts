@@ -13,6 +13,16 @@ export async function POST(request: NextRequest) {
 
     const apiUrl = userUrl(getFilteredTransactionsRoute(role));
 
+    console.log("API URL:", apiUrl);
+    console.log("Request Options:", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(filters),
+    });
+
     const data = await fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -23,7 +33,8 @@ export async function POST(request: NextRequest) {
     });
 
     if (!data.ok) {
-      console.log("transactions", data);
+      const errorText = await data.text();
+      console.log("Error Response Body:", errorText);
       const errorData = await data.json();
       return new NextResponse(
         JSON.stringify({
@@ -46,7 +57,8 @@ export async function POST(request: NextRequest) {
       transactions: responseData.transactions,
     });
   } catch (error) {
-    console.error("Failed to process siins request", error);
+    console.error("Failed to process transaction request", error);
+
     return new NextResponse(
       JSON.stringify({
         success: false,

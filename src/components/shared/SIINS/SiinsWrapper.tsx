@@ -14,6 +14,7 @@ import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { useDebouncedCallback } from "use-debounce";
 
 const SiinsWrapper = () => {
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
@@ -81,6 +82,12 @@ const SiinsWrapper = () => {
     setSearchQuery(term);
   };
 
+  const debouncedOnSearch = useDebouncedCallback((term: string) => {
+    // onSearch(term);
+
+    handleSearch(term);
+  }, 1500);
+
   const handleIntervalChange = (interval: string) => {
     setCurrentPage(1);
     setSelectedInterval(interval);
@@ -122,7 +129,8 @@ const SiinsWrapper = () => {
           <Search
             placeholder="Enter name, email, provider"
             aditionalClass="max-w-[302px]"
-            onSearch={handleSearch}
+            onSearch={debouncedOnSearch}
+            searchValue={searchQuery}
           />
 
           <div className="flex flex-col md:flex-row">

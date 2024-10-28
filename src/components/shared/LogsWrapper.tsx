@@ -19,7 +19,10 @@ const LogsWrapper = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
 
+  const [inputSearchQueryValue, setInputSearchQueryValue] =
+    useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
   const [limit, setLimit] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedInterval, setSelectedInterval] = useState("");
@@ -72,8 +75,16 @@ const LogsWrapper = () => {
     fetchLogsData();
   }, [searchQuery, limit, currentPage, selectedDateRange]);
 
-  const handleSearch = (term: string) => {
-    setSearchQuery(term);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchQuery(inputSearchQueryValue);
+    }, 1000); 
+
+    return () => clearTimeout(handler);
+  }, [inputSearchQueryValue]);
+
+  const handleSearchChange = (value: string) => {
+    setInputSearchQueryValue(value);
   };
 
   const handleIntervalChange = (interval: string) => {
@@ -115,7 +126,8 @@ const LogsWrapper = () => {
           <Search
             placeholder="Enter name, email, provider"
             aditionalClass="max-w-[302px]"
-            onSearch={handleSearch}
+            onSearch={handleSearchChange}
+            searchValue={inputSearchQueryValue}
           />
 
           <div className="flex flex-col md:flex-row">

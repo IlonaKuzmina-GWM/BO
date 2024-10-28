@@ -1,7 +1,4 @@
-"use client";
-
-import React, { useCallback, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import React from "react";
 import Image from "next/image";
 
 interface ISearch {
@@ -17,20 +14,6 @@ const Search: React.FC<ISearch> = ({
   onSearch,
   searchValue,
 }) => {
-  const [inputValue, setInputValue] = useState(searchValue);
-
-  // const debouncedOnSearch = useDebouncedCallback((term: string) => {
-  //   onSearch(term);
-  // }, 1500);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const term = event.target.value;
-    setInputValue(term);
-
-    // debouncedOnSearch(inputValue);
-    onSearch(term);
-  };
-
   return (
     <div
       className={`relative flex flex-1 flex-shrink-0 ${aditionalClass} h-10`}
@@ -39,7 +22,7 @@ const Search: React.FC<ISearch> = ({
         className="peer block w-full rounded-sm border border-divider px-3 py-[10px] pl-[38px] text-sm outline-2 placeholder:text-secondary"
         placeholder={placeholder}
         value={searchValue}
-        onChange={handleChange}
+        onChange={(e) => onSearch(e.target.value)}
       />
       <Image
         src={"/icons/search.svg"}

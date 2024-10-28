@@ -228,7 +228,7 @@ const MainDashPage = () => {
         <DatePickerWithRange onDateChange={handleDateRangeChange} />
       </div>
       <div className="flex flex-row gap-4 xl:gap-10">
-        <div className="flex w-full max-w-[1149px] flex-col gap-4 xl:gap-10">
+        {/* <div className="flex w-full max-w-[1149px] flex-col gap-4 xl:gap-10">
           <ChartWrapper
             title={`Transaction Overview (${totalTransactions} Transactions)`}
             dataInterval={selectedInterval}
@@ -258,9 +258,9 @@ const MainDashPage = () => {
           <ChartWrapper title={"Providers Success Rate"} dataInterval={""}>
             <VerticalComposedChart data={merchantChartData} />
           </ChartWrapper>
-        </div>
+        </div> */}
 
-        <div className="flex w-[370px] flex-col gap-4 xl:gap-10">
+        <div className="flex flex-row gap-4 xl:gap-10">
           <DashSideTable
             loading={isLoading}
             title="Merchants"

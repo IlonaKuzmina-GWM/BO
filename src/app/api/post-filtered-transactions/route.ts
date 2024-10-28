@@ -9,35 +9,31 @@ export async function POST(request: NextRequest) {
   const role = cookiesStore.get("userRole")?.value;
 
   try {
-    // Read and parse the body only once
     const filters = await request.json();
-
     const apiUrl = userUrl(getFilteredTransactionsRoute(role));
 
     console.log("API URL:", apiUrl);
-    console.log("Request Options:", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(filters),
-    });
+    // console.log("Request Options:", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify(filters),
+    // });
 
-    // Forward the filters as JSON in the fetch request body
     const data = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(filters), // Only read `filters` once from `request`
+      body: JSON.stringify(filters), 
     });
 
     if (!data.ok) {
       const errorText = await data.text();
       console.log("Error Response Body:", errorText);
-      // Parsing the error response body only once
       return new NextResponse(
         JSON.stringify({
           error: errorText || "Failed to fetch siins",
@@ -51,7 +47,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse the success response body only once
     const responseData = await data.json();
 
     return NextResponse.json({

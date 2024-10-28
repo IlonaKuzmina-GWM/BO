@@ -13,14 +13,14 @@ export async function POST(request: NextRequest) {
     const apiUrl = userUrl(getFilteredTransactionsRoute(role));
 
     console.log("API URL:", apiUrl);
-    // console.log("Request Options:", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify(filters),
-    // });
+    console.log("Request Options:", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(filters),
+    });
 
     const data = await fetch(apiUrl, {
       method: "POST",

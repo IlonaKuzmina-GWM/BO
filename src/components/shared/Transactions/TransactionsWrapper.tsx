@@ -84,6 +84,7 @@ const TransactionsWrapper = () => {
           currency: [],
           txList: [],
           paymentIds: [],
+          countryCode: '',
         }),
       });
 

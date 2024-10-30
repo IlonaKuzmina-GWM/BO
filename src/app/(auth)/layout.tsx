@@ -1,13 +1,11 @@
-import React, { useContext } from "react";
-
-interface ILayout {
-  children: React.ReactNode;
-}
+import React from "react";
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className='bg-auth_bg bg-center bg-no-repeat bg-cover'>{children}</div>;
+  return (
+    <div className="bg-auth_bg bg-cover bg-center bg-no-repeat">{children}</div>
+  );
 }

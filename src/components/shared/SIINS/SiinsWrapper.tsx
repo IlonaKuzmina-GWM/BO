@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Search from "../Search";
 import DatePickerWithRange from "../DatePickerWithRange";
@@ -14,7 +14,6 @@ import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
-import { useDebouncedCallback } from "use-debounce";
 
 const SiinsWrapper = () => {
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);

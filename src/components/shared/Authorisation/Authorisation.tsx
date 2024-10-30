@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/UI/card";
-import React, { SetStateAction, useState } from "react";
+import React, {useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/stores/StoreProvider";
@@ -28,10 +21,7 @@ const Autorisation = () => {
   const router = useRouter();
 
   const getProfile = async () => {
-    const response = await fetch("/api/get-profile", {
-      method: "GET",
-    });
-
+    const response = await fetch("/api/get-profile", { method: "GET" });
     const data = await response.json();
 
     if (response.ok) {
@@ -43,6 +33,7 @@ const Autorisation = () => {
   };
 
   const signIn = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch("/api/post-login", {
         method: "POST",
@@ -51,7 +42,6 @@ const Autorisation = () => {
 
       if (response.ok) {
         getProfile();
-
         setNotification({ success: true, message: "Login successful!" });
       } else {
         setNotification({ success: false, message: "Login failed" });
@@ -63,13 +53,10 @@ const Autorisation = () => {
         message: "An error occurred during login.",
       });
     }
-
     setIsLoading(false);
   };
 
-  const handleEmailChange = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
+  const handleEmailChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     setEmailError("");
     setEmail(e.target.value);
   };
@@ -77,48 +64,34 @@ const Autorisation = () => {
   const handleEmailBlur = () => {
     if (!email) {
       setEmailError("Email is required");
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        setEmailError("Invalid email format");
-      } else {
-        setEmailError("");
-      }
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError("Invalid email format");
     }
+  };
+
+  const handlePasswordChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setPasswordError("");
+    setPassword(e.target.value);
   };
 
   const handlePasswordBlur = () => {
     if (!password) {
       setPasswordError("Password is required");
-    } else {
-      setPasswordError("");
     }
   };
 
-  const handlePasswordChange = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setPasswordError("");
-    setPassword(e.target.value);
-  };
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     handleEmailBlur();
     handlePasswordBlur();
-
-    if (!emailError && !passwordError) {
-      signIn();
-    }
+    if (!emailError && !passwordError) signIn();
   };
 
   return (
-    <Card className="flex w-full flex-col rounded-md border-none bg-white px-[10px] py-[40px] sm:max-w-[580px] md:px-[36px]">
-      <CardHeader className="text-center">
+    <div className="flex w-full flex-col rounded-md bg-white px-[10px] py-[40px] sm:max-w-[580px] md:px-[36px]">
+      <header className="text-center">
         <Image
           src={"/images/logo-small.png"}
           alt={"Logo small"}
@@ -127,26 +100,25 @@ const Autorisation = () => {
           className="mx-auto mb-6"
           loading="lazy"
         />
-        <CardTitle className="text-[36px] font-bold leading-[48px]">
-          Welcome Back
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pb-0">
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <h1 className="text-[36px] font-bold leading-[48px]">Welcome Back</h1>
+      </header>
+
+      <section className="pb-0">
+        <form onSubmit={handleSubmit}>
           <label htmlFor="email" className="text-md block text-main">
             <div>Email</div>
             <input
               id="email"
-              name="email"
               type="email"
               className="text-md border-sm ring-none mt-1 w-full border-[1px] border-divider px-3 py-[10px] leading-none"
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
-            ></input>
+            />
           </label>
           {emailError && (
             <p className="pt-1 text-xs text-error">{emailError}</p>
           )}
+
           <label
             htmlFor="password"
             className="text-md relative mt-4 block text-main"
@@ -154,12 +126,11 @@ const Autorisation = () => {
             <div>Password</div>
             <input
               id="password"
-              name="password"
               type={showPassword ? "text" : "password"}
               className="text-md border-sm ring-none mt-1 w-full border-[1px] border-divider px-3 py-[10px] leading-none"
               onChange={handlePasswordChange}
               onBlur={handlePasswordBlur}
-            ></input>
+            />
             <span
               className="absolute bottom-0 right-4 -translate-y-1/2 transform cursor-pointer"
               onClick={toggleShowPassword}
@@ -171,7 +142,6 @@ const Autorisation = () => {
                 alt={"Show password icon"}
                 width={20}
                 height={20}
-                className=""
               />
             </span>
           </label>
@@ -179,31 +149,26 @@ const Autorisation = () => {
             <p className="pt-1 text-xs text-error">{passwordError}</p>
           )}
 
-          {/* <div className="mt-4 flex flex-col justify-between">
-            <label
-              htmlFor="remember"
-              className="flex flex-row items-center text-base leading-none text-main"
-            >
-              <Checkbox
-                className="me-2 h-4 w-4 border-border text-border"
-                checked={false}
-                onChange={() => {}}
-              />
-              Remember me
-            </label>
-          </div> */}
-
-          <button className="mt-10 w-full rounded-sm bg-blue500 px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white">
-            sign in
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="mt-10 w-full rounded-sm bg-blue500 px-8 py-4 text-[20px] font-semibold capitalize leading-normal text-white"
+          >
+            {isLoading ? "Signing in..." : "Sign In"}
           </button>
         </form>
-      </CardContent>
-      {notification.success === false && notification.message ? (
-        <CardFooter className="mx-auto mt-6 rounded-sm bg-errorBg p-4 text-center">
-          <p className="text-center text-error">{notification.message}</p>
-        </CardFooter>
-      ) : null}
-    </Card>
+      </section>
+
+      {notification.message && (
+        <footer className="mx-auto mt-6 rounded-sm bg-errorBg p-4 text-center">
+          <p
+            className={`text-center ${notification.success ? "text-success" : "text-error"}`}
+          >
+            {notification.message}
+          </p>
+        </footer>
+      )}
+    </div>
   );
 };
 

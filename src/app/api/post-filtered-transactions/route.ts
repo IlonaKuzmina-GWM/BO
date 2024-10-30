@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { getFilteredTransactionsRoute } from "@/helpers/getTransactionsRoute";
 
 export async function POST(request: NextRequest) {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const token = cookiesStore.get("authToken")?.value;
   const role = cookiesStore.get("userRole")?.value;
 
@@ -12,8 +12,7 @@ export async function POST(request: NextRequest) {
     const filters = await request.json();
     const apiUrl = userUrl(getFilteredTransactionsRoute(role));
 
-    console.log("API URL:", apiUrl);
-    console.log("Request Options:", {
+    const data = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,18 +21,9 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(filters),
     });
 
-    const data = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(filters), 
-    });
-
     if (!data.ok) {
       const errorText = await data.text();
-      console.log("Error Response Body:", errorText);
+
       return new NextResponse(
         JSON.stringify({
           error: errorText || "Failed to fetch siins",

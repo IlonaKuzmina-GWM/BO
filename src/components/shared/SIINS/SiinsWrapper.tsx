@@ -14,9 +14,14 @@ import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { exportExcelSiins } from "@/utils/export-utils";
+import ExportButton from "../ExportButton";
 
 const SiinsWrapper = () => {
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
+  const [siinExportnTransactions, setExportSiinsTransactions] = useState<
+    Siin[]
+  >([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
 
@@ -76,6 +81,55 @@ const SiinsWrapper = () => {
     }
   };
 
+  const sendExportSiinsData = async (exportType: "pdf" | "csv" | "excel") => {
+    let createdDateRange: [number, number] | boolean = false;
+
+    if (selectedDateRange?.from && selectedDateRange.to) {
+      const adjustedToDate = new Date(selectedDateRange.to);
+      adjustedToDate.setHours(23, 59, 59, 999);
+      createdDateRange = [
+        selectedDateRange.from.getTime(),
+        adjustedToDate.getTime(),
+      ];
+    }
+
+    const updatedDateRange: [number, number] | boolean = false;
+
+    try {
+      const response = await fetch("/api/post-export-siin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          searchInput: searchQuery || "",
+          createdDateRange,
+          updatedDateRange,
+        }),
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        const siinsData =  res.siins;
+
+        if (exportType === "excel") {
+          exportExcelSiins(siinsData);
+        } else if (exportType === "csv") {
+          // exportSiinCSV(siinsData);
+        } else if (exportType === "pdf") {
+          // exportSiinPDF(siinsData);
+        }
+      } else {
+        console.log("Siins response failed");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchSiinsData();
   }, [searchQuery, limit, currentPage, selectedDateRange]);
@@ -83,7 +137,7 @@ const SiinsWrapper = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchQuery(inputSearchQueryValue);
-    }, 1000); 
+    }, 1000);
 
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);
@@ -115,8 +169,6 @@ const SiinsWrapper = () => {
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
   };
-
-  console.log(siinsTransactions);
 
   if (loading) {
     return (
@@ -150,7 +202,12 @@ const SiinsWrapper = () => {
           </div>
         </div>
 
-        <DashButton name={"export"} type={"filled"} />
+        <ExportButton
+          onSelect={(exportType: "pdf" | "csv" | "excel") => {
+            sendExportSiinsData(exportType);
+          }}
+          disabled={loading}
+        />
       </div>
 
       <div>

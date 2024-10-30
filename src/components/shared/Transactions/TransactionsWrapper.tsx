@@ -15,6 +15,8 @@ import CustomTransactionTable from "./CustomTransactionTable";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { useStore } from "@/stores/StoreProvider";
+import ExportButton from "../ExportButton";
+import { exportExcelTransactions } from "@/utils/export-utils";
 
 const TransactionsWrapper = () => {
   const { authStore } = useStore();
@@ -25,7 +27,6 @@ const TransactionsWrapper = () => {
   const [inputSearchQueryValue, setInputSearchQueryValue] =
     useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
-
 
   const [limit, setLimit] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -84,7 +85,7 @@ const TransactionsWrapper = () => {
           currency: [],
           txList: [],
           paymentIds: [],
-          countryCode: '',
+          countryCode: "",
         }),
       });
 
@@ -93,7 +94,74 @@ const TransactionsWrapper = () => {
 
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
-        console.log("transactions in trasnactions page", res.transactions);
+        // console.log("transactions in trasnactions page", res.transactions);
+      } else {
+        console.log("Transactions response failed");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendExportTransactionsData = async (
+    exportType: "pdf" | "csv" | "excel",
+  ) => {
+    setLoading(true);
+
+    let createdDateRange: [number, number] | boolean = false;
+
+    if (selectedDateRange?.from && selectedDateRange.to) {
+      const adjustedToDate = new Date(selectedDateRange.to);
+      adjustedToDate.setHours(23, 59, 59, 999);
+      createdDateRange = [
+        selectedDateRange.from.getTime(),
+        adjustedToDate.getTime(),
+      ];
+    }
+
+    const updatedDateRange: [number, number] | boolean = false;
+
+    try {
+      const response = await fetch("/api/post-export-transactions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          searchInput: searchQuery || "",
+          amountSort: false,
+          createdSort: false,
+          updatedSort: false,
+          statusSort: [],
+          createdDateRange,
+          updatedDateRange,
+          paginationPage: currentPage,
+          paginationPerPage: limit,
+          merchIds: [],
+          providerIds: [],
+          currency: [],
+          txList: [],
+          paymentIds: [],
+          countryCode: "",
+        }),
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        const transactionData = res;
+
+        if (exportType === "excel") {
+          console.log("exporting excel", transactionData);
+          exportExcelTransactions(transactionData);
+        } else if (exportType === "csv") {
+          // exportSiinCSV(siinsData);
+        } else if (exportType === "pdf") {
+          // exportSiinPDF(siinsData);
+        }
       } else {
         console.log("Transactions response failed");
       }
@@ -163,7 +231,7 @@ const TransactionsWrapper = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchQuery(inputSearchQueryValue);
-    }, 1000); 
+    }, 1000);
 
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);
@@ -274,7 +342,12 @@ const TransactionsWrapper = () => {
           />
         </div>
 
-        <DashButton name={"export"} type={"filled"} />
+        <ExportButton
+          onSelect={(exportType: "pdf" | "csv" | "excel") => {
+            sendExportTransactionsData(exportType);
+          }}
+          disabled={loading}
+        />
       </div>
 
       {/* <StatusFilteringBadgeWrapper

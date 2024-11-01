@@ -40,6 +40,110 @@ const CustomTransactionTable = ({
     };
   }>({});
 
+  const refundTransaction = async (txId: string) => {
+    try {
+      const response = await fetch("/api/post-refund", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ txId: txId, isRefunded: false }),
+      });
+      if (response.ok) {
+        const res = await response.json();
+
+        console.log("Successfuly Updated Tx Status!", res.newStatus);
+      } else {
+        console.log("New status not found for this transaction in the Bank");
+      }
+    } catch (error) {
+      console.error(`Oops! Something went wrong: ${error}`);
+    }
+  };
+
+  const statuses = [
+    {
+      label: "PAYMENT_CREATED",
+      key: 1,
+    },
+    {
+      label: "PAYMENT_PROCESSING",
+      key: 2,
+    },
+    {
+      label: "PAYMENT_ACCEPTED",
+      key: 3,
+    },
+    {
+      label: "PAYMENT_SUCCESS",
+      key: 4,
+    },
+    {
+      label: "PAYMENT_TRANSFERRING",
+      key: 5,
+    },
+    {
+      label: "PAYMENT_DECLINED",
+      key: 6,
+    },
+    {
+      label: "PAYMENT_CANCELLED",
+      key: 7,
+    },
+    {
+      label: "PAYMENT_FAILED",
+      key: 8,
+    },
+    {
+      label: "TIMEOUT",
+      key: 9,
+    },
+    {
+      label: "AML_BLOCKED",
+      key: 10,
+    },
+    {
+      label: "PAYMENT_COMPLETE",
+      key: 11,
+    },
+  ];
+
+  const handleSelectStatus = async (key: number, txId: String) => {
+    const selectedStatus = statuses[key - 1].label;
+
+    try {
+      const response = await fetch("/api/post-transactions-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          txId: txId,
+          status: selectedStatus,
+        }),
+      });
+      if (response.ok) {
+        const res = await response.json();
+
+        console.log("Successfuly!", res);
+      } else {
+        console.log("New status not found for this transaction in the Bank");
+      }
+    } catch (error) {
+      console.error(`Oops! Something went wrong: ${error}`);
+    }
+
+    // await api('/transactions/status', { method: 'POST', body: {txId: transactionData.value.txId, status: selectedStatus} })
+    //     .then((res: any) => {
+    //         if (res.success) {
+    //             transactionData.value.status = selectedStatus;
+    //             transactionData.value.webhooks.push(res.newWebhook);
+    //             filterWebhooksByDate();
+    //             message.success(`Successfuly!`)
+    //         }
+    //     })
+  };
+
   const openAccordionBgColor = (status: string) => {
     switch (status) {
       case "success":
@@ -81,7 +185,6 @@ const CustomTransactionTable = ({
   };
 
   const transformStatus = (status: string): string => {
-    // console.log(status);
     const parts = status.split("_");
 
     if (parts.length > 1) {
@@ -145,13 +248,13 @@ const CustomTransactionTable = ({
   };
 
   const getCurrency = (countryCode: string, provider: string) => {
-    if (!countryCode) return 'EUR';
-    if (countryCode.toLowerCase() === 'gb' && provider === 'Boodil') {
-        return 'GBP'
+    if (!countryCode) return "EUR";
+    if (countryCode.toLowerCase() === "gb" && provider === "Boodil") {
+      return "GBP";
     } else {
-        return 'EUR'
+      return "EUR";
     }
-}
+  };
 
   return (
     <div className="">
@@ -183,7 +286,8 @@ const CustomTransactionTable = ({
               <td
                 colSpan={columns.length + 1}
                 className="py-4 text-center font-medium text-main"
-              >No transactions available.
+              >
+                No transactions available.
               </td>
             </tr>
           </thead>
@@ -195,6 +299,8 @@ const CustomTransactionTable = ({
                 const dynamicColor = rowBgColors[transaction.id];
                 const expandedWebhooks =
                   webhookExpanded[transaction.txId] || {};
+
+                console.log(transaction);
 
                 return (
                   <React.Fragment key={transaction.id}>
@@ -222,7 +328,12 @@ const CustomTransactionTable = ({
                       <td className="pe-8 font-semibold">
                         {transaction.amount}
                       </td>
-                      <td className="pe-2">{getCurrency(transaction?.initialRequest?.countryCode, transaction.provider.name)}</td>
+                      <td className="pe-2">
+                        {getCurrency(
+                          transaction?.initialRequest?.countryCode,
+                          transaction.provider.name,
+                        )}
+                      </td>
                       <td className="pe-2">{`${transaction.initialRequest.firstName} ${transaction.initialRequest.lastName}`}</td>
                       <td className="pe-2">
                         {transaction.initialRequest.email}
@@ -307,6 +418,83 @@ const CustomTransactionTable = ({
                                   </span>
                                 )}
                               </div>
+
+                              <div>
+                                <p>
+                                  <span className="font-medium">
+                                    Merchant ID:
+                                  </span>{" "}
+                                  {transaction.initialRequest.merchantId}
+                                </p>
+                              </div>
+                              <div>
+                                <p>
+                                  <span className="font-medium">E-mail:</span>{" "}
+                                  {transaction.initialRequest.email}
+                                </p>
+                              </div>
+
+                              <div>
+                                <p>
+                                  <span className="font-medium">Order ID:</span>{" "}
+                                  {transaction.id}
+                                </p>
+                              </div>
+
+                              <div>
+                                <p
+                                  onClick={() =>
+                                    handleSelectStatus(1, transaction.txId)
+                                  }
+                                >
+                                  <span className="font-medium">Status:</span>{" "}
+                                  {transaction.status}
+                                </p>
+                              </div>
+
+                              <div>
+                                <p>
+                                  <span className="font-medium">Amount:</span>{" "}
+                                  {transaction.amount}
+                                </p>
+                              </div>
+
+                              <div>
+                                <p>
+                                  <span className="font-medium">Currency:</span>{" "}
+                                  {getCurrency(
+                                    transaction?.initialRequest?.countryCode,
+                                    transaction.provider.name,
+                                  )}
+                                </p>
+                              </div>
+                              <div>
+                                <p>
+                                  <span className="font-medium">
+                                    Country code:
+                                  </span>{" "}
+                                  {transaction.countryCode}
+                                </p>
+                              </div>
+
+                              <div>
+                                <p>
+                                  <span className="font-medium">
+                                    Webhook URL:
+                                  </span>{" "}
+                                  {transaction.webhookUrl}
+                                </p>
+                              </div>
+
+                              <div>
+                                <p>
+                                  <span className="font-medium">
+                                    Return URL:
+                                  </span>{" "}
+                                  {transaction.returnUrl}
+                                </p>
+                              </div>
+
                               <div>
                                 <p>
                                   <span className="font-medium">Created:</span>{" "}
@@ -327,69 +515,6 @@ const CustomTransactionTable = ({
                                   </span>{" "}
                                   <span>
                                     {formatDateTime(transaction.updatedAt).time}
-                                  </span>
-                                </p>
-                              </div>
-
-                              <div>
-                                <p>
-                                  <span className="font-medium">Order ID:</span>{" "}
-                                  {transaction.id}
-                                </p>
-                              </div>
-
-                              <div>
-                                <p>
-                                  <span className="font-medium">Amount:</span>{" "}
-                                  {transaction.amount} €
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">Status:</span>{" "}
-                                  {transaction.status}
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">Result:</span>
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">
-                                    Decline Reason:
-                                  </span>
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">
-                                    Webhook URL:
-                                  </span>{" "}
-                                  {transaction.webhookUrl}
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">
-                                    Merchant ID:
-                                  </span>{" "}
-                                  {transaction.initialRequest.merchantId}
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">
-                                    Return URL:
-                                  </span>{" "}
-                                  {transaction.returnUrl}
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <span className="font-medium">
-                                    External Transaction ID:
                                   </span>
                                 </p>
                               </div>
@@ -526,11 +651,20 @@ const CustomTransactionTable = ({
                           </div>
 
                           <div className="mt-6 flex flex-row gap-4">
-                            <DashButton
+                            {/* <DashButton
                               name={"Verify Transaction Status"}
                               type={"filled"}
-                            />
-                            <DashButton name={"Refund"} type={"empty"} />
+                            /> */}
+
+                            {transaction.status === "PAYMENT_COMPLETE" && (
+                              <DashButton
+                                name={"Refund"}
+                                type={"empty"}
+                                onClickHandler={() =>
+                                  refundTransaction(transaction.txId)
+                                }
+                              />
+                            )}
                           </div>
                         </td>
                       </tr>

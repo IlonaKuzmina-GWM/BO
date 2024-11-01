@@ -23,6 +23,7 @@ export interface Provider {
 export interface Transaction {
   id: number;
   txId: string;
+  countryCode:string;
   txReferenceId: string;
   providerId: number;
   additionalInfo: string | null;

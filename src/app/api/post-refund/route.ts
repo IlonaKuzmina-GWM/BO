@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const filters = await request.json();
 
-    const apiUrl = userUrl("/events");
+    const apiUrl = userUrl("/transactions/refund");
 
     const data = await fetch(apiUrl, {
       method: "POST",
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       const errorData = await data.json();
       return new NextResponse(
         JSON.stringify({
-          error: errorData.error || "Failed to fetch logs",
+          error: errorData.error || "Failed to fetch refund status",
         }),
         {
           status: data.status,
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(responseData);
   } catch (error) {
-    console.error("Failed to process events request", error);
+    console.error("Failed to process refund request", error);
     return new NextResponse(
       JSON.stringify({
         success: false,

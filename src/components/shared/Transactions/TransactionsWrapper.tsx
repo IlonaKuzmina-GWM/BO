@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Search from "../Search";
 import { DateRange } from "react-day-picker";
-import DashButton from "../DashButton";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
@@ -17,6 +16,18 @@ import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { useStore } from "@/stores/StoreProvider";
 import ExportButton from "../ExportButton";
 import { exportExcelTransactions } from "@/utils/export-utils";
+import DashSelectValueNumber from "../DashSelectValueNumber";
+import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
+
+interface Merchant {
+  merchant_id: number;
+  merchant_name: string;
+}
+
+interface Provider {
+  provider_id: number;
+  provider_name: string;
+}
 
 const TransactionsWrapper = () => {
   const { authStore } = useStore();
@@ -27,6 +38,11 @@ const TransactionsWrapper = () => {
   const [inputSearchQueryValue, setInputSearchQueryValue] =
     useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const [inputCountryCodeQueryValue, setInputCountryCodeQueryValue] =
+    useState<string>("");
+  const [searchCountryCodeQuery, setSearchCountryCodeQuery] =
+    useState<string>("");
 
   const [limit, setLimit] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -41,15 +57,47 @@ const TransactionsWrapper = () => {
   >([]);
 
   const [statusList, setStatusList] = useState<{}>({});
-  const [merchantsList, setMerchantsList] = useState<string[]>([]);
-  const [providersList, setProvidersList] = useState<string[]>([]);
-  const [selectedMerchants, setSelectedMerchants] = useState<string[]>([]);
-  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+
+  const [merchantsList, setMerchantsList] = useState<Merchant[]>([]);
+  const [providersList, setProvidersList] = useState<Provider[]>([]);
+
+  const [selectedMerchants, setSelectedMerchants] = useState<number[]>([]);
+  const [selectedProviders, setSelectedProviders] = useState<number[]>([]);
+
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+  const [selectedCurrency, setSelectedCurrency] = useState<string[]>([]);
+
+  const fetchFiltersData = async () => {
+    try {
+      const response = await fetch("/api/get-filters", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        console.log("filterss data", res);
+
+        setMerchantsList(res.merchants);
+        setProvidersList(res.providers);
+      } else {
+        console.log("Filters response failed");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFiltersData();
+  }, []);
 
   const fetchTransactionsData = async () => {
-    setLoading(true);
-
     let createdDateRange: [number, number] | boolean = false;
 
     if (selectedDateRange?.from && selectedDateRange.to) {
@@ -75,17 +123,17 @@ const TransactionsWrapper = () => {
           amountSort: false,
           createdSort: false,
           updatedSort: false,
-          statusSort: [],
+          statusSort: selectedStatus,
           createdDateRange,
           updatedDateRange,
           paginationPage: currentPage,
           paginationPerPage: limit,
-          merchIds: [],
-          providerIds: [],
-          currency: [],
+          merchIds: selectedMerchants,
+          providerIds: selectedProviders,
+          currency: selectedCurrency,
           txList: [],
           paymentIds: [],
-          countryCode: "",
+          countryCode: searchCountryCodeQuery || "",
         }),
       });
 
@@ -94,14 +142,12 @@ const TransactionsWrapper = () => {
 
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
-        // console.log("transactions in trasnactions page", res.transactions);
+        console.log("transactions in trasnactions page", res.transactions);
       } else {
         console.log("Transactions response failed");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -154,6 +200,8 @@ const TransactionsWrapper = () => {
 
         const transactionData = res;
 
+        console.log(transactionData);
+
         if (exportType === "excel") {
           console.log("exporting excel", transactionData);
           exportExcelTransactions(transactionData);
@@ -183,6 +231,8 @@ const TransactionsWrapper = () => {
     selectedProviders,
     activeStatusBadge,
     selectedStatus,
+    selectedCurrency,
+    searchCountryCodeQuery,
   ]);
 
   const statusFilters = [
@@ -224,20 +274,42 @@ const TransactionsWrapper = () => {
     },
   ];
 
+  const currencyFilters = [
+    {
+      label: "EUR",
+      value: "eur",
+    },
+    {
+      label: "GBP",
+      value: "gbp",
+    },
+  ];
+
   const activeFilterBageHandler = (name: string) => {
-    setActiveStatusBadge(name);
+    if (name === "all") {
+      setSelectedStatus([]);
+      setActiveStatusBadge("all");
+    } else {
+      setSelectedStatus([name]);
+      setActiveStatusBadge(name);
+    }
   };
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchQuery(inputSearchQueryValue);
+      setSearchCountryCodeQuery(inputCountryCodeQueryValue);
     }, 1000);
 
     return () => clearTimeout(handler);
-  }, [inputSearchQueryValue]);
+  }, [inputSearchQueryValue, inputCountryCodeQueryValue]);
 
   const handleSearchChange = (value: string) => {
     setInputSearchQueryValue(value);
+  };
+
+  const handleCountrySearchChange = (value: string) => {
+    setInputCountryCodeQueryValue(value);
   };
 
   const handleIntervalChange = (interval: string) => {
@@ -264,25 +336,22 @@ const TransactionsWrapper = () => {
     setLimit(limit);
   };
 
-  const handleMerchantSelect = (merchants: string[]) => {
+  const handleMerchantSelect = (merchants: number[]) => {
     setSelectedMerchants(merchants);
   };
 
-  const handleProviderSelect = (providers: string[]) => {
+  const handleProviderSelect = (providers: number[]) => {
     setSelectedProviders(providers);
+  };
+
+  const handleCurrencySelect = (currencies: string[]) => {
+    setSelectedCurrency(currencies);
   };
 
   const handleStatusSelect = (status: string[]) => {
     setSelectedStatus(status);
+    console.log(status);
   };
-
-  if (loading) {
-    return (
-      <div className="flex w-full items-center justify-center">
-        <LoadingSpiner />
-      </div>
-    );
-  }
 
   return (
     <div className="">
@@ -293,6 +362,7 @@ const TransactionsWrapper = () => {
             aditionalClass="max-w-[302px] min-w-[250px]"
             onSearch={handleSearchChange}
             searchValue={inputSearchQueryValue}
+            searchIcon
           />
 
           <div className="flex">
@@ -307,31 +377,33 @@ const TransactionsWrapper = () => {
             />
           </div>
 
-          <DashSelect
-            value={"Select Merchants"}
-            label={"All Merchants"}
+          <DashSelectValueNumber
+            value={selectedMerchants}
+            label={"Select Merchants"}
             items={merchantsList.map((merchant) => ({
-              value: merchant,
-              label: merchant,
+              value: merchant.merchant_id,
+              label: merchant.merchant_name,
             }))}
             searchInput
             searchContext="merchant"
             onSelectHandler={handleMerchantSelect}
           />
-          <DashSelect
-            value={"Select Providers"}
-            label={"All Providers"}
+
+          <DashSelectValueNumber
+            value={selectedProviders}
+            label={"Select Providers"}
             items={providersList.map((provider) => ({
-              value: provider,
-              label: provider,
+              value: provider.provider_id,
+              label: provider.provider_name,
             }))}
             searchInput
             searchContext="provider"
             onSelectHandler={handleProviderSelect}
           />
+
           <DashSelect
-            value={"Select Status"}
-            label={"All Status Fields"}
+            value={selectedStatus}
+            label={"Select Status"}
             items={statusFilters.map((status) => ({
               value: status.value,
               label: status.label,
@@ -339,6 +411,25 @@ const TransactionsWrapper = () => {
             searchInput
             searchContext="status"
             onSelectHandler={handleStatusSelect}
+          />
+
+          <DashSelect
+            value={selectedCurrency}
+            label={"Select Currency"}
+            items={currencyFilters.map((currency) => ({
+              value: currency.value,
+              label: currency.label,
+            }))}
+            searchInput
+            searchContext="currency"
+            onSelectHandler={handleCurrencySelect}
+          />
+
+          <Search
+            placeholder={"Country Code"}
+            aditionalClass="max-w-[150px] min-w-[100px]"
+            onSearch={handleCountrySearchChange}
+            searchValue={inputCountryCodeQueryValue}
           />
         </div>
 
@@ -350,13 +441,13 @@ const TransactionsWrapper = () => {
         />
       </div>
 
-      {/* <StatusFilteringBadgeWrapper
+      <StatusFilteringBadgeWrapper
         statusList={statusList}
         statusFilters={statusFilters}
-        counter={transactions.length.toString()}
+        counter={paginatedTransactions.length.toString()}
         activeStatusBadge={activeStatusBadge}
         onClickHandler={activeFilterBageHandler}
-      /> */}
+      />
 
       <CustomTransactionTable
         paginatedTransactions={paginatedTransactions}

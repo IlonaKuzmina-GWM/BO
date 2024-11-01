@@ -369,7 +369,7 @@ const CustomSiinsTable = ({
                             </div>
                           </div>
 
-                          <div className="w-3/12">
+                          {/* <div className="w-3/12">
                             <h3 className="mb-4 py-1 text-[18px] font-medium">
                               Webhook
                             </h3>
@@ -643,20 +643,20 @@ const CustomSiinsTable = ({
                                 </CollapsibleContent>
                               </Collapsible>
                             </div>
-                          </div>
+                          </div> */}
 
-                          <div className="w-3/12">
+                          {/* <div className="w-3/12">
                             <h3>Log</h3>
-                          </div>
+                          </div> */}
                         </div>
 
-                        <div className="mt-6 flex flex-row gap-4">
+                        {/* <div className="mt-6 flex flex-row gap-4">
                           <DashButton
                             name={"Verify Transaction Status"}
                             type={"filled"}
                           />
                           <DashButton name={"Refund"} type={"empty"} />
-                        </div>
+                        </div> */}
                       </td>
                     </tr>
                   )}

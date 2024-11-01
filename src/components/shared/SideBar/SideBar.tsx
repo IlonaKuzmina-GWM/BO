@@ -42,26 +42,26 @@ const SiderBar: React.FC = observer(() => {
       link: "/dashboard/siins",
       iconLink: "siins",
     },
-    {
-      name: "Generate CSV",
-      link: "/dashboard/generateCSV",
-      iconLink: "generateCSV",
-    },
-    {
-      name: "Settlement",
-      link: "/dashboard/settlement",
-      iconLink: "settlement",
-    },
+    // {
+    //   name: "Generate CSV",
+    //   link: "/dashboard/generateCSV",
+    //   iconLink: "generateCSV",
+    // },
+    // {
+    //   name: "Settlement",
+    //   link: "/dashboard/settlement",
+    //   iconLink: "settlement",
+    // },
     {
       name: "Manager",
       link: "/dashboard/manager",
       iconLink: "manager",
     },
-    {
-      name: "Settings",
-      link: "/dashboard/settings",
-      iconLink: "settings",
-    },
+    // {
+    //   name: "Settings",
+    //   link: "/dashboard/settings",
+    //   iconLink: "settings",
+    // },
   ];
 
   let allowedRoutes: string[] = roleRoutes[userRole] || [];

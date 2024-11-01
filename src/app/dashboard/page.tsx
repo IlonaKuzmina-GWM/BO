@@ -59,147 +59,147 @@ const MainDashPage = () => {
     { x: 9, y: 43, z: 93 },
   ];
 
-  const fetchTransactionsData = async () => {
-    setIsLoading(true);
+  // const fetchTransactionsData = async () => {
+  //   setIsLoading(true);
 
-    try {
-      const params = new URLSearchParams();
-      if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
-        params.append("from", selectedDateRange.from.toISOString());
-        params.append("to", selectedDateRange.to.toISOString());
-      } else if (selectedInterval) {
-        params.append("interval", selectedInterval);
-      }
+  //   try {
+  //     const params = new URLSearchParams();
+  //     if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
+  //       params.append("from", selectedDateRange.from.toISOString());
+  //       params.append("to", selectedDateRange.to.toISOString());
+  //     } else if (selectedInterval) {
+  //       params.append("interval", selectedInterval);
+  //     }
 
-      const response = await fetch(
-        `/api/get-transactions-analytics?${params.toString()}`,
-        {
-          method: "GET",
-        },
-      );
+  //     const response = await fetch(
+  //       `/api/get-transactions-analytics?${params.toString()}`,
+  //       {
+  //         method: "GET",
+  //       },
+  //     );
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Error fetching transactions: ${errorMessage}`);
-      }
+  //     if (!response.ok) {
+  //       const errorMessage = await response.text();
+  //       throw new Error(`Error fetching transactions: ${errorMessage}`);
+  //     }
 
-      const { filteredTransactions }: { filteredTransactions: Transaction[] } =
-        await response.json();
+  //     const { filteredTransactions }: { filteredTransactions: Transaction[] } =
+  //       await response.json();
 
-      if (!filteredTransactions || filteredTransactions.length === 0) {
-        setIsLoading(false);
-        console.warn("No transactions found for the given filters");
-        return;
-      }
+  //     if (!filteredTransactions || filteredTransactions.length === 0) {
+  //       setIsLoading(false);
+  //       console.warn("No transactions found for the given filters");
+  //       return;
+  //     }
 
-      const uniqueMerchants = Object.values(
-        filteredTransactions.reduce(
-          (
-            acc: Record<string, { name: string; amount: number }>,
-            transaction: Transaction,
-          ) => {
-            const { name } = transaction.merchant;
-            const amount = parseFloat(transaction.amount);
+  //     const uniqueMerchants = Object.values(
+  //       filteredTransactions.reduce(
+  //         (
+  //           acc: Record<string, { name: string; amount: number }>,
+  //           transaction: Transaction,
+  //         ) => {
+  //           const { name } = transaction.merchant;
+  //           const amount = parseFloat(transaction.amount);
 
-            if (!acc[name]) {
-              acc[name] = { name, amount };
-            } else {
-              acc[name].amount += amount;
-            }
+  //           if (!acc[name]) {
+  //             acc[name] = { name, amount };
+  //           } else {
+  //             acc[name].amount += amount;
+  //           }
 
-            return acc;
-          },
-          {} as Record<string, { name: string; amount: number }>,
-        ),
-      );
+  //           return acc;
+  //         },
+  //         {} as Record<string, { name: string; amount: number }>,
+  //       ),
+  //     );
 
-      const displayMerchants = uniqueMerchants.map((merchant) => ({
-        name: merchant.name,
-        amount: merchant.amount.toFixed(2),
-      }));
+  //     const displayMerchants = uniqueMerchants.map((merchant) => ({
+  //       name: merchant.name,
+  //       amount: merchant.amount.toFixed(2),
+  //     }));
 
-      setMerchantsTableData(displayMerchants);
-      // setTotalTransactions(totalTransactions);
-      // setTotalAmount(totalAmount.toFixed(2));
-      // setChartData(formattedData);
-      // setBarChartData(formattedBarData);
+  //     setMerchantsTableData(displayMerchants);
+  //     // setTotalTransactions(totalTransactions);
+  //     // setTotalAmount(totalAmount.toFixed(2));
+  //     // setChartData(formattedData);
+  //     // setBarChartData(formattedBarData);
 
-      // Set merchant data for the vertical composed chart
-      // setMerchantChartData(
-      //   Object.keys(merchantData).map((merchant) => ({
-      //     merchant,
-      //     ...merchantData[merchant],
-      //   })),
-      // );
+  //     // Set merchant data for the vertical composed chart
+  //     // setMerchantChartData(
+  //     //   Object.keys(merchantData).map((merchant) => ({
+  //     //     merchant,
+  //     //     ...merchantData[merchant],
+  //     //   })),
+  //     // );
 
-      // console.log("transactions in dashboard:", filteredTransactions);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  //     // console.log("transactions in dashboard:", filteredTransactions);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
-  const fetchCountriesData = async () => {
-    setIsLoading(true);
+  // const fetchCountriesData = async () => {
+  //   setIsLoading(true);
 
-    try {
-      const params = new URLSearchParams();
-      if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
-        params.append("from", selectedDateRange.from.toISOString());
-        params.append("to", selectedDateRange.to.toISOString());
-      } else if (selectedInterval) {
-        params.append("interval", selectedInterval);
-      }
+  //   try {
+  //     const params = new URLSearchParams();
+  //     if (selectedDateRange && selectedDateRange.from && selectedDateRange.to) {
+  //       params.append("from", selectedDateRange.from.toISOString());
+  //       params.append("to", selectedDateRange.to.toISOString());
+  //     } else if (selectedInterval) {
+  //       params.append("interval", selectedInterval);
+  //     }
 
-      const response = await fetch(`/api/get-siin?${params.toString()}`, {
-        method: "GET",
-      });
-      const { siin }: { siin: Siin[] } = await response.json();
+  //     const response = await fetch(`/api/get-siin?${params.toString()}`, {
+  //       method: "GET",
+  //     });
+  //     const { siin }: { siin: Siin[] } = await response.json();
 
-      if (!siin || siin.length === 0) {
-        setIsLoading(false);
-        console.warn("No siin found for the given filters");
-        return;
-      }
+  //     if (!siin || siin.length === 0) {
+  //       setIsLoading(false);
+  //       console.warn("No siin found for the given filters");
+  //       return;
+  //     }
 
-      const totalAmount = siin.reduce((acc, item) => {
-        const amount = Math.round(Number(item.amount) * 100);
-        return acc + amount;
-      }, 0);
+  //     const totalAmount = siin.reduce((acc, item) => {
+  //       const amount = Math.round(Number(item.amount) * 100);
+  //       return acc + amount;
+  //     }, 0);
 
-      const countryAmounts = siin.reduce(
-        (acc, item) => {
-          const amount = Math.round(Number(item.amount) * 100);
-          const country = item.senderBankCountry;
+  //     const countryAmounts = siin.reduce(
+  //       (acc, item) => {
+  //         const amount = Math.round(Number(item.amount) * 100);
+  //         const country = item.senderBankCountry;
 
-          if (!acc[country]) {
-            acc[country] = amount;
-          } else {
-            acc[country] += amount;
-          }
+  //         if (!acc[country]) {
+  //           acc[country] = amount;
+  //         } else {
+  //           acc[country] += amount;
+  //         }
 
-          setIsLoading(false);
-          return acc;
-        },
-        {} as Record<string, number>,
-      );
+  //         setIsLoading(false);
+  //         return acc;
+  //       },
+  //       {} as Record<string, number>,
+  //     );
 
-      const countryPercentages = Object.entries(countryAmounts).map(
-        ([country, amount]) => ({
-          name: country,
-          amount: ((amount / totalAmount) * 100).toString(),
-        }),
-      );
+  //     const countryPercentages = Object.entries(countryAmounts).map(
+  //       ([country, amount]) => ({
+  //         name: country,
+  //         amount: ((amount / totalAmount) * 100).toString(),
+  //       }),
+  //     );
 
-      setCountryTableData(countryPercentages);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  //     setCountryTableData(countryPercentages);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchTransactionsData();
-    fetchCountriesData();
-  }, [selectedInterval, selectedDateRange]);
+  // useEffect(() => {
+  //   fetchTransactionsData();
+  //   fetchCountriesData();
+  // }, [selectedInterval, selectedDateRange]);
 
   const handleIntervalChange = (interval: string) => {
     setSelectedInterval(interval);

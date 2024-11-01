@@ -144,13 +144,21 @@ const CustomTransactionTable = ({
     }
   };
 
+  const getCurrency = (countryCode: string, provider: string) => {
+    if (!countryCode) return 'EUR';
+    if (countryCode.toLowerCase() === 'gb' && provider === 'Boodil') {
+        return 'GBP'
+    } else {
+        return 'EUR'
+    }
+}
+
   return (
     <div className="">
       <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
         <thead className="h-[50px] bg-hoverBg font-semibold">
           <tr>
             <th className="w-[3%] min-w-[35px] pl-3 lg:pl-3">
-              {" "}
               <CustomCheckbox handleCheckboxChange={handleAllCheckboxChange} />
             </th>
             {columns.map((col, index) => (
@@ -171,13 +179,11 @@ const CustomTransactionTable = ({
           <LoadingTransactionTableSkeleton />
         ) : paginatedTransactions?.length === 0 ? (
           <thead>
-            {" "}
             <tr className="bg-white">
               <td
                 colSpan={columns.length + 1}
                 className="py-4 text-center font-medium text-main"
-              >
-                No transactions available.
+              >No transactions available.
               </td>
             </tr>
           </thead>
@@ -216,6 +222,7 @@ const CustomTransactionTable = ({
                       <td className="pe-8 font-semibold">
                         {transaction.amount}
                       </td>
+                      <td className="pe-2">{getCurrency(transaction?.initialRequest?.countryCode, transaction.provider.name)}</td>
                       <td className="pe-2">{`${transaction.initialRequest.firstName} ${transaction.initialRequest.lastName}`}</td>
                       <td className="pe-2">
                         {transaction.initialRequest.email}

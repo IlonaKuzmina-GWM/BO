@@ -3,9 +3,10 @@ import { Header } from "@/types";
 export const TransactionsTableHeader: Header[] = [
   { key: "id", title: "ID", width: "7%", centered: true },
   { key: "status", title: "Status", width: "8%" },
-  { key: "amount", title: "Amount", width: "10%" },
+  { key: "amount", title: "Amount", width: "8%" },
+  { key: "currency", title: "Currency", width: "4%" },
   { key: "name", title: "Name", width: "10%" },
-  { key: "email", title: "Email", width: "17%" },
+  { key: "email", title: "Email", width: "15%" },
   { key: "merchant", title: "Merchant", width: "10%" },
   { key: "provider", title: "Provider", width: "10%" },
   { key: "createdAt", title: "Created", width: "8%", centered: true },
@@ -30,8 +31,8 @@ export const GenerateCSVTableHeader: Header[] = [
   { title: "Surname", key: "surname", width: "20%" },
   { title: "IBAN", key: "iban", width: "20%" },
   { title: "Amount", key: "amount", width: "9%" },
-  { title: "Created",key: "created",width: "13%",},
-  { title: "Action", key: "delete", width: "9%", centered: true  },
+  { title: "Created", key: "created", width: "13%" },
+  { title: "Action", key: "delete", width: "9%", centered: true },
 ];
 
 export const ManagerMerchantsTableHeader: Header[] = [
@@ -55,7 +56,7 @@ export const ManagerAllUsersTableHeader: Header[] = [
   { title: "Last name", key: "lastName", width: "11%" },
   { title: "Email", key: "email", width: "17%" },
   { title: "Email verification", key: "isEmailVerified", width: "10%" },
-  { title: "Merchant (label)",key: "merchant",width: "15%",centered: true,},
+  { title: "Merchant (label)", key: "merchant", width: "15%", centered: true },
   { title: "Role", key: "role", width: "8%", centered: true },
   { title: "Created at", key: "created", width: "12%", centered: true },
   { title: "Disabled", key: "isDisabled", width: "8%", centered: true },
@@ -94,5 +95,5 @@ export const LogsTableHeader: Header[] = [
   { title: "Person", key: "person", width: "24%" },
   { title: "Action", key: "action", width: "24%" },
   { title: "Created at", key: "createdAt", width: "15%" },
-  { title: "Type", key: "type", width: "24%",centered: true },
+  { title: "Type", key: "type", width: "24%", centered: true },
 ];

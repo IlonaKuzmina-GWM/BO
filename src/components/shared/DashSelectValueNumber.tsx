@@ -6,25 +6,25 @@ import { useEffect, useRef, useState } from "react";
 import Search from "./Search";
 
 interface IItem {
-  value: string;
+  value: number;
   label: string;
 }
 
-interface ICustomMultiSelect {
-  value: string[];
+interface IDashSelectValueNumber {
+  value: number[];
   label: string;
   items: IItem[];
   searchInput: boolean;
   searchContext: string;
   isMulti?: boolean;
-  onSelectHandler: (selectedValues: string[]) => void;
+  onSelectHandler: (selectedValues: number[]) => void;
   disabled?: boolean;
   width?: string;
   isInvalid?: boolean;
 }
 
-const CustomMultiSelect = ({
-  value,
+const DashSelectValueNumber = ({
+  value = [],
   label,
   items,
   searchInput,
@@ -32,10 +32,10 @@ const CustomMultiSelect = ({
   isMulti = true,
   onSelectHandler,
   disabled,
-  width = "180px",
+  width = "200px",
   isInvalid = false,
-}: ICustomMultiSelect) => {
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+}: IDashSelectValueNumber) => {
+  const [selectedValues, setSelectedValues] = useState<number[]>(value);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -56,8 +56,8 @@ const CustomMultiSelect = ({
     };
   }, []);
 
-  const toggleValue = (itemValue: string) => {
-    let newSelectedValues: string[];
+  const toggleValue = (itemValue: number) => {
+    let newSelectedValues: number[];
     if (isMulti) {
       newSelectedValues = selectedValues.includes(itemValue)
         ? selectedValues.filter((item) => item !== itemValue)
@@ -75,7 +75,6 @@ const CustomMultiSelect = ({
 
   const clearSelection = () => {
     setSelectedValues([]);
-
     setIsOpen(false);
     if (onSelectHandler) {
       onSelectHandler([]);
@@ -91,7 +90,7 @@ const CustomMultiSelect = ({
   };
 
   return (
-    <div className={`relative h-10 w-[${width}] min-w-[200px]`} ref={dropdownRef}>
+    <div className={`relative h-10 w-[${width}] `} ref={dropdownRef}>
       <button
         type="button"
         disabled={disabled}
@@ -105,7 +104,7 @@ const CustomMultiSelect = ({
             !isOpen ? "overflow-hidden text-ellipsis whitespace-nowrap" : ""
           }`}
         >
-       {selectedValues.length > 0
+          {selectedValues.length > 0
             ? selectedValues
                 .map((val) => items.find((item) => item.value === val)?.label)
                 .filter(Boolean)
@@ -159,4 +158,4 @@ const CustomMultiSelect = ({
   );
 };
 
-export default CustomMultiSelect;
+export default DashSelectValueNumber;

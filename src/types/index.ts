@@ -6,6 +6,7 @@ export interface InitialRequest {
   firstName: string;
   lastName: string;
   merchantId: string;
+  countryCode: string;
 }
 
 // export interface Merchant {

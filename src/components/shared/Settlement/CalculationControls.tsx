@@ -58,7 +58,7 @@ const CalculationControls = ({
 
   return (
     <div className="flex flex-row gap-[16px]">
-      <DashSelect
+      {/* <DashSelect
         value={"Select Manager"}
         label={"All Managers"}
         items={managers}
@@ -66,8 +66,8 @@ const CalculationControls = ({
         searchContext="manager"
         isMulti={false}
         onSelectHandler={onManagerChange}
-      />
-      <DashSelect
+      /> */}
+      {/* <DashSelect
         value={"Select Merchant"}
         label={"All Merchants"}
         items={merchantsList.map((merchant) => ({
@@ -79,7 +79,7 @@ const CalculationControls = ({
         isMulti={true}
         onSelectHandler={onMerchantChange}
         disabled={disabled}
-      />
+      /> */}
       <div className="flex">
         <DashIntervalSelect
           value={interval ? interval : "Select Interval"}

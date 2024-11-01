@@ -72,7 +72,7 @@ const Rules = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="Limits with Flexible Rules and Actions" />
           <div className="flex flex-row gap-[15px]">
-            <DashSelect
+            {/* <DashSelect
               value={selectedValues.length > 0 ? selectedValues[0] : "Select Merchant"}
               label={"All Merchants"}
               items={items}
@@ -81,7 +81,7 @@ const Rules = () => {
               isMulti={false}
               onSelectHandler={setSelectedValues}
               width="200px"
-            />
+            /> */}
             <Dashbutton
               name="Add new rule"
               type="empty"

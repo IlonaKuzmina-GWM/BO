@@ -31,9 +31,11 @@ interface Provider {
 
 const TransactionsWrapper = () => {
   const { authStore } = useStore();
+  const userId = authStore.user?.id;
+  const userRole = authStore.role;
+
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
-  const userId = authStore.user?.id;
 
   const [inputSearchQueryValue, setInputSearchQueryValue] =
     useState<string>("");
@@ -377,29 +379,33 @@ const TransactionsWrapper = () => {
             />
           </div>
 
-          <DashSelectValueNumber
-            value={selectedMerchants}
-            label={"Select Merchants"}
-            items={merchantsList.map((merchant) => ({
-              value: merchant.merchant_id,
-              label: merchant.merchant_name,
-            }))}
-            searchInput
-            searchContext="merchant"
-            onSelectHandler={handleMerchantSelect}
-          />
+          {userRole !== "merchant" && (
+            <>
+              <DashSelectValueNumber
+                value={selectedMerchants}
+                label={"Select Merchants"}
+                items={merchantsList.map((merchant) => ({
+                  value: merchant.merchant_id,
+                  label: merchant.merchant_name,
+                }))}
+                searchInput
+                searchContext="merchant"
+                onSelectHandler={handleMerchantSelect}
+              />
 
-          <DashSelectValueNumber
-            value={selectedProviders}
-            label={"Select Providers"}
-            items={providersList.map((provider) => ({
-              value: provider.provider_id,
-              label: provider.provider_name,
-            }))}
-            searchInput
-            searchContext="provider"
-            onSelectHandler={handleProviderSelect}
-          />
+              <DashSelectValueNumber
+                value={selectedProviders}
+                label={"Select Providers"}
+                items={providersList.map((provider) => ({
+                  value: provider.provider_id,
+                  label: provider.provider_name,
+                }))}
+                searchInput
+                searchContext="provider"
+                onSelectHandler={handleProviderSelect}
+              />
+            </>
+          )}
 
           <DashSelect
             value={selectedStatus}

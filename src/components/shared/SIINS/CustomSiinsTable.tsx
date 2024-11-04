@@ -1,5 +1,5 @@
 "use client";
-import { Header, Siin } from "@/types";
+import { Header, Siin, Transaction } from "@/types";
 import { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
 import Checkbox from "../Checkbox";
@@ -17,6 +17,16 @@ import { formatDateTime } from "@/helpers/dateFormater";
 import LoadingSiinTableSkeleton from "../LoadingUI/LoadingSiinTableSkeleton";
 import { Tooltip, TooltipProvider } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "@/components/UI/tooltip";
+import {
+  getFailedColor,
+  getProcessColor,
+  getStatusColorClass,
+  getSuccessColor,
+} from "@/helpers/getColorByStatus";
+import { useStore } from "@/stores/StoreProvider";
+import { ROLES } from "@/constants/roles";
+import { STATUSES } from "@/constants/statuses";
+import LogHistory from "../LogHistory";
 
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
@@ -27,6 +37,9 @@ const CustomSiinsTable = ({
   columns,
   data,
 }: ICustomSiinsTransactionTableProps) => {
+  const { authStore } = useStore();
+  const userRole = authStore.role;
+
   const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
@@ -39,51 +52,100 @@ const CustomSiinsTable = ({
   const [webhookExpanded, setWebhookExpanded] = useState<{
     [key: number]: boolean;
   }>({});
+  const [, setExpandedDropdowns] = useState(false);
 
-  // console.log("data", data)
+  const handleSelectStatus = async (value: string, txId: String) => {
+    console.log(value, txId);
 
-  // const openAccordionBgColor = (status: string) => {
-  //   console.log(status);
-  //   switch (status) {
-  //     case "success":
-  //       return "successBg";
-  //     case "failed":
-  //       return "errorBg";
-  //     case "transferring":
-  //       return "warningBg";
-  //     default:
-  //       return "white";
-  //   }
-  // };
+    try {
+      const response = await fetch("/api/post-transactions-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          txId: txId,
+          status: value,
+        }),
+      });
+      if (response.ok) {
+        const res = await response.json();
 
-  const toggleRow = (siinTransaction: Siin) => {
-    const { id } = siinTransaction;
+        console.log("Successfuly!", res);
+      } else {
+        console.log("New status not found for this transaction in the");
+      }
+    } catch (error) {
+      console.error(`Oops! Something went wrong: ${error}`);
+    }
+
+    // await api('/transactions/status', { method: 'POST', body: {txId: transactionData.value.txId, status: selectedStatus} })
+    //     .then((res: any) => {
+    //         if (res.success) {
+    //             transactionData.value.status = selectedStatus;
+    //             transactionData.value.webhooks.push(res.newWebhook);
+    //             filterWebhooksByDate();
+    //             message.success(`Successfuly!`)
+    //         }
+    //     })
+  };
+
+  const openAccordionBgColor = (status: string) => {
+    switch (status) {
+      case "success":
+        return "successBg";
+      case "failed":
+        return "errorBg";
+      case "transferring":
+        return "warningBg";
+      default:
+        return "whiteBg";
+    }
+  };
+
+  const bgColorMap = {
+    failed: "bg-errorBg",
+    success: "bg-successBg",
+    processing: "bg-warningBg",
+    default: "bg-gray-200",
+  };
+
+  const transformStatus = (status: string) => {
+    if (getFailedColor(status)) return "failed";
+    if (getSuccessColor(status)) return "success";
+    if (getProcessColor(status)) return "processing";
+    return "default";
+  };
+
+  const toggleRow = (siin: Siin) => {
+    const { id, status } = siin;
 
     setExpandedRows((prevExpandedRows) =>
       prevExpandedRows.includes(id)
         ? prevExpandedRows.filter((rowId) => rowId !== id)
         : [...prevExpandedRows, id],
     );
-  };
 
-  const toggleWebhook = (index: number) => {
-    setWebhookExpanded((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
+    if (!expandedRows.includes(id)) {
+      const colorType = transformStatus(status);
+      const bgColor = bgColorMap[colorType];
 
-  const transformStatus = (status: string): string => {
-    console.log(status);
-    const parts = status.split("_");
-
-    if (parts.length > 1) {
-      parts.shift();
+      setRowBgColors((prevBgColors) => ({
+        ...prevBgColors,
+        [id]: openAccordionBgColor(transformStatus(status)),
+      }));
     }
-    const transformed = parts.join("_").toLowerCase();
-
-    return transformed.charAt(0) + transformed.slice(1);
   };
+
+  // const toggleWebhook = (siinId: string, webhookIndex: number) => {
+  //   setWebhookExpanded((prev) => ({
+  //     ...prev,
+  //     [siinId]: {
+  //       ...prev[siinId],
+  //       [webhookIndex]: !prev[siinId]?.[webhookIndex],
+  //     },
+  //   }));
+  // };
 
   const handleAllCheckboxChange = () => {
     setAllChecked(!allChecked);
@@ -179,6 +241,9 @@ const CustomSiinsTable = ({
                 siin.transaction && typeof siin.transaction === "object";
               const isExpanded =
                 expandedRows.includes(siin.id) && transactionsTableHeader;
+              const dynamicColor = rowBgColors[siin.id];
+              // const expandedWebhooks =
+              // webhookExpanded[siin.txId] || {};
 
               return (
                 <React.Fragment key={siin.id}>
@@ -200,7 +265,7 @@ const CustomSiinsTable = ({
                           <Tooltip>
                             <TooltipTrigger className="h-full w-full">
                               <span className="absolute right-[90%] top-1/2 h-1 w-1 rounded-full bg-slate-600" />
-                             {siin.id}
+                              {siin.id}
                             </TooltipTrigger>
                             <TooltipContent className="ms-2">
                               <p> SIIN contain transaction</p>
@@ -235,7 +300,10 @@ const CustomSiinsTable = ({
                     <tr>
                       <td
                         colSpan={columns.length + 1}
-                        className={`border-b-[3px] border-b-${rowBgColors} p-6`}
+                        className={`border-b-[3px] p-6`}
+                        style={{
+                          borderBottomColor: `var(--${dynamicColor.slice(0, -2)})`,
+                        }}
                       >
                         <div className="flex flex-row gap-10">
                           <div className="flex w-6/12 flex-col gap-1 text-main">
@@ -256,13 +324,15 @@ const CustomSiinsTable = ({
                                   );
                                 }}
                               >
-                                <Image
-                                  src="/icons/copy.svg"
-                                  width={16}
-                                  height={16}
-                                  alt="Copy"
-                                  className={`h-4 w-4`}
-                                />
+                                <div className="h-4 w-4">
+                                  <Image
+                                    src="/icons/copy.svg"
+                                    width={16}
+                                    height={16}
+                                    alt="Copy"
+                                    className={`h-auto w-full`}
+                                  />
+                                </div>
                               </div>
 
                               {copiedOrderID && (
@@ -320,12 +390,57 @@ const CustomSiinsTable = ({
                                 {siin.transaction.amount} €
                               </p>
                             </div>
+
                             <div>
-                              <p>
-                                <span className="font-medium">Status:</span>{" "}
-                                {siin.transaction.status}
-                              </p>
+                              <span className="font-medium">Status:</span>
+                              {userRole === ROLES.ADMIN ||
+                              userRole === ROLES.DEVELOPER ? (
+                                <p
+                                  className={`relative inline-block text-${getStatusColorClass(siin.transaction.status)}`}
+                                  onClick={() => setExpandedDropdowns(true)}
+                                >
+                                  <select
+                                    className="cursor-pointer bg-transparent"
+                                    onChange={(e) =>
+                                      handleSelectStatus(
+                                        e.target.value,
+                                        siin.transaction.txId,
+                                      )
+                                    }
+                                    value={siin.transaction.status}
+                                  >
+                                    <option
+                                      value={siin.transaction.status}
+                                      className="cursor-pointer"
+                                    >
+                                      {siin.transaction.status}
+                                    </option>
+
+                                    {Object.values(STATUSES)
+                                      .filter(
+                                        (status) =>
+                                          status !== siin.transaction.status,
+                                      )
+                                      .map((status) => (
+                                        <option
+                                          key={status}
+                                          value={status}
+                                          className={`cursor-pointer text-${getStatusColorClass(status)}`}
+                                        >
+                                          {status}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </p>
+                              ) : (
+                                <p
+                                  className={` ${getStatusColorClass(siin.transaction.status)}`}
+                                >
+                                  {siin.transaction.status}
+                                </p>
+                              )}
                             </div>
+
                             <div>
                               <p>
                                 <span className="font-medium">Result:</span>
@@ -369,284 +484,128 @@ const CustomSiinsTable = ({
                             </div>
                           </div>
 
-                          {/* <div className="w-3/12">
+                          {/* <div className="w-3/12 min-w-[250px]">
                             <h3 className="mb-4 py-1 text-[18px] font-medium">
                               Webhook
                             </h3>
                             <div className="webhook_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
-                              <Collapsible
-                                open={webhookExpanded[1] || false}
-                                onOpenChange={() => {
-                                  toggleWebhook(1);
-                                }}
-                                className="w-full space-y-2"
-                              >
-                                <CollapsibleTrigger
-                                  asChild
-                                  className="relative cursor-pointer uppercase"
+                              {siin.transaction.webhooks.map((webhook) => (
+                                <Collapsible
+                                  key={webhook.id}
+                                  open={expandedWebhooks[webhook.id] || false}
+                                  onOpenChange={() =>
+                                    toggleWebhook(transaction.txId, webhook.id)
+                                  }
+                                  className="w-full space-y-2"
                                 >
-                                  <div className="">
-                                    {" "}
-                                    <h4 className="text-sm font-semibold">
-                                      PAYMENT_CREATED
-                                    </h4>
-                                    <ChevronDown
-                                      className={`${webhookExpanded[1] ? "rotate-180" : ""} absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
-                                    />
-                                  </div>
-                                </CollapsibleTrigger>
+                                  <CollapsibleTrigger
+                                    asChild
+                                    className="relative cursor-pointer uppercase"
+                                  >
+                                    <div className="">
+                                      {" "}
+                                      <h4 className="text-sm font-semibold">
+                                        {webhook.status}
+                                      </h4>
+                                      <ChevronDown
+                                        className={`${
+                                          expandedWebhooks[webhook.id]
+                                            ? "rotate-180"
+                                            : ""
+                                        } absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
+                                      />
+                                    </div>
+                                  </CollapsibleTrigger>
 
-                                <CollapsibleContent className="space-y-2">
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Created:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Retries:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Last updated:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Status:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Code description:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Compound state::
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                </CollapsibleContent>
-                              </Collapsible>
-                              <Collapsible
-                                open={webhookExpanded[2] || false}
-                                onOpenChange={() => {
-                                  toggleWebhook(2);
-                                }}
-                                className="w-full space-y-2"
-                              >
-                                <CollapsibleTrigger
-                                  asChild
-                                  className="relative cursor-pointer"
-                                >
-                                  <div className="">
-                                    {" "}
-                                    <h4 className="text-sm font-semibold uppercase">
-                                      payment_disputed
-                                    </h4>
-                                    <ChevronDown
-                                      className={`${webhookExpanded[2] ? "rotate-180" : ""} absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
-                                    />
-                                  </div>
-                                </CollapsibleTrigger>
-
-                                <CollapsibleContent className="space-y-2">
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Created:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Retries:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Last updated:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Status:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Code description:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Compound state::
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                </CollapsibleContent>
-                              </Collapsible>
-                              <Collapsible
-                                open={webhookExpanded[3] || false}
-                                onOpenChange={() => {
-                                  toggleWebhook(3);
-                                }}
-                                className="w-full space-y-2"
-                              >
-                                <CollapsibleTrigger
-                                  asChild
-                                  className="relative cursor-pointer"
-                                >
-                                  <div className="">
-                                    {" "}
-                                    <h4 className="text-sm font-semibold uppercase">
-                                      payment_cancelled
-                                    </h4>
-                                    <ChevronDown
-                                      className={`${webhookExpanded[3] ? "rotate-180" : ""} absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
-                                    />
-                                  </div>
-                                </CollapsibleTrigger>
-
-                                <CollapsibleContent className="space-y-2">
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Created:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Retries:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Last updated:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Status:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Code description:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Compound state::
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                </CollapsibleContent>
-                              </Collapsible>
-                              <Collapsible
-                                open={webhookExpanded[4] || false}
-                                onOpenChange={() => {
-                                  toggleWebhook(4);
-                                }}
-                                className="w-full space-y-2"
-                              >
-                                <CollapsibleTrigger
-                                  asChild
-                                  className="relative cursor-pointer"
-                                >
-                                  <div className="">
-                                    {" "}
-                                    <h4 className="text-sm font-semibold uppercase">
-                                      Payment_PROCESSING
-                                    </h4>
-                                    <ChevronDown
-                                      className={`${webhookExpanded[4] ? "rotate-180" : ""} absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
-                                    />
-                                  </div>
-                                </CollapsibleTrigger>
-
-                                <CollapsibleContent className="space-y-2">
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Created:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Retries:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Last updated:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Status:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Code description:
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p>
-                                      <span className="font-medium">
-                                        Compound state::
-                                      </span>{" "}
-                                    </p>
-                                  </div>
-                                </CollapsibleContent>
-                              </Collapsible>
+                                  <CollapsibleContent className="space-y-2">
+                                    <div>
+                                      <p>
+                                        <span className="font-medium">
+                                          Created:
+                                        </span>{" "}
+                                        <span>
+                                          {
+                                            formatDateTime(webhook.createdAt)
+                                              .date
+                                          }
+                                        </span>{" "}
+                                        <span>
+                                          {
+                                            formatDateTime(webhook.createdAt)
+                                              .time
+                                          }
+                                        </span>
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p>
+                                        <span className="font-medium">
+                                          Retries: {webhook.retries}
+                                        </span>{" "}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p>
+                                        <span className="font-medium">
+                                          Updated:
+                                        </span>{" "}
+                                        <span>
+                                          {
+                                            formatDateTime(webhook.updatedAt)
+                                              .date
+                                          }
+                                        </span>{" "}
+                                        <span>
+                                          {
+                                            formatDateTime(webhook.updatedAt)
+                                              .time
+                                          }
+                                        </span>
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p>
+                                        <span className="font-medium">
+                                          Status: {webhook.status}
+                                        </span>{" "}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p>
+                                        <span className="font-medium">
+                                          Code description:
+                                        </span>{" "}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p>
+                                        <span className="font-medium">
+                                          Compound state: {webhook.state}
+                                        </span>{" "}
+                                      </p>
+                                    </div>
+                                  </CollapsibleContent>
+                                </Collapsible>
+                              ))}
                             </div>
                           </div> */}
 
-                          {/* <div className="w-3/12">
-                            <h3>Log</h3>
+                          {/* <div className="w-3/12 min-w-[150px]">
+                            <h3 className="mb-4 py-1 text-[18px] font-medium">
+                              Log
+                            </h3>
+                            <div className="log_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
+                              {siin.transaction.webhooks.map((log) => (
+                                <div key={log.id}>
+                                  <LogHistory
+                                    color={getStatusColorClass(log.status)}
+                                    status={log.status}
+                                    date={formatDateTime(log.createdAt).date}
+                                    time={formatDateTime(log.updatedAt).time}
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           </div> */}
                         </div>
 

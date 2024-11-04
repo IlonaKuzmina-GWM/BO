@@ -5,7 +5,6 @@ import Search from "../Search";
 import { DateRange } from "react-day-picker";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
-import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { Transaction } from "@/types";
 import { TransactionsTableHeader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
@@ -18,6 +17,7 @@ import ExportButton from "../ExportButton";
 import { exportExcelTransactions } from "@/utils/export-utils";
 import DashSelectValueNumber from "../DashSelectValueNumber";
 import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
+import { ROLES } from "@/constants/roles";
 
 interface Merchant {
   merchant_id: number;
@@ -356,7 +356,6 @@ const TransactionsWrapper = () => {
 
   const handleStatusSelect = (status: string[]) => {
     setSelectedStatus(status);
-    // console.log(status);
   };
 
   return (
@@ -383,7 +382,7 @@ const TransactionsWrapper = () => {
             />
           </div>
 
-          {userRole !== "merchant" && (
+          {userRole !== ROLES.MERCHANT && (
             <>
               <DashSelectValueNumber
                 value={selectedMerchants}

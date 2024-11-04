@@ -19,6 +19,13 @@ import LoadingTransactionTableSkeleton from "../LoadingUI/LoadingTransactionTabl
 import { STATUSES } from "@/constants/statuses";
 import { useStore } from "@/stores/StoreProvider";
 import { ROLES } from "@/constants/roles";
+import { transformStatus } from "@/helpers/transformStatus ";
+import {
+  getFailedColor,
+  getProcessColor,
+  getStatusColorClass,
+  getSuccessColor,
+} from "@/helpers/getColorByStatus";
 
 interface ICustomTransactionTableProps {
   columns: Header[];
@@ -44,7 +51,13 @@ const CustomTransactionTable = ({
       [webhookIndex: string]: boolean;
     };
   }>({});
-  const [expandedDropdowns, setExpandedDropdowns] = useState(false);
+  const [, setExpandedDropdowns] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   const refundTransaction = async (txId: string) => {
     try {
@@ -66,53 +79,6 @@ const CustomTransactionTable = ({
       console.error(`Oops! Something went wrong: ${error}`);
     }
   };
-
-  // const statuses = [
-  //   {
-  //     label: "PAYMENT_CREATED",
-  //     key: 1,
-  //   },
-  //   {
-  //     label: "PAYMENT_PROCESSING",
-  //     key: 2,
-  //   },
-  //   {
-  //     label: "PAYMENT_ACCEPTED",
-  //     key: 3,
-  //   },
-  //   {
-  //     label: "PAYMENT_SUCCESS",
-  //     key: 4,
-  //   },
-  //   {
-  //     label: "PAYMENT_TRANSFERRING",
-  //     key: 5,
-  //   },
-  //   {
-  //     label: "PAYMENT_DECLINED",
-  //     key: 6,
-  //   },
-  //   {
-  //     label: "PAYMENT_CANCELLED",
-  //     key: 7,
-  //   },
-  //   {
-  //     label: "PAYMENT_FAILED",
-  //     key: 8,
-  //   },
-  //   {
-  //     label: "TIMEOUT",
-  //     key: 9,
-  //   },
-  //   {
-  //     label: "AML_BLOCKED",
-  //     key: 10,
-  //   },
-  //   {
-  //     label: "PAYMENT_COMPLETE",
-  //     key: 11,
-  //   },
-  // ];
 
   const handleSelectStatus = async (value: string, txId: String) => {
     console.log(value, txId);
@@ -163,6 +129,20 @@ const CustomTransactionTable = ({
     }
   };
 
+  const bgColorMap = {
+    failed: "bg-errorBg",
+    success: "bg-successBg",
+    processing: "bg-warningBg",
+    default: "bg-gray-200",
+  };
+
+  const transformStatus = (status: string) => {
+    if (getFailedColor(status)) return "failed";
+    if (getSuccessColor(status)) return "success";
+    if (getProcessColor(status)) return "processing";
+    return "default";
+  };
+
   const toggleRow = (transaction: Transaction) => {
     const { id, status } = transaction;
 
@@ -173,6 +153,9 @@ const CustomTransactionTable = ({
     );
 
     if (!expandedRows.includes(id)) {
+      const colorType = transformStatus(status);
+      const bgColor = bgColorMap[colorType];
+
       setRowBgColors((prevBgColors) => ({
         ...prevBgColors,
         [id]: openAccordionBgColor(transformStatus(status)),
@@ -188,17 +171,6 @@ const CustomTransactionTable = ({
         [webhookIndex]: !prev[transactionId]?.[webhookIndex],
       },
     }));
-  };
-
-  const transformStatus = (status: string): string => {
-    const parts = status.split("_");
-
-    if (parts.length > 1) {
-      parts.shift();
-    }
-    const transformed = parts.join("_").toLowerCase();
-
-    return transformed.charAt(0) + transformed.slice(1);
   };
 
   const handleAllCheckboxChange = () => {
@@ -235,11 +207,6 @@ const CustomTransactionTable = ({
 
   useEffect(() => {}, [paginatedTransactions]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
 
   const handleCopyToClipboard = async (id: string) => {
     try {
@@ -325,10 +292,7 @@ const CustomTransactionTable = ({
                       </td>
                       <td className="pe-2 text-center">{transaction.id}</td>
                       <td className="pe-2">
-                        <StatusBadge
-                          name={transformStatus(transaction.status)}
-                          type={transformStatus(transaction.status)}
-                        />
+                        <StatusBadge name={transaction.status} />
                       </td>
                       <td className="pe-8 font-semibold">
                         {transaction.amount}
@@ -452,7 +416,7 @@ const CustomTransactionTable = ({
                                 {userRole === ROLES.ADMIN ||
                                 userRole === ROLES.DEVELOPER ? (
                                   <p
-                                    className="relative inline-block"
+                                    className={`relative inline-block text-${getStatusColorClass(transaction.status)}`}
                                     onClick={() => setExpandedDropdowns(true)}
                                   >
                                     <select
@@ -481,7 +445,7 @@ const CustomTransactionTable = ({
                                           <option
                                             key={status}
                                             value={status}
-                                            className="cursor-pointer"
+                                            className={`cursor-pointer text-${getStatusColorClass(status)}`}
                                           >
                                             {status}
                                           </option>
@@ -489,7 +453,11 @@ const CustomTransactionTable = ({
                                     </select>
                                   </p>
                                 ) : (
-                                  <p>{transaction.status}</p>
+                                  <p
+                                    className={` ${getStatusColorClass(transaction.status)}`}
+                                  >
+                                    {transaction.status}
+                                  </p>
                                 )}
                               </div>
 
@@ -679,9 +647,7 @@ const CustomTransactionTable = ({
                                 {transaction.webhooks.map((log) => (
                                   <div key={log.id}>
                                     <LogHistory
-                                      color={openAccordionBgColor(
-                                        transformStatus(log.status),
-                                      )}
+                                      color={getStatusColorClass(log.status)}
                                       status={log.status}
                                       date={formatDateTime(log.createdAt).date}
                                       time={formatDateTime(log.updatedAt).time}

@@ -2,33 +2,30 @@ import React from "react";
 import StatusBadge from "./StatusBadge";
 
 interface ILogHistory {
-  color: string;
+  color?: string;
   status: string;
   date: string;
   time: string;
 }
 
 const LogHistory = ({ color, status, date, time }: ILogHistory) => {
-// console.log("log histero color",color);
-// console.log("log histero status", status);
+  // console.log("log histero color", color);
+  console.log("log histero status", status);
 
   return (
     <div className="flex flex-row gap-2">
       <div className="relative flex h-full w-[9px] flex-col items-center justify-center gap-[3px]">
         <div
-          className="h-2 w-2 rounded-full"
+          className={`h-2 w-2 rounded-full `}
           style={{
-            backgroundColor:
-              color !== "whiteBg"
-                ? `var(--${color.slice(0, -2)})`
-                : `var(--main)`,
+            backgroundColor: `var(--${color})`,
           }}
         ></div>
         <div className="h-[66px] w-[2px] bg-hoverBg"></div>
       </div>
 
       <div className="flex flex-col justify-center gap-1">
-        <StatusBadge name={status} type={status} color={color}/>
+        <StatusBadge name={status} />
         <p className="font-medium">
           <span className="">Last updated:</span> <span>{date}</span>{" "}
           <span>{time}</span>

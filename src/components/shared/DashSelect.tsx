@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Search from "./Search";
@@ -91,7 +91,10 @@ const CustomMultiSelect = ({
   };
 
   return (
-    <div className={`relative h-10 w-[${width}] min-w-[200px]`} ref={dropdownRef}>
+    <div
+      className={`relative h-10 w-[${width}] min-w-[200px]`}
+      ref={dropdownRef}
+    >
       <button
         type="button"
         disabled={disabled}
@@ -105,7 +108,7 @@ const CustomMultiSelect = ({
             !isOpen ? "overflow-hidden text-ellipsis whitespace-nowrap" : ""
           }`}
         >
-       {selectedValues.length > 0
+          {selectedValues.length > 0
             ? selectedValues
                 .map((val) => items.find((item) => item.value === val)?.label)
                 .filter(Boolean)

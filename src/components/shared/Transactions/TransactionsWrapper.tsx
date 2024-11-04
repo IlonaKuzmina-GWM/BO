@@ -81,12 +81,12 @@ const TransactionsWrapper = () => {
       if (response.ok) {
         const res = await response.json();
 
-        console.log("filterss data", res);
+        // console.log("filterss data", res);
 
         setMerchantsList(res.merchants);
         setProvidersList(res.providers);
       } else {
-        console.log("Filters response failed");
+        // console.log("Filters response failed");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -146,7 +146,7 @@ const TransactionsWrapper = () => {
         setTotalPages(res.totalPages);
         console.log("transactions in trasnactions page", res.transactions);
       } else {
-        console.log("Transactions response failed");
+        // console.log("Transactions response failed");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -154,7 +154,7 @@ const TransactionsWrapper = () => {
   };
 
   const sendExportTransactionsData = async (
-    exportType: "pdf" | "csv" | "excel",
+    exportType:  "excel",
   ) => {
     setLoading(true);
 
@@ -202,15 +202,15 @@ const TransactionsWrapper = () => {
 
         const transactionData = res;
 
-        console.log(transactionData);
+        // console.log(transactionData);
 
         if (exportType === "excel") {
-          console.log("exporting excel", transactionData);
+          // console.log("exporting excel", transactionData);
           exportExcelTransactions(transactionData);
         } else if (exportType === "csv") {
-          // exportSiinCSV(siinsData);
+          //      exportCsvTransactions(transactionData);
         } else if (exportType === "pdf") {
-          // exportSiinPDF(siinsData);
+          //       exportPdfTransactions(transactionData);
         }
       } else {
         console.log("Transactions response failed");
@@ -356,7 +356,7 @@ const TransactionsWrapper = () => {
 
   const handleStatusSelect = (status: string[]) => {
     setSelectedStatus(status);
-    console.log(status);
+    // console.log(status);
   };
 
   return (
@@ -444,7 +444,8 @@ const TransactionsWrapper = () => {
         </div>
 
         <ExportButton
-          onSelect={(exportType: "pdf" | "csv" | "excel") => {
+            // onSelect={(exportType: "pdf" | "csv" | "excel") => {
+          onSelect={(exportType: "excel") => {
             sendExportTransactionsData(exportType);
           }}
           disabled={loading}
@@ -465,7 +466,7 @@ const TransactionsWrapper = () => {
       />
 
       <div className="relative">
-        <DataLimitsSeter onChange={handleLimitChange} />
+        <DataLimitsSeter onChange={handleLimitChange} defaultValue={limit}/>
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}

@@ -4,7 +4,7 @@ import * as React from "react";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../UI/popover";
 import { Calendar } from "../UI/calendar";
 import { CalendarIcon } from "lucide-react";
@@ -23,10 +23,12 @@ const DatePickerWithRange = ({
   initialDate,
   width = "300px",
 }: IDatePickerWithRange) => {
-  const [date, setDate] = React.useState<DateRange | undefined>(initialDate || {
-    from: addDays(new Date(), -5),
-    to: new Date(),
-  });
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    initialDate || {
+      from: addDays(new Date(), -5),
+      to: new Date(),
+    },
+  );
 
   React.useEffect(() => {
     setDate(initialDate);
@@ -38,7 +40,7 @@ const DatePickerWithRange = ({
   };
 
   return (
-    <div className={cn("grid gap-2 min-w-[200px]", className)}>
+    <div className={cn("grid min-w-[200px] gap-2", className)}>
       <Popover>
         <PopoverTrigger
           asChild

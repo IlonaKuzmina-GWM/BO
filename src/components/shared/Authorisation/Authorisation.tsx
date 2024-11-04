@@ -159,7 +159,7 @@ const Autorisation = () => {
         </form>
       </section>
 
-      {notification.message && (
+      {!notification.success && notification.message && (
         <footer className="mx-auto mt-6 rounded-sm bg-errorBg p-4 text-center">
           <p
             className={`text-center ${notification.success ? "text-success" : "text-error"}`}

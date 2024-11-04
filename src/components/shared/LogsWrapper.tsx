@@ -57,12 +57,12 @@ const LogsWrapper = () => {
 
       if (response.ok) {
         const res = await response.json();
-        console.log("Event response ok", res);
+        // console.log("Event response ok", res);
 
         setLogsData(res.events || res.paginatedLogs);
         setTotalPages(res.totalPages);
       } else {
-        console.log("Event response failed");
+        // console.log("Event response failed");
       }
     } catch (error) {
       console.error("Fetch error:", error);
@@ -110,14 +110,6 @@ const LogsWrapper = () => {
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
   };
-
-  if (loading) {
-    return (
-      <div className="flex w-full items-center justify-center">
-        <LoadingSpiner />
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col gap-6">

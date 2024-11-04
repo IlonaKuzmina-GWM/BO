@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
+import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/stores/constants";
 import { ThemeProvider } from "next-themes";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Providers } from "@/components/Providers";
 
 const fontHeading = Inter({

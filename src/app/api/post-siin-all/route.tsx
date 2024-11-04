@@ -22,8 +22,6 @@ export async function POST(request: NextRequest) {
     });
 
     if (!data.ok) {
-
-      console.log("siins",data)
       const errorData = await data.json();
       return new NextResponse(
         JSON.stringify({

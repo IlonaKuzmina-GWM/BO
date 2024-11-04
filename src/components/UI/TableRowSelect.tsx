@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Check, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import Search from "../shared/Search";
 
 interface IItem {
@@ -63,7 +63,7 @@ const TableRowSelect = ({
   };
 
   const filteredItems = items.filter((item) =>
-    item.label.toLowerCase().includes(searchTerm.toLowerCase())
+    item.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleSearch = (term: string) => {
@@ -75,7 +75,7 @@ const TableRowSelect = ({
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full rounded-sm border border-divider p-2 text-start text-sm text-main shadowed"
+        className="shadowed relative w-full rounded-sm border border-divider p-2 text-start text-sm text-main"
       >
         {selectedValue
           ? items.find((item) => item.value === selectedValue)?.label
@@ -103,7 +103,7 @@ const TableRowSelect = ({
                 className={cn(
                   "cursor-pointer px-3 py-2 transition-all duration-300 hover:bg-divider",
                   selectedValue === item.value &&
-                    "bg-accent text-accent-foreground"
+                    "bg-accent text-accent-foreground",
                 )}
               >
                 <div className="flex items-center">

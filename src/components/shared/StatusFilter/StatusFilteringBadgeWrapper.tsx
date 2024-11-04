@@ -21,10 +21,10 @@ const StatusFilteringBadgeWrapper = ({
   counter,
 }: IStatusFilteringBadgeWrapper) => {
 
-  console.log("statusList", statusList);
-console.log("statusFilters", statusFilters);
+//   console.log("statusList", statusList);
+// console.log("statusFilters", statusFilters);
 
-console.log("activeStatusBadge", activeStatusBadge);
+// console.log("activeStatusBadge", activeStatusBadge);
 
 
   return (

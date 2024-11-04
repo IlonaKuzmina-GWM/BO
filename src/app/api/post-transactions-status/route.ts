@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const filters = await request.json();
 
-    const apiUrl = userUrl("/transactions/status");
+    const apiUrl = userUrl("/transaction/status");
 
     const data = await fetch(apiUrl, {
       method: "POST",

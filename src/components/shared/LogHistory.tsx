@@ -9,8 +9,8 @@ interface ILogHistory {
 }
 
 const LogHistory = ({ color, status, date, time }: ILogHistory) => {
-console.log("log histero color",color);
-console.log("log histero status", status);
+// console.log("log histero color",color);
+// console.log("log histero status", status);
 
   return (
     <div className="flex flex-row gap-2">

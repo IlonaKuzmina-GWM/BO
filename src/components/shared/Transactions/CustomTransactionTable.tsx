@@ -16,6 +16,9 @@ import { ChevronDown } from "lucide-react";
 import LogHistory from "../LogHistory";
 import { formatDateTime } from "@/helpers/dateFormater";
 import LoadingTransactionTableSkeleton from "../LoadingUI/LoadingTransactionTableSkeleton";
+import { STATUSES } from "@/constants/statuses";
+import { useStore } from "@/stores/StoreProvider";
+import { ROLES } from "@/constants/roles";
 
 interface ICustomTransactionTableProps {
   columns: Header[];
@@ -26,6 +29,8 @@ const CustomTransactionTable = ({
   columns,
   paginatedTransactions,
 }: ICustomTransactionTableProps) => {
+  const { authStore } = useStore();
+  const userRole = authStore.role;
   const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
@@ -39,6 +44,7 @@ const CustomTransactionTable = ({
       [webhookIndex: string]: boolean;
     };
   }>({});
+  const [expandedDropdowns, setExpandedDropdowns] = useState(false);
 
   const refundTransaction = async (txId: string) => {
     try {
@@ -52,64 +58,64 @@ const CustomTransactionTable = ({
       if (response.ok) {
         const res = await response.json();
 
-        console.log("Successfuly Updated Tx Status!", res.newStatus);
+        // console.log("Successfuly Updated Tx Status!", res.newStatus);
       } else {
-        console.log("New status not found for this transaction in the Bank");
+        // console.log("New status not found for this transaction in the Bank");
       }
     } catch (error) {
       console.error(`Oops! Something went wrong: ${error}`);
     }
   };
 
-  const statuses = [
-    {
-      label: "PAYMENT_CREATED",
-      key: 1,
-    },
-    {
-      label: "PAYMENT_PROCESSING",
-      key: 2,
-    },
-    {
-      label: "PAYMENT_ACCEPTED",
-      key: 3,
-    },
-    {
-      label: "PAYMENT_SUCCESS",
-      key: 4,
-    },
-    {
-      label: "PAYMENT_TRANSFERRING",
-      key: 5,
-    },
-    {
-      label: "PAYMENT_DECLINED",
-      key: 6,
-    },
-    {
-      label: "PAYMENT_CANCELLED",
-      key: 7,
-    },
-    {
-      label: "PAYMENT_FAILED",
-      key: 8,
-    },
-    {
-      label: "TIMEOUT",
-      key: 9,
-    },
-    {
-      label: "AML_BLOCKED",
-      key: 10,
-    },
-    {
-      label: "PAYMENT_COMPLETE",
-      key: 11,
-    },
-  ];
+  // const statuses = [
+  //   {
+  //     label: "PAYMENT_CREATED",
+  //     key: 1,
+  //   },
+  //   {
+  //     label: "PAYMENT_PROCESSING",
+  //     key: 2,
+  //   },
+  //   {
+  //     label: "PAYMENT_ACCEPTED",
+  //     key: 3,
+  //   },
+  //   {
+  //     label: "PAYMENT_SUCCESS",
+  //     key: 4,
+  //   },
+  //   {
+  //     label: "PAYMENT_TRANSFERRING",
+  //     key: 5,
+  //   },
+  //   {
+  //     label: "PAYMENT_DECLINED",
+  //     key: 6,
+  //   },
+  //   {
+  //     label: "PAYMENT_CANCELLED",
+  //     key: 7,
+  //   },
+  //   {
+  //     label: "PAYMENT_FAILED",
+  //     key: 8,
+  //   },
+  //   {
+  //     label: "TIMEOUT",
+  //     key: 9,
+  //   },
+  //   {
+  //     label: "AML_BLOCKED",
+  //     key: 10,
+  //   },
+  //   {
+  //     label: "PAYMENT_COMPLETE",
+  //     key: 11,
+  //   },
+  // ];
 
-  const handleSelectStatus = async (key: number, txId: String) => {
-    const selectedStatus = statuses[key - 1].label;
+  const handleSelectStatus = async (value: string, txId: String) => {
+    console.log(value, txId);
 
     try {
       const response = await fetch("/api/post-transactions-status", {
@@ -119,7 +125,7 @@ const CustomTransactionTable = ({
         },
         body: JSON.stringify({
           txId: txId,
-          status: selectedStatus,
+          status: value,
         }),
       });
       if (response.ok) {
@@ -299,8 +305,7 @@ const CustomTransactionTable = ({
                 const dynamicColor = rowBgColors[transaction.id];
                 const expandedWebhooks =
                   webhookExpanded[transaction.txId] || {};
-
-                console.log(transaction);
+                // console.log(transaction);
 
                 return (
                   <React.Fragment key={transaction.id}>
@@ -344,7 +349,7 @@ const CustomTransactionTable = ({
                         <span className="flex flex-wrap items-center justify-center gap-x-1 rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
                           <span>
                             {formatDateTime(transaction.createdAt).date}
-                          </span>{" "}
+                          </span>
                           <span>
                             {formatDateTime(transaction.createdAt).time}
                           </span>
@@ -354,14 +359,13 @@ const CustomTransactionTable = ({
                         <span className="flex flex-wrap items-center justify-center gap-x-1 rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
                           <span>
                             {formatDateTime(transaction.updatedAt).date}
-                          </span>{" "}
+                          </span>
                           <span>
                             {formatDateTime(transaction.updatedAt).time}
                           </span>
                         </span>
                       </td>
                       <td className="">
-                        {" "}
                         <Image
                           src={"/icons/status-yes.svg"}
                           alt={"Setl icon"}
@@ -385,10 +389,9 @@ const CustomTransactionTable = ({
                             <div className="flex w-5/12 min-w-[250px] flex-col gap-1 text-main">
                               <div className="relative mb-4 flex flex-row gap-2 py-1 text-[18px]">
                                 <div className="flex flex-col gap-3 xl:flex-row">
-                                  {" "}
                                   <span className="me-2 inline-block font-medium">
                                     Transactions Details
-                                  </span>{" "}
+                                  </span>
                                   <p className="inline-block">
                                     ID {transaction.txId}
                                   </p>
@@ -402,13 +405,15 @@ const CustomTransactionTable = ({
                                     );
                                   }}
                                 >
-                                  <Image
-                                    src="/icons/copy.svg"
-                                    width={16}
-                                    height={16}
-                                    alt="Copy"
-                                    className={`h-4 w-4`}
-                                  />
+                                  <div className="h-4 w-4">
+                                    <Image
+                                      src="/icons/copy.svg"
+                                      width={16}
+                                      height={16}
+                                      alt="Copy"
+                                      className={`h-auto w-full`}
+                                    />
+                                  </div>
                                 </div>
 
                                 {copiedOrderID ===
@@ -423,33 +428,69 @@ const CustomTransactionTable = ({
                                 <p>
                                   <span className="font-medium">
                                     Merchant ID:
-                                  </span>{" "}
+                                  </span>
                                   {transaction.initialRequest.merchantId}
                                 </p>
                               </div>
+
                               <div>
                                 <p>
-                                  <span className="font-medium">E-mail:</span>{" "}
+                                  <span className="font-medium">E-mail:</span>
                                   {transaction.initialRequest.email}
                                 </p>
                               </div>
 
                               <div>
                                 <p>
-                                  <span className="font-medium">Order ID:</span>{" "}
+                                  <span className="font-medium">Order ID:</span>
                                   {transaction.id}
                                 </p>
                               </div>
 
                               <div>
-                                <p
-                                  onClick={() =>
-                                    handleSelectStatus(1, transaction.txId)
-                                  }
-                                >
-                                  <span className="font-medium">Status:</span>{" "}
-                                  {transaction.status}
-                                </p>
+                                <span className="font-medium">Status:</span>
+                                {userRole === ROLES.ADMIN ||
+                                userRole === ROLES.DEVELOPER ? (
+                                  <p
+                                    className="relative inline-block"
+                                    onClick={() => setExpandedDropdowns(true)}
+                                  >
+                                    <select
+                                      className="cursor-pointer bg-transparent"
+                                      onChange={(e) =>
+                                        handleSelectStatus(
+                                          e.target.value,
+                                          transaction.txId,
+                                        )
+                                      }
+                                      value={transaction.status}
+                                    >
+                                      <option
+                                        value={transaction.status}
+                                        className="cursor-pointer"
+                                      >
+                                        {transaction.status}
+                                      </option>
+
+                                      {Object.values(STATUSES)
+                                        .filter(
+                                          (status) =>
+                                            status !== transaction.status,
+                                        )
+                                        .map((status) => (
+                                          <option
+                                            key={status}
+                                            value={status}
+                                            className="cursor-pointer"
+                                          >
+                                            {status}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </p>
+                                ) : (
+                                  <p>{transaction.status}</p>
+                                )}
                               </div>
 
                               <div>
@@ -468,6 +509,7 @@ const CustomTransactionTable = ({
                                   )}
                                 </p>
                               </div>
+
                               <div>
                                 <p>
                                   <span className="font-medium">
@@ -656,7 +698,8 @@ const CustomTransactionTable = ({
                               type={"filled"}
                             /> */}
 
-                            {transaction.status === "PAYMENT_COMPLETE" && (
+                            {transaction.status ===
+                              STATUSES.PAYMENT_COMPLETE && (
                               <DashButton
                                 name={"Refund"}
                                 type={"empty"}

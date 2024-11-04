@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 interface IDashIntervalSelectProps {
   value: string;
@@ -57,10 +57,10 @@ const DashIntervalSelect = ({
   };
 
   return (
-    <div className="relative w-[130px] h10" ref={dropdownRef}>
+    <div className="h10 relative w-[130px]" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full rounded-sm border border-divider bg-white px-2 py-[9px] text-start  text-sm text-main"
+        className="relative w-full rounded-sm border border-divider bg-white px-2 py-[9px] text-start text-sm text-main"
       >
         {items.find((item) => item.value === selectedValue)?.label || value}
 

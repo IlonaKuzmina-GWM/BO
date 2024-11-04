@@ -4,4 +4,3 @@ export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'SiQURO BO'
 export const APP_DESCRIPTION =
   process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
   'And more description text about page but only local'
-// export const ITEMS_PER_PAGE = Number(process.env.ITEMS_PER_PAGE) || 5

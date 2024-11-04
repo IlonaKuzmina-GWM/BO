@@ -72,7 +72,7 @@ const SiinsWrapper = () => {
         setSiinsTransactions(res.response.siins);
         setTotalPages(res.response.totalPages);
       } else {
-        console.log("Siins response failed");
+        // console.log("Siins response failed");
       }
     } catch (error) {
       console.error("Fetch error:", error);
@@ -121,7 +121,7 @@ const SiinsWrapper = () => {
           // exportSiinPDF(siinsData);
         }
       } else {
-        console.log("Siins response failed");
+        // console.log("Siins response failed");
       }
     } catch (error) {
       console.error("Fetch error:", error);
@@ -169,14 +169,6 @@ const SiinsWrapper = () => {
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
   };
-
-  if (loading) {
-    return (
-      <div className="flex w-full items-center justify-center">
-        <LoadingSpiner />
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col gap-6">

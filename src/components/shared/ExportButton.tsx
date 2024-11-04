@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 interface ExportButtonProps {
   disabled?: boolean;
-  onSelect: (exportType: "pdf" | "csv" | "excel") => void;
+  // onSelect: (exportType: "pdf" | "csv" | "excel") => void;
+  onSelect: (exportType: "excel") => void;
   additionalStyle?: string;
   isFullWidth?: boolean;
 }
@@ -35,7 +36,7 @@ const ExportButton = ({
         <div className="absolute right-0 z-10 pt-1">
           <div className="w-40 rounded-sm bg-white shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="py-1">
-              <button
+              {/* <button
                 onClick={() => {
                   setIsDropdownOpen(false);
                   onSelect("pdf");
@@ -52,7 +53,7 @@ const ExportButton = ({
                 className="text-md block w-full px-4 py-2 text-left text-main hover:bg-gray-100"
               >
                 Export as CSV
-              </button>
+              </button> */}
               <button
                 onClick={() => {
                   setIsDropdownOpen(false);

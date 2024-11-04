@@ -111,16 +111,6 @@ export interface User {
   isDisabled: boolean;
 }
 
-export interface KYCUser {
-  name: string;
-  status: string;
-  surname: string;
-  email: string;
-  checkRequired: string;
-  created: string;
-  updated: string;
-}
-
 export interface CSV {
   name: string;
   surname: string;

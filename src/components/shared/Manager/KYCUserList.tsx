@@ -1,6 +1,6 @@
 'use client'
 
-import { KYCUser } from "@/types";
+
 import { ManagerKYCUserTableHeader } from "@/utils/tableHeaders";
 import { useEffect, useState } from "react";
 import CustomTable from "../CustomTable/CustomTable";
@@ -8,6 +8,7 @@ import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent ";
 import Paragraph from "../Paragraph";
 import KYCUserListRows from "./KYCUserListRows";
+import { KYCUser } from "@/types/kyc";
 
 const KYCUserList = () => {
   const [limit, setLimit] = useState<number>(10);
@@ -45,46 +46,6 @@ const KYCUserList = () => {
   useEffect(() => {
     fetchKycUsersData();
   }, []);
-
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const users: KYCUser[] = [
-  //   {
-  //     name: "IDEAL",
-  //     status: "5fd43163-0b1b-4",
-  //     surname: "4e39f955-05f5",
-  //     email: "email@email.com",
-  //     checkRequired: "1,11235",
-  //     created: "30.06.2025 02:11:03",
-  //     updated: "30.06.2025 02:11:03",
-  //   },
-  //   {
-  //     name: "AliExpress",
-  //     status: "Status",
-  //     surname: "Status",
-  //     email: "email@email.com",
-  //     checkRequired: "1,11235",
-  //     created: "30.06.2025 02:11:03",
-  //     updated: "30.06.2025 02:11:03",
-  //   },
-  //   {
-  //     name: "Tesla",
-  //     status: "Status",
-  //     surname: "Status",
-  //     email: "email@email.com",
-  //     checkRequired: "1,11235",
-  //     created: "30.06.2025 02:11:03",
-  //     updated: "30.06.2025 02:11:03",
-  //   },
-  //   {
-  //     name: "Headspace",
-  //     status: "Status",
-  //     surname: "Status",
-  //     email: "email@email.com",
-  //     checkRequired: "1,11235",
-  //     created: "30.06.2025 02:11:03",
-  //     updated: "30.06.2025 02:11:03",
-  //   },
-  // ];
 
   const renderRow = (user: KYCUser, index: number) => (
     <KYCUserListRows key={index} user={user} />

@@ -1,4 +1,4 @@
-export interface Kyc {
+export interface KYCUser {
   name: string,
   surname: string,
   email: string,

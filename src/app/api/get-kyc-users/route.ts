@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       const errorData = await data.json();
       return new NextResponse(
         JSON.stringify({
-          error: errorData.error || "Failed to fetch profile",
+          error: errorData.error || "Failed to fetch KYC list",
         }),
         {
           status: data.status,
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 
     const responseData = await data.json();
 
-    return responseData;
+    return NextResponse.json(responseData); 
   } catch (error) {
     console.error("Failed to process profile request", error);
     return new NextResponse(

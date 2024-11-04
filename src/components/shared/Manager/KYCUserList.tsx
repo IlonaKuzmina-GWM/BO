@@ -29,7 +29,7 @@ const KYCUserList = () => {
       if (response.ok) {
         const res = await response.json();
 
-        console.log("filterss data", res);
+        console.log("KYC data", res);
 
         setKYCUsersList(res);
       } else {

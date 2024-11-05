@@ -111,9 +111,20 @@ const AllUser = () => {
     );
   };
 
-  const totalPages = Math.ceil(users.length / 10);
-  const handleLimitChange = (limit: number) => {
-    setLimit(limit);
+  const totalPages = Math.ceil(users.length / limit);
+
+  const paginatedUsers = users.slice(
+    (currentPage - 1) * limit,
+    currentPage * limit,
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit);
+    setCurrentPage(1); // Reset to the first page when limit changes
   };
 
   return (
@@ -127,7 +138,7 @@ const AllUser = () => {
           loadingSkeleton={<LoadingAllUsersSkeleton />}
           columns={ManagerAllUsersTableHeader}
           dataName="users"
-          data={users}
+          data={paginatedUsers}
           renderRow={renderRow}
         />
       </div>
@@ -137,7 +148,7 @@ const AllUser = () => {
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
         />
       </div>
     </div>

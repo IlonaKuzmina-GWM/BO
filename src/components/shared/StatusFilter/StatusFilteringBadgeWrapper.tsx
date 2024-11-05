@@ -20,13 +20,6 @@ const StatusFilteringBadgeWrapper = ({
   onClickHandler,
   counter,
 }: IStatusFilteringBadgeWrapper) => {
-
-//   console.log("statusList", statusList);
-// console.log("statusFilters", statusFilters);
-
-// console.log("activeStatusBadge", activeStatusBadge);
-
-
   return (
     <div className="mt-4 flex flex-row flex-wrap gap-6">
       <StatusFilteringBadge

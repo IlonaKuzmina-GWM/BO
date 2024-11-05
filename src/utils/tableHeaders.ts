@@ -55,7 +55,12 @@ export const ManagerAllUsersTableHeader: Header[] = [
   { title: "First name", key: "firstName", width: "11%" },
   { title: "Last name", key: "lastName", width: "11%" },
   { title: "Email", key: "email", width: "17%" },
-  { title: "Email verification", key: "isEmailVerified", width: "10%" },
+  {
+    title: "Email verification",
+    key: "isEmailVerified",
+    width: "10%",
+    centered: true,
+  },
   { title: "Merchant (label)", key: "merchant", width: "15%", centered: true },
   { title: "Role", key: "role", width: "8%", centered: true },
   { title: "Created at", key: "created", width: "12%", centered: true },

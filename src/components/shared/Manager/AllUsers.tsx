@@ -71,28 +71,12 @@ const AllUser = () => {
     // fetchAllMerchantsData();
   }, []);
 
-  //   onBeforeMount(async () => {
-  //     try {
-  // 		loading.value = true;
-  //         const response = await api(`${getUsersRoute(role)}`, { method: 'GET' }) as User[];
-  // 		if (response) {
-  // 			users.value = response;
-  // 			loading.value = false;
-  // 		} else {
-  // 			loading.value = false;
-  // 		}
-  // 	} catch (error) {
-  // 		console.error ('error: ', error)
-  // 	}
-  // })
 
   const merchants = [
     { value: "Merchant", label: "Merchant" },
     { value: "cogito", label: "Cogito" },
     { value: "testMerchant", label: "Test Merchant" },
   ];
-
-  console.log("state", users);
 
   const renderRow = (user: User, index: number) => (
     <UserRows
@@ -124,7 +108,7 @@ const AllUser = () => {
 
   const handleLimitChange = (newLimit: number) => {
     setLimit(newLimit);
-    setCurrentPage(1); // Reset to the first page when limit changes
+    setCurrentPage(1); 
   };
 
   return (

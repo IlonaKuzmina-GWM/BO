@@ -5,8 +5,8 @@ const LoadingAllUsersSkeleton = () => {
 
   return (
     <React.Fragment>
-      {[...Array(3)].map((_, index) => (
-        <tr key={index}>
+      {[...Array(10)].map((_, index) => (
+        <tr key={index}  className="relative h-[50px] animate-pulse cursor-pointer border-b-[1px] border-b-hoverBg bg-whiteBg transition-all last:border-none hover:bg-hoverBg">
           <td className="pl-3 pr-2 lg:pl-8">
             <div className={`${skeletonClass} w-16`}></div>
           </td>

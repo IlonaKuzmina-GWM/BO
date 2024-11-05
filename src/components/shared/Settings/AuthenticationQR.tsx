@@ -4,6 +4,8 @@ import QRCode from "./QRCode";
 import Dashbutton from "../DashButton";
 import SixDigitInput from "./SixDigitInput";
 
+
+
 interface IAuthenticationQRProps {
   setIs2FAEnabled: () => void;
 }

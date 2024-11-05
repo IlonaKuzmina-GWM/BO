@@ -34,7 +34,7 @@ const CustomLogsTable = ({
                 key={col.key}
                 className={` ${index === 0 ? "pl-3" : ""} ${
                   col.centered ? "text-center" : ""
-                } pr-2 `}
+                } pr-2`}
                 style={{ width: col.width }}
               >
                 {col.title}
@@ -42,11 +42,11 @@ const CustomLogsTable = ({
             ))}
           </tr>
         </thead>
-        {loading ? (
-          <LoadingLogsTableSkeleton />
-        ) : data.length === 0 ? (
-          <thead>
-            {" "}
+
+        <tbody>
+          {loading ? (
+            <LoadingLogsTableSkeleton />
+          ) : data.length === 0 ? (
             <tr className="bg-white">
               <td
                 colSpan={columns.length + 1}
@@ -55,31 +55,27 @@ const CustomLogsTable = ({
                 No logs available.
               </td>
             </tr>
-          </thead>
-        ) : (
-          <tbody>
-            {data.map((log) => {
-              return (
-                <React.Fragment key={log.createdAt}>
-                  <tr
-                    className={`relative h-[50px] border-b-[1px] border-b-hoverBg bg-whiteBg transition-all duration-300 last:border-none`}
-                  >
-                    <td className="pl-3">{log.person}</td>
-                    <td className="pe-2">{log.action}</td>
+          ) : (
+            data.map((log) => (
+              <React.Fragment key={log.createdAt}>
+                <tr
+                  className={`relative h-[50px] border-b-[1px] border-b-hoverBg bg-whiteBg transition-all duration-300 last:border-none`}
+                >
+                  <td className="pl-3">{log.person}</td>
+                  <td className="pe-2">{log.action}</td>
 
-                    <td className="pe-2">
-                      <span className="flex flex-wrap items-center justify-center gap-[4px] rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
-                        <span>{formatDateTime(log.createdAt).date}</span>{" "}
-                        <span>{formatDateTime(log.createdAt).time}</span>
-                      </span>
-                    </td>
-                    <td className="pe-2 text-center">{log.type}</td>
-                  </tr>
-                </React.Fragment>
-              );
-            })}
-          </tbody>
-        )}
+                  <td className="pe-2">
+                    <span className="flex flex-wrap items-center justify-center gap-[4px] rounded-sm bg-hoverBg px-2 py-1 text-center text-[12px] leading-4">
+                      <span>{formatDateTime(log.createdAt).date}</span>{" "}
+                      <span>{formatDateTime(log.createdAt).time}</span>
+                    </span>
+                  </td>
+                  <td className="pe-2 text-center">{log.type}</td>
+                </tr>
+              </React.Fragment>
+            ))
+          )}
+        </tbody>
       </table>
     </div>
   );

@@ -1,5 +1,4 @@
-'use client'
-
+"use client";
 
 import { ManagerKYCUserTableHeader } from "@/utils/tableHeaders";
 import { useEffect, useState } from "react";
@@ -65,6 +64,7 @@ const KYCUserList = () => {
         </div>
 
         <CustomTable
+          loading={loading}
           columns={ManagerKYCUserTableHeader}
           dataName="users"
           data={kycUsersList}

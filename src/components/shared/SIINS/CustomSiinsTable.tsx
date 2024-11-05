@@ -220,11 +220,11 @@ const CustomSiinsTable = ({
             ))}
           </tr>
         </thead>
-        {loading ? (
-          <LoadingSiinTableSkeleton />
-        ) : data.length === 0 ? (
-          <thead>
-            {" "}
+        
+        <tbody>
+          {loading ? (
+            <LoadingSiinTableSkeleton />
+          ) : data.length === 0 ? (
             <tr className="bg-white">
               <td
                 colSpan={columns.length + 1}
@@ -233,10 +233,8 @@ const CustomSiinsTable = ({
                 No siins available.
               </td>
             </tr>
-          </thead>
-        ) : (
-          <tbody>
-            {data.map((siin) => {
+          ) : (
+            data.map((siin) => {
               const transactionsTableHeader =
                 siin.transaction && typeof siin.transaction === "object";
               const isExpanded =
@@ -621,9 +619,9 @@ const CustomSiinsTable = ({
                   )}
                 </React.Fragment>
               );
-            })}
-          </tbody>
-        )}
+            })
+          )}
+        </tbody>
       </table>
     </div>
   );

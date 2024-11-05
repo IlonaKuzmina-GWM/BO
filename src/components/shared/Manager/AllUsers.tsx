@@ -95,8 +95,33 @@ const AllUser = () => {
     }
   };
 
+  const fetchAllMerchantsData = async () => {
+    try {
+      const response = await fetch("/api/post-merchants", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ search: "" }),
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        console.log("all merchants data", res);
+      } else {
+        // console.log("Filters response failed");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAllUsersData();
+    fetchAllMerchantsData();
   }, []);
 
   //   onBeforeMount(async () => {

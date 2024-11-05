@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const apiUrl = userUrl(getUsersRoute(role));
 
     const data = await fetch(apiUrl, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

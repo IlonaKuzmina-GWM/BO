@@ -63,9 +63,9 @@ export const ManagerAllUsersTableHeader: Header[] = [
 ];
 
 export const ManagerKYCUserTableHeader: Header[] = [
-  { title: "Name", key: "name", width: "15%" },
-  { title: "Surname", key: "surname", width: "15%" },
-  { title: "Email", key: "email", width: "15%" },
+  { title: "Name", key: "name", width: "10%" },
+  { title: "Surname", key: "surname", width: "10%" },
+  { title: "Email", key: "email", width: "25%" },
   { title: "Check Passed", key: "isCHeckPassed", width: "11%" },
   { title: "Check Required", key: "isCHeckRequired", width: "11%" },
   { title: "Create", key: "created", width: "15%", centered: true },

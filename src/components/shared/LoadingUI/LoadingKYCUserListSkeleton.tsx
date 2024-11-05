@@ -4,7 +4,7 @@ const LoadingKYCUserListSkeleton = () => {
   return (
     <React.Fragment>
       {[...Array(3)].map((_, index) => (
-        <tr key={index}>
+        <tr key={index}  className="relative h-[50px] animate-pulse cursor-pointer border-b-[1px] border-b-hoverBg bg-whiteBg transition-all last:border-none hover:bg-hoverBg">
           <td className="pl-3 lg:pl-8">
             <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
           </td>

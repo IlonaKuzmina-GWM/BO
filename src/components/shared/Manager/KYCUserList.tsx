@@ -11,12 +11,11 @@ import { KYCUser } from "@/types/kyc";
 import LoadingKYCUserListSkeleton from "../LoadingUI/LoadingKYCUserListSkeleton";
 
 const KYCUserList = () => {
-  const [limit, setLimit] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
-
   const [kycUsersList, setKYCUsersList] = useState<KYCUser[]>([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState<number>(10);
 
   const fetchKycUsersData = async () => {
     try {
@@ -29,8 +28,6 @@ const KYCUserList = () => {
 
       if (response.ok) {
         const res = await response.json();
-
-        // console.log("KYC data", res);
 
         setKYCUsersList(res);
       } else {
@@ -54,8 +51,20 @@ const KYCUserList = () => {
     <KYCUserListRows key={index} user={user} />
   );
 
-  const handleLimitChange = (limit: number) => {
-    setLimit(limit);
+  const totalPages = Math.ceil(kycUsersList.length / limit);
+
+  const paginatedKycUsers = kycUsersList.slice(
+    (currentPage - 1) * limit,
+    currentPage * limit,
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit);
+    setCurrentPage(1);
   };
 
   return (
@@ -68,7 +77,7 @@ const KYCUserList = () => {
         <CustomTable
           columns={ManagerKYCUserTableHeader}
           dataName="users"
-          data={kycUsersList}
+          data={paginatedKycUsers}
           renderRow={renderRow}
           loading={loading}
           loadingSkeleton={<LoadingKYCUserListSkeleton />}
@@ -80,7 +89,7 @@ const KYCUserList = () => {
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
         />
       </div>
     </div>

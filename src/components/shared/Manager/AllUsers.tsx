@@ -103,7 +103,7 @@ const AllUser = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="All Users" />
         </div>
-        <CustomTable loading={loading} columns={ManagerAllUsersTableHeader} dataName="users" data={users} renderRow={renderRow} />
+        <CustomTable columns={ManagerAllUsersTableHeader} dataName="users" data={users} renderRow={renderRow} />
       </div>
       <div className="relative">
         <DataLimitsSeter onChange={handleLimitChange} />

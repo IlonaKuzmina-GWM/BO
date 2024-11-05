@@ -1,10 +1,10 @@
 import React from "react";
 
-const LoadingLogsTableSkeleton = () => {
+const LoadingKYCUserListSkeleton = () => {
   return (
-    <>
+    <React.Fragment>
       {[...Array(3)].map((_, index) => (
-        <tr>
+        <tr key={index}>
           <td className="pl-3 lg:pl-8">
             <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
           </td>
@@ -34,8 +34,8 @@ const LoadingLogsTableSkeleton = () => {
           </td>
         </tr>
       ))}
-    </>
+    </React.Fragment>
   );
 };
 
-export default LoadingLogsTableSkeleton;
+export default LoadingKYCUserListSkeleton;

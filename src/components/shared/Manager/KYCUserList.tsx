@@ -8,6 +8,7 @@ import PaginationComponent from "../PaginationComponent ";
 import Paragraph from "../Paragraph";
 import KYCUserListRows from "./KYCUserListRows";
 import { KYCUser } from "@/types/kyc";
+import LoadingKYCUserListSkeleton from "../LoadingUI/LoadingKYCUserListSkeleton";
 
 const KYCUserList = () => {
   const [limit, setLimit] = useState<number>(10);
@@ -29,7 +30,7 @@ const KYCUserList = () => {
       if (response.ok) {
         const res = await response.json();
 
-        console.log("KYC data", res);
+        // console.log("KYC data", res);
 
         setKYCUsersList(res);
       } else {
@@ -44,13 +45,14 @@ const KYCUserList = () => {
 
   useEffect(() => {
     fetchKycUsersData();
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
   }, []);
 
   const renderRow = (user: KYCUser, index: number) => (
     <KYCUserListRows key={index} user={user} />
   );
-
-  // const totalPages = Math.ceil(users.length / 10);
 
   const handleLimitChange = (limit: number) => {
     setLimit(limit);
@@ -64,11 +66,12 @@ const KYCUserList = () => {
         </div>
 
         <CustomTable
-          loading={loading}
           columns={ManagerKYCUserTableHeader}
           dataName="users"
           data={kycUsersList}
           renderRow={renderRow}
+          loading={loading}
+          loadingSkeleton={<LoadingKYCUserListSkeleton />}
         />
       </div>
 

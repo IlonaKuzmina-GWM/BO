@@ -1,7 +1,6 @@
 import CustomCheckbox from "@/components/UI/CustomCheckbox";
 import { Header } from "@/types";
 import { ReactNode } from "react";
-import LoadingKYCUserListSkeleton from "../LoadingUI/LoadingKYCUserListSkeleton";
 
 interface ICustomTableProps<T> {
   columns: Header[];
@@ -10,7 +9,9 @@ interface ICustomTableProps<T> {
   dataName: string;
   onCheckboxChange?: () => void;
   checkAll?: boolean;
-  loading: boolean;
+
+  loading?: boolean;
+  loadingSkeleton?: ReactNode;
 }
 
 const CustomTable = <T,>({
@@ -21,6 +22,7 @@ const CustomTable = <T,>({
   onCheckboxChange,
   checkAll = false,
   loading,
+  loadingSkeleton,
 }: ICustomTableProps<T>) => {
   return (
     <div className="overflow-x-auto">
@@ -50,7 +52,9 @@ const CustomTable = <T,>({
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
+          {loading ? (
+            loadingSkeleton
+          ) : data.length > 0 ? (
             data.map((item, index) => (
               <tr
                 className="h-[50px] border-b border-hoverBg last:border-none"
@@ -60,11 +64,11 @@ const CustomTable = <T,>({
               </tr>
             ))
           ) : (
-              <tr>
-                <td colSpan={columns.length} className="py-4 text-center">
-                  No {dataName} available
-                </td>
-              </tr>
+            <tr>
+              <td colSpan={columns.length} className="py-4 text-center">
+                No {dataName} available
+              </td>
+            </tr>
           )}
         </tbody>
       </table>

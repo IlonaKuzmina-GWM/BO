@@ -11,6 +11,7 @@ import { useState } from "react";
 import { exportExcelPayout } from "../../../utils/export-utils";
 
 const GenerateCSVPage = () => {
+  const [loading, setLoading] = useState(true);
   const [cSVs, setCSVs] = useState<CSV[]>([]);
 
   const deleteEntry = (index: number): void => {

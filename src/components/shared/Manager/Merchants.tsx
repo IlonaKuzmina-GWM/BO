@@ -124,7 +124,6 @@ const Merchants = () => {
           />
         </div>
         <CustomTable
-        loading={loading}
           columns={ManagerMerchantsTableHeader}
           dataName="merchants"
           data={merchants}

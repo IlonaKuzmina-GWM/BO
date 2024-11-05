@@ -37,11 +37,7 @@ export async function GET(request: NextRequest) {
 
     const responseData = await data.json();
 
-    return NextResponse.json({
-      totalPages: responseData.totalPages,
-      totalTransactionsCount: responseData.totalTransactionsCount,
-      transactions: responseData.transactions,
-    });
+    return NextResponse.json(responseData);
   } catch (error) {
     console.error("Failed to process transaction request", error);
 

@@ -99,17 +99,17 @@ export interface Merchant {
   status: string;
 }
 
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  isEmailVerified: boolean;
-  merchant: string;
-  role: string;
-  created: string;
-  isDisabled: boolean;
-}
+// export interface User {
+//   id: string;
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   isEmailVerified: boolean;
+//   merchant: string;
+//   role: string;
+//   created: string;
+//   isDisabled: boolean;
+// }
 
 export interface CSV {
   name: string;

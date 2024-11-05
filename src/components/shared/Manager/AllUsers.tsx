@@ -8,6 +8,7 @@ import DataLimitsSeter from "../DataLimitsSeter";
 import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
 
 const AllUser = () => {
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState<User[]>([
     {
@@ -102,7 +103,7 @@ const AllUser = () => {
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="All Users" />
         </div>
-        <CustomTable columns={ManagerAllUsersTableHeader} dataName="users" data={users} renderRow={renderRow} />
+        <CustomTable loading={loading} columns={ManagerAllUsersTableHeader} dataName="users" data={users} renderRow={renderRow} />
       </div>
       <div className="relative">
         <DataLimitsSeter onChange={handleLimitChange} />

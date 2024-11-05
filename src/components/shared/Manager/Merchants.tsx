@@ -9,6 +9,7 @@ import Search from "../Search";
 import MerchantRows from "./MerchantRows";
 
 const Merchants = () => {
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [merchants, setMerchants] = useState<Merchant[]>([
@@ -123,6 +124,7 @@ const Merchants = () => {
           />
         </div>
         <CustomTable
+        loading={loading}
           columns={ManagerMerchantsTableHeader}
           dataName="merchants"
           data={merchants}

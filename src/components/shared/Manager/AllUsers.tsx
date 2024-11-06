@@ -11,6 +11,7 @@ import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
 import LoadingAllUsersSkeleton from "../LoadingUI/LoadingAllUsersSkeleton";
 import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
+import { observable } from "mobx";
 
 const AllUser = () => {
   const { alertStore } = useStore();
@@ -139,4 +140,5 @@ const AllUser = () => {
     </div>
   );
 };
+
 export default AllUser;

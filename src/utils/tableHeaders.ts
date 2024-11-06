@@ -38,14 +38,11 @@ export const GenerateCSVTableHeader: Header[] = [
 export const ManagerMerchantsTableHeader: Header[] = [
   { title: "ID", key: "id", width: "7%" },
   { title: "Name", key: "name", width: "15%" },
-  { title: "Host", key: "host", width: "15%" },
+  { title: "Store", key: "store", width: "15%", centered: true },
   { title: "Label", key: "label", width: "15%" },
-  { title: "Store", key: "store", width: "4%", centered: true },
-  { title: "Fee%", key: "feePercent", width: "4%", centered: true },
-  { title: "Fee€", key: "feeEur", width: "4%", centered: true },
-  { title: "Setl.", key: "setl", width: "4%", centered: true },
+  { title: "Link", key: "host", width: "15%" },
   { title: "Setl.Amount", key: "amount", width: "7%", centered: true },
-  { title: "Providers", key: "providers", width: "14%" },
+  { title: "Active Providers", key: "providers", width: "15%" },
   { title: "Status", key: "status", width: "7%" },
   { title: "Action", key: "action", width: "4%" },
 ];

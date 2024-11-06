@@ -1,3 +1,4 @@
+import { Merchant } from "./merchant";
 import { Webhook } from "./webhook";
 
 // types.ts
@@ -23,7 +24,7 @@ export interface Provider {
 export interface Transaction {
   id: number;
   txId: string;
-  countryCode:string;
+  countryCode: string;
   txReferenceId: string;
   providerId: number;
   additionalInfo: string | null;
@@ -85,19 +86,19 @@ export interface InputField {
   inputWidth?: string;
 }
 
-export interface Merchant {
-  id: string;
-  name: string;
-  host: string;
-  label: string;
-  store: string;
-  feePercent: string;
-  feeEur: string;
-  setl: string;
-  amount: string;
-  providers: string;
-  status: string;
-}
+// export interface Merchant {
+//   id: string;
+//   name: string;
+//   host: string;
+//   label: string;
+//   store: string;
+//   feePercent: string;
+//   feeEur: string;
+//   setl: string;
+//   amount: string;
+//   providers: string;
+//   status: string;
+// }
 
 // export interface User {
 //   id: string;

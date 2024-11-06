@@ -63,10 +63,10 @@ const Merchants = () => {
         store: merchant.store || { id: "-", name: "-", host: "-" },
       }));
 
-      // setAllMerchants(processedMerchants);
-      console.log("Fetched and processed merchants:", processedMerchants);
+      setAllMerchants(processedMerchants);
+      // console.log("Fetched and processed merchants:", processedMerchants);
 
-      setAllMerchants(allMerchants);
+      // setAllMerchants(allMerchants);
       // console.log("Fetched and processed merchants:", allMerchants);
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
@@ -114,7 +114,7 @@ const Merchants = () => {
 
   const totalPages = Math.ceil(allMerchants.length / limit);
 
-  const paginatedUsers = allMerchants.slice(
+  const paginatedMerchants = allMerchants.slice(
     (currentPage - 1) * limit,
     currentPage * limit,
   );
@@ -142,7 +142,7 @@ const Merchants = () => {
         <CustomTable
           columns={ManagerMerchantsTableHeader}
           dataName="merchants"
-          data={allMerchants}
+          data={paginatedMerchants}
           renderRow={renderRow}
         />
       </div>

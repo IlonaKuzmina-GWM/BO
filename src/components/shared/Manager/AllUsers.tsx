@@ -10,8 +10,10 @@ import DataLimitsSeter from "../DataLimitsSeter";
 import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
 import LoadingAllUsersSkeleton from "../LoadingUI/LoadingAllUsersSkeleton";
 import { User } from "@/types/user";
+import { useStore } from "@/stores/StoreProvider";
 
 const AllUser = () => {
+  const { alertStore } = useStore();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
 
@@ -33,10 +35,10 @@ const AllUser = () => {
         setUsers(res);
         console.log("users data", res);
       } else {
-        // console.log("Filters response failed");
+        alertStore.setAlert("warning", "Data feching failed.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -57,10 +59,10 @@ const AllUser = () => {
 
   //       console.log("all merchants data", res);
   //     } else {
-  //       // console.log("Filters response failed");
+  //        alertStore.setAlert("warning", "All merchants feching failed.");
   //     }
   //   } catch (error) {
-  //     console.error("Error fetching data:", error);
+  //     alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
   //   } finally {
   //     setLoading(false);
   //   }
@@ -70,7 +72,6 @@ const AllUser = () => {
     fetchAllUsersData();
     // fetchAllMerchantsData();
   }, []);
-
 
   const merchants = [
     { value: "Merchant", label: "Merchant" },
@@ -108,7 +109,7 @@ const AllUser = () => {
 
   const handleLimitChange = (newLimit: number) => {
     setLimit(newLimit);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   return (

@@ -37,6 +37,7 @@ const CustomTransactionTable = ({
   paginatedTransactions,
 }: ICustomTransactionTableProps) => {
   const { authStore } = useStore();
+  const { alertStore } = useStore();
   const userRole = authStore.role;
   const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -71,12 +72,18 @@ const CustomTransactionTable = ({
       if (response.ok) {
         const res = await response.json();
 
-        // console.log("Successfuly Updated Tx Status!", res.newStatus);
+        alertStore.setAlert("success", "Transaction refunded successfully!");
       } else {
-        // console.log("New status not found for this transaction in the Bank");
+        alertStore.setAlert(
+          "warning",
+          "Status update failed for this transaction.",
+        );
       }
     } catch (error) {
-      console.error(`Oops! Something went wrong: ${error}`);
+      alertStore.setAlert(
+        "error",
+        `Something went wrong with the refund process. ${error}`,
+      );
     }
   };
 
@@ -97,12 +104,18 @@ const CustomTransactionTable = ({
       if (response.ok) {
         const res = await response.json();
 
-        console.log("Successfuly!", res);
+        alertStore.setAlert("success", `Successfuly!`);
       } else {
-        console.log("New status not found for this transaction in the Bank");
+        alertStore.setAlert(
+          "warning",
+          "New status not found for this transaction in the Bank.",
+        );
       }
     } catch (error) {
-      console.error(`Oops! Something went wrong: ${error}`);
+      alertStore.setAlert(
+        "error",
+        "Something went wrong with the refund process.",
+      );
     }
 
     // await api('/transactions/status', { method: 'POST', body: {txId: transactionData.value.txId, status: selectedStatus} })

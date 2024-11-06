@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import AllUsers from "@/components/shared/Manager/AllUsers";
@@ -7,8 +7,12 @@ import KYCUserList from "@/components/shared/Manager/KYCUserList";
 import Merchants from "@/components/shared/Manager/Merchants";
 import Tabs from "@/components/shared/Tabs/Tabs";
 import { useState } from "react";
+import Alert from "@/components/UI/Alert";
+import { useStore } from "@/stores/StoreProvider";
+import { observer } from "mobx-react-lite";
 
-const ManagerPage = () => {
+const ManagerPage = observer(() => {
+  const { alertStore } = useStore();
   const [activeTab, setActiveTab] = useState("Create");
 
   const tabList = ["Create", "Merchants", "All Users", "KYC User List"];
@@ -35,7 +39,11 @@ const ManagerPage = () => {
         {activeTab === "All Users" && <AllUsers />}
         {activeTab === "KYC User List" && <KYCUserList />}
       </div>
+
+      {alertStore.alertMessage && alertStore.alertType && (
+        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
+      )}
     </div>
   );
-};
+});
 export default ManagerPage;

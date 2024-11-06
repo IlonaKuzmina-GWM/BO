@@ -13,11 +13,13 @@ import CustomTransactionTable from "./CustomTransactionTable";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { useStore } from "@/stores/StoreProvider";
+import { observer } from "mobx-react-lite";
 import ExportButton from "../ExportButton";
 import { exportExcelTransactions } from "@/utils/export-utils";
 import DashSelectValueNumber from "../DashSelectValueNumber";
 import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
 import { ROLES } from "@/constants/roles";
+import Alert from "@/components/UI/Alert";
 
 interface Merchant {
   merchant_id: number;
@@ -29,8 +31,9 @@ interface Provider {
   provider_name: string;
 }
 
-const TransactionsWrapper = () => {
+const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
+  const { alertStore } = useStore();
   const userId = authStore.user?.id;
   const userRole = authStore.role;
 
@@ -86,10 +89,10 @@ const TransactionsWrapper = () => {
         setMerchantsList(res.merchants);
         setProvidersList(res.providers);
       } else {
-        // console.log("Filters response failed");
+        alertStore.setAlert("warning", "Get filters response failed.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -144,18 +147,15 @@ const TransactionsWrapper = () => {
 
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
-        console.log("transactions in trasnactions page", res.transactions);
       } else {
-        // console.log("Transactions response failed");
+        alertStore.setAlert("warning", "Transactions data response failed.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     }
   };
 
-  const sendExportTransactionsData = async (
-    exportType:  "excel",
-  ) => {
+  const sendExportTransactionsData = async (exportType: "excel") => {
     setLoading(true);
 
     let createdDateRange: [number, number] | boolean = false;
@@ -201,7 +201,6 @@ const TransactionsWrapper = () => {
         const res = await response.json();
 
         const transactionData = res;
-
         // console.log(transactionData);
 
         if (exportType === "excel") {
@@ -212,11 +211,12 @@ const TransactionsWrapper = () => {
         } else if (exportType === "pdf") {
           //       exportPdfTransactions(transactionData);
         }
+        alertStore.setAlert("success", `Transactions data exported successfully!`);
       } else {
-        console.log("Transactions response failed");
+        alertStore.setAlert("warning", "Transactions response failed.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -239,45 +239,45 @@ const TransactionsWrapper = () => {
 
   const statusFilters = [
     {
-      label: 'Processing',
-      value: 'PAYMENT_PROCESSING',
-  },
-  {
-      label: 'Transferring',
-      value: 'PAYMENT_TRANSFERRING',
-  },
-  {
-      label: 'Success',
-      value: 'PAYMENT_SUCCESS',
-  },
-  {
-      label: 'Complete',
-      value: 'PAYMENT_COMPLETE',
-  },
-  {
-      label: 'Accepted',
-      value: 'PAYMENT_ACCEPTED',
-  },
-  {
-      label: 'Failed',
-      value: 'PAYMENT_FAILED',
-  },
-  {
-      label: 'Timeout',
-      value: 'TIMEOUT',
-  },
-  {
-      label: 'Aml blocked',
-      value: 'AML_BLOCKED',
-  },
-  {
-      label: 'Cancelled',
-      value: 'PAYMENT_CANCELLED',
-  },
-  {
-      label: 'Refunded',
-      value: 'REFUNDED',
-  },
+      label: "Processing",
+      value: "PAYMENT_PROCESSING",
+    },
+    {
+      label: "Transferring",
+      value: "PAYMENT_TRANSFERRING",
+    },
+    {
+      label: "Success",
+      value: "PAYMENT_SUCCESS",
+    },
+    {
+      label: "Complete",
+      value: "PAYMENT_COMPLETE",
+    },
+    {
+      label: "Accepted",
+      value: "PAYMENT_ACCEPTED",
+    },
+    {
+      label: "Failed",
+      value: "PAYMENT_FAILED",
+    },
+    {
+      label: "Timeout",
+      value: "TIMEOUT",
+    },
+    {
+      label: "Aml blocked",
+      value: "AML_BLOCKED",
+    },
+    {
+      label: "Cancelled",
+      value: "PAYMENT_CANCELLED",
+    },
+    {
+      label: "Refunded",
+      value: "REFUNDED",
+    },
   ];
 
   const currencyFilters = [
@@ -443,7 +443,7 @@ const TransactionsWrapper = () => {
         </div>
 
         <ExportButton
-            // onSelect={(exportType: "pdf" | "csv" | "excel") => {
+          // onSelect={(exportType: "pdf" | "csv" | "excel") => {
           onSelect={(exportType: "excel") => {
             sendExportTransactionsData(exportType);
           }}
@@ -465,15 +465,19 @@ const TransactionsWrapper = () => {
       />
 
       <div className="relative">
-        <DataLimitsSeter onChange={handleLimitChange} defaultValue={limit}/>
+        <DataLimitsSeter onChange={handleLimitChange} defaultValue={limit} />
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
       </div>
+
+      {alertStore.alertMessage && alertStore.alertType && (
+        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
+      )}
     </div>
   );
-};
+});
 
 export default TransactionsWrapper;

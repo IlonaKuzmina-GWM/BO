@@ -14,6 +14,7 @@ import { DashTableData, Siin, Transaction } from "@/types";
 import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
 
 import { useRouter } from "next/navigation";
+import Alert from "@/components/UI/Alert";
 
 const MainDashPage = () => {
   const [countryTableData, setCountryTableData] = useState<DashTableData[]>([]);

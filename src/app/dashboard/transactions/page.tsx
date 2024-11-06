@@ -1,7 +1,7 @@
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import TransactionsWrapper from "@/components/shared/Transactions/TransactionsWrapper";
 
-export default function TransactionsPage() {
+const TransactionsPage = () => {
   return (
     <div className="flex w-full flex-col gap-4 xl:gap-6">
       <DashPageTitle
@@ -12,4 +12,6 @@ export default function TransactionsPage() {
       <TransactionsWrapper />
     </div>
   );
-}
+};
+
+export default TransactionsPage;

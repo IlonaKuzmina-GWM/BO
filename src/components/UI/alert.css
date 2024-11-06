@@ -1,0 +1,10 @@
+/* styles/Alert.css */
+.alert-container {
+    right: -400px; 
+    transition: transform 1s ease;
+  }
+  
+  .alert-container.visible {
+    transform: translateX(-424px); 
+  }
+  

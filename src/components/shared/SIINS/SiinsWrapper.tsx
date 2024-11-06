@@ -16,8 +16,12 @@ import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { exportExcelSiins } from "@/utils/export-utils";
 import ExportButton from "../ExportButton";
+import { useStore } from "@/stores/StoreProvider";
+import { observer } from "mobx-react-lite";
+import Alert from "@/components/UI/Alert";
 
-const SiinsWrapper = () => {
+const SiinsWrapper = observer(() => {
+  const { alertStore } = useStore();
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
   const [siinExportnTransactions, setExportSiinsTransactions] = useState<
     Siin[]
@@ -111,7 +115,7 @@ const SiinsWrapper = () => {
       if (response.ok) {
         const res = await response.json();
 
-        const siinsData =  res.siins;
+        const siinsData = res.siins;
 
         if (exportType === "excel") {
           exportExcelSiins(siinsData);
@@ -120,11 +124,15 @@ const SiinsWrapper = () => {
         } else if (exportType === "pdf") {
           // exportSiinPDF(siinsData);
         }
+        alertStore.setAlert(
+          "success",
+          `Transactions data exported successfully!`,
+        );
       } else {
-        // console.log("Siins response failed");
+        alertStore.setAlert("warning", "Transactions response failed.");
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -217,8 +225,12 @@ const SiinsWrapper = () => {
           />
         </div>
       </div>
+
+      {alertStore.alertMessage && alertStore.alertType && (
+        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
+      )}
     </div>
   );
-};
+});
 
 export default SiinsWrapper;

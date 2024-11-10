@@ -5,7 +5,7 @@ import Search from "../Search";
 import { DateRange } from "react-day-picker";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
-import { Transaction } from "@/types";
+
 import { TransactionsTableHeader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent ";
@@ -20,6 +20,7 @@ import DashSelectValueNumber from "../DashSelectValueNumber";
 import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWrapper";
 import { ROLES } from "@/constants/roles";
 import Alert from "@/components/UI/Alert";
+import { Transaction } from "@/types/transaction";
 
 interface Merchant {
   merchant_id: number;
@@ -147,6 +148,8 @@ const TransactionsWrapper = observer(() => {
 
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
+
+        console.log("transaction data", res)
       } else {
         alertStore.setAlert("warning", "Transactions data response failed.");
       }

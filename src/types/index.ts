@@ -2,13 +2,13 @@ import { Merchant } from "./merchant";
 import { Webhook } from "./webhook";
 
 // types.ts
-export interface InitialRequest {
-  email: string;
-  firstName: string;
-  lastName: string;
-  merchantId: string;
-  countryCode: string;
-}
+// export interface InitialRequest {
+//   email: string;
+//   firstName: string;
+//   lastName: string;
+//   merchantId: string;
+//   countryCode: string;
+// }
 
 // export interface Merchant {
 //   name: string;
@@ -16,35 +16,35 @@ export interface InitialRequest {
 //   label: string;
 // }
 
-export interface Provider {
-  name: string;
-  apiSlug: string;
-}
+// export interface Provider {
+//   name: string;
+//   apiSlug: string;
+// }
 
-export interface Transaction {
-  id: number;
-  txId: string;
-  countryCode: string;
-  txReferenceId: string;
-  providerId: number;
-  additionalInfo: string | null;
-  amount: string;
-  status: string;
-  initialRequest: InitialRequest;
-  returnUrl: string | null;
-  webhookUrl: string | null;
-  rawStatus: string;
-  createdAt: string;
-  updatedAt: string;
-  sandbox: boolean;
-  isSettled: boolean;
-  settlementDate: string | null;
-  settlementAmount: string;
-  statusChecks: number;
-  merchant: Merchant;
-  provider: Provider;
-  webhooks: Webhook[];
-}
+// export interface Transaction {
+//   id: number;
+//   txId: string;
+//   countryCode: string;
+//   txReferenceId: string;
+//   providerId: number;
+//   additionalInfo: string | null;
+//   amount: string;
+//   status: string;
+//   initialRequest: InitialRequest;
+//   returnUrl: string | null;
+//   webhookUrl: string | null;
+//   rawStatus: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   sandbox: boolean;
+//   isSettled: boolean;
+//   settlementDate: string | null;
+//   settlementAmount: string;
+//   statusChecks: number;
+//   merchant: Merchant;
+//   provider: Provider;
+//   webhooks: Webhook[];
+// }
 
 export interface Rule {
   merchant: string;
@@ -122,33 +122,33 @@ export interface CSV {
   created: string;
 }
 
-export interface Siin {
-  additionalInfo: string | null;
-  amount: number;
-  createdAt: string;
-  id: number;
-  initialRequest: InitialRequest;
-  isSettled: number;
-  merchantId: number;
-  providerId: number;
-  rawStatus: string | null;
-  referenceCode: string;
-  returnUrl: string | null;
-  sandbox: number;
-  senderBankCountry: string;
-  senderIban: string;
-  senderName: string;
-  settlementAmount: number;
-  settlementDate: string | null;
-  status: string;
-  statusChecks: number;
-  transactionId: string;
-  transaction: Transaction;
-  txId: string;
-  txReferenceId: string | null;
-  updatedAt: string;
-  webhookUrl: string | null;
-}
+// export interface Siin {
+//   additionalInfo: string | null;
+//   amount: number;
+//   createdAt: string;
+//   id: number;
+//   initialRequest: InitialRequest;
+//   isSettled: number;
+//   merchantId: number;
+//   providerId: number;
+//   rawStatus: string | null;
+//   referenceCode: string;
+//   returnUrl: string | null;
+//   sandbox: number;
+//   senderBankCountry: string;
+//   senderIban: string;
+//   senderName: string;
+//   settlementAmount: number;
+//   settlementDate: string | null;
+//   status: string;
+//   statusChecks: number;
+//   transactionId: string;
+//   transaction: Transaction;
+//   txId: string;
+//   txReferenceId: string | null;
+//   updatedAt: string;
+//   webhookUrl: string | null;
+// }
 
 export interface DashTableData {
   name: string;

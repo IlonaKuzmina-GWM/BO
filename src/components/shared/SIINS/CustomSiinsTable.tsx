@@ -1,5 +1,5 @@
 "use client";
-import { Header, Siin, Transaction } from "@/types";
+import { Header } from "@/types";
 import { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
 import Checkbox from "../Checkbox";
@@ -27,6 +27,8 @@ import { useStore } from "@/stores/StoreProvider";
 import { ROLES } from "@/constants/roles";
 import { STATUSES } from "@/constants/statuses";
 import LogHistory from "../LogHistory";
+import { Siin } from "@/types/siin";
+import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetails";
 
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
@@ -37,7 +39,7 @@ const CustomSiinsTable = ({
   columns,
   data,
 }: ICustomSiinsTransactionTableProps) => {
-  const { authStore } = useStore();
+  const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
 
   const [loading, setLoading] = useState(true);
@@ -53,6 +55,33 @@ const CustomSiinsTable = ({
     [key: number]: boolean;
   }>({});
   const [, setExpandedDropdowns] = useState(false);
+
+  const refundTransaction = async (txId: string) => {
+    try {
+      const response = await fetch("/api/post-refund", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ txId: txId, isRefunded: false }),
+      });
+      if (response.ok) {
+        const res = await response.json();
+
+        alertStore.setAlert("success", "Transaction refunded successfully!");
+      } else {
+        alertStore.setAlert(
+          "warning",
+          "Status update failed for this transaction.",
+        );
+      }
+    } catch (error) {
+      alertStore.setAlert(
+        "error",
+        `Something went wrong with the refund process. ${error}`,
+      );
+    }
+  };
 
   const handleSelectStatus = async (value: string, txId: String) => {
     console.log(value, txId);
@@ -118,7 +147,7 @@ const CustomSiinsTable = ({
   };
 
   const toggleRow = (siin: Siin) => {
-    const { id, status } = siin;
+    const { id } = siin;
 
     setExpandedRows((prevExpandedRows) =>
       prevExpandedRows.includes(id)
@@ -137,15 +166,15 @@ const CustomSiinsTable = ({
     }
   };
 
-  // const toggleWebhook = (siinId: string, webhookIndex: number) => {
-  //   setWebhookExpanded((prev) => ({
-  //     ...prev,
-  //     [siinId]: {
-  //       ...prev[siinId],
-  //       [webhookIndex]: !prev[siinId]?.[webhookIndex],
-  //     },
-  //   }));
-  // };
+  const toggleWebhook = (siinId: number, webhookIndex: number) => {
+    // setWebhookExpanded((prev) => ({
+    //   ...prev,
+    //   [siinId]: {
+    //     ...prev[siinId],
+    //     [webhookIndex]: !prev[siinId]?.[webhookIndex],
+    //   },
+    // }));
+  };
 
   const handleAllCheckboxChange = () => {
     setAllChecked(!allChecked);
@@ -195,6 +224,15 @@ const CustomSiinsTable = ({
     }
   };
 
+  const getCurrency = (countryCode: string, provider: string) => {
+    if (!countryCode) return "EUR";
+    if (countryCode.toLowerCase() === "gb" && provider === "Boodil") {
+      return "GBP";
+    } else {
+      return "EUR";
+    }
+  };
+
   return (
     <div className="">
       <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
@@ -220,7 +258,7 @@ const CustomSiinsTable = ({
             ))}
           </tr>
         </thead>
-        
+
         <tbody>
           {loading ? (
             <LoadingSiinTableSkeleton />
@@ -240,8 +278,7 @@ const CustomSiinsTable = ({
               const isExpanded =
                 expandedRows.includes(siin.id) && transactionsTableHeader;
               const dynamicColor = rowBgColors[siin.id];
-              // const expandedWebhooks =
-              // webhookExpanded[siin.txId] || {};
+              const expandedWebhooks = webhookExpanded[siin.id] || {};
 
               return (
                 <React.Fragment key={siin.id}>
@@ -303,317 +340,17 @@ const CustomSiinsTable = ({
                           borderBottomColor: `var(--${dynamicColor.slice(0, -2)})`,
                         }}
                       >
-                        <div className="flex flex-row gap-10">
-                          <div className="flex w-6/12 flex-col gap-1 text-main">
-                            <div className="relative mb-4 flex flex-row gap-2 py-1 text-[18px]">
-                              <div className="flex flex-row">
-                                {" "}
-                                <span className="me-2 font-medium">
-                                  Transactions Details
-                                </span>{" "}
-                                <p>ID {siin.transaction.txId}</p>
-                              </div>
-
-                              <div
-                                className="cursor-pointer p-1 opacity-35 transition-opacity duration-300 hover:opacity-100"
-                                onClick={() => {
-                                  handleCopyToClipboard(
-                                    siin.transaction.txId.toString(),
-                                  );
-                                }}
-                              >
-                                <div className="h-4 w-4">
-                                  <Image
-                                    src="/icons/copy.svg"
-                                    width={16}
-                                    height={16}
-                                    alt="Copy"
-                                    className={`h-auto w-full`}
-                                  />
-                                </div>
-                              </div>
-
-                              {copiedOrderID && (
-                                <span className="absolute right-[-70px] top-0 bg-successBg p-1 text-[12px] font-medium text-success">
-                                  Copyed
-                                </span>
-                              )}
-                            </div>
-                            <div>
-                              <p>
-                                <span className="font-medium">Created:</span>{" "}
-                                <span>
-                                  {
-                                    formatDateTime(siin.transaction.createdAt)
-                                      .date
-                                  }
-                                </span>{" "}
-                                <span>
-                                  {
-                                    formatDateTime(siin.transaction.createdAt)
-                                      .time
-                                  }
-                                </span>
-                              </p>
-                            </div>
-
-                            <div>
-                              <p>
-                                <span className="font-medium">Updated:</span>{" "}
-                                <span>
-                                  {
-                                    formatDateTime(siin.transaction.updatedAt)
-                                      .date
-                                  }
-                                </span>{" "}
-                                <span>
-                                  {
-                                    formatDateTime(siin.transaction.updatedAt)
-                                      .time
-                                  }
-                                </span>
-                              </p>
-                            </div>
-
-                            <div>
-                              <p>
-                                <span className="font-medium">Order ID:</span>{" "}
-                                {siin.transaction.id}
-                              </p>
-                            </div>
-
-                            <div>
-                              <p>
-                                <span className="font-medium">Amount:</span>{" "}
-                                {siin.transaction.amount} €
-                              </p>
-                            </div>
-
-                            <div>
-                              <span className="font-medium">Status:</span>
-                              {userRole === ROLES.ADMIN ||
-                              userRole === ROLES.DEVELOPER ? (
-                                <p
-                                  className={`relative inline-block text-${getStatusColorClass(siin.transaction.status)}`}
-                                  onClick={() => setExpandedDropdowns(true)}
-                                >
-                                  <select
-                                    className="cursor-pointer bg-transparent"
-                                    onChange={(e) =>
-                                      handleSelectStatus(
-                                        e.target.value,
-                                        siin.transaction.txId,
-                                      )
-                                    }
-                                    value={siin.transaction.status}
-                                  >
-                                    <option
-                                      value={siin.transaction.status}
-                                      className="cursor-pointer"
-                                    >
-                                      {siin.transaction.status}
-                                    </option>
-
-                                    {Object.values(STATUSES)
-                                      .filter(
-                                        (status) =>
-                                          status !== siin.transaction.status,
-                                      )
-                                      .map((status) => (
-                                        <option
-                                          key={status}
-                                          value={status}
-                                          className={`cursor-pointer text-${getStatusColorClass(status)}`}
-                                        >
-                                          {status}
-                                        </option>
-                                      ))}
-                                  </select>
-                                </p>
-                              ) : (
-                                <p
-                                  className={` ${getStatusColorClass(siin.transaction.status)}`}
-                                >
-                                  {siin.transaction.status}
-                                </p>
-                              )}
-                            </div>
-
-                            <div>
-                              <p>
-                                <span className="font-medium">Result:</span>
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <span className="font-medium">
-                                  Decline Reason:
-                                </span>
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <span className="font-medium">
-                                  Webhook URL:
-                                </span>{" "}
-                                {siin.transaction.webhookUrl}
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <span className="font-medium">
-                                  Merchant ID:
-                                </span>{" "}
-                                {siin.transaction.initialRequest.merchantId}
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <span className="font-medium">Return URL:</span>{" "}
-                                {siin.transaction.returnUrl}
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <span className="font-medium">
-                                  External Transaction ID:
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* <div className="w-3/12 min-w-[250px]">
-                            <h3 className="mb-4 py-1 text-[18px] font-medium">
-                              Webhook
-                            </h3>
-                            <div className="webhook_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
-                              {siin.transaction.webhooks.map((webhook) => (
-                                <Collapsible
-                                  key={webhook.id}
-                                  open={expandedWebhooks[webhook.id] || false}
-                                  onOpenChange={() =>
-                                    toggleWebhook(transaction.txId, webhook.id)
-                                  }
-                                  className="w-full space-y-2"
-                                >
-                                  <CollapsibleTrigger
-                                    asChild
-                                    className="relative cursor-pointer uppercase"
-                                  >
-                                    <div className="">
-                                      {" "}
-                                      <h4 className="text-sm font-semibold">
-                                        {webhook.status}
-                                      </h4>
-                                      <ChevronDown
-                                        className={`${
-                                          expandedWebhooks[webhook.id]
-                                            ? "rotate-180"
-                                            : ""
-                                        } absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
-                                      />
-                                    </div>
-                                  </CollapsibleTrigger>
-
-                                  <CollapsibleContent className="space-y-2">
-                                    <div>
-                                      <p>
-                                        <span className="font-medium">
-                                          Created:
-                                        </span>{" "}
-                                        <span>
-                                          {
-                                            formatDateTime(webhook.createdAt)
-                                              .date
-                                          }
-                                        </span>{" "}
-                                        <span>
-                                          {
-                                            formatDateTime(webhook.createdAt)
-                                              .time
-                                          }
-                                        </span>
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <p>
-                                        <span className="font-medium">
-                                          Retries: {webhook.retries}
-                                        </span>{" "}
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <p>
-                                        <span className="font-medium">
-                                          Updated:
-                                        </span>{" "}
-                                        <span>
-                                          {
-                                            formatDateTime(webhook.updatedAt)
-                                              .date
-                                          }
-                                        </span>{" "}
-                                        <span>
-                                          {
-                                            formatDateTime(webhook.updatedAt)
-                                              .time
-                                          }
-                                        </span>
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <p>
-                                        <span className="font-medium">
-                                          Status: {webhook.status}
-                                        </span>{" "}
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <p>
-                                        <span className="font-medium">
-                                          Code description:
-                                        </span>{" "}
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <p>
-                                        <span className="font-medium">
-                                          Compound state: {webhook.state}
-                                        </span>{" "}
-                                      </p>
-                                    </div>
-                                  </CollapsibleContent>
-                                </Collapsible>
-                              ))}
-                            </div>
-                          </div> */}
-
-                          {/* <div className="w-3/12 min-w-[150px]">
-                            <h3 className="mb-4 py-1 text-[18px] font-medium">
-                              Log
-                            </h3>
-                            <div className="log_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
-                              {siin.transaction.webhooks.map((log) => (
-                                <div key={log.id}>
-                                  <LogHistory
-                                    color={getStatusColorClass(log.status)}
-                                    status={log.status}
-                                    date={formatDateTime(log.createdAt).date}
-                                    time={formatDateTime(log.updatedAt).time}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div> */}
-                        </div>
-
-                        {/* <div className="mt-6 flex flex-row gap-4">
-                          <DashButton
-                            name={"Verify Transaction Status"}
-                            type={"filled"}
-                          />
-                          <DashButton name={"Refund"} type={"empty"} />
-                        </div> */}
+                        <ExpandedTransactionDetails
+                          transaction={siin.transaction}
+                          userRole={userRole}
+                          copiedOrderID={copiedOrderID}
+                          handleCopyToClipboard={handleCopyToClipboard}
+                          handleSelectStatus={handleSelectStatus}
+                          refundTransaction={refundTransaction}
+                          expandedWebhooks={expandedWebhooks}
+                          toggleWebhook={toggleWebhook}
+                          getCurrency={getCurrency}
+                        />
                       </td>
                     </tr>
                   )}

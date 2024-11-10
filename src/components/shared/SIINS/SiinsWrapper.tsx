@@ -7,7 +7,7 @@ import DatePickerWithRange from "../DatePickerWithRange";
 import DashButton from "../DashButton";
 import { DateRange } from "react-day-picker";
 import PaginationComponent from "../PaginationComponent ";
-import { Siin } from "@/types";
+
 import CustomSiinsTable from "./CustomSiinsTable";
 import DataLimitsSeter from "../DataLimitsSeter";
 import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
@@ -19,6 +19,7 @@ import ExportButton from "../ExportButton";
 import { useStore } from "@/stores/StoreProvider";
 import { observer } from "mobx-react-lite";
 import Alert from "@/components/UI/Alert";
+import { Siin } from "@/types/siin";
 
 const SiinsWrapper = observer(() => {
   const { alertStore } = useStore();
@@ -75,6 +76,8 @@ const SiinsWrapper = observer(() => {
 
         setSiinsTransactions(res.response.siins);
         setTotalPages(res.response.totalPages);
+
+        console.log("Siins response", res.response.siins)
       } else {
         // console.log("Siins response failed");
       }

@@ -4,7 +4,7 @@ import { Transaction } from "@/types/transaction";
 import ExcelJS from "exceljs";
 
 const formatDate = (date: Date | string) => {
-  if (typeof date === 'string') {
+  if (typeof date === "string") {
     date = new Date(date);
   }
   return date.toISOString().split("T")[0];
@@ -120,9 +120,10 @@ export const exportExcelTransactions = (data: Transaction[]) => {
         ?.compound_state,
       formatDate(transaction.createdAt),
       formatDate(transaction.updatedAt),
-      Number(transaction.amount),
-      transaction.merchant.merchantId,
+      transaction.initialRequest.merchantId,
+      ,
       transaction.merchant.name,
+      Number(transaction.amount),
     ];
     worksheet.addRow(rowData);
   });
@@ -148,32 +149,32 @@ export const exportExcelTransactions = (data: Transaction[]) => {
 
 export const exportExcelSiins = (data: Siin[]) => {
   const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Siins');
+  const worksheet = workbook.addWorksheet("Siins");
 
   const headers = [
-    'ID',
-    'IBAN',
-    'NAME',
-    'BANK COUNTRY',
-    'REFERENCE CODE',
-    'AMOUNT',
-    'TX ID',
-    'CREATED AT',
-    'UPDATED AT',
+    "ID",
+    "IBAN",
+    "NAME",
+    "BANK COUNTRY",
+    "REFERENCE CODE",
+    "AMOUNT",
+    "TX ID",
+    "CREATED AT",
+    "UPDATED AT",
   ];
 
   worksheet.addRow(headers);
 
   worksheet.columns = [
-    { header: 'ID', key: 'id', width: 10 },
-    { header: 'IBAN', key: 'senderIban', width: 25 },
-    { header: 'NAME', key: 'senderName', width: 25 },
-    { header: 'BANK COUNTRY', key: 'senderBankCountry', width: 25 },
-    { header: 'REFERENCE CODE', key: 'referenceCode', width: 25 },
-    { header: 'AMOUNT', key: 'amount', width: 15 },
-    { header: 'TX ID', key: 'txId', width: 25 },
-    { header: 'CREATED AT', key: 'createdAt', width: 25 },
-    { header: 'UPDATED AT', key: 'updatedAt', width: 25 },
+    { header: "ID", key: "id", width: 10 },
+    { header: "IBAN", key: "senderIban", width: 25 },
+    { header: "NAME", key: "senderName", width: 25 },
+    { header: "BANK COUNTRY", key: "senderBankCountry", width: 25 },
+    { header: "REFERENCE CODE", key: "referenceCode", width: 25 },
+    { header: "AMOUNT", key: "amount", width: 15 },
+    { header: "TX ID", key: "txId", width: 25 },
+    { header: "CREATED AT", key: "createdAt", width: 25 },
+    { header: "UPDATED AT", key: "updatedAt", width: 25 },
   ];
 
   data?.forEach((siin) => {
@@ -184,7 +185,7 @@ export const exportExcelSiins = (data: Siin[]) => {
       siin.senderBankCountry,
       siin.referenceCode,
       Number(siin.amount),
-      siin.transaction ? siin.transaction.txId : '',
+      siin.transaction ? siin.transaction.txId : "",
       formatDate(siin.createdAt),
       formatDate(siin.updatedAt),
     ];
@@ -192,15 +193,15 @@ export const exportExcelSiins = (data: Siin[]) => {
   });
 
   const today = new Date();
-  const formattedDate = today.toISOString().split('T')[0];
+  const formattedDate = today.toISOString().split("T")[0];
   const fileName = `siins_${formattedDate}.xlsx`;
 
   workbook.xlsx.writeBuffer().then((buffer) => {
     const blob = new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = fileName;
     document.body.appendChild(a);
@@ -210,20 +211,18 @@ export const exportExcelSiins = (data: Siin[]) => {
   });
 };
 
-
 //PDF
-
 
 // export const exportPDF = (data, fileName) => {
 //   const doc = new jsPDF();
 //   const headers = [[
-//       'ID', 
-//       'TXID', 
-//       'STATUS', 
-//       'PROVIDER', 
-//       'WEBHOOK CODE DESCR', 
-//       'DATE OF CREATION', 
-//       'UPDATE DATE', 
+//       'ID',
+//       'TXID',
+//       'STATUS',
+//       'PROVIDER',
+//       'WEBHOOK CODE DESCR',
+//       'DATE OF CREATION',
+//       'UPDATE DATE',
 //       'MERCHANT ID',
 //       'MERCHANT NAME',
 //       'GEO',
@@ -284,12 +283,12 @@ export const exportExcelSiins = (data: Siin[]) => {
 // CSV
 // export const exportCSV = (data, fileName) => {
 //   const headers = [[
-//       'ID', 
-//       'TXID', 
-//       'STATUS', 
-//       'PROVIDER', 
-//       'WEBHOOK CODE DESCR',  
-//       'DATE OF CREATION', 
+//       'ID',
+//       'TXID',
+//       'STATUS',
+//       'PROVIDER',
+//       'WEBHOOK CODE DESCR',
+//       'DATE OF CREATION',
 //       'UPDATE DATE',
 //       'MERCHANT ID',
 //       'MERCHANT NAME',
@@ -333,7 +332,7 @@ export const exportExcelSiins = (data: Siin[]) => {
 //       payout.currency,
 //       payout.id,
 //   ]);
-  
+
 //   const csvData = [headers, ...tableData];
 
 //   const csv = Papa.unparse(csvData);

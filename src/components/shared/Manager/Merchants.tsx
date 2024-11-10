@@ -10,12 +10,14 @@ import Search from "../Search";
 import MerchantRows from "./MerchantRows";
 import { useStore } from "@/stores/StoreProvider";
 import { Merchant } from "@/types/merchant";
+import MerchantConfigurationBar from "../MerchantConfigurationBar/MerchantConfigurationBar";
 
 const Merchants = () => {
   const { alertStore, authStore } = useStore();
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [allMerchants, setAllMerchants] = useState<Merchant[]>([]);
+  const [merchantCongfigBarOpen, setMerchantConfigBarOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
@@ -64,7 +66,7 @@ const Merchants = () => {
       }));
 
       setAllMerchants(processedMerchants);
-      // console.log("Fetched and processed merchants:", processedMerchants);
+      console.log("Fetched and processed merchants:", processedMerchants);
 
       // setAllMerchants(allMerchants);
       // console.log("Fetched and processed merchants:", allMerchants);
@@ -79,26 +81,21 @@ const Merchants = () => {
     fetchAllMerchantsData();
   }, []);
 
-  // const toggleStatus = (id: string) => {
-  //   setAllMerchants((prevMerchants) =>
-  //     prevMerchants.map((merchant) =>
-  //       merchant.id === id
-  //         ? {
-  //             ...merchant,
-  //             status: merchant.status === "Enabled" ? "Disabled" : "Enabled",
-  //           }
-  //         : merchant,
-  //     ),
-  //   );
-  // };
+  const toggleStatus = (id: number) => {
+    setAllMerchants((prevMerchants) =>
+      prevMerchants.map((merchant) =>
+        merchant.id === id
+          ? { ...merchant, disabled: !merchant.disabled }
+          : merchant,
+      ),
+    );
+  };
 
-  // const updateProvider = (id: string, provider: string) => {
-  //   setMerchants((prevMerchants) =>
-  //     prevMerchants.map((merchant) =>
-  //       merchant.id === id ? { ...merchant, providers: provider } : merchant,
-  //     ),
-  //   );
-  // };
+
+  const openMerchantCongigBar = () => {
+    console.log("openMerchantCongigBar");
+    setMerchantConfigBarOpen(!merchantCongfigBarOpen);
+  };
 
   // const items = [
   //   { value: "apple", label: "Apple" },
@@ -109,7 +106,14 @@ const Merchants = () => {
   // ];
 
   const renderRow = (merchant: Merchant, index: number) => (
-    <MerchantRows key={merchant.id} merchant={merchant} />
+    <MerchantRows
+      key={merchant.id}
+      merchant={merchant}
+      updateProvider={updateProvider}
+      updateStore={updateStore}
+      toggleStatus={toggleStatus}
+      merchantConfigurationBarToggler={openMerchantCongigBar}
+    />
   );
 
   const totalPages = Math.ceil(allMerchants.length / limit);
@@ -126,6 +130,22 @@ const Merchants = () => {
   const handleLimitChange = (newLimit: number) => {
     setLimit(newLimit);
     setCurrentPage(1);
+  };
+
+  const updateProvider = (id: number, merchant: string) => {
+    setAllMerchants((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === id ? { ...user, merchant: merchant } : user,
+      ),
+    );
+  };
+
+  const updateStore = (id: number, store: string) => {
+    setAllMerchants((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === id ? { ...user, merchant: store } : user,
+      ),
+    );
   };
 
   return (
@@ -155,6 +175,8 @@ const Merchants = () => {
           onPageChange={handlePageChange}
         />
       </div>
+
+      {merchantCongfigBarOpen && <MerchantConfigurationBar isOpen={merchantCongfigBarOpen} handleConfigBarIsOpen={openMerchantCongigBar}/>}
     </div>
   );
 };

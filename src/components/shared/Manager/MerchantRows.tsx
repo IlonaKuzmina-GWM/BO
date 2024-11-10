@@ -5,9 +5,11 @@ import { Merchant } from "@/types/merchant";
 
 interface IMerchantRowProps {
   merchant: Merchant;
-  toggleStatus?: (id: string) => void;
+  toggleStatus: (id: number) => void;
   providers?: { value: string; label: string }[];
-  updateProvider?: (id: string, provider: string) => void;
+  updateProvider: (id: number, provider: string) => void;
+  updateStore: (id: number, provider: string) => void;
+  merchantConfigurationBarToggler: (id: number) => void;
 }
 
 const MerchantRows = ({
@@ -15,51 +17,81 @@ const MerchantRows = ({
   toggleStatus,
   providers,
   updateProvider,
+  updateStore,
+  merchantConfigurationBarToggler,
 }: IMerchantRowProps) => {
   const statusClass = merchant.disabled
     ? "text-success bg-successBg"
     : "text-error bg-errorBg";
 
-  // const setSelectedValues = (selectedValue: string) => {
-  //   updateProvider(merchant.id, selectedValue);
-  // };
+  const setSelectedProviderValues = (selectedValue: string) => {
+    updateProvider && updateProvider(merchant.id, selectedValue);
+  };
+
+  const setSelectedStoreValues = (selectedValue: string) => {
+    updateStore && updateStore(merchant.store.id, selectedValue);
+  };
+
+  const openMerchantCongigBar = () => {
+    merchantConfigurationBarToggler &&
+      merchantConfigurationBarToggler(merchant.id);
+  };
 
   return (
     <>
-      <td className="pl-3 pr-2 lg:pl-8">{merchant.id}</td>
-      <td className="pr-2">{merchant.name}</td>
-      <td className="pr-2">kaut kāds selects</td>
-      <td className="pr-2">{merchant.label}</td>
-      <td className="pr-2">
-        <a href={merchant.host} target="_blanc">
-          {merchant.host}
+      <td className="border-e border-hoverBg pl-3 pr-2 lg:pl-8">
+        {merchant.id}
+      </td>
+      <td
+        className="border-e border-hoverBg px-2 cursor-pointer"
+        onClick={openMerchantCongigBar}
+      >
+        {merchant.name}
+      </td>
+      <td className="border-e border-hoverBg p-2">
+        <TableRowSelect
+          value={""}
+          label={"All Merchants"}
+          items={[]}
+          searchInput
+          onSelectHandler={setSelectedStoreValues}
+        />
+      </td>
+      <td className="border-e border-hoverBg px-2">{merchant.label}</td>
+      <td className="border-e border-hoverBg px-2">
+        <a
+          href={`https://${merchant.host}`}
+          target="_blank"
+          className="text-blue500"
+        >
+          @{merchant.host}
         </a>
       </td>
-      <td className="border-x border-hoverBg text-center">
+      <td className="border-e border-hoverBg px-2 text-center">
         {merchant.settlementedAmount}
       </td>
-      <td className="flex border-x border-hoverBg p-2">
-        {/* <TableRowSelect
-          value={merchant.}
+      <td className="flex border-e border-hoverBg p-2">
+        <TableRowSelect
+          value={""}
           label={"All Providers"}
-          items={providers}
+          items={[]}
           searchInput
-          onSelectHandler={setSelectedValues}
-        /> */}
+          onSelectHandler={setSelectedProviderValues}
+        />
       </td>
 
       <td className="px-2">
         <div
           className={`flex justify-center rounded-[4px] px-[4px] py-[8px] ${statusClass}`}
         >
-          {merchant.disabled}
+          {merchant.disabled ? "Enable" : "Disable"}
         </div>
       </td>
-      <td className="pr-3 text-[--error] lg:pr-8">
+      <td className="px-2 text-[--error] lg:pr-8">
         <Switcher
           id={`switcher-${merchant.id}`}
           checked={merchant.disabled}
-          onChange={() => {}}
+          onChange={() => toggleStatus(merchant.id)}
         />
       </td>
     </>

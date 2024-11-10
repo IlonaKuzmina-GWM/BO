@@ -1,12 +1,15 @@
-import type { Merchant } from '~/types/merchant';
-import type { Provider } from '~/types/provider';
+import type { Merchant } from './merchant';
+import type { Provider } from './provider';
+import type { Webhook } from './webhook';
 
-export type InitialRequestData = {
-	firstName: string;
-	lastName: string;
-	email: string;
-	store: string;
-}
+// export type InitialRequestData = {
+// 	firstName: string;
+// 	lastName: string;
+// 	email: string;
+// 	store: string;
+// 	merchantId: string;
+// 	countryCode: string;
+// }
 
 export type Transaction<T = InitialRequestData> = {
 	id: number;
@@ -22,4 +25,12 @@ export type Transaction<T = InitialRequestData> = {
 	initialRequest: T;
 	merchant: Merchant;
 	webhooks: Webhook[];
+	firstName: string;
+	lastName: string;
+	email: string;
+	store: string;
+	merchantId: string;
+	countryCode: string;
+	webhookUrl: string | null;
+	returnUrl: string | null;
 }

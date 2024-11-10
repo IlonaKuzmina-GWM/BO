@@ -14,4 +14,8 @@ export type singleTransactionData = {
     createdAt: Date;
     updatedAt: Date;
     webhooks: Webhook[];
+    countryCode: string;
+    providerName: string;
+    merchantName: string;
+    sandbox?: boolean;
 }

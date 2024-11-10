@@ -87,6 +87,9 @@ const config = {
       backgroundImage: {
         auth_bg: "url('/images/auth-bg.webp')",
       },
+      boxShadow: {
+        "3xl": "13px 16px 12px 0px rgba(0, 0, 0, 0.04)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("tailwindcss-animated")],

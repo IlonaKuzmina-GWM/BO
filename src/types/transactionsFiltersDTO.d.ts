@@ -1,6 +1,7 @@
 export type txFilters = {
     userId: number | undefined;
     searchInput: null | string;
+    countryCode: null | string;
 	amountSort: boolean | number;
     createdSort: boolean | number;
     updatedSort: boolean | number;
@@ -11,4 +12,7 @@ export type txFilters = {
     paginationPerPage: number;
     merchIds: Array[];
     providerIds: Array[];
+    currency: Array[];
+    txList: Array[];
+    paymentIds: Array[];
 }

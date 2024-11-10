@@ -10,7 +10,7 @@ import SimpleBarChart from "@/components/shared/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/Charts/VerticalComposedChart";
 import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
 import DashSideTable from "@/components/shared/Transactions/DashSideTable";
-import { DashTableData, Siin, Transaction } from "@/types";
+import { DashTableData } from "@/types";
 import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
 
 import { useRouter } from "next/navigation";

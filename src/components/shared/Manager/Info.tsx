@@ -1,10 +1,7 @@
-"use client";
-
 import Input from "@/components/UI/Input";
 import { InputField } from "@/types";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import DashSelect from "../DashSelect";
-import { Merchant, MerchantList } from "@/types/merchant";
 import DashSelectValueNumber from "../DashSelectValueNumber";
 
 interface InfoProps {
@@ -14,8 +11,7 @@ interface InfoProps {
   handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   validationErrors: string[];
   onMerchantChange?: (selectedValues: number[]) => void;
-  merchantsList?: Merchant[];
-  selectedMerchants?: number[];
+  merchants?: { merchant_id: number; merchant_name: string }[];
 }
 
 const Info = ({
@@ -25,8 +21,7 @@ const Info = ({
   handleInputChange,
   onMerchantChange = () => {},
   validationErrors,
-  merchantsList = [],
-  selectedMerchants  = [],
+  merchants = [],
 }: InfoProps) => {
   return (
     <div className="mt-[20px]">
@@ -39,34 +34,19 @@ const Info = ({
                 {field.label}
               </label>
               <DashSelectValueNumber
-                value={selectedMerchants}
-                label={"Select Merchants"}
-                items={merchantsList.map((merchant) => ({
-                  value: merchant.id,
-                  label: merchant.label,
-                }))}
-                searchInput
-                searchContext="merchant"
-                onSelectHandler={onMerchantChange}
-                width="full"
-                isMulti
-                isInvalid={validationErrors.includes(field.name)}
-              />
-
-              {/* <DashSelect
                 value={[]}
                 label={"All Merchants"}
-                items={merchantsList.map((merchant) => ({
-                  value: merchant.merchant_id.toString(),
+                items={merchants.map((merchant) => ({
+                  value: merchant.merchant_id,
                   label: merchant.merchant_name,
                 }))}
                 searchInput
                 searchContext="merchant"
+                isMulti
                 onSelectHandler={onMerchantChange}
                 width="full"
-                isMulti
                 isInvalid={validationErrors.includes(field.name)}
-              /> */}
+              />
             </>
           ) : (
             <Input

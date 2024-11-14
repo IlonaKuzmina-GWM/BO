@@ -1,25 +1,12 @@
-"use client";
-
 import Spinner from "@/components/UI/Spinner";
 import { InputField } from "@/types";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import DashButton from "../DashButton";
 import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
 import Info from "./Info";
 import SelectAccount from "./SelectAccount";
-import { Merchant, MerchantList } from "@/types/merchant";
-import { useStore } from "@/stores/StoreProvider";
 
 const Create = () => {
-  const { alertStore } = useStore();
-  const [loading, setLoading] = useState(true);
-
-  const [merchantsList, setMerchantsList] = useState<Merchant[]>([]);
-  const [selectedMerchants, setSelectedMerchants] = useState<number[]>([]);
-
-  const [submitted, setSubmitted] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<string[]>([]);
-
   const [formData, setFormData] = useState({
     selectedAccount: "merchant",
     name: "",
@@ -30,38 +17,13 @@ const Create = () => {
     lastName: "",
     password: "",
     merchants: "",
-    settlementFee: "3.00",
-    settlementFixingFee: "0.8",
+    settlementFee: "",
+    settlementFixingFee: "",
   });
+  const [submitted, setSubmitted] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  const fetchFiltersData = async () => {
-    try {
-      const response = await fetch("/api/get-filters", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const res = await response.json();
-
-        // console.log("filterss data", res);
-
-        setMerchantsList(res.merchants);
-      } else {
-        alertStore.setAlert("warning", "Get filters response failed.");
-      }
-    } catch (error) {
-      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchFiltersData();
-  }, []);
+  const [selectedMerchants, setSelectedMerchants] = useState<number[]>([]);
 
   const handleAccountChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -147,10 +109,6 @@ const Create = () => {
     }));
   };
 
-  const handleMerchantSelect = (merchants: number[]) => {
-    setSelectedMerchants(merchants);
-  };
-
   const accountTypes = ["merchant", "support", "manager", "user", "agent"];
 
   const submitName = submitted ? "Account created" : "Create new account";
@@ -219,13 +177,17 @@ const Create = () => {
     },
   ];
 
-  // const merchants = [
-  //   { value: "apple", label: "Apple" },
-  //   { value: "banana", label: "Banana" },
-  //   { value: "blueberry", label: "Blueberry" },
-  //   { value: "grapes", label: "Grapes" },
-  //   { value: "pineapple", label: "Pineapple" },
-  // ];
+  const handleMerchantSelect = (merchants: number[]) => {
+    setSelectedMerchants(merchants);
+  };
+
+  const merchants = [
+    { merchant_id: 1, merchant_name: "Apple" },
+    { merchant_id: 2, merchant_name: "Banana" },
+    { merchant_id: 3, merchant_name: "Blueberry" },
+    { merchant_id: 4, merchant_name: "Grapes" },
+    { merchant_id: 5, merchant_name: "Pineapple" },
+  ];
 
   return (
     <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white">
@@ -252,8 +214,7 @@ const Create = () => {
                 title="General Information"
                 inputFields={agentGeneralInfoInputFields}
                 formData={formData}
-                merchantsList={merchantsList}
-                selectedMerchants={selectedMerchants}
+                merchants={merchants}
                 onMerchantChange={handleMerchantSelect}
                 handleInputChange={handleInputChange}
                 validationErrors={validationErrors}
@@ -270,7 +231,6 @@ const Create = () => {
                 validationErrors={validationErrors}
               />
             )}
-
             <div>
               {formData.selectedAccount !== "user" && (
                 <Info

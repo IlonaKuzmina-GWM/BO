@@ -23,7 +23,7 @@ const RowComponent = ({
     <div className="mb-[16px] flex gap-[16px]">
       <div className="flex w-[212px] flex-col gap-[8px]">
         <label className="block text-[14px] text-main">{selectLabel}</label>
-        <TableRowSelect
+        {/* <TableRowSelect
           value={value}
           label={label}
           items={items}
@@ -31,7 +31,7 @@ const RowComponent = ({
           onSelectHandler={(selectedValue) =>
             onSelectHandler(field, [selectedValue])
           }
-        />
+        /> */}
       </div>
       <div className="w-[286px] self-end text-[12px] text-secondary">
         {description}

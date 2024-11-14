@@ -1,6 +1,9 @@
+'use client'
+
 import TableRowSelect from "@/components/UI/TableRowSelect";
 import { formatDateTime } from "@/helpers/dateFormater";
 import { User } from "@/types/user";
+import { useState } from "react";
 
 interface MerchantList {
   merchant_id: number;
@@ -14,6 +17,8 @@ interface IUserRowProps {
 }
 
 const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
+  const [selectedMerchant, setSelectedMerchant] = useState<number>(user.merchant.id);
+
   const getSuccessAndErrorClass = (is: boolean) => {
     return is === false ? "text-success bg-successBg" : "text-error bg-errorBg";
   };
@@ -66,7 +71,7 @@ const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
       </td>
       <td className="flex border-x border-hoverBg p-2 text-center">
         <TableRowSelect
-          value={user.merchant}
+          value={selectedMerchant}
           label={"All Merchants"}
           items={merchantsList.map((merchant) => ({
             value: merchant.merchant_id,

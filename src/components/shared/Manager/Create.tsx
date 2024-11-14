@@ -1,12 +1,25 @@
+"use client";
+
 import Spinner from "@/components/UI/Spinner";
 import { InputField } from "@/types";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import DashButton from "../DashButton";
 import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
 import Info from "./Info";
 import SelectAccount from "./SelectAccount";
+import { Merchant, MerchantList } from "@/types/merchant";
+import { useStore } from "@/stores/StoreProvider";
 
 const Create = () => {
+  const { alertStore } = useStore();
+  const [loading, setLoading] = useState(true);
+
+  const [merchantsList, setMerchantsList] = useState<Merchant[]>([]);
+  const [selectedMerchants, setSelectedMerchants] = useState<number[]>([]);
+
+  const [submitted, setSubmitted] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
   const [formData, setFormData] = useState({
     selectedAccount: "merchant",
     name: "",
@@ -17,11 +30,38 @@ const Create = () => {
     lastName: "",
     password: "",
     merchants: "",
-    settlementFee: "",
-    settlementFixingFee: "",
+    settlementFee: "3.00",
+    settlementFixingFee: "0.8",
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  const fetchFiltersData = async () => {
+    try {
+      const response = await fetch("/api/get-filters", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        // console.log("filterss data", res);
+
+        setMerchantsList(res.merchants);
+      } else {
+        alertStore.setAlert("warning", "Get filters response failed.");
+      }
+    } catch (error) {
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFiltersData();
+  }, []);
 
   const handleAccountChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -107,6 +147,10 @@ const Create = () => {
     }));
   };
 
+  const handleMerchantSelect = (merchants: number[]) => {
+    setSelectedMerchants(merchants);
+  };
+
   const accountTypes = ["merchant", "support", "manager", "user", "agent"];
 
   const submitName = submitted ? "Account created" : "Create new account";
@@ -175,13 +219,13 @@ const Create = () => {
     },
   ];
 
-  const merchants = [
-    { value: "apple", label: "Apple" },
-    { value: "banana", label: "Banana" },
-    { value: "blueberry", label: "Blueberry" },
-    { value: "grapes", label: "Grapes" },
-    { value: "pineapple", label: "Pineapple" },
-  ];
+  // const merchants = [
+  //   { value: "apple", label: "Apple" },
+  //   { value: "banana", label: "Banana" },
+  //   { value: "blueberry", label: "Blueberry" },
+  //   { value: "grapes", label: "Grapes" },
+  //   { value: "pineapple", label: "Pineapple" },
+  // ];
 
   return (
     <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white">
@@ -208,8 +252,9 @@ const Create = () => {
                 title="General Information"
                 inputFields={agentGeneralInfoInputFields}
                 formData={formData}
-                merchants={merchants}
-                onMerchantChange={setManager}
+                merchantsList={merchantsList}
+                selectedMerchants={selectedMerchants}
+                onMerchantChange={handleMerchantSelect}
                 handleInputChange={handleInputChange}
                 validationErrors={validationErrors}
               />
@@ -225,14 +270,18 @@ const Create = () => {
                 validationErrors={validationErrors}
               />
             )}
+
             <div>
-              <Info
-                title="Fees information"
-                inputFields={feesInputFields}
-                formData={formData}
-                handleInputChange={handleInputChange}
-                validationErrors={validationErrors}
-              />
+              {formData.selectedAccount !== "user" && (
+                <Info
+                  title="Fees information"
+                  inputFields={feesInputFields}
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  validationErrors={validationErrors}
+                />
+              )}
+
               <div className="mt-[41px] flex flex-row self-end">
                 <DashButton
                   name={submitName}

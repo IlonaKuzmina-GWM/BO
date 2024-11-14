@@ -46,3 +46,8 @@ export type MerchantStats = {
   totalAcceptedAmount: string;
   totalTransferringAmount: string;
 };
+
+export type MerchantList = {
+  merchant_id: number;
+  merchant_name: string;
+};

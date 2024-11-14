@@ -12,11 +12,9 @@ import LoadingAllUsersSkeleton from "../LoadingUI/LoadingAllUsersSkeleton";
 import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
 import { observable } from "mobx";
+import { MerchantList } from "@/types/merchant";
 
-interface MerchantList {
-  merchant_id: number;
-  merchant_name: string;
-}
+
 
 const AllUser = () => {
   const { alertStore } = useStore();

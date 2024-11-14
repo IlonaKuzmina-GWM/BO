@@ -95,7 +95,7 @@ const TableRowSelect = ({
           {searchInput && (
             <Search placeholder="Search" onSearch={handleSearch} />
           )}
-          <div className="max-h-60 overflow-y-auto">
+          <div className="dash_select-options max-h-60 overflow-y-auto">
             {filteredItems.map((item) => (
               <div
                 key={item.value}

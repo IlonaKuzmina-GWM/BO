@@ -1,25 +1,19 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Switcher from "@/components/UI/Switcher";
 import TableRowSelect from "@/components/UI/TableRowSelect";
-import { Merchant } from "@/types/merchant";
-
-interface MerchantList {
-  merchant_id: number;
-  merchant_name: string;
-}
-
-interface ProviderList {
-  provider_id: number;
-  provider_name: string;
-}
+import { Merchant, MerchantList } from "@/types/merchant";
+import { ProviderList } from "@/types/provider";
+import { Store } from "@/types/store";
 
 interface IMerchantRowProps {
   merchant: Merchant;
   toggleStatus: (id: number) => void;
   providersList: ProviderList[];
-  merchantsList: MerchantList[];
+  storesList: Store[];
   updateProvider: (id: number, provider: number) => void;
-  updateStore: (id: number, provider: number) => void;
+  updateStore: (id: number, store: number) => void;
   merchantConfigurationBarToggler: (id: number) => void;
 }
 
@@ -27,11 +21,13 @@ const MerchantRows = ({
   merchant,
   toggleStatus,
   providersList,
-  merchantsList,
+  storesList,
   updateProvider,
   updateStore,
   merchantConfigurationBarToggler,
 }: IMerchantRowProps) => {
+  const [selectedStore, setSelectedStore] = useState<number>(merchant.store.id);
+
   const statusClass = merchant.disabled
     ? "text-success bg-successBg"
     : "text-error bg-errorBg";
@@ -62,9 +58,12 @@ const MerchantRows = ({
       </td>
       <td className="border-e border-hoverBg p-2">
         <TableRowSelect
-          value={0}
+          value={selectedStore}
           label={"All Stores"}
-          items={[]}
+          items={storesList.map((store) => ({
+            value: store.id,
+            label: store.name,
+          }))}
           searchInput
           onSelectHandler={setSelectedStoreValues}
         />

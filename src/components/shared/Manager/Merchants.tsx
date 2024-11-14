@@ -11,17 +11,8 @@ import MerchantRows from "./MerchantRows";
 import { useStore } from "@/stores/StoreProvider";
 import { Merchant } from "@/types/merchant";
 import MerchantConfigurationBar from "../MerchantConfigurationBar/MerchantConfigurationBar";
-
-
-interface MerchantList {
-  merchant_id: number;
-  merchant_name: string;
-}
-
-interface ProviderList {
-  provider_id: number;
-  provider_name: string;
-}
+import { ProviderList } from "@/types/provider";
+import { Store } from "@/types/store";
 
 const Merchants = () => {
   const { alertStore, authStore } = useStore();
@@ -30,7 +21,7 @@ const Merchants = () => {
   const [allMerchants, setAllMerchants] = useState<Merchant[]>([]);
   const [merchantCongfigBarOpen, setMerchantConfigBarOpen] = useState(false);
 
-  const [merchantsList, setMerchantsList] = useState<MerchantList[]>([]);
+  const [storesList, setStoresList] = useState<Store[]>([]);
   const [providersList, setProvidersList] = useState<ProviderList[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,9 +94,6 @@ const Merchants = () => {
       if (response.ok) {
         const res = await response.json();
 
-        console.log("filterss data", res);
-
-        setMerchantsList(res.merchants);
         setProvidersList(res.providers);
       } else {
         alertStore.setAlert("warning", "Get filters response failed.");
@@ -117,9 +105,35 @@ const Merchants = () => {
     }
   };
 
+  const fetchStoresListData = async () => {
+    try {
+      const response = await fetch("/api/get-stores", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        console.log("res", res);
+
+        setStoresList(res);
+      } else {
+        alertStore.setAlert("warning", "Get store response failed.");
+      }
+    } catch (error) {
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAllMerchantsData();
     fetchFiltersData();
+    fetchStoresListData();
   }, []);
 
   const toggleStatus = (id: number) => {
@@ -132,19 +146,10 @@ const Merchants = () => {
     );
   };
 
-
   const openMerchantCongigBar = () => {
     console.log("openMerchantCongigBar");
     setMerchantConfigBarOpen(!merchantCongfigBarOpen);
   };
-
-  // const items = [
-  //   { value: "apple", label: "Apple" },
-  //   { value: "banana", label: "Banana" },
-  //   { value: "blueberry", label: "Blueberry" },
-  //   { value: "grapes", label: "Grapes" },
-  //   { value: "pineapple", label: "Pineapple" },
-  // ];
 
   const renderRow = (merchant: Merchant) => (
     <MerchantRows
@@ -154,7 +159,7 @@ const Merchants = () => {
       updateStore={updateStore}
       toggleStatus={toggleStatus}
       merchantConfigurationBarToggler={openMerchantCongigBar}
-      merchantsList={merchantsList}
+      storesList={storesList}
       providersList={providersList}
     />
   );
@@ -219,7 +224,12 @@ const Merchants = () => {
         />
       </div>
 
-      {merchantCongfigBarOpen && <MerchantConfigurationBar isOpen={merchantCongfigBarOpen} handleConfigBarIsOpen={openMerchantCongigBar}/>}
+      {merchantCongfigBarOpen && (
+        <MerchantConfigurationBar
+          isOpen={merchantCongfigBarOpen}
+          handleConfigBarIsOpen={openMerchantCongigBar}
+        />
+      )}
     </div>
   );
 };

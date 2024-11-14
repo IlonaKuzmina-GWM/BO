@@ -2,13 +2,10 @@
 
 import TableRowSelect from "@/components/UI/TableRowSelect";
 import { formatDateTime } from "@/helpers/dateFormater";
+import { MerchantList } from "@/types/merchant";
 import { User } from "@/types/user";
 import { useState } from "react";
 
-interface MerchantList {
-  merchant_id: number;
-  merchant_name: string;
-}
 
 interface IUserRowProps {
   user: User;

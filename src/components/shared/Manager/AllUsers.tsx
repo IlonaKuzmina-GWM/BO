@@ -13,6 +13,11 @@ import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
 import { observable } from "mobx";
 
+interface MerchantList {
+  merchant_id: number;
+  merchant_name: string;
+}
+
 const AllUser = () => {
   const { alertStore } = useStore();
   const [loading, setLoading] = useState(true);
@@ -20,6 +25,8 @@ const AllUser = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
+
+  const [merchantsList, setMerchantsList] = useState<MerchantList[]>([]);
 
   const fetchAllUsersData = async () => {
     try {
@@ -45,51 +52,45 @@ const AllUser = () => {
     }
   };
 
-  // const fetchAllMerchantsData = async () => {
-  //   try {
-  //     const response = await fetch("/api/post-merchants", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ search: "" }),
-  //     });
+  const fetchMerchantsListData = async () => {
+    try {
+      const response = await fetch("/api/get-filters", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  //     if (response.ok) {
-  //       const res = await response.json();
+      if (response.ok) {
+        const res = await response.json();
 
-  //       console.log("all merchants data", res);
-  //     } else {
-  //        alertStore.setAlert("warning", "All merchants feching failed.");
-  //     }
-  //   } catch (error) {
-  //     alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+        setMerchantsList(res.merchants);
+      } else {
+        alertStore.setAlert("warning", "Get filters response failed.");
+      }
+    } catch (error) {
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchAllUsersData();
-    // fetchAllMerchantsData();
+    fetchMerchantsListData();
   }, []);
 
-  const merchants = [
-    { value: "Merchant", label: "Merchant" },
-    { value: "cogito", label: "Cogito" },
-    { value: "testMerchant", label: "Test Merchant" },
-  ];
 
-  const renderRow = (user: User, index: number) => (
+  const renderRow = (user: User) => (
     <UserRows
       key={user.id}
       user={user}
-      merchants={merchants}
-      updateProvider={updateMerchant}
+      updateMerchant={updateMerchant}
+      merchantsList={merchantsList}
     />
   );
 
-  const updateMerchant = (id: number, merchant: string) => {
+  const updateMerchant = (id: number, merchant: number) => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === id ? { ...user, merchant: merchant } : user,

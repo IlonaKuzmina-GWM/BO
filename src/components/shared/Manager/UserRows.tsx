@@ -2,19 +2,24 @@ import TableRowSelect from "@/components/UI/TableRowSelect";
 import { formatDateTime } from "@/helpers/dateFormater";
 import { User } from "@/types/user";
 
-interface IUserRowProps {
-  user: User;
-  merchants: { value: string; label: string }[];
-  updateProvider: (id: number, provider: string) => void;
+interface MerchantList {
+  merchant_id: number;
+  merchant_name: string;
 }
 
-const UserRows = ({ user, merchants, updateProvider }: IUserRowProps) => {
+interface IUserRowProps {
+  user: User;
+  merchantsList: MerchantList[];
+  updateMerchant: (id: number, merchant: number) => void;
+}
+
+const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
   const getSuccessAndErrorClass = (is: boolean) => {
     return is === false ? "text-success bg-successBg" : "text-error bg-errorBg";
   };
 
-  const setSelectedValues = (selectedValue: string) => {
-    updateProvider(user.id, selectedValue);
+  const setSelectedValues = (selectedValue: number) => {
+    updateMerchant(user.id, selectedValue);
   };
 
   // const handleMerchantSelect = async (key: number, changedUserId: number) => {
@@ -63,7 +68,10 @@ const UserRows = ({ user, merchants, updateProvider }: IUserRowProps) => {
         <TableRowSelect
           value={user.merchant}
           label={"All Merchants"}
-          items={merchants}
+          items={merchantsList.map((merchant) => ({
+            value: merchant.merchant_id,
+            label: merchant.merchant_name,
+          }))}
           searchInput
           onSelectHandler={setSelectedValues}
         />

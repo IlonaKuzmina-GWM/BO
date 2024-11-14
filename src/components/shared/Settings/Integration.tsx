@@ -4,7 +4,7 @@ import CustomTable from "../CustomTable/CustomTable";
 import Dashbutton from "../DashButton";
 import Paragraph from "../Paragraph";
 import IntegrationRows from "./IntegrationRows";
-import PaginationComponent from "../PaginationComponent ";
+import PaginationComponent from "../PaginationComponent";
 import { SettingsIntegrationTableHeader } from "@/utils/tableHeaders";
 
 const Integration = () => {

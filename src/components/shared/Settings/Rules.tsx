@@ -6,7 +6,7 @@ import CustomTable from "../CustomTable/CustomTable";
 import Modal from "../Modal";
 import RuleRows from "./RuleRows";
 import { Rule } from "@/types";
-import PaginationComponent from "../PaginationComponent ";
+import PaginationComponent from "../PaginationComponent";
 import { SettingsRulesTableHeaader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
 import CreateNewRule from "./CreateNewRule";
@@ -67,7 +67,7 @@ const Rules = () => {
   const totalPages = Math.ceil(rules.length / 10);
 
   return (
-    <div className="bg-white rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] pt-[20px]">
+    <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white pt-[20px]">
       <div className="bg-white">
         <div className="pb-[16px] pl-[20px]">
           <Paragraph text="Limits with Flexible Rules and Actions" />

@@ -25,7 +25,7 @@ const CustomTable = <T,>({
   loadingSkeleton,
 }: ICustomTableProps<T>) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="">
       <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
         <thead className="h-[50px] bg-hoverBg font-semibold">
           <tr>

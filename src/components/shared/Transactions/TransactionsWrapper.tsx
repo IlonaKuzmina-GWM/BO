@@ -8,7 +8,7 @@ import DatePickerWithRange from "../DatePickerWithRange";
 
 import { TransactionsTableHeader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
-import PaginationComponent from "../PaginationComponent ";
+import PaginationComponent from "../PaginationComponent";
 import CustomTransactionTable from "./CustomTransactionTable";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
@@ -21,16 +21,18 @@ import StatusFilteringBadgeWrapper from "../StatusFilter/StatusFilteringBadgeWra
 import { ROLES } from "@/constants/roles";
 import Alert from "@/components/UI/Alert";
 import { Transaction } from "@/types/transaction";
+import { MerchantList } from "@/types/merchant";
+import { ProviderList } from "@/types/provider";
 
-interface Merchant {
-  merchant_id: number;
-  merchant_name: string;
-}
+// interface Merchant {
+//   merchant_id: number;
+//   merchant_name: string;
+// }
 
-interface Provider {
-  provider_id: number;
-  provider_name: string;
-}
+// interface Provider {
+//   provider_id: number;
+//   provider_name: string;
+// }
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
@@ -64,8 +66,8 @@ const TransactionsWrapper = observer(() => {
 
   const [statusList, setStatusList] = useState<{}>({});
 
-  const [merchantsList, setMerchantsList] = useState<Merchant[]>([]);
-  const [providersList, setProvidersList] = useState<Provider[]>([]);
+  const [merchantsList, setMerchantsList] = useState<MerchantList[]>([]);
+  const [providersList, setProvidersList] = useState<ProviderList[]>([]);
 
   const [selectedMerchants, setSelectedMerchants] = useState<number[]>([]);
   const [selectedProviders, setSelectedProviders] = useState<number[]>([]);

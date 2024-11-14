@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import CustomTable from "../CustomTable/CustomTable";
 import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
-import PaginationComponent from "../PaginationComponent ";
+
 import DataLimitsSeter from "../DataLimitsSeter";
 import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
 import LoadingAllUsersSkeleton from "../LoadingUI/LoadingAllUsersSkeleton";
@@ -13,8 +13,7 @@ import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
 import { observable } from "mobx";
 import { MerchantList } from "@/types/merchant";
-
-
+import PaginationComponent from "../PaginationComponent";
 
 const AllUser = () => {
   const { alertStore } = useStore();
@@ -76,8 +75,8 @@ const AllUser = () => {
   useEffect(() => {
     fetchAllUsersData();
     fetchMerchantsListData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const renderRow = (user: User) => (
     <UserRows
@@ -96,7 +95,7 @@ const AllUser = () => {
     );
   };
 
-  const totalPages = Math.ceil(users.length / limit);
+  const totalPages = limit > 0 ? Math.ceil(users.length / limit) : 1;
 
   const paginatedUsers = users.slice(
     (currentPage - 1) * limit,
@@ -108,8 +107,12 @@ const AllUser = () => {
   };
 
   const handleLimitChange = (newLimit: number) => {
-    setLimit(newLimit);
-    setCurrentPage(1);
+    if (newLimit > 0) {
+      setLimit(newLimit);
+      setCurrentPage(1);
+    } else {
+      alertStore.setAlert("warning", "Limit must be greater than zero.");
+    }
   };
 
   return (

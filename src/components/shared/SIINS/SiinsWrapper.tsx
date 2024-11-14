@@ -6,7 +6,7 @@ import Search from "../Search";
 import DatePickerWithRange from "../DatePickerWithRange";
 import DashButton from "../DashButton";
 import { DateRange } from "react-day-picker";
-import PaginationComponent from "../PaginationComponent ";
+import PaginationComponent from "../PaginationComponent";
 
 import CustomSiinsTable from "./CustomSiinsTable";
 import DataLimitsSeter from "../DataLimitsSeter";
@@ -77,7 +77,7 @@ const SiinsWrapper = observer(() => {
         setSiinsTransactions(res.response.siins);
         setTotalPages(res.response.totalPages);
 
-        console.log("Siins response", res.response.siins)
+        console.log("Siins response", res.response.siins);
       } else {
         // console.log("Siins response failed");
       }

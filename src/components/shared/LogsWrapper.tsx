@@ -11,7 +11,7 @@ import DashIntervalSelect from "./DashIntervalSelect";
 import DataLimitsSeter from "./DataLimitsSeter";
 import DatePickerWithRange from "./DatePickerWithRange";
 import { LoadingSpiner } from "./LoadingUI/LoadingSpiner";
-import PaginationComponent from "./PaginationComponent ";
+import PaginationComponent from "./PaginationComponent";
 import Search from "./Search";
 
 const LogsWrapper = () => {
@@ -78,7 +78,7 @@ const LogsWrapper = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchQuery(inputSearchQueryValue);
-    }, 1000); 
+    }, 1000);
 
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);

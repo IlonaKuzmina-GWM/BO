@@ -128,7 +128,7 @@ const DashSelectValueNumber = ({
           )}
           <div className="dash_select-options max-h-60 overflow-y-auto">
             <div
-              className="cursor-pointer px-3 py-2 text-sm font-semibold hover:bg-divider"
+              className="cursor-pointer px-3 py-2 text-sm font-semibold hover:bg-divider text-start"
               onClick={clearSelection}
             >
               {label}
@@ -147,7 +147,7 @@ const DashSelectValueNumber = ({
                   {selectedValues.includes(item.value) && (
                     <Check className="text-accent-foreground h-4 w-4" />
                   )}
-                  <span className="ml-2 text-[14px]">{item.label}</span>
+                  <span className="ml-2 text-[14px] text-start">{item.label}</span>
                 </div>
               </div>
             ))}

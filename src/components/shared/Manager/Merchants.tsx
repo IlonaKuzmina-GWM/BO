@@ -4,7 +4,7 @@ import { ManagerMerchantsTableHeader } from "@/utils/tableHeaders";
 import { useEffect, useState } from "react";
 import CustomTable from "../CustomTable/CustomTable";
 import DataLimitsSeter from "../DataLimitsSeter";
-import PaginationComponent from "../PaginationComponent ";
+import PaginationComponent from "../PaginationComponent";
 import Paragraph from "../Paragraph";
 import Search from "../Search";
 import MerchantRows from "./MerchantRows";

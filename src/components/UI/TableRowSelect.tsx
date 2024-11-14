@@ -78,7 +78,8 @@ const TableRowSelect = ({
         className="shadowed relative w-full rounded-sm border border-divider p-2 text-start text-sm text-main"
       >
         {selectedValue
-          ? items.find((item) => item.value === selectedValue)?.label
+          ? items.find((item) => item.value === selectedValue)?.label ||
+            "No data"
           : label}
 
         {isOpen ? (

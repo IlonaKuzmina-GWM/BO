@@ -12,12 +12,26 @@ import { useStore } from "@/stores/StoreProvider";
 import { Merchant } from "@/types/merchant";
 import MerchantConfigurationBar from "../MerchantConfigurationBar/MerchantConfigurationBar";
 
+
+interface MerchantList {
+  merchant_id: number;
+  merchant_name: string;
+}
+
+interface ProviderList {
+  provider_id: number;
+  provider_name: string;
+}
+
 const Merchants = () => {
   const { alertStore, authStore } = useStore();
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [allMerchants, setAllMerchants] = useState<Merchant[]>([]);
   const [merchantCongfigBarOpen, setMerchantConfigBarOpen] = useState(false);
+
+  const [merchantsList, setMerchantsList] = useState<MerchantList[]>([]);
+  const [providersList, setProvidersList] = useState<ProviderList[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
@@ -77,8 +91,35 @@ const Merchants = () => {
     }
   };
 
+  const fetchFiltersData = async () => {
+    try {
+      const response = await fetch("/api/get-filters", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+
+        console.log("filterss data", res);
+
+        setMerchantsList(res.merchants);
+        setProvidersList(res.providers);
+      } else {
+        alertStore.setAlert("warning", "Get filters response failed.");
+      }
+    } catch (error) {
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAllMerchantsData();
+    fetchFiltersData();
   }, []);
 
   const toggleStatus = (id: number) => {
@@ -105,7 +146,7 @@ const Merchants = () => {
   //   { value: "pineapple", label: "Pineapple" },
   // ];
 
-  const renderRow = (merchant: Merchant, index: number) => (
+  const renderRow = (merchant: Merchant) => (
     <MerchantRows
       key={merchant.id}
       merchant={merchant}
@@ -113,6 +154,8 @@ const Merchants = () => {
       updateStore={updateStore}
       toggleStatus={toggleStatus}
       merchantConfigurationBarToggler={openMerchantCongigBar}
+      merchantsList={merchantsList}
+      providersList={providersList}
     />
   );
 
@@ -132,7 +175,7 @@ const Merchants = () => {
     setCurrentPage(1);
   };
 
-  const updateProvider = (id: number, merchant: string) => {
+  const updateProvider = (id: number, merchant: number) => {
     setAllMerchants((prevUsers) =>
       prevUsers.map((user) =>
         user.id === id ? { ...user, merchant: merchant } : user,
@@ -140,7 +183,7 @@ const Merchants = () => {
     );
   };
 
-  const updateStore = (id: number, store: string) => {
+  const updateStore = (id: number, store: number) => {
     setAllMerchants((prevUsers) =>
       prevUsers.map((user) =>
         user.id === id ? { ...user, merchant: store } : user,

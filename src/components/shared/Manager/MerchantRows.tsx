@@ -3,19 +3,31 @@ import Switcher from "@/components/UI/Switcher";
 import TableRowSelect from "@/components/UI/TableRowSelect";
 import { Merchant } from "@/types/merchant";
 
+interface MerchantList {
+  merchant_id: number;
+  merchant_name: string;
+}
+
+interface ProviderList {
+  provider_id: number;
+  provider_name: string;
+}
+
 interface IMerchantRowProps {
   merchant: Merchant;
   toggleStatus: (id: number) => void;
-  providers?: { value: string; label: string }[];
-  updateProvider: (id: number, provider: string) => void;
-  updateStore: (id: number, provider: string) => void;
+  providersList: ProviderList[];
+  merchantsList: MerchantList[];
+  updateProvider: (id: number, provider: number) => void;
+  updateStore: (id: number, provider: number) => void;
   merchantConfigurationBarToggler: (id: number) => void;
 }
 
 const MerchantRows = ({
   merchant,
   toggleStatus,
-  providers,
+  providersList,
+  merchantsList,
   updateProvider,
   updateStore,
   merchantConfigurationBarToggler,
@@ -24,11 +36,11 @@ const MerchantRows = ({
     ? "text-success bg-successBg"
     : "text-error bg-errorBg";
 
-  const setSelectedProviderValues = (selectedValue: string) => {
+  const setSelectedProviderValues = (selectedValue: number) => {
     updateProvider && updateProvider(merchant.id, selectedValue);
   };
 
-  const setSelectedStoreValues = (selectedValue: string) => {
+  const setSelectedStoreValues = (selectedValue: number) => {
     updateStore && updateStore(merchant.store.id, selectedValue);
   };
 
@@ -43,15 +55,15 @@ const MerchantRows = ({
         {merchant.id}
       </td>
       <td
-        className="border-e border-hoverBg px-2 cursor-pointer"
+        className="cursor-pointer border-e border-hoverBg px-2"
         onClick={openMerchantCongigBar}
       >
         {merchant.name}
       </td>
       <td className="border-e border-hoverBg p-2">
         <TableRowSelect
-          value={""}
-          label={"All Merchants"}
+          value={0}
+          label={"All Stores"}
           items={[]}
           searchInput
           onSelectHandler={setSelectedStoreValues}
@@ -72,9 +84,12 @@ const MerchantRows = ({
       </td>
       <td className="flex border-e border-hoverBg p-2">
         <TableRowSelect
-          value={""}
+          value={0}
           label={"All Providers"}
-          items={[]}
+          items={providersList.map((provider) => ({
+            value: provider.provider_id,
+            label: provider.provider_name,
+          }))}
           searchInput
           onSelectHandler={setSelectedProviderValues}
         />

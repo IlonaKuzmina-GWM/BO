@@ -6,16 +6,16 @@ import { cn } from "@/utils/utils";
 import Search from "../shared/Search";
 
 interface IItem {
-  value: string;
+  value: number;
   label: string;
 }
 
 interface ITableRowSelect {
-  value: string;
+  value: number;
   label: string;
   items: IItem[];
   searchInput: boolean;
-  onSelectHandler?: (selectedValue: string) => void;
+  onSelectHandler: (selectedValue: number) => void;
 }
 
 const TableRowSelect = ({
@@ -25,7 +25,7 @@ const TableRowSelect = ({
   searchInput,
   onSelectHandler,
 }: ITableRowSelect) => {
-  const [selectedValue, setSelectedValue] = useState<string>(value);
+  const [selectedValue, setSelectedValue] = useState<number>(value);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -53,7 +53,7 @@ const TableRowSelect = ({
     }
   }, [isOpen]);
 
-  const selectValue = (itemValue: string) => {
+  const selectValue = (itemValue: number) => {
     setSelectedValue(itemValue);
     setIsOpen(false);
 

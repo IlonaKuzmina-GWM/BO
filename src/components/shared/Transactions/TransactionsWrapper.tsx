@@ -149,7 +149,7 @@ const TransactionsWrapper = observer(() => {
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
 
-        console.log("transaction data", res)
+        console.log("transaction data", res);
       } else {
         alertStore.setAlert("warning", "Transactions data response failed.");
       }
@@ -186,17 +186,17 @@ const TransactionsWrapper = observer(() => {
           amountSort: false,
           createdSort: false,
           updatedSort: false,
-          statusSort: [],
+          statusSort: selectedStatus,
           createdDateRange,
           updatedDateRange,
           paginationPage: currentPage,
           paginationPerPage: limit,
-          merchIds: [],
-          providerIds: [],
-          currency: [],
+          merchIds: selectedMerchants,
+          providerIds: selectedProviders,
+          currency: selectedCurrency,
           txList: [],
           paymentIds: [],
-          countryCode: "",
+          countryCode: searchCountryCodeQuery || "",
         }),
       });
 
@@ -214,7 +214,10 @@ const TransactionsWrapper = observer(() => {
         } else if (exportType === "pdf") {
           //       exportPdfTransactions(transactionData);
         }
-        alertStore.setAlert("success", `Transactions data exported successfully!`);
+        alertStore.setAlert(
+          "success",
+          `Transactions data exported successfully!`,
+        );
       } else {
         alertStore.setAlert("warning", "Transactions response failed.");
       }

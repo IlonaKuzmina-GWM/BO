@@ -226,13 +226,16 @@ const Create = () => {
               />
             )}
             <div>
-              <Info
-                title="Fees information"
-                inputFields={feesInputFields}
-                formData={formData}
-                handleInputChange={handleInputChange}
-                validationErrors={validationErrors}
-              />
+              {formData.selectedAccount !== "user" && (
+                <Info
+                  title="Fees information"
+                  inputFields={feesInputFields}
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  validationErrors={validationErrors}
+                />
+              )}
+
               <div className="mt-[41px] flex flex-row self-end">
                 <DashButton
                   name={submitName}

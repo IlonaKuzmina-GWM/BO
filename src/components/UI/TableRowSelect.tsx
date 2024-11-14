@@ -71,7 +71,7 @@ const TableRowSelect = ({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}

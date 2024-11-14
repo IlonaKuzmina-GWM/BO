@@ -95,7 +95,7 @@ const AllUser = () => {
     );
   };
 
-  const totalPages = limit > 0 ? Math.ceil(users.length / limit) : 1;
+  const totalPages = Math.ceil(users.length / limit);
 
   const paginatedUsers = users.slice(
     (currentPage - 1) * limit,
@@ -107,12 +107,8 @@ const AllUser = () => {
   };
 
   const handleLimitChange = (newLimit: number) => {
-    if (newLimit > 0) {
-      setLimit(newLimit);
-      setCurrentPage(1);
-    } else {
-      alertStore.setAlert("warning", "Limit must be greater than zero.");
-    }
+    setLimit(newLimit);
+    setCurrentPage(1);
   };
 
   return (

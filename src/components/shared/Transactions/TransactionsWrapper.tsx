@@ -270,6 +270,10 @@ const TransactionsWrapper = observer(() => {
       value: "AML_BLOCKED",
     },
     {
+      label: "Initiated",
+      value: "PAYMENT_INITIATED",
+    },
+    {
       label: "Cancelled",
       value: "PAYMENT_CANCELLED",
     },

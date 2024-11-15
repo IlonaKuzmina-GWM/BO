@@ -29,6 +29,10 @@ export function createStatuses() {
             value: 'TIMEOUT',
         },
         {
+            label: "Initiated",
+            value: "PAYMENT_INITIATED",
+          },
+        {
             label: 'Aml blocked',
             value: 'AML_BLOCKED',
         },

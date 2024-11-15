@@ -51,11 +51,7 @@ const CustomTransactionTable = ({
   }>({});
   const [allChecked, setAllChecked] = useState(false);
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
-  const [webhookExpanded, setWebhookExpanded] = useState<{
-    [transactionId: number]: {
-      [webhookIndex: string]: boolean;
-    };
-  }>({});
+  const [expandedWebhooks, setExpandedWebhooks] = useState<{ [key: number]: boolean }>({});
   const [, setExpandedDropdowns] = useState(false);
 
   useEffect(() => {
@@ -169,13 +165,10 @@ const CustomTransactionTable = ({
     }
   };
 
-  const toggleWebhook = (transactionId: number, webhookIndex: number) => {
-    setWebhookExpanded((prev) => ({
+  const toggleWebhook = (webhookId: number) => {
+    setExpandedWebhooks((prev) => ({
       ...prev,
-      [transactionId]: {
-        ...prev[transactionId],
-        [webhookIndex]: !prev[transactionId]?.[webhookIndex],
-      },
+      [webhookId]: !prev[webhookId],
     }));
   };
 
@@ -272,7 +265,7 @@ const CustomTransactionTable = ({
             paginatedTransactions.map((transaction) => {
               const isExpanded = expandedRows.includes(transaction.id);
               const dynamicColor = rowBgColors[transaction.id];
-              const expandedWebhooks = webhookExpanded[transaction.id] || {};
+              // const expandedWebhooks = webhookExpanded[transaction.id] || {};
               // console.log(transaction);
 
               return (

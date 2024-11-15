@@ -53,9 +53,7 @@ const CustomSiinsTable = ({
   const [allChecked, setAllChecked] = useState(false);
 
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
-  const [webhookExpanded, setWebhookExpanded] = useState<{
-    [key: number]: boolean;
-  }>({});
+  const [expandedWebhooks, setExpandedWebhooks] = useState<{ [key: number]: boolean }>({});
   const [, setExpandedDropdowns] = useState(false);
 
   const refundTransaction = async (txId: string) => {
@@ -158,14 +156,11 @@ const CustomSiinsTable = ({
     }
   };
 
-  const toggleWebhook = (siinId: number, webhookIndex: number) => {
-    // setWebhookExpanded((prev) => ({
-    //   ...prev,
-    //   [siinId]: {
-    //     ...prev[siinId],
-    //     [webhookIndex]: !prev[siinId]?.[webhookIndex],
-    //   },
-    // }));
+  const toggleWebhook = (webhookId: number) => {
+    setExpandedWebhooks((prev) => ({
+      ...prev,
+      [webhookId]: !prev[webhookId],
+    }));
   };
 
   const handleAllCheckboxChange = () => {
@@ -270,7 +265,7 @@ const CustomSiinsTable = ({
               const isExpanded =
                 expandedRows.includes(siin.id) && transactionsTableHeader;
               const dynamicColor = rowBgColors[siin.id];
-              const expandedWebhooks = webhookExpanded[siin.id] || {};
+              // const expandedWebhooks = webhookExpanded[siin.id] || {};
 
               return (
                 <React.Fragment key={siin.id}>

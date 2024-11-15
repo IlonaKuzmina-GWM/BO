@@ -21,8 +21,8 @@ interface ExpandedTransactionDetailsProps {
   handleCopyToClipboard: (id: string) => void;
   handleSelectStatus: (value: string, txId: string) => void;
   refundTransaction: (txId: string) => void;
-  expandedWebhooks: { [webhookId: string]: boolean };
-  toggleWebhook: (id: number, webhookId: number) => void;
+  expandedWebhooks: { [webhookId: number]: boolean };
+  toggleWebhook: (webhookId: number) => void;
   getCurrency: (countryCode: string, provider: string) => string;
   handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
@@ -148,71 +148,77 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
       <h3 className="mb-4 py-1 text-[18px] font-medium">Webhook</h3>
       <div className="webhook_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
         {transaction.webhooks && transaction.webhooks.length > 0 ? (
-          [...transaction.webhooks].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((webhook) => (
-            <Collapsible
-              key={webhook.id}
-              open={expandedWebhooks[webhook.id] || false}
-              onOpenChange={() => toggleWebhook(transaction.id, webhook.id)}
-              className="w-full space-y-2"
-            >
-              <CollapsibleTrigger
-                asChild
-                className="relative cursor-pointer uppercase"
+          [...transaction.webhooks]
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime(),
+            )
+            .map((webhook) => (
+              <Collapsible
+                key={webhook.id}
+                open={expandedWebhooks[webhook.id] || false}
+                onOpenChange={() => toggleWebhook(webhook.id)}
+                className="w-full space-y-2"
               >
-                <div className="">
-                  <h4 className="text-sm font-semibold">{webhook.status}</h4>
-                  <ChevronDown
-                    className={`${
-                      expandedWebhooks[webhook.id] ? "rotate-180" : ""
-                    } absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
-                  />
-                </div>
-              </CollapsibleTrigger>
+                <CollapsibleTrigger
+                  asChild
+                  className="relative cursor-pointer uppercase"
+                >
+                  <div className="">
+                    <h4 className="text-sm font-semibold">{webhook.status}</h4>
+                    <ChevronDown
+                      className={`${
+                        expandedWebhooks[webhook.id] ? "rotate-180" : ""
+                      } absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2`}
+                    />
+                  </div>
+                </CollapsibleTrigger>
 
-              <CollapsibleContent className="space-y-2">
-                <div>
-                  <p>
-                    <span className="font-medium">Created:</span>{" "}
-                    <span>{formatDateTime(webhook.createdAt).date}</span>{" "}
-                    <span>{formatDateTime(webhook.createdAt).time}</span>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <span className="font-medium">
-                      Retries: {webhook.retries}
-                    </span>{" "}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <span className="font-medium">Updated:</span>{" "}
-                    <span>{formatDateTime(webhook.updatedAt).date}</span>{" "}
-                    <span>{formatDateTime(webhook.updatedAt).time}</span>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <span className="font-medium">
-                      Status: {webhook.status}
-                    </span>{" "}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <span className="font-medium">Code description:</span>{" "}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <span className="font-medium">
-                      Compound state: {webhook.state}
-                    </span>{" "}
-                  </p>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          ))
+                <CollapsibleContent className="space-y-2">
+                  <div>
+                    <p>
+                      <span className="font-medium">Created:</span>{" "}
+                      <span>{formatDateTime(webhook.createdAt).date}</span>{" "}
+                      <span>{formatDateTime(webhook.createdAt).time}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="font-medium">
+                        Retries: {webhook.retries}
+                      </span>{" "}
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="font-medium">Updated:</span>{" "}
+                      <span>{formatDateTime(webhook.updatedAt).date}</span>{" "}
+                      <span>{formatDateTime(webhook.updatedAt).time}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="font-medium">
+                        Status: {webhook.status}
+                      </span>{" "}
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="font-medium">Code description:</span>{" "}
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span className="font-medium">
+                        Compound state: {webhook.state}
+                      </span>{" "}
+                    </p>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            ))
         ) : (
           <p>No webhooks available.</p>
         )}
@@ -224,7 +230,11 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
       <div className="log_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
         {transaction.webhooks && transaction.webhooks.length > 0 ? (
           [...transaction.webhooks]
-            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime(),
+            )
             .map((log) => (
               <div key={log.id}>
                 <LogHistory

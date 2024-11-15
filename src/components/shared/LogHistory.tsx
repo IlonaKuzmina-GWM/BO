@@ -9,14 +9,11 @@ interface ILogHistory {
 }
 
 const LogHistory = ({ color, status, date, time }: ILogHistory) => {
-  // console.log("log histero color", color);
-  console.log("log histero status", status);
-
   return (
     <div className="flex flex-row gap-2">
       <div className="relative flex h-full w-[9px] flex-col items-center justify-center gap-[3px]">
         <div
-          className={`h-2 w-2 rounded-full `}
+          className={`h-2 w-2 rounded-full`}
           style={{
             backgroundColor: `var(--${color})`,
           }}

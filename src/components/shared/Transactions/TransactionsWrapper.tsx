@@ -24,7 +24,6 @@ import { Transaction } from "@/types/transaction";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 
-
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
   const { alertStore } = useStore();
@@ -65,6 +64,8 @@ const TransactionsWrapper = observer(() => {
 
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [selectedCurrency, setSelectedCurrency] = useState<string[]>([]);
+
+  const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchFiltersData = async () => {
     try {
@@ -234,6 +235,7 @@ const TransactionsWrapper = observer(() => {
     selectedStatus,
     selectedCurrency,
     searchCountryCodeQuery,
+    changedTransactionStatus,
   ]);
 
   const statusFilters = [
@@ -361,6 +363,11 @@ const TransactionsWrapper = observer(() => {
     setSelectedStatus(status);
   };
 
+  const handleStatusChange = (status: string) => {
+    setChangedTransactionStatus(status);
+    fetchTransactionsData();
+  };
+
   return (
     <div className="">
       <div className="flex flex-row justify-between gap-6">
@@ -465,6 +472,7 @@ const TransactionsWrapper = observer(() => {
       <CustomTransactionTable
         paginatedTransactions={paginatedTransactions}
         columns={TransactionsTableHeader}
+        handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
       />
 
       <div className="relative">

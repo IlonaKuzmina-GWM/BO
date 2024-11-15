@@ -33,11 +33,13 @@ import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetai
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Siin[];
+  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const CustomSiinsTable = ({
   columns,
   data,
+  handleStatusChangeToFetchActualeTRansaction,
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
@@ -84,7 +86,7 @@ const CustomSiinsTable = ({
   };
 
   const handleSelectStatus = async (value: string, txId: String) => {
-    console.log(value, txId);
+    // console.log(value, txId);
 
     try {
       const response = await fetch("/api/post-transactions-status", {
@@ -107,16 +109,6 @@ const CustomSiinsTable = ({
     } catch (error) {
       console.error(`Oops! Something went wrong: ${error}`);
     }
-
-    // await api('/transactions/status', { method: 'POST', body: {txId: transactionData.value.txId, status: selectedStatus} })
-    //     .then((res: any) => {
-    //         if (res.success) {
-    //             transactionData.value.status = selectedStatus;
-    //             transactionData.value.webhooks.push(res.newWebhook);
-    //             filterWebhooksByDate();
-    //             message.success(`Successfuly!`)
-    //         }
-    //     })
   };
 
   const openAccordionBgColor = (status: string) => {
@@ -346,6 +338,7 @@ const CustomSiinsTable = ({
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
                           handleSelectStatus={handleSelectStatus}
+                          handleStatusChangeToFetchActualeTRansaction={handleStatusChangeToFetchActualeTRansaction}
                           refundTransaction={refundTransaction}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}

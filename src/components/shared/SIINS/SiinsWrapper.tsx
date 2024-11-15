@@ -40,6 +40,7 @@ const SiinsWrapper = observer(() => {
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
   >(undefined);
+  const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchSiinsData = async () => {
     setLoading(true);
@@ -143,7 +144,13 @@ const SiinsWrapper = observer(() => {
 
   useEffect(() => {
     fetchSiinsData();
-  }, [searchQuery, limit, currentPage, selectedDateRange]);
+  }, [
+    searchQuery,
+    limit,
+    currentPage,
+    selectedDateRange,
+    changedTransactionStatus,
+  ]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -181,6 +188,11 @@ const SiinsWrapper = observer(() => {
     setLimit(limit);
   };
 
+  const handleStatusChange = (status: string) => {
+    setChangedTransactionStatus(status);
+    fetchSiinsData();
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row justify-between">
@@ -214,7 +226,11 @@ const SiinsWrapper = observer(() => {
       </div>
 
       <div>
-        <CustomSiinsTable data={siinsTransactions} columns={SiinsTableHeader} />
+        <CustomSiinsTable
+          data={siinsTransactions}
+          columns={SiinsTableHeader}
+          handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
+        />
 
         <div className="relative">
           <DataLimitsSeter

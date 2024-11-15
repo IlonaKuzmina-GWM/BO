@@ -32,11 +32,13 @@ import { Transaction } from "@/types/transaction";
 interface ICustomTransactionTableProps {
   columns: Header[];
   paginatedTransactions: Transaction[];
+  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const CustomTransactionTable = ({
   columns,
   paginatedTransactions,
+  handleStatusChangeToFetchActualeTRansaction,
 }: ICustomTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
 
@@ -90,8 +92,7 @@ const CustomTransactionTable = ({
   };
 
   const handleSelectStatus = async (value: string, txId: String) => {
-    console.log(value, txId);
-
+    // console.log(value, txId);
     try {
       const response = await fetch("/api/post-transactions-status", {
         method: "POST",
@@ -119,16 +120,6 @@ const CustomTransactionTable = ({
         "Something went wrong with the refund process.",
       );
     }
-
-    // await api('/transactions/status', { method: 'POST', body: {txId: transactionData.value.txId, status: selectedStatus} })
-    //     .then((res: any) => {
-    //         if (res.success) {
-    //             transactionData.value.status = selectedStatus;
-    //             transactionData.value.webhooks.push(res.newWebhook);
-    //             filterWebhooksByDate();
-    //             message.success(`Successfuly!`)
-    //         }
-    //     })
   };
 
   const openAccordionBgColor = (status: string) => {
@@ -359,6 +350,7 @@ const CustomTransactionTable = ({
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
                           handleSelectStatus={handleSelectStatus}
+                          handleStatusChangeToFetchActualeTRansaction={handleStatusChangeToFetchActualeTRansaction}
                           refundTransaction={refundTransaction}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}

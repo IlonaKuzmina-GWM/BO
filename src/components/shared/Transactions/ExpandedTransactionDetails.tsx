@@ -24,6 +24,7 @@ interface ExpandedTransactionDetailsProps {
   expandedWebhooks: { [webhookId: string]: boolean };
   toggleWebhook: (id: number, webhookId: number) => void;
   getCurrency: (countryCode: string, provider: string) => string;
+  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
@@ -36,6 +37,7 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
   expandedWebhooks,
   toggleWebhook,
   getCurrency,
+  handleStatusChangeToFetchActualeTRansaction,
 }) => (
   <div className="flex flex-col flex-wrap justify-between gap-6 md:flex-row">
     <div className="flex w-5/12 min-w-[250px] flex-col gap-1 text-main">
@@ -81,9 +83,10 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
         {[ROLES.ADMIN, ROLES.DEVELOPER].includes(userRole as ROLES) ? (
           <select
             className={`cursor-pointer bg-transparent text-${getStatusColorClass(transaction.status)}`}
-            onChange={(e) =>
-              handleSelectStatus(e.target.value, transaction.txId)
-            }
+            onChange={(e) => (
+              handleSelectStatus(e.target.value, transaction.txId),
+              handleStatusChangeToFetchActualeTRansaction(transaction.status)
+            )}
             value={transaction.status}
           >
             {Object.values(STATUSES).map((status) => (
@@ -145,7 +148,7 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
       <h3 className="mb-4 py-1 text-[18px] font-medium">Webhook</h3>
       <div className="webhook_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
         {transaction.webhooks && transaction.webhooks.length > 0 ? (
-          transaction.webhooks.map((webhook) => (
+          [...transaction.webhooks].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((webhook) => (
             <Collapsible
               key={webhook.id}
               open={expandedWebhooks[webhook.id] || false}
@@ -220,16 +223,18 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
       <h3 className="mb-4 py-1 text-[18px] font-medium">Log</h3>
       <div className="log_wrapper flex h-[250px] flex-col gap-4 overflow-hidden overflow-y-auto pe-2">
         {transaction.webhooks && transaction.webhooks.length > 0 ? (
-          transaction.webhooks.map((log) => (
-            <div key={log.id}>
-              <LogHistory
-                color={getStatusColorClass(log.status)}
-                status={log.status}
-                date={formatDateTime(log.createdAt).date}
-                time={formatDateTime(log.updatedAt).time}
-              />
-            </div>
-          ))
+          [...transaction.webhooks]
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            .map((log) => (
+              <div key={log.id}>
+                <LogHistory
+                  color={getStatusColorClass(log.status)}
+                  status={log.status}
+                  date={formatDateTime(log.createdAt).date}
+                  time={formatDateTime(log.updatedAt).time}
+                />
+              </div>
+            ))
         ) : (
           <p>No webhooks available.</p>
         )}

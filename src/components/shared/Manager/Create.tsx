@@ -5,6 +5,7 @@ import DashButton from "../DashButton";
 import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
 import Info from "./Info";
 import SelectAccount from "./SelectAccount";
+import { ROLES } from "@/constants/roles";
 
 const Create = () => {
   const [formData, setFormData] = useState({
@@ -188,6 +189,12 @@ const Create = () => {
     { merchant_id: 4, merchant_name: "Grapes" },
     { merchant_id: 5, merchant_name: "Pineapple" },
   ];
+
+  const alLowedRolesForMerchantAccountCreate = [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER];
+  const alLowedRolesForSupportAccountCreate = [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER];
+  const alLowedRolesForManagerAccountCreate = [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER];
+  const alLowedRolesForUserAccountCreate = [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER];
+  const alLowedRolesForAgentAccountCreate = [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER];
 
   return (
     <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white">

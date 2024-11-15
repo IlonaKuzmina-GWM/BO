@@ -24,15 +24,6 @@ import { Transaction } from "@/types/transaction";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 
-// interface Merchant {
-//   merchant_id: number;
-//   merchant_name: string;
-// }
-
-// interface Provider {
-//   provider_id: number;
-//   provider_name: string;
-// }
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();

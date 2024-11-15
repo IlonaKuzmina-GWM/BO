@@ -78,7 +78,7 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
       </p>
       <p>
         <span className="font-medium">Status:</span>
-        {userRole === ROLES.ADMIN || userRole === ROLES.DEVELOPER ? (
+        {[ROLES.ADMIN, ROLES.DEVELOPER].includes(userRole as ROLES) ? (
           <select
             className={`cursor-pointer bg-transparent text-${getStatusColorClass(transaction.status)}`}
             onChange={(e) =>

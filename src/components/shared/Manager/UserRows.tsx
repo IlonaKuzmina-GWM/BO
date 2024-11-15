@@ -14,7 +14,7 @@ interface IUserRowProps {
 }
 
 const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
-  const [selectedMerchant, setSelectedMerchant] = useState<number>(user.merchant.id);
+  const [selectedMerchant, setSelectedMerchant] = useState<number>(user.merchant?.id);
 
   const getSuccessAndErrorClass = (is: boolean) => {
     return is === false ? "text-success bg-successBg" : "text-error bg-errorBg";

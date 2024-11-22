@@ -11,26 +11,18 @@ import {
   ComposedChart,
 } from "recharts";
 
-const formatXAxis = (tickItem: Date) => {
-  const date = new Date(tickItem);
-  return date.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-  });
-};
-
 interface IVerticalComposedChart {
   data: {
     merchant: string;
-    successCount: number;
-    failedCount: number;
+    success: number;
+    declined: number;
   }[];
 }
 
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <ComposedChart
+      <BarChart
         layout="vertical"
         width={500}
         height={400}
@@ -39,31 +31,24 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           top: 20,
           right: 20,
           bottom: 20,
-          left: 70,
+          left: 20,
         }}
       >
+        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.6}/>
         <Legend align="left" verticalAlign="top" />
+        <Tooltip />
+
         <XAxis type="number" />
         <YAxis
           dataKey="merchant"
           type="category"
           scale="band"
-          className="text-5"
+          className="text-xs"
         />
-        <Tooltip />
-        <Bar
-          dataKey="successCount"
-          fill="#0052CE"
-          stackId="a"
-          name="Payment Success"
-        />
-        <Bar
-          dataKey="failedCount"
-          fill="#8C8AFE"
-          stackId="a"
-          name="Payment Failed"
-        />
-      </ComposedChart>
+
+        <Bar dataKey="success" stackId="a" fill="#0052CE" name="Payment Success" />
+        <Bar dataKey="declined" stackId="a" fill="#8C8AFE" name="Payment Failed" />
+      </BarChart>
     </ResponsiveContainer>
   );
 };

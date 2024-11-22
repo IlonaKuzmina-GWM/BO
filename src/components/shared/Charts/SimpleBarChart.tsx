@@ -21,36 +21,36 @@ const formatXAxis = (tickItem: Date) => {
 interface ISimpleBarChart {
   data: {
     date: string;
-    successCount: number;
-    failedCount: number;
-    acceptedAmount?: number;
-    successAmount?: number;
+    success: number;
+    declined: number;
   }[];
 }
 
 const SimpleBarChart = ({ data }: ISimpleBarChart) => {
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart
-        data={data}
-        margin={{ top: 20, right: 0, left: 0, bottom: 5 }}
-      >
+      <BarChart data={data} margin={{ top:20, right: 0, left: 0, bottom: 5 }}>
         <Legend align="left" verticalAlign="top" />
-        <CartesianGrid  />
+        <CartesianGrid />
         <XAxis
           dataKey="date"
           tickFormatter={formatXAxis}
           className="text-[10px] leading-5 text-secondary"
         />
         <YAxis
-            dataKey="successCount" 
-           domain={[0, 'dataMax + 1']} 
+          dataKey="success"
+          domain={[0, "dataMax + 1"]}
           className="text-[10px] leading-5 text-secondary"
         />
         <Tooltip />
 
-        <Bar dataKey="successCount" fill="#0052CE" name="Payment Success" className="rounded-sm"/>
-        <Bar dataKey="failedCount" fill="#8C8AFE" name="Payment Failed" />
+        <Bar
+          dataKey="success"
+          fill="#0052CE"
+          name="Payment Success"
+          className="rounded-sm"
+        />
+        <Bar dataKey="declined" fill="#8C8AFE" name="Payment Failed" />
       </BarChart>
     </ResponsiveContainer>
   );

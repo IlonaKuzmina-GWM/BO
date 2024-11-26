@@ -4,8 +4,9 @@ import { Header } from "@/types";
 import { useEffect, useState } from "react";
 import React from "react";
 import { formatDateTime } from "@/helpers/dateFormater";
-import LoadingLogsTableSkeleton from "./LoadingUI/LoadingLogsTableSkeleton";
+
 import { Log } from "@/types/logs";
+import LoadingLogsTableSkeleton from "../LoadingUISkeletons/LoadingLogsTableSkeleton";
 
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];

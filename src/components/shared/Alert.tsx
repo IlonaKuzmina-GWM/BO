@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/stores/StoreProvider";
-import "./alert.css";
+import "./Styles/alert.css";
 
 interface AlertProps {
   type: "warning" | "success" | "error";

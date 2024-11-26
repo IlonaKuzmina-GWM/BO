@@ -2,7 +2,7 @@
 
 import { ManagerMerchantsTableHeader } from "@/utils/tableHeaders";
 import { useEffect, useState } from "react";
-import CustomTable from "../CustomTable/CustomTable";
+import CustomTable from "../CustomTable";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent";
 import Paragraph from "../Paragraph";
@@ -10,7 +10,7 @@ import Search from "../Search";
 import MerchantRows from "./MerchantRows";
 import { useStore } from "@/stores/StoreProvider";
 import { Merchant } from "@/types/merchant";
-import MerchantConfigurationBar from "../MerchantConfigurationBar/MerchantConfigurationBar";
+import MerchantConfigurationBar from "./MerchantConfigurationBar/MerchantConfigurationBar";
 import { ProviderList } from "@/types/provider";
 import { Store } from "@/types/store";
 

@@ -2,13 +2,13 @@
 
 import { Header } from "@/types";
 import { useEffect, useState } from "react";
-import CustomTable from "../CustomTable/CustomTable";
+import CustomTable from "../CustomTable";
 import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
 
 import DataLimitsSeter from "../DataLimitsSeter";
 import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
-import LoadingAllUsersSkeleton from "../LoadingUI/LoadingAllUsersSkeleton";
+import LoadingAllUsersSkeleton from "../LoadingUISkeletons/LoadingAllUsersSkeleton";
 import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
 import { observable } from "mobx";
@@ -75,7 +75,7 @@ const AllUser = () => {
   useEffect(() => {
     fetchAllUsersData();
     fetchMerchantsListData();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderRow = (user: User) => (

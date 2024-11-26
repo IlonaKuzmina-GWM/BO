@@ -1,8 +1,8 @@
-import Input from "@/components/UI/Input";
+import Input from "@/components/shared/Input";
 import { CSV, InputField } from "@/types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import DashButton from "../DashButton";
-import { formattedValueForMoney } from "../Functions/formattedValueForMoney";
+import { formattedValueForMoney } from "../../../helpers/formattedValueForMoney";
 
 interface GenerationFormProps {
   onSubmit: (data: CSV) => void;
@@ -68,13 +68,13 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-  
+
     let formattedValue = value;
-  
+
     if (name === "amount") {
       formattedValue = formattedValueForMoney(value);
     }
-  
+
     const formatDate = (date: Date) => {
       const pad = (num: number) => (num < 10 ? `0${num}` : num);
       const year = date.getFullYear();
@@ -85,7 +85,7 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
       const seconds = pad(date.getSeconds());
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
-  
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: formattedValue,
@@ -142,7 +142,7 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
           width={field.inputWidth}
         />
       ))}
-      <div className="h-[40px] self-end ml-[16px]">
+      <div className="ml-[16px] h-[40px] self-end">
         <DashButton name="Add new entry" type={"filled"} disabled={submitted} />
       </div>
     </form>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/utils";
-import Search from "../shared/Search";
+import Search from "./Search";
 
 interface IItem {
   value: number;
@@ -71,7 +71,7 @@ const TableRowSelect = ({
   };
 
   return (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}

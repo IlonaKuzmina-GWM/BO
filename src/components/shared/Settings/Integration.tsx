@@ -1,6 +1,6 @@
 import { APIKey, Header } from "@/types";
 import { useState } from "react";
-import CustomTable from "../CustomTable/CustomTable";
+import CustomTable from "../CustomTable";
 import Dashbutton from "../DashButton";
 import Paragraph from "../Paragraph";
 import IntegrationRows from "./IntegrationRows";

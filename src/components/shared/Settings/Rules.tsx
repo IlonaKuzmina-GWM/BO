@@ -1,8 +1,7 @@
-import DashSelect from "../DashSelect";
 import Paragraph from "../Paragraph";
 import Dashbutton from "../DashButton";
-import { use, useState } from "react";
-import CustomTable from "../CustomTable/CustomTable";
+import { useState } from "react";
+import CustomTable from "../CustomTable";
 import Modal from "../Modal";
 import RuleRows from "./RuleRows";
 import { Rule } from "@/types";

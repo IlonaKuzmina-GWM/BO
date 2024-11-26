@@ -5,25 +5,13 @@ import { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
 import Image from "next/image";
 import React from "react";
-import CustomCheckbox from "@/components/UI/CustomCheckbox";
-import DashButton from "../DashButton";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/UI/collapsible";
-import { ChevronDown } from "lucide-react";
-import LogHistory from "../LogHistory";
+import CustomCheckbox from "@/components/shared/CustomCheckbox";
 import { formatDateTime } from "@/helpers/dateFormater";
-import LoadingTransactionTableSkeleton from "../LoadingUI/LoadingTransactionTableSkeleton";
-import { STATUSES } from "@/constants/statuses";
+import LoadingTransactionTableSkeleton from "../LoadingUISkeletons/LoadingTransactionTableSkeleton";
 import { useStore } from "@/stores/StoreProvider";
-import { ROLES } from "@/constants/roles";
-import { transformStatus } from "@/helpers/transformStatus ";
 import {
   getFailedColor,
   getProcessColor,
-  getStatusColorClass,
   getSuccessColor,
 } from "@/helpers/getColorByStatus";
 import ExpandedTransactionDetails from "./ExpandedTransactionDetails";
@@ -51,7 +39,9 @@ const CustomTransactionTable = ({
   }>({});
   const [allChecked, setAllChecked] = useState(false);
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
-  const [expandedWebhooks, setExpandedWebhooks] = useState<{ [key: number]: boolean }>({});
+  const [expandedWebhooks, setExpandedWebhooks] = useState<{
+    [key: number]: boolean;
+  }>({});
   const [, setExpandedDropdowns] = useState(false);
 
   useEffect(() => {
@@ -343,7 +333,9 @@ const CustomTransactionTable = ({
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
                           handleSelectStatus={handleSelectStatus}
-                          handleStatusChangeToFetchActualeTRansaction={handleStatusChangeToFetchActualeTRansaction}
+                          handleStatusChangeToFetchActualeTRansaction={
+                            handleStatusChangeToFetchActualeTRansaction
+                          }
                           refundTransaction={refundTransaction}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}

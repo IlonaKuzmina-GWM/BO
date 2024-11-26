@@ -1,6 +1,6 @@
 "use client";
 
-import CustomTable from "@/components/shared/CustomTable/CustomTable";
+import CustomTable from "@/components/shared/CustomTable";
 import DashButton from "@/components/shared/DashButton";
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import CSVRows from "@/components/shared/GenerateCSV/CSVRows";

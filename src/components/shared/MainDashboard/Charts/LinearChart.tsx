@@ -31,14 +31,7 @@ const formatXAxis = (tickItem: string) => {
   }
 };
 
-// {
-//   date: "2024-11-01T00:00:00.000Z",
-//   vol: 23,
-//   transaction: 122,
-// },
-
 const LinearChart = ({ data }: ILinearChart) => {
-  console.log("data", data);
   return (
     <div style={{ width: "100%", height: "407px" }}>
       <ResponsiveContainer>
@@ -59,7 +52,7 @@ const LinearChart = ({ data }: ILinearChart) => {
             className="text-[10px] leading-5 text-secondary"
           />
           <Tooltip />
-          <Legend align="left" verticalAlign="top" />
+          <Legend align="left" verticalAlign="top"/>
           <Line
             yAxisId="left"
             type="monotone"
@@ -67,14 +60,14 @@ const LinearChart = ({ data }: ILinearChart) => {
             stroke="#007DC0"
             strokeDasharray="5 5"
             activeDot={{ r: 8 }}
-            name="Success Amount ($)"
+            name="Volume"
           />
           <Line
             yAxisId="right"
             type="monotone"
             dataKey="transaction"
             stroke="#FF6D4B"
-            name="Accepted Amount ($)"
+            name="Transactions"
           />
         </LineChart>
       </ResponsiveContainer>

@@ -1,32 +1,19 @@
 "use client";
 import { Header } from "@/types";
 import { useEffect, useState } from "react";
-import StatusBadge from "../StatusBadge";
-import Checkbox from "../Checkbox";
-import Image from "next/image";
 import React from "react";
-import CustomCheckbox from "@/components/UI/CustomCheckbox";
-import DashButton from "../DashButton";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/UI/collapsible";
-import { ChevronDown } from "lucide-react";
+import CustomCheckbox from "@/components/shared/CustomCheckbox";
 import { formatDateTime } from "@/helpers/dateFormater";
-import LoadingSiinTableSkeleton from "../LoadingUI/LoadingSiinTableSkeleton";
+import LoadingSiinTableSkeleton from "../LoadingUISkeletons/LoadingSiinTableSkeleton";
 import { Tooltip, TooltipProvider } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "@/components/UI/tooltip";
 import {
   getFailedColor,
   getProcessColor,
-  getStatusColorClass,
   getSuccessColor,
 } from "@/helpers/getColorByStatus";
 import { useStore } from "@/stores/StoreProvider";
-import { ROLES } from "@/constants/roles";
-import { STATUSES } from "@/constants/statuses";
-import LogHistory from "../LogHistory";
+
 import { Siin } from "@/types/siin";
 import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetails";
 
@@ -53,7 +40,9 @@ const CustomSiinsTable = ({
   const [allChecked, setAllChecked] = useState(false);
 
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
-  const [expandedWebhooks, setExpandedWebhooks] = useState<{ [key: number]: boolean }>({});
+  const [expandedWebhooks, setExpandedWebhooks] = useState<{
+    [key: number]: boolean;
+  }>({});
   const [, setExpandedDropdowns] = useState(false);
 
   const refundTransaction = async (txId: string) => {
@@ -333,7 +322,9 @@ const CustomSiinsTable = ({
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
                           handleSelectStatus={handleSelectStatus}
-                          handleStatusChangeToFetchActualeTRansaction={handleStatusChangeToFetchActualeTRansaction}
+                          handleStatusChangeToFetchActualeTRansaction={
+                            handleStatusChangeToFetchActualeTRansaction
+                          }
                           refundTransaction={refundTransaction}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}

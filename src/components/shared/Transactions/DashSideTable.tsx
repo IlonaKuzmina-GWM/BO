@@ -1,6 +1,5 @@
 import { DashTableData } from "@/types";
-import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
-import LoadingDashSideTableSkeleton from "../LoadingUI/LoadingDashSideTableSkeleton";
+import LoadingDashSideTableSkeleton from "../LoadingUISkeletons/LoadingDashSideTableSkeleton";
 
 interface IDashSideTableProps {
   title: string;
@@ -18,7 +17,7 @@ const DashSideTable = ({
   loading,
 }: IDashSideTableProps) => {
   return (
-    <div className="rounded-4px min-w-[300px] bg-white p-[20px]">
+    <div className="rounded-4px h-fit min-w-[300px] bg-white p-[20px]">
       <h3 className="p-[8px] pb-[16px] text-[20px] font-medium text-main">
         {title}
       </h3>

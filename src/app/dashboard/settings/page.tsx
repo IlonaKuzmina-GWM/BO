@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import Rules from "@/components/shared/Settings/Rules";
 import Integration from "@/components/shared/Settings/Integration";
 import Authentication from "@/components/shared/Settings/Authentication";
-import Tabs from "@/components/shared/Tabs/Tabs";
+import Tabs from "@/components/shared/Tabs";
 import { useState } from "react";
 
 const SettingsPage = () => {

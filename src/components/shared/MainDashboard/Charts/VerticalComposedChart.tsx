@@ -13,13 +13,16 @@ import {
 
 interface IVerticalComposedChart {
   data: {
-    merchant: string;
+    provider: string;
     success: number;
     declined: number;
+    successPercentage: number;
   }[];
 }
 
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
+console.log("data in chart",data)
+
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart
@@ -37,10 +40,9 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
         <CartesianGrid strokeDasharray="1 0" fillOpacity={0.6}/>
         <Legend align="left" verticalAlign="top" />
         <Tooltip />
-
         <XAxis type="number" />
         <YAxis
-          dataKey="merchant"
+          dataKey="provider"
           type="category"
           scale="band"
           className="text-xs"

@@ -1,4 +1,4 @@
-import CustomCheckbox from "@/components/UI/CustomCheckbox";
+import CustomCheckbox from "@/components/shared/CustomCheckbox";
 import { Header } from "@/types";
 import { ReactNode } from "react";
 

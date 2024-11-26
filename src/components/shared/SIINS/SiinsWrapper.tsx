@@ -4,13 +4,11 @@ import React, { useEffect, useState } from "react";
 
 import Search from "../Search";
 import DatePickerWithRange from "../DatePickerWithRange";
-import DashButton from "../DashButton";
 import { DateRange } from "react-day-picker";
 import PaginationComponent from "../PaginationComponent";
 
 import CustomSiinsTable from "./CustomSiinsTable";
 import DataLimitsSeter from "../DataLimitsSeter";
-import { LoadingSpiner } from "../LoadingUI/LoadingSpiner";
 import { SiinsTableHeader } from "@/utils/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
@@ -18,7 +16,7 @@ import { exportExcelSiins } from "@/utils/export-utils";
 import ExportButton from "../ExportButton";
 import { useStore } from "@/stores/StoreProvider";
 import { observer } from "mobx-react-lite";
-import Alert from "@/components/UI/Alert";
+import Alert from "@/components/shared/Alert";
 import { Siin } from "@/types/siin";
 
 const SiinsWrapper = observer(() => {

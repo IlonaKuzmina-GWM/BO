@@ -1,4 +1,4 @@
-import { LoadingSpiner } from "@/components/shared/LoadingUI/LoadingSpiner";
+import { LoadingSpiner } from "@/components/shared/LoadingUISkeletons/LoadingSpiner";
 
 const Loading = () => {
   return (

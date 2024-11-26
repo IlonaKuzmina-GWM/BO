@@ -1,4 +1,4 @@
-import Input from "@/components/UI/Input";
+import Input from "@/components/shared/Input";
 import { InputField } from "@/types";
 import { ChangeEvent } from "react";
 import DashSelect from "../DashSelect";

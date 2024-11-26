@@ -1,11 +1,10 @@
-'use client'
+"use client";
 
-import TableRowSelect from "@/components/UI/TableRowSelect";
+import TableRowSelect from "@/components/shared/TableRowSelect";
 import { formatDateTime } from "@/helpers/dateFormater";
 import { MerchantList } from "@/types/merchant";
 import { User } from "@/types/user";
 import { useState } from "react";
-
 
 interface IUserRowProps {
   user: User;
@@ -14,7 +13,9 @@ interface IUserRowProps {
 }
 
 const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
-  const [selectedMerchant, setSelectedMerchant] = useState<number>(user.merchant?.id);
+  const [selectedMerchant, setSelectedMerchant] = useState<number>(
+    user.merchant?.id,
+  );
 
   const getSuccessAndErrorClass = (is: boolean) => {
     return is === false ? "text-success bg-successBg" : "text-error bg-errorBg";

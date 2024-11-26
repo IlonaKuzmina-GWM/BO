@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import "./sidebar.css";
+import React, { useState } from "react";
 import Image from "next/image";
 import { UserSideInfo } from "./UserSideInfo";
 import SideBarLi from "./SideBarLi";
@@ -11,6 +10,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/stores/StoreProvider";
 import { roleRoutes } from "@/utils/userRoleRoutes";
+
+import '../Styles/sidebar.css';
 
 const SiderBar: React.FC = observer(() => {
   const { authStore } = useStore();
@@ -122,7 +123,7 @@ const SiderBar: React.FC = observer(() => {
 
         <div className="divider h-[1px] w-full bg-fill"></div>
 
-        <ul className="flex flex-col gap-2 pt-6">
+        <div className="flex flex-col gap-2 pt-6">
           {filteredMenuItems.map((item) => (
             <SideBarLi
               key={item.link}
@@ -133,7 +134,7 @@ const SiderBar: React.FC = observer(() => {
               activePathName={pathname}
             />
           ))}
-        </ul>
+        </div>
       </div>
 
       <div className="mt-10">

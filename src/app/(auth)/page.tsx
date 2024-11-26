@@ -1,4 +1,4 @@
-import Authorisation from "@/components/shared/Authorisation/Authorisation";
+import Authorisation from "@/components/shared/Authorisation";
 
 export default function Home() {
   return (

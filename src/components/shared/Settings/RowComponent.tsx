@@ -1,4 +1,4 @@
-import TableRowSelect from "@/components/UI/TableRowSelect";
+import TableRowSelect from "@/components/shared/TableRowSelect";
 
 interface IRowComponentProps {
   selectLabel: string;

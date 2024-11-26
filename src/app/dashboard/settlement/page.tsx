@@ -3,7 +3,7 @@
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import CalculationControls from "@/components/shared/Settlement/CalculationControls";
 import SettlementInfo from "@/components/shared/Settlement/SettlementInfo";
-import Spinner from "@/components/UI/Spinner";
+import Spinner from "@/components/shared/Spinner";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { justMockedSettlementData } from "./justmockedDataWhichShouldBeRemovedLater";

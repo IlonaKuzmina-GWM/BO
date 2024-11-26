@@ -24,7 +24,7 @@ const SideBarLi = observer(
         href={link}
         className={`${activePathName === link ? "bg-hoverBg" : ""} block w-full transition-all duration-500 ease-in-out hover:bg-hoverBg`}
       >
-        <li
+        <div
           className={`${isSidebarOpen ? "justify-start gap-3 px-8" : "justify-center px-4"} text-md flex w-full flex-row flex-nowrap py-4 font-medium capitalize text-main`}
         >
           <TooltipProvider>
@@ -50,7 +50,7 @@ const SideBarLi = observer(
               {name}
             </span>
           )}
-        </li>
+        </div>
       </NextLink>
     );
   },

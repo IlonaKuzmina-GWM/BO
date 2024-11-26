@@ -1,8 +1,10 @@
-import { LoadingSpiner } from "@/components/shared/LoadingUI/LoadingSpiner";
+import { LoadingSpiner } from "@/components/shared/LoadingUISkeletons/LoadingSpiner";
 
 const Loading = () => {
   return (
-    <div className="flex justify-center items-center w-full"><LoadingSpiner /></div>
+    <div className="flex w-full items-center justify-center">
+      <LoadingSpiner />
+    </div>
   );
 };
 

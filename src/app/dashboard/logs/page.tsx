@@ -1,5 +1,5 @@
 import DashPageTitle from "@/components/shared/DashPageTitle";
-import LogsWrapper from "@/components/shared/LogsWrapper";
+import LogsWrapper from "@/components/shared/LogsPage/LogsWrapper";
 
 export default function SiinsPage() {
   return (

@@ -2,13 +2,13 @@
 
 import { ManagerKYCUserTableHeader } from "@/utils/tableHeaders";
 import { useEffect, useState } from "react";
-import CustomTable from "../CustomTable/CustomTable";
+import CustomTable from "../CustomTable";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent";
 import Paragraph from "../Paragraph";
 import KYCUserListRows from "./KYCUserListRows";
 import { KYCUser } from "@/types/kyc";
-import LoadingKYCUserListSkeleton from "../LoadingUI/LoadingKYCUserListSkeleton";
+import LoadingKYCUserListSkeleton from "../LoadingUISkeletons/LoadingKYCUserListSkeleton";
 
 const KYCUserList = () => {
   const [loading, setLoading] = useState(true);

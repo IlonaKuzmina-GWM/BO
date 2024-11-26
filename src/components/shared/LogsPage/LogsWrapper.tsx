@@ -7,12 +7,12 @@ import { LogsTableHeader } from "@/utils/tableHeaders";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 
 import CustomLogsTable from "./CustomLogsTable";
-import DashIntervalSelect from "./DashIntervalSelect";
-import DataLimitsSeter from "./DataLimitsSeter";
-import DatePickerWithRange from "./DatePickerWithRange";
-import { LoadingSpiner } from "./LoadingUI/LoadingSpiner";
-import PaginationComponent from "./PaginationComponent";
-import Search from "./Search";
+import DashIntervalSelect from "../DashIntervalSelect";
+import DataLimitsSeter from "../DataLimitsSeter";
+import DatePickerWithRange from "../DatePickerWithRange";
+import { LoadingSpiner } from "../LoadingUISkeletons/LoadingSpiner";
+import PaginationComponent from "../PaginationComponent";
+import Search from "../Search";
 
 const LogsWrapper = () => {
   const [logsData, setLogsData] = useState<Log[]>([]);

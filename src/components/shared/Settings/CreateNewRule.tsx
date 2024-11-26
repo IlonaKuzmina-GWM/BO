@@ -2,7 +2,7 @@ import { Rule, RuleRow } from "@/types";
 import { useState } from "react";
 import DashButton from "../DashButton";
 import RowComponent from "./RowComponent";
-import Input from "@/components/UI/Input";
+import Input from "@/components/shared/Input";
 
 const ruleTypes = [
   { value: "country", label: "Country" },

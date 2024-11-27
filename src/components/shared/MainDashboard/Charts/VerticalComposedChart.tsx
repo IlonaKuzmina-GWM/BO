@@ -36,7 +36,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
         fontSize={10}
         textAnchor="start"
       >
-        {successPercentage !== undefined ? `${successPercentage}%` : ""}
+        { `${successPercentage}%`}
       </text>
     );
   };
@@ -101,7 +101,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           stackId="a"
           fill="var(--bar-1)"
           name="Success"
-          background={{ fill: "rgba(230, 238, 250, 0.6)" }}
+          background={{ fill: "var(--chart-bg)" }}
           radius={[0, 5, 5, 0]}
           label={<CustomizedLabel />}
         />
@@ -110,7 +110,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           stackId="a"
           fill="var(--bar-2)"
           name="Declined"
-          background={{ fill: "rgba(230, 238, 250, 0.6)" }}
+          background={{ fill: "var(--chart-bg)" }}
           radius={[0, 5, 5, 0]}
         />
       </BarChart>

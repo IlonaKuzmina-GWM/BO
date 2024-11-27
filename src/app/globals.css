@@ -21,8 +21,10 @@
     --success-bg: #e1fcef;
     --warning: #aa5b00;
     --warning-bg: #fcf2e6;
+
     --bar-1: #0052ce;
     --bar-2: #8c8afe;
+    --chart-bg: rgba(230, 238, 250, 0.6);
 
     /* Blue shades */
     --blue-50: #eef6ff;
@@ -55,8 +57,10 @@
     --success-bg: #1f3d2d; /* Dark success background */
     --warning: #ffbb33; /* Light warning color */
     --warning-bg: #3e2f1c; /* Dark warning background */
+
     --bar-1: #6699ff;
     --bar-2: #a0a0ff;
+    --chart-bg: rgba(25, 35, 50, 0.8);
 
     /* Blue shades - darker base, lighter text */
     --blue-50: #19388f;

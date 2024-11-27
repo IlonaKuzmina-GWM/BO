@@ -30,7 +30,7 @@ const MerchantDashSideTable = ({
             <span>{name}</span>
             <span>{amount}</span>
           </div>
-          <div>
+          <div className="max-h-[500px] overflow-y-auto dash_select-options">
             {data.map((item) => (
               <div
                 key={item.merchantName}

@@ -36,7 +36,7 @@ const MerchantDashSideTable = ({
                 key={item.merchantName}
                 className="flex justify-between p-[8px] text-main"
               >
-                <div>{item. totalAmount}</div>
+                <div>{item.merchantName}</div>
                 <div className="ml-[10px]">{item.totalAmount}</div>
               </div>
             ))}

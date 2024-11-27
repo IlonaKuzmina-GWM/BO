@@ -51,7 +51,7 @@ const ChartWrapper = ({
           </div>
         )}
       </div>
-      <div className="mt-6">{children}</div>
+      <div className="">{children}</div>
     </div>
   );
 };

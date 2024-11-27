@@ -58,11 +58,11 @@ const SiderBar: React.FC = observer(() => {
       link: "/dashboard/manager",
       iconLink: "manager",
     },
-    // {
-    //   name: "Settings",
-    //   link: "/dashboard/settings",
-    //   iconLink: "settings",
-    // },
+    {
+      name: "Settings",
+      link: "/dashboard/settings",
+      iconLink: "settings",
+    },
   ];
 
   let allowedRoutes: string[] = roleRoutes[userRole] || [];

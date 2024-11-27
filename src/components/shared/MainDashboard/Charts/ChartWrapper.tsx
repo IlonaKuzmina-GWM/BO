@@ -29,7 +29,7 @@ const ChartWrapper = ({
   // console.log("dataInterval", dataInterval);
   return (
     <div className="h-full rounded-sm bg-white p-5 shadow-sm">
-      <div className="flex flex-col justify-between gap-4 md:flex-row">
+      <div className="flex flex-col justify-between gap-4 md:flex-row ps-[63px]">
         <div>
           <h2 className="text-2xl font-semibold text-main">{title}</h2>
 

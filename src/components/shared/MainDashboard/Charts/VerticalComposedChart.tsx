@@ -20,21 +20,6 @@ interface IVerticalComposedChart {
 }
 
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
-  const [opacity, setOpacity] = useState<{ [key: string]: number }>({
-    success: 1,
-    declined: 1,
-  });
-
-  const handleMouseEnter = (o: any) => {
-    const { dataKey } = o;
-    setOpacity((op) => ({ ...op, [dataKey]: 0.5 })); // Dim the corresponding bar
-  };
-
-  const handleMouseLeave = (o: any) => {
-    const { dataKey } = o;
-    setOpacity((op) => ({ ...op, [dataKey]: 1 })); // Reset opacity
-  };
-
   const CustomBar = (props: any) => {
     const { x, y, width, height, fill } = props;
 
@@ -46,8 +31,8 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           width={width}
           height={height}
           fill={fill}
-          rx={10}
-          ry={10}
+          rx={5}
+          ry={5}
           style={{ filter: "url(#drop-shadow)" }}
         />
       </g>
@@ -60,8 +45,8 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
 
     return (
       <text
-        x={x + width + 5}
-        y={y + 10}
+        x={x}
+        y={y}
         dy={-4}
         fill="var(--main)"
         fontSize={10}
@@ -108,23 +93,12 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
         height={400}
         data={data}
         margin={{
-          top: 20,
+          top: 0,
           right: 20,
           bottom: 20,
-          left: 20,
+          left: 0,
         }}
       >
-        <defs>
-          <filter id="drop-shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow
-              dx="2"
-              dy="0"
-              stdDeviation="4"
-              floodColor="rgba(0, 0, 0, 0.25)"
-            />
-          </filter>
-        </defs>
-
         <CartesianGrid strokeDasharray="1 0" fillOpacity={0.6} />
         <Legend content={<CustomLegend />} align="left" verticalAlign="top" />
         <Tooltip />
@@ -133,6 +107,8 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           dataKey="provider"
           type="category"
           className="text-[16px]"
+          tickLine={false}
+          width={130}
         />
 
         <Bar
@@ -141,8 +117,8 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           fill="#0052CE"
           name="Success"
           background={{ fill: "rgba(230, 238, 250, 0.6)" }}
+          radius={[0, 5, 5, 0]}
           label={<CustomizedLabel />}
-          shape={<CustomBar />}
         />
         <Bar
           dataKey="declined"
@@ -150,7 +126,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           fill="#8C8AFE"
           name="Declined"
           background={{ fill: "rgba(230, 238, 250, 0.6)" }}
-          shape={<CustomBar />}
+          radius={[0, 5, 5, 0]}
         />
       </BarChart>
     </ResponsiveContainer>

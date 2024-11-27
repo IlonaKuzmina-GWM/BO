@@ -20,37 +20,21 @@ interface IVerticalComposedChart {
 }
 
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
-  const CustomBar = (props: any) => {
-    const { x, y, width, height, fill } = props;
-
-    return (
-      <g>
-        <rect
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          fill={fill}
-          rx={5}
-          ry={5}
-          style={{ filter: "url(#drop-shadow)" }}
-        />
-      </g>
-    );
-  };
-
   const CustomizedLabel = (props: any) => {
     const { x, y, width, payload } = props;
     const successPercentage = payload?.successPercentage;
-
+  
+    // Log the payload for debugging
+    console.log("CustomizedLabel payload:", payload);
+  
     return (
       <text
-        x={x}
-        y={y}
+        x={x + width + 5} // Adjust position slightly to the right of the bar
+        y={y + 10} // Center vertically with the bar
         dy={-4}
         fill="var(--main)"
         fontSize={10}
-        textAnchor="middle"
+        textAnchor="start"
       >
         {successPercentage !== undefined ? `${successPercentage}%` : ""}
       </text>
@@ -76,7 +60,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
             <svg width="10" height="10" style={{ marginRight: 5 }}>
               <circle cx="5" cy="5" r="5" fill={entry.color} />
             </svg>
-            <span style={{ color: "#333", fontSize: "14px" }}>
+            <span style={{ color: "var(--main)", fontSize: "14px" }}>
               {entry.value}
             </span>
           </li>
@@ -99,14 +83,15 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           left: 0,
         }}
       >
-        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.6} />
+        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.5} />
         <Legend content={<CustomLegend />} align="left" verticalAlign="top" />
         <Tooltip />
-        <XAxis type="number" />
+        <XAxis type="number" tick={{ fill: "var(--main)" }} />
         <YAxis
           dataKey="provider"
           type="category"
           className="text-[16px]"
+          tick={{ fill: "var(--main)" }}
           tickLine={false}
           width={130}
         />
@@ -114,7 +99,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
         <Bar
           dataKey="success"
           stackId="a"
-          fill="#0052CE"
+          fill="var(--bar-1)"
           name="Success"
           background={{ fill: "rgba(230, 238, 250, 0.6)" }}
           radius={[0, 5, 5, 0]}
@@ -123,7 +108,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
         <Bar
           dataKey="declined"
           stackId="a"
-          fill="#8C8AFE"
+          fill="var(--bar-2)"
           name="Declined"
           background={{ fill: "rgba(230, 238, 250, 0.6)" }}
           radius={[0, 5, 5, 0]}

@@ -8,7 +8,7 @@ import { DateRange } from "react-day-picker";
 import SimpleBarChart from "@/components/shared/MainDashboard/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/MainDashboard/Charts/VerticalComposedChart";
 import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
-import DashSideTable from "@/components/shared/Transactions/DashSideTable";
+import DashSideTable from "@/components/shared/Transactions/GeoDashSideTable";
 import { DashTableData } from "@/types";
 import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
 
@@ -16,8 +16,15 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/stores/StoreProvider";
 import LinearChart from "@/components/shared/MainDashboard/Charts/LinearChart";
 import Alert from "../Alert";
-import { ProviderStats, Rate, Volume } from "@/types/statistics";
-
+import {
+  Geo,
+  MerchantStat,
+  ProviderStats,
+  Rate,
+  Volume,
+} from "@/types/statistics";
+import GeoDashSideTable from "@/components/shared/Transactions/GeoDashSideTable";
+import MerchantDashSideTable from "../Transactions/MerchantDashSideTable";
 
 const MainDashboardWrapper = () => {
   const { alertStore } = useStore();
@@ -34,12 +41,13 @@ const MainDashboardWrapper = () => {
 
   const [grossVolumeChart, setGrossVolumeChart] = useState<Volume>();
   const [paymentsRateBarChart, setPaymentsRateBarChart] = useState<Rate>();
-  const [providersSuccessRateChart, setProvidersSuccessRateChart] =
-    useState<ProviderStats[]>([]);
-  //   const [countryTableData, setCountryTableData] = useState<DashTableData[]>([]);
-  // const [merchnatsTableData, setMerchantsTableData] = useState<DashTableData[]>(
-  //   [],
-  // );
+  const [providersSuccessRateChart, setProvidersSuccessRateChart] = useState<
+    ProviderStats[]
+  >([]);
+  const [countryTableData, setCountryTableData] = useState<Geo>();
+  const [merchnatsTableData, setMerchantsTableData] = useState<MerchantStat[]>(
+    [],
+  );
 
   const fetchStatisticsData = async () => {
     setLoading(true);
@@ -74,9 +82,11 @@ const MainDashboardWrapper = () => {
         setGrossVolumeChart(res.volume);
         setPaymentsRateBarChart(res.rate);
         setProvidersSuccessRateChart(res.provider);
+        setCountryTableData(res.geo);
+        setMerchantsTableData(res.merchantStats);
 
         setLoading(false);
-        console.log("statistics data", res.provider);
+        console.log("statistics data", res);
       } else {
         alertStore.setAlert("warning", "Analitycs data response failed.");
       }
@@ -168,28 +178,29 @@ const MainDashboardWrapper = () => {
                   : { from: "", to: "" }
               }
             >
-              <VerticalComposedChart
-                data={providersSuccessRateChart}
-              />
+              <VerticalComposedChart data={providersSuccessRateChart} />
             </ChartWrapper>
           )}
         </div>
 
         <div className="flex flex-col gap-4 xl:gap-10">
-          {/* <DashSideTable
+          <MerchantDashSideTable
             loading={isLoading}
             title="Merchants"
             name="Name"
             amount="Volume"
             data={merchnatsTableData}
           />
-          <DashSideTable
-            loading={isLoading}
-            title="Geo Data"
-            name="Country"
-            amount="%"
-            data={countryTableData}
-          /> */}
+
+          {countryTableData && (
+            <GeoDashSideTable
+              loading={isLoading}
+              title="Geo Data"
+              name="Country"
+              amount="%"
+              data={countryTableData.countryStats}
+            />
+          )}
         </div>
       </div>
 

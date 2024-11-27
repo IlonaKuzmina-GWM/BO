@@ -1,15 +1,16 @@
-import { DashTableData } from "@/types";
-import LoadingDashSideTableSkeleton from "../LoadingUISkeletons/LoadingDashSideTableSkeleton";
 
-interface IDashSideTableProps {
+import LoadingDashSideTableSkeleton from "../LoadingUISkeletons/LoadingDashSideTableSkeleton";
+import {  MerchantStat } from "@/types/statistics";
+
+type IDashSideTableProps = {
   title: string;
   name: string;
   amount: string;
-  data: DashTableData[];
+  data: MerchantStat[];
   loading: boolean;
 }
 
-const DashSideTable = ({
+const MerchantDashSideTable = ({
   title,
   name,
   amount,
@@ -30,16 +31,13 @@ const DashSideTable = ({
             <span>{amount}</span>
           </div>
           <div>
-            {data.map((item, index) => (
+            {data.map((item) => (
               <div
-                key={index}
+                key={item.merchantName}
                 className="flex justify-between p-[8px] text-main"
               >
-                <div>{item.name}</div>
-                <div className="ml-[10px]">
-                  {item.amount}
-                  {amount === "%" ? "%" : ""}
-                </div>
+                <div>{item. totalAmount}</div>
+                <div className="ml-[10px]">{item.totalAmount}</div>
               </div>
             ))}
           </div>
@@ -53,4 +51,4 @@ const DashSideTable = ({
   );
 };
 
-export default DashSideTable;
+export default MerchantDashSideTable;

@@ -1,4 +1,3 @@
-import { PureComponent, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -8,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  LabelList,
 } from "recharts";
 
 interface IVerticalComposedChart {
@@ -22,23 +22,20 @@ interface IVerticalComposedChart {
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
   
   const CustomizedLabel = (props: any) => {
-    const { x, y, width, payload } = props;
-    const successPercentage = payload?.successPercentage;
+    const { x, y, width, payload, value } = props;
 
-    // Debug the payload
-    console.log("CustomizedLabel payload:", payload);
+    // console.log("CustomizedLabel payload:", payload.value);
 
     return (
       <text
-        x={x + width + 5} 
-        y={y + 10} 
-        dy={-4}
+        x={x + width + 5}
+        y={y + 30}
         fill="var(--main)"
         fontSize={10}
         textAnchor="start"
       >
-        {successPercentage !== undefined && successPercentage !== null
-          ? `${successPercentage}%`
+        {value !== undefined && value !== null && value !== 0
+          ? `${value}%`
           : ""}
       </text>
     );
@@ -106,8 +103,10 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           name="Success"
           background={{ fill: "var(--chart-bg)" }}
           radius={[0, 5, 5, 0]}
-          label={<CustomizedLabel />}
-        />
+        >
+          <LabelList dataKey="successPercentage" content={CustomizedLabel} />
+        </Bar>
+
         <Bar
           dataKey="declined"
           stackId="a"

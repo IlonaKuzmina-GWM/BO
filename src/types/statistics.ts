@@ -42,6 +42,7 @@ export interface Geo {
   countryStats: GeoCountryStat[];
 }
 
+
 export interface GeoCountryStat {
   countryCode: string;
   percentage: number;

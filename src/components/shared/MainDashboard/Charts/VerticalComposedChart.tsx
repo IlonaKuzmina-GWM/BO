@@ -15,28 +15,31 @@ interface IVerticalComposedChart {
     provider: string;
     success: number;
     declined: number;
-    successPercentage?: number;
+    successPercentage: number;
   }[];
 }
 
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
+  
   const CustomizedLabel = (props: any) => {
     const { x, y, width, payload } = props;
     const successPercentage = payload?.successPercentage;
-  
-    // Log the payload for debugging
+
+    // Debug the payload
     console.log("CustomizedLabel payload:", payload);
-  
+
     return (
       <text
-        x={x + width + 5} // Adjust position slightly to the right of the bar
-        y={y + 10} // Center vertically with the bar
+        x={x + width + 5} 
+        y={y + 10} 
         dy={-4}
         fill="var(--main)"
         fontSize={10}
         textAnchor="start"
       >
-        { `${successPercentage}%`}
+        {successPercentage !== undefined && successPercentage !== null
+          ? `${successPercentage}%`
+          : ""}
       </text>
     );
   };

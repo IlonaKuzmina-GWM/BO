@@ -74,13 +74,19 @@ const SimpleBarChart = ({ data }: ISimpleBarChart) => {
         <Tooltip />
 
         <Bar
+          dataKey="declined"
+          fill="var(--bar-2)"
+          name="Declined"
+          radius={[5, 5, 0, 0]}
+        />
+
+        <Bar
           dataKey="success"
           fill="var(--bar-1)"
           name="Success"
           className="rounded-sm"
           radius={[5, 5, 0, 0]}
         />
-        <Bar dataKey="declined" fill="var(--bar-2)" name="Declined"       radius={[5, 5, 0, 0]}/>
       </BarChart>
     </ResponsiveContainer>
   );

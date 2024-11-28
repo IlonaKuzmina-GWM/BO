@@ -20,7 +20,6 @@ interface IVerticalComposedChart {
 }
 
 const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
-  
   const CustomizedLabel = (props: any) => {
     const { x, y, width, payload, value } = props;
 
@@ -30,7 +29,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
       <text
         x={x + width + 5}
         y={y + 30}
-        fill="var(--main)"
+        fill="var(--secondary)"
         fontSize={10}
         textAnchor="start"
       >
@@ -60,7 +59,7 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
             <svg width="10" height="10" style={{ marginRight: 5 }}>
               <circle cx="5" cy="5" r="5" fill={entry.color} />
             </svg>
-            <span style={{ color: "var(--main)", fontSize: "14px" }}>
+            <span style={{ color: "var(--secondary)", fontSize: "14px" }}>
               {entry.value}
             </span>
           </li>
@@ -83,10 +82,16 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
           left: 0,
         }}
       >
-        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.5} />
         <Legend content={<CustomLegend />} align="left" verticalAlign="top" />
+        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.5} />
+
         <Tooltip />
-        <XAxis type="number" tick={{ fill: "var(--main)" }} />
+        <XAxis
+          type="number"
+          tick={{ fill: "var(--secondary)" }}
+          height={30}
+          className="text-[10px]"
+        />
         <YAxis
           dataKey="provider"
           type="category"

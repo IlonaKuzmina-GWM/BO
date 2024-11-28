@@ -14,22 +14,21 @@ const ChartWrapper = ({
   shortOverview,
   children,
 }: IChartWrapper) => {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (date?: string | Date) => {
+    if (!date) return "N/A"; // Handle undefined dates
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) return "N/A"; // Handle invalid dates
     return new Intl.DateTimeFormat("en-GB", {
       day: "2-digit",
       month: "2-digit",
-    }).format(date);
+    }).format(parsedDate); // Format as DD/MM
   };
 
-  const formattedInterval = `${formatDate(dataInterval.from)} - ${formatDate(
-    dataInterval.to,
-  )}`;
-
+  const formattedInterval = `${formatDate(dataInterval.from)} - ${formatDate(dataInterval.to)}`;
   // console.log("dataInterval", dataInterval);
   return (
-    <div className="h-full rounded-sm bg-white p-5 shadow-sm">
-      <div className="flex flex-col justify-between gap-4 md:flex-row ps-[63px]">
+    <div className="h-full rounded-sm bg-white px-5 pt-5 shadow-sm">
+      <div className="flex flex-col justify-between gap-4 ps-[63px] md:flex-row">
         <div>
           <h2 className="text-2xl font-semibold text-main">{title}</h2>
 

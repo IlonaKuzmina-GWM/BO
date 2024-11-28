@@ -1,3 +1,4 @@
+import { formatXAxis } from "@/helpers/formatXAxis";
 import {
   BarChart,
   Bar,
@@ -18,14 +19,6 @@ interface ISimpleBarChart {
 }
 
 const SimpleBarChart = ({ data }: ISimpleBarChart) => {
-  const formatXAxis = (tickItem: Date) => {
-    const date = new Date(tickItem);
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-    });
-  };
-
   const CustomLegend = (props: any) => {
     const { payload } = props;
     return (
@@ -45,7 +38,7 @@ const SimpleBarChart = ({ data }: ISimpleBarChart) => {
             <svg width="10" height="10" style={{ marginRight: 5 }}>
               <circle cx="5" cy="5" r="5" fill={entry.color} />
             </svg>
-            <span style={{ color: "var(--main)", fontSize: "14px" }}>
+            <span style={{ color: "var(--secondary)", fontSize: "14px" }}>
               {entry.value}
             </span>
           </li>
@@ -55,36 +48,39 @@ const SimpleBarChart = ({ data }: ISimpleBarChart) => {
   };
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={410}>
       <BarChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 5 }}>
         <Legend content={<CustomLegend />} align="left" verticalAlign="top" />
-        <CartesianGrid />
+        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.5} />
+
         <XAxis
           dataKey="date"
           tickFormatter={formatXAxis}
-          tick={{ fill: "var(--main)" }}
-          className="text-[10px] leading-5 text-secondary"
+          tick={{ fill: "var(--secondary)" }}
+          className="text-[10px]"
+          height={30}
         />
         <YAxis
           dataKey="success"
           domain={[0, "dataMax + 1"]}
-          tick={{ fill: "var(--main)" }}
-          className="text-[10px] leading-5 text-secondary"
+          tick={{ fill: "var(--secondary)" }}
+          className="text-[10px]"
+          width={30}
         />
         <Tooltip />
-
-        <Bar
-          dataKey="declined"
-          fill="var(--bar-2)"
-          name="Declined"
-          radius={[5, 5, 0, 0]}
-        />
 
         <Bar
           dataKey="success"
           fill="var(--bar-1)"
           name="Success"
           className="rounded-sm"
+          radius={[5, 5, 0, 0]}
+        />
+
+        <Bar
+          dataKey="declined"
+          fill="var(--bar-2)"
+          name="Declined"
           radius={[5, 5, 0, 0]}
         />
       </BarChart>

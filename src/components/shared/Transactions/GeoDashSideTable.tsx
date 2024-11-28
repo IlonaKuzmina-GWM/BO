@@ -32,7 +32,7 @@ const GeoDashSideTable = ({
           </div>
           <div className="dash_select-options max-h-[500px] overflow-y-auto">
             {data
-              .sort((a, b) => a.percentage - b.percentage)
+              .sort((a, b) => b.percentage - a.percentage)
               .map((item) => (
                 <div
                   key={item.countryCode}

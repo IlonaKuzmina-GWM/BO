@@ -43,11 +43,11 @@ const SiderBar: React.FC = observer(() => {
       link: "/dashboard/siins",
       iconLink: "siins",
     },
-    // {
-    //   name: "Generate CSV",
-    //   link: "/dashboard/generateCSV",
-    //   iconLink: "generateCSV",
-    // },
+    {
+      name: "Generate CSV",
+      link: "/dashboard/generateCSV",
+      iconLink: "generateCSV",
+    },
     // {
     //   name: "Settlement",
     //   link: "/dashboard/settlement",

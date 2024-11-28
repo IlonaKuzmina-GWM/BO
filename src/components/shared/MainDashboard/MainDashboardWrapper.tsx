@@ -25,6 +25,7 @@ import {
 } from "@/types/statistics";
 import GeoDashSideTable from "@/components/shared/Transactions/GeoDashSideTable";
 import MerchantDashSideTable from "../Transactions/MerchantDashSideTable";
+import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 
 const MainDashboardWrapper = () => {
   const { alertStore } = useStore();
@@ -45,7 +46,7 @@ const MainDashboardWrapper = () => {
     ProviderStats[]
   >([]);
   const [countryTableData, setCountryTableData] = useState<Geo>();
-  const [merchnatsTableData, setMerchantsTableData] = useState<MerchantStat[]>(
+  const [merchantsTableData, setMerchantsTableData] = useState<MerchantStat[]>(
     [],
   );
 
@@ -54,9 +55,9 @@ const MainDashboardWrapper = () => {
 
     let createdDateRange: [number, number] | undefined;
 
-    if (selectedDateRange?.from && selectedDateRange.to) {
+    if (selectedDateRange?.from && selectedDateRange?.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
+      adjustedToDate.setHours(23, 59, 59, 999); // Ensure the end of the day
       createdDateRange = [
         selectedDateRange.from.getTime(),
         adjustedToDate.getTime(),
@@ -86,9 +87,9 @@ const MainDashboardWrapper = () => {
         setMerchantsTableData(res.merchantStats);
 
         setLoading(false);
-        console.log("statistics data", res);
+        console.log("Statistics data", res);
       } else {
-        alertStore.setAlert("warning", "Analitycs data response failed.");
+        alertStore.setAlert("warning", "Analytics data response failed.");
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
@@ -101,7 +102,16 @@ const MainDashboardWrapper = () => {
 
   const handleIntervalChange = (interval: string) => {
     setSelectedInterval(interval);
-    setSelectedDateRange(undefined);
+
+    const startDate = getStartDateForInterval(interval);
+    const now = new Date();
+
+    if (startDate) {
+      const dateRange: DateRange = { from: startDate, to: now };
+      setSelectedDateRange(dateRange);
+    } else {
+      setSelectedDateRange(undefined);
+    }
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
@@ -118,7 +128,10 @@ const MainDashboardWrapper = () => {
           onIntervalChange={handleIntervalChange}
         />
 
-        <DatePickerWithRange onDateChange={handleDateRangeChange} />
+        <DatePickerWithRange
+          initialDate={selectedDateRange}
+          onDateChange={handleDateRangeChange}
+        />
       </div>
       <div className="flex flex-row gap-4 xl:gap-10">
         <div className="flex w-full max-w-[1149px] flex-col gap-4 xl:gap-10">
@@ -184,13 +197,13 @@ const MainDashboardWrapper = () => {
         </div>
 
         <div className="flex flex-col gap-4 xl:gap-10">
-          {merchnatsTableData && (
+          {merchantsTableData && (
             <MerchantDashSideTable
               loading={isLoading}
               title="Merchants"
               name="Name"
               amount="Volume"
-              data={merchnatsTableData}
+              data={merchantsTableData}
             />
           )}
 

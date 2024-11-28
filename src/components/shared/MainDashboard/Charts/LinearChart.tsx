@@ -1,3 +1,4 @@
+import { formatXAxis } from "@/helpers/formatXAxis";
 import {
   LineChart,
   Line,
@@ -18,60 +19,80 @@ interface ILinearChart {
   }[];
 }
 
-const formatXAxis = (tickItem: string) => {
-  try {
-    const date = new Date(tickItem);
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-    });
-  } catch (error) {
-    console.error("Invalid date:", tickItem);
-    return "";
-  }
-};
-
 const LinearChart = ({ data }: ILinearChart) => {
+  const CustomLegend = (props: any) => {
+    const { payload } = props;
+    return (
+      <ul
+        style={{ display: "flex", listStyle: "none", padding: 0, margin: 20 }}
+      >
+        {payload.map((entry: any, index: number) => (
+          <li
+            key={`item-${index}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginRight: 16,
+              cursor: "pointer",
+            }}
+          >
+            <svg width="10" height="10" style={{ marginRight: 5 }}>
+              <circle cx="5" cy="5" r="5" fill={entry.color} />
+              <circle cx="5" cy="5" r="2" fill={"var(--white)"} />
+            </svg>
+            <span style={{ color: "var(--secondary)", fontSize: "14px" }}>
+              {entry.value}
+            </span>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
-    <div style={{ width: "100%", height: "407px" }}>
-      <ResponsiveContainer>
-        <LineChart data={data}>
-          <CartesianGrid />
-          <XAxis
-            dataKey="date"
-            tickFormatter={formatXAxis}
-            className="text-[10px] leading-5 text-secondary"
-          />
-          <YAxis
-            yAxisId="left"
-            className="text-[10px] leading-5 text-secondary"
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            className="text-[10px] leading-5 text-secondary"
-          />
-          <Tooltip />
-          <Legend align="left" verticalAlign="top"/>
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="vol"
-            stroke="#007DC0"
-            strokeDasharray="5 5"
-            activeDot={{ r: 8 }}
-            name="Volume"
-          />
-          <Line
-            yAxisId="right"
-            type="monotone"
-            dataKey="transaction"
-            stroke="#FF6D4B"
-            name="Transactions"
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer width="100%" height={410}>
+      <LineChart data={data}  margin={{ top: 20, right: 0, left: 0, bottom: 5 }}>
+        <Legend content={<CustomLegend />} align="left" verticalAlign="top" />
+        <CartesianGrid strokeDasharray="1 0" fillOpacity={0.5} />
+        <Tooltip />
+
+        <XAxis
+          dataKey="date"
+          tick={{ fill: "var(--secondary)" }}
+          tickFormatter={formatXAxis}
+          className="text-[10px] "
+          height={30}
+        />
+        <YAxis
+         tick={{ fill: "var(--secondary)" }}
+          yAxisId="left"
+          className="text-[10px]"
+        />
+        <YAxis
+         tick={{ fill: "var(--secondary)" }}
+          yAxisId="right"
+          orientation="right"
+          className="text-[10px] "
+        />
+
+        <Line
+          yAxisId="left"
+          dataKey="vol"
+          stroke="#007DC0"
+          strokeDasharray="5 5"
+          activeDot={{ r: 8 }}
+          name="Volume"
+          strokeWidth={2}
+        />
+        <Line
+          yAxisId="right"
+          dataKey="transaction"
+          stroke="#FF6D4B"
+          name="Transactions"
+          strokeWidth={2}
+        />
+      </LineChart>
+    </ResponsiveContainer>
   );
 };
 

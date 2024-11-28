@@ -18,7 +18,7 @@ const GeoDashSideTable = ({
   loading,
 }: IDashSideTableProps) => {
   return (
-    <div className="rounded-4px h-fit min-w-[300px] bg-white p-[20px] ">
+    <div className="rounded-4px h-fit min-w-[300px] bg-white p-[20px]">
       <h3 className="p-[8px] pb-[16px] text-[20px] font-medium text-main">
         {title}
       </h3>
@@ -30,16 +30,18 @@ const GeoDashSideTable = ({
             <span>{name}</span>
             <span>{amount}</span>
           </div>
-          <div className="max-h-[500px] overflow-y-auto dash_select-options">
-            {data.map((item) => (
-              <div
-                key={item.countryCode}
-                className="flex justify-between p-[8px] text-main"
-              >
-                <div>{item.countryCode}</div>
-                <div className="ml-[10px]">{item.percentage}%</div>
-              </div>
-            ))}
+          <div className="dash_select-options max-h-[500px] overflow-y-auto">
+            {data
+              .sort((a, b) => a.percentage - b.percentage)
+              .map((item) => (
+                <div
+                  key={item.countryCode}
+                  className="flex justify-between p-[8px] text-main"
+                >
+                  <div>{item.countryCode}</div>
+                  <div className="ml-[10px]">{item.percentage}%</div>
+                </div>
+              ))}
           </div>
         </>
       ) : (

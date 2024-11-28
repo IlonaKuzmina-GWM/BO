@@ -31,7 +31,7 @@ const MerchantDashSideTable = ({
             <span>{amount}</span>
           </div>
           <div className="max-h-[500px] overflow-y-auto dash_select-options">
-            {data.map((item) => (
+            {data.sort((a,b) => b.totalAmount - a.totalAmount).map((item) => (
               <div
                 key={item.merchantName}
                 className="flex justify-between p-[8px] text-main"

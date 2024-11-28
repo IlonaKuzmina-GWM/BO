@@ -184,13 +184,15 @@ const MainDashboardWrapper = () => {
         </div>
 
         <div className="flex flex-col gap-4 xl:gap-10">
-          <MerchantDashSideTable
-            loading={isLoading}
-            title="Merchants"
-            name="Name"
-            amount="Volume"
-            data={merchnatsTableData}
-          />
+          {merchnatsTableData && (
+            <MerchantDashSideTable
+              loading={isLoading}
+              title="Merchants"
+              name="Name"
+              amount="Volume"
+              data={merchnatsTableData}
+            />
+          )}
 
           {countryTableData && (
             <GeoDashSideTable

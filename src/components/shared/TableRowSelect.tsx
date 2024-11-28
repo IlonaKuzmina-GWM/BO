@@ -55,6 +55,7 @@ const TableRowSelect = ({
 
   const selectValue = (itemValue: number) => {
     setSelectedValue(itemValue);
+    setSearchTerm("");
     setIsOpen(false);
 
     if (onSelectHandler) {

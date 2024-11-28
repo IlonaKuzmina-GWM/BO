@@ -9,20 +9,20 @@ import { useState } from "react";
 interface IUserRowProps {
   user: User;
   merchantsList: MerchantList[];
-  updateMerchant: (id: number, merchant: number) => void;
+  updateMerchant: (id: number, merchantLabel: string) => void;
 }
 
 const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
-  const [selectedMerchant, setSelectedMerchant] = useState<number>(
-    user.merchant?.id,
+  const [selectedMerchant, setSelectedMerchant] = useState<string>(
+    user.merchant?.label,
   );
 
   const getSuccessAndErrorClass = (is: boolean) => {
     return is === false ? "text-success bg-successBg" : "text-error bg-errorBg";
   };
 
-  const setSelectedValues = (selectedValue: number) => {
-    updateMerchant(user.id, selectedValue);
+  const setSelectedValues = (selectedLabel: string) => {
+    updateMerchant(user.id, selectedLabel);
   };
 
   // const handleMerchantSelect = async (key: number, changedUserId: number) => {
@@ -72,8 +72,9 @@ const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
           value={selectedMerchant}
           label={"All Merchants"}
           items={merchantsList.map((merchant) => ({
-            value: merchant.merchant_id,
-            label: merchant.merchant_name,
+            value: merchant.id,
+            label: merchant.label,
+            name: merchant.name
           }))}
           searchInput
           onSelectHandler={setSelectedValues}

@@ -51,19 +51,19 @@ const AllUser = () => {
 
   const fetchMerchantsListData = async () => {
     try {
-      const response = await fetch("/api/get-filters", {
-        method: "GET",
+      const response = await fetch("/api/post-merchants", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ search: "" }),
       });
 
       if (response.ok) {
         const res = await response.json();
-
-        setMerchantsList(res.merchants);
+        setMerchantsList(res);
       } else {
-        alertStore.setAlert("warning", "Get filters response failed.");
+        alertStore.setAlert("warning", "All merchants fetching failed.");
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
@@ -87,12 +87,32 @@ const AllUser = () => {
     />
   );
 
-  const updateMerchant = (id: number, merchant: number) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === id ? { ...user, merchant: merchant } : user,
-      ),
-    );
+  const updateMerchant = async (id: number, merchantLabel: string) => {
+    console.log('merchantLabel: ', merchantLabel);
+    console.log('id: ', id);
+    try {
+      const response = await fetch("/api/post-manager-update-merchant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: id, merchantLabel }),
+      });
+
+      if (response.ok) {
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === id ? { ...user, merchant: merchantLabel } : user,
+          ),
+        );
+      } else {
+        alertStore.setAlert("warning", "All merchants fetching failed.");
+      }
+    } catch (error) {
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const totalPages = Math.ceil(users.length / limit);

@@ -8,14 +8,15 @@ import Search from "./Search";
 interface IItem {
   value: number;
   label: string;
+  name: string;
 }
 
 interface ITableRowSelect {
-  value: number;
+  value: string;
   label: string;
   items: IItem[];
   searchInput: boolean;
-  onSelectHandler: (selectedValue: number) => void;
+  onSelectHandler: (selectedLabel: string) => void;
 }
 
 const TableRowSelect = ({
@@ -25,7 +26,7 @@ const TableRowSelect = ({
   searchInput,
   onSelectHandler,
 }: ITableRowSelect) => {
-  const [selectedValue, setSelectedValue] = useState<number>(value);
+  const [selectedValue, setSelectedValue] = useState<string>(value);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -53,13 +54,13 @@ const TableRowSelect = ({
     }
   }, [isOpen]);
 
-  const selectValue = (itemValue: number) => {
-    setSelectedValue(itemValue);
+  const selectValue = (label: string) => {
+    setSelectedValue(label);
     setSearchTerm("");
     setIsOpen(false);
 
     if (onSelectHandler) {
-      onSelectHandler(itemValue);
+      onSelectHandler(label);
     }
   };
 
@@ -79,7 +80,7 @@ const TableRowSelect = ({
         className="shadowed relative w-full rounded-sm border border-divider p-2 text-start text-sm text-main"
       >
         {selectedValue
-          ? items.find((item) => item.value === selectedValue)?.label ||
+          ? items.find((item) => item.label === selectedValue)?.label ||
             "No data"
           : label}
 
@@ -101,15 +102,15 @@ const TableRowSelect = ({
             {filteredItems.map((item) => (
               <div
                 key={item.value}
-                onClick={() => selectValue(item.value)}
+                onClick={() => selectValue(item.label)}
                 className={cn(
                   "cursor-pointer px-3 py-2 transition-all duration-300 hover:bg-divider",
-                  selectedValue === item.value &&
+                  selectedValue === item.label &&
                     "bg-accent text-accent-foreground",
                 )}
               >
                 <div className="flex items-center">
-                  {selectedValue === item.value && (
+                  {selectedValue === item.label && (
                     <Check className="text-accent-foreground h-4 w-4" />
                   )}
                   <span className="ml-2">{item.label}</span>

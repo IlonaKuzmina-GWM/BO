@@ -398,8 +398,8 @@ const TransactionsWrapper = observer(() => {
                 value={selectedMerchants}
                 label={"Select Merchants"}
                 items={merchantsList.map((merchant) => ({
-                  value: merchant.merchant_id,
-                  label: merchant.merchant_name,
+                  value: merchant.id,
+                  label: merchant.name,
                 }))}
                 searchInput
                 searchContext="merchant"

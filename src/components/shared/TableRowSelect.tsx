@@ -8,15 +8,16 @@ import Search from "./Search";
 interface IItem {
   value: number;
   label: string;
-  name: string;
+  name?: string;
 }
 
 interface ITableRowSelect {
-  value: string;
+  value: string | number;
   label: string;
   items: IItem[];
   searchInput: boolean;
-  onSelectHandler: (selectedLabel: string) => void;
+  onSelectHandler?: (selectedValue: number) => void;
+  onSelectStringHandler?: (selectedValue: string) => void;
 }
 
 const TableRowSelect = ({
@@ -25,8 +26,9 @@ const TableRowSelect = ({
   items,
   searchInput,
   onSelectHandler,
+  onSelectStringHandler,
 }: ITableRowSelect) => {
-  const [selectedValue, setSelectedValue] = useState<string>(value);
+  const [selectedValue, setSelectedValue] = useState<string | number>(value);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -54,13 +56,15 @@ const TableRowSelect = ({
     }
   }, [isOpen]);
 
-  const selectValue = (label: string) => {
-    setSelectedValue(label);
+  const selectValue = (value: number | string) => {
+    setSelectedValue(value);
     setSearchTerm("");
     setIsOpen(false);
 
-    if (onSelectHandler) {
-      onSelectHandler(label);
+    if (onSelectHandler && typeof value === 'number') {
+      onSelectHandler(value);
+    } else if (onSelectStringHandler && typeof value === 'string') {
+      onSelectStringHandler(value);
     }
   };
 

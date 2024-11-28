@@ -88,8 +88,6 @@ const AllUser = () => {
   );
 
   const updateMerchant = async (id: number, merchantLabel: string) => {
-    console.log('merchantLabel: ', merchantLabel);
-    console.log('id: ', id);
     try {
       const response = await fetch("/api/post-manager-update-merchant", {
         method: "POST",

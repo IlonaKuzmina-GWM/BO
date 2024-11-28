@@ -82,7 +82,7 @@ const DashSelectValueNumber = ({
   };
 
   const filteredItems = items.filter((item) =>
-    item.label.toLowerCase().includes(searchTerm.toLowerCase()),
+    item.label?.toLowerCase().includes(searchTerm?.toLowerCase()),
   );
 
   const handleSearch = (term: string) => {

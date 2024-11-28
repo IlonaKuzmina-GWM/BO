@@ -25,35 +25,6 @@ const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
     updateMerchant(user.id, selectedLabel);
   };
 
-  // const handleMerchantSelect = async (key: number, changedUserId: number) => {
-  //   const merchant = dropDownMerchants.value.find(
-  //     (mer: any) => mer.key === key,
-  //   );
-
-  //   const response: any = await api(`/manager/user/merchant`, {
-  //     method: "POST",
-  //     body: {
-  //       userId: changedUserId,
-  //       merchantLabel: merchant.label,
-  //     },
-  //   });
-
-  //   if (response.success) {
-  //     const userList = filteredStatusState.value
-  //       ? filteredUsers.value
-  //       : originalUsers.value;
-  //     const user = userList.find((user: User) => user.id === changedUserId);
-  //     if (user) {
-  //       user.merchant = merchant;
-  //       console.log(`Successfully updated`);
-  //     } else {
-  //       console.error(`Didnt find user. Reload the page`);
-  //     }
-  //   } else {
-  //     console.error(`Oops! Something went wrong`);
-  //   }
-  // };
-
   return (
     <>
       <td className="pl-3 pr-2 lg:pl-8">{user.id}</td>
@@ -77,7 +48,7 @@ const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
             name: merchant.name
           }))}
           searchInput
-          onSelectHandler={setSelectedValues}
+          onSelectStringHandler={setSelectedValues}
         />
       </td>
       <td className="border-x border-hoverBg p-2 text-center lowercase">

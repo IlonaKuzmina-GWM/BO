@@ -87,7 +87,7 @@ const MainDashboardWrapper = () => {
         setMerchantsTableData(res.merchantStats);
 
         setLoading(false);
-        console.log("Statistics data", res);
+        alertStore.setAlert("success", "Analytics data loaded successfully!");
       } else {
         alertStore.setAlert("warning", "Analytics data response failed.");
       }
@@ -219,9 +219,6 @@ const MainDashboardWrapper = () => {
         </div>
       </div>
 
-      {alertStore.alertMessage && alertStore.alertType && (
-        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
-      )}
     </div>
   );
 };

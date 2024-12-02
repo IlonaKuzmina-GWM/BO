@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
 
   try {
 
-    const apiUrl = userUrl("/filters");
+    const apiUrl = userUrl("/merchant/getshownstate");
 
     const data = await fetch(apiUrl, {
       method: "GET",
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
       return new NextResponse(
         JSON.stringify({
-          error: errorData.error || "Failed to fetch filters data",
+          error: errorData.error || "Failed to fetch keys shown state data",
         }),
         {
           status: data.status,
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(responseData);
   } catch (error) {
-    console.error("Failed to process filters request", error);
+    console.error("Failed to process keys shown state request", error);
     return new NextResponse(
       JSON.stringify({
         success: false,

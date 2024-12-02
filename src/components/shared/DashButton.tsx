@@ -19,7 +19,7 @@ const DashButton = ({
 }: IDashButton) => {
   const typeStyles = {
     filled:
-      "bg-blue500 text-white hover:bg-blue600 active:bg-blue700 disabled:bg-fill",
+      "bg-blue500 text-white hover:bg-blue600 active:bg-blue700 disabled:bg-fill disabled:text-secondary",
     empty:
       "bg-blue50 text-blue500 hover:bg-blue100 active:bg-blue200 disabled:bg-fill",
   };

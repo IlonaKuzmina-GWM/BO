@@ -7,11 +7,13 @@ const centerStyles = "h-screen flex justify-center items-center";
 const inputStyles = "mb-5 bg-[#e9e8e8] p-5 rounded-[20px] text-black";
 
 export default function VerifyTokenPage() {
-    const url = new URL(window.location.href);
-    const splittedPath = url.pathname.split('/');
+  const url = new URL(window.location.href);
+  const splittedPath = url.pathname.split("/");
   const { alertStore } = useStore();
   const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
-  const [token, setToken] = useState<string | null>(splittedPath[splittedPath.length - 1] || null);
+  const [token, setToken] = useState<string | null>(
+    splittedPath[splittedPath.length - 1] || null,
+  );
   const [password, setPassword] = useState<string>("");
   const [repeatPassword, setRepeatPassword] = useState<string>("");
 
@@ -53,13 +55,16 @@ export default function VerifyTokenPage() {
 
   const handleButton = () => {
     if (!password || !repeatPassword) {
-      alertStore.setAlert("error", `Please, provide password and repeat password`);
+      alertStore.setAlert(
+        "error",
+        `Please, provide password and repeat password`,
+      );
     }
   };
 
   return (
-    <div className={`${centerStyles} text-center flex flex-col`}>
-      <h1 className="text-[40px] mb-[20px]">Setup your password</h1>
+    <div className={`${centerStyles} flex flex-col text-center`}>
+      <h1 className="mb-[20px] text-[40px]">Setup your password</h1>
       <div className="flex flex-col">
         <input
           type="password"
@@ -78,7 +83,7 @@ export default function VerifyTokenPage() {
       </div>
       <button
         onClick={handleButton}
-        className="bg-[#e9e8e8] text-black rounded-[20px] py-[5px] px-[30px] text-[20px] transition-all hover:scale-95"
+        className="rounded-[20px] bg-[#e9e8e8] px-[30px] py-[5px] text-[20px] text-black transition-all hover:scale-95"
         type="submit"
       >
         Finish

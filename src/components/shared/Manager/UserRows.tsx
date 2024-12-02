@@ -2,13 +2,13 @@
 
 import TableRowSelect from "@/components/shared/TableRowSelect";
 import { formatDateTime } from "@/helpers/dateFormater";
-import { MerchantList } from "@/types/merchant";
+import { Merchant } from "@/types/merchant";
 import { User } from "@/types/user";
 import { useState } from "react";
 
 interface IUserRowProps {
   user: User;
-  merchantsList: MerchantList[];
+  merchantsList: Merchant[];
   updateMerchant: (id: number, merchantLabel: string) => void;
 }
 

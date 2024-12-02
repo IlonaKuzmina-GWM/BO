@@ -61,10 +61,6 @@ const ManagerPage = observer(() => {
         {activeTab === "All Users" && <AllUsers />}
         {activeTab === "KYC User List" && <KYCUserList />}
       </div>
-
-      {alertStore.alertMessage && alertStore.alertType && (
-        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
-      )}
     </div>
   );
 });

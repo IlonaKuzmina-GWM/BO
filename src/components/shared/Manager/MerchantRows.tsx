@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Switcher from "@/components/shared/Switcher";
 import TableRowSelect from "@/components/shared/TableRowSelect";
-import { Merchant, MerchantList } from "@/types/merchant";
+import { Merchant } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 import { Store } from "@/types/store";
 

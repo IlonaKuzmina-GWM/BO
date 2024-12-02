@@ -243,9 +243,6 @@ const SiinsWrapper = observer(() => {
         </div>
       </div>
 
-      {alertStore.alertMessage && alertStore.alertType && (
-        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
-      )}
     </div>
   );
 });

@@ -48,7 +48,7 @@ export type MerchantStats = {
 };
 
 export type MerchantList = {
-  id: number;
-  name: string;
+  merchant_id: number;
+  merchant_name: string;
   label: string;
 };

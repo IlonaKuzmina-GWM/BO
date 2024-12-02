@@ -79,7 +79,7 @@ const TransactionsWrapper = observer(() => {
       if (response.ok) {
         const res = await response.json();
 
-        // console.log("filterss data", res);
+        console.log("filterss data", res);
 
         setMerchantsList(res.merchants);
         setProvidersList(res.providers);
@@ -368,6 +368,8 @@ const TransactionsWrapper = observer(() => {
     fetchTransactionsData();
   };
 
+  console.log("do i see merchant list", merchantsList);
+
   return (
     <div className="">
       <div className="flex flex-row justify-between gap-6">
@@ -398,8 +400,8 @@ const TransactionsWrapper = observer(() => {
                 value={selectedMerchants}
                 label={"Select Merchants"}
                 items={merchantsList.map((merchant) => ({
-                  value: merchant.id,
-                  label: merchant.name,
+                  value: merchant.merchant_id,
+                  label: merchant.merchant_name,
                 }))}
                 searchInput
                 searchContext="merchant"
@@ -483,10 +485,6 @@ const TransactionsWrapper = observer(() => {
           onPageChange={setCurrentPage}
         />
       </div>
-
-      {alertStore.alertMessage && alertStore.alertType && (
-        <Alert type={alertStore.alertType} message={alertStore.alertMessage} />
-      )}
     </div>
   );
 });

@@ -11,8 +11,7 @@ import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
 import LoadingAllUsersSkeleton from "../LoadingUISkeletons/LoadingAllUsersSkeleton";
 import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
-import { observable } from "mobx";
-import { MerchantList } from "@/types/merchant";
+import { Merchant } from "@/types/merchant";
 import PaginationComponent from "../PaginationComponent";
 
 const AllUser = () => {
@@ -23,7 +22,7 @@ const AllUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
 
-  const [merchantsList, setMerchantsList] = useState<MerchantList[]>([]);
+  const [merchantsList, setMerchantsList] = useState<Merchant[]>([]);
 
   const fetchAllUsersData = async () => {
     try {
@@ -38,7 +37,6 @@ const AllUser = () => {
         const res = await response.json();
 
         setUsers(res);
-        console.log("users data", res);
       } else {
         alertStore.setAlert("warning", "Data feching failed.");
       }
@@ -61,6 +59,7 @@ const AllUser = () => {
 
       if (response.ok) {
         const res = await response.json();
+
         setMerchantsList(res);
       } else {
         alertStore.setAlert("warning", "All merchants fetching failed.");

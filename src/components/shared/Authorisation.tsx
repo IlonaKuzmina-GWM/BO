@@ -41,8 +41,8 @@ const Autorisation = () => {
       });
 
       if (response.ok) {
-        getProfile();
         setNotification({ success: true, message: "Login successful!" });
+        getProfile();
       } else {
         setNotification({ success: false, message: "Login failed" });
       }

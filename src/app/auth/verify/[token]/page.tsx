@@ -7,15 +7,22 @@ const centerStyles = "h-screen flex justify-center items-center";
 const inputStyles = "mb-5 bg-[#e9e8e8] p-5 rounded-[20px] text-black";
 
 export default function VerifyTokenPage() {
-  const url = new URL(window.location.href);
-  const splittedPath = url.pathname.split("/");
   const { alertStore } = useStore();
   const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
   const [token, setToken] = useState<string | null>(
-    splittedPath[splittedPath.length - 1] || null,
+    null);
+  const [ sessionToken, setSessionToken ] = useState<string | null>(null,
   );
   const [password, setPassword] = useState<string>("");
   const [repeatPassword, setRepeatPassword] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      const splittedPath = url.pathname.split('/');
+      setToken(splittedPath[splittedPath.length - 1] || null);
+    }
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -29,10 +36,10 @@ export default function VerifyTokenPage() {
           });
 
           if (response.ok) {
-            console.log("Response", response);
             setIsValidToken(true);
+            const responseData = await response.json();
+            setSessionToken(responseData.token);
           } else {
-            console.log("Response failed");
             setIsValidToken(false);
           }
         } catch (e: any) {
@@ -53,12 +60,36 @@ export default function VerifyTokenPage() {
     return <div className={`${centerStyles}`}>Invalid token.</div>;
   }
 
-  const handleButton = () => {
+  const handleButton = async () => {
     if (!password || !repeatPassword) {
-      alertStore.setAlert(
-        "error",
-        `Please, provide password and repeat password`,
-      );
+      alertStore.setAlert("error", `Please, provide password and repeat password`);
+    }
+
+    if (password !== repeatPassword) {
+      alertStore.setAlert("error", `Password missmatch`);
+    }
+
+    try {
+      const response = await fetch(`/api/post-setup-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password, repeatPassword, token: sessionToken }),
+      });
+
+      if (response.ok) {
+        console.log('ok');
+      } else {
+        if (response.status === 500) { // BE bug
+          alertStore.setAlert("success", `You successfully updated your password! Please log in`);
+          window.location.href = '/';
+        }
+        setIsValidToken(false);
+      }
+    } catch (e: any) {
+      console.error("Error while checking token: ", e.message);
+      setIsValidToken(false);
     }
   };
 

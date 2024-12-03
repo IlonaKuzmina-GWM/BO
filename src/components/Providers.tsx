@@ -1,8 +1,17 @@
 'use client';
 
-import React from 'react';
-import { StoreProvider } from '../stores/StoreProvider';
+import React, { useEffect } from 'react';
+import { useStore } from '../stores/StoreProvider';
+import { setupFetchInterceptor } from '@/utils/setupFetchInterceptor';
+import { useRouter } from 'next/navigation';
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  return <StoreProvider>{children}</StoreProvider>;
+export function FetchProvider({ children }: { children: React.ReactNode }) {
+  const { authStore } = useStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    setupFetchInterceptor(authStore, router);
+  }, [authStore, router]);
+
+  return <>{children}</>;
 }

@@ -1,34 +1,31 @@
 import { userUrl } from "@/helpers/useUrl";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const token = request.nextUrl.searchParams.get('token');
+    const body = await request.json();
 
-    if (!token) {
-      return new NextResponse(
-        JSON.stringify({ error: "Token parameter is missing" }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    const apiUrl = userUrl(`/auth/verify/${token}`);
+    const apiUrl = userUrl("/auth/password");
 
     const data = await fetch(apiUrl, {
-      method: "GET",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${body.token}`
+      },
+      body: JSON.stringify({
+        password: body.password,
+        repeatPassword: body.repeatPassword
+      }),
     });
 
     if (!data.ok) {
       const errorData = await data.json();
-      
+      console.log('errorData: ', errorData)
       return new NextResponse(
         JSON.stringify({
-          error: errorData.error || "Failed to get-verify-token",
+          error: errorData.error || errorData.message || "Failed to set up password",
         }),
         {
           status: data.status,
@@ -38,12 +35,13 @@ export async function GET(request: NextRequest) {
         },
       );
     }
-    
+
     const responseData = await data.json();
+    console.log('responseData: ', responseData)
 
     return NextResponse.json(responseData);
   } catch (error) {
-    console.error("Failed to process get-verify-token request", error);
+    console.error("Failed to process setup password request", error);
     return new NextResponse(
       JSON.stringify({
         success: false,

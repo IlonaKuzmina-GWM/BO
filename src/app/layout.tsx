@@ -4,7 +4,8 @@ import "./globals.css";
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/stores/constants";
 import { ThemeProvider } from "next-themes";
 import { cn } from "@/utils/utils";
-import { Providers } from "@/components/Providers";
+import { FetchProvider } from "@/components/Providers";
+import { StoreProvider } from "@/stores/StoreProvider";
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -47,7 +48,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Providers>{children} </Providers>
+          <StoreProvider>
+            <FetchProvider>
+              {children}
+            </FetchProvider>
+          </StoreProvider>
         </ThemeProvider>
       </body>
     </html>

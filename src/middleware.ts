@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
       const decoded = await verifyToken(authToken.value, process.env.JWT_SECRET as string) as unknown;
 
       if (typeof decoded === 'object' && decoded !== null && 'role' in decoded) {
-        const userRole = (decoded as { role: string }).role;
+        const userRole = (decoded as { role: string }).role.toLowerCase();
         
         if (!userRole) {
           const loginUrl = new URL("/", request.url);

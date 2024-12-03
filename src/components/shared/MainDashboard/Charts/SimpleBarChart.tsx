@@ -64,7 +64,8 @@ const SimpleBarChart = ({ data }: ISimpleBarChart) => {
           dataKey="success"
           domain={[
             0,
-            (dataMax: number) => Math.max(...data.map((d) => d.success + d.declined)),
+            (dataMax: number) =>
+              Math.max(...data.map((d) => Math.max(d.success, d.declined))) * 1.1,
           ]}
           tick={{ fill: "var(--secondary)" }}
           className="text-[10px]"

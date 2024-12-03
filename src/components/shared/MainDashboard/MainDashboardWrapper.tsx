@@ -1,21 +1,16 @@
 "use client";
 
 import ChartWrapper from "@/components/shared/MainDashboard/Charts/ChartWrapper";
-import DashPageTitle from "@/components/shared/DashPageTitle";
 import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
 import SimpleBarChart from "@/components/shared/MainDashboard/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/MainDashboard/Charts/VerticalComposedChart";
 import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
-import DashSideTable from "@/components/shared/Transactions/GeoDashSideTable";
-import { DashTableData } from "@/types";
 import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
 
-import { useRouter } from "next/navigation";
 import { useStore } from "@/stores/StoreProvider";
 import LinearChart from "@/components/shared/MainDashboard/Charts/LinearChart";
-import Alert from "../Alert";
 import {
   Geo,
   MerchantStat,

@@ -16,7 +16,6 @@ export default function DasboardLayout({
       </main>
 
       <RoleSwitcher />
-      <AllertWrapper />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { cn } from "@/utils/utils";
 import { FetchProvider } from "@/components/Providers";
 import { StoreProvider } from "@/stores/StoreProvider";
+import AllertWrapper from "@/components/AllertWrapper";
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({
           <StoreProvider>
             <FetchProvider>
               {children}
+              <AllertWrapper />
             </FetchProvider>
           </StoreProvider>
         </ThemeProvider>

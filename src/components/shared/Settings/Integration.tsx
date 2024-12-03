@@ -12,8 +12,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/UI/tooltip";
+import { useStore } from "@/stores/StoreProvider";
 
 const Integration = () => {
+  const { alertStore } = useStore();
   const [loading, setLoading] = useState(true);
   const [apiKeys, setApiKeys] = useState<keysResponse | null>(null);
   const [blurStates, setBlurStates] = useState<boolean>(true);
@@ -114,8 +116,11 @@ const Integration = () => {
     if (apiKeys) {
       const text = `Merchant ID: ${apiKeys.label}\nHeader Key: ${apiKeys.apiKey}\nSignature Key: ${apiKeys.secret}`;
       navigator.clipboard.writeText(text);
-      console.log("Copied to clipboard:", text);
 
+      alertStore.setAlert(
+        "success",
+        "Your API keys have been copied successfuly!",
+      );
       setApiKeys({
         ...apiKeys,
         apiKey: "",
@@ -221,23 +226,27 @@ const Integration = () => {
                     >
                       Show
                     </button>
-                    <TooltipProvider >
+                    <TooltipProvider>
                       <Tooltip>
-                        <TooltipTrigger className={`${
-                              blurStates ? "pointer-events-none cursor-auto" : ""
-                            }`}>
+                        <TooltipTrigger
+                          className={`${
+                            blurStates ? "pointer-events-none cursor-auto" : ""
+                          }`}
+                        >
                           <p
                             className={`pr-8 font-semibold ${
                               blurStates ? "text-secondary" : ""
                             }`}
                             onClick={copyEntry}
-                            
                           >
                             Copy
                           </p>
                         </TooltipTrigger>
                         <TooltipContent className="ms-2">
-                          <p>Please note that you will only be able to view and copy these keys once</p>
+                          <p>
+                            Please note that you will only be able to view and
+                            copy these keys once
+                          </p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>{" "}

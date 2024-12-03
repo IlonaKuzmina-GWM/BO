@@ -62,7 +62,6 @@ const SimpleBarChart = ({ data }: ISimpleBarChart) => {
         />
         <YAxis
           dataKey="success"
-          domain={[0, "dataMax + 1"]}
           tick={{ fill: "var(--secondary)" }}
           className="text-[10px]"
           width={30}

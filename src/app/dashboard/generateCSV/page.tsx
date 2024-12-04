@@ -20,10 +20,6 @@ const GenerateCSVPage = () => {
     setCSVs(newRules);
   };
 
-  const renderRow = (cSV: CSV, index: number) => (
-    <CSVRows key={cSV.id} cSV={cSV} index={index} deleteEntry={deleteEntry} />
-  );
-
   const handleFormSubmit = (data: CSV) => {
     setCSVs([data, ...cSVs]);
   };
@@ -50,12 +46,51 @@ const GenerateCSVPage = () => {
         </div>
       </div>
       <div className="w-full bg-white">
-        <CustomTable
-          columns={GenerateCSVTableHeader}
-          dataName="CSV"
-          data={cSVs}
-          renderRow={renderRow}
-        />
+        <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
+          <thead className="h-[50px] bg-hoverBg font-semibold">
+            <tr>
+              {GenerateCSVTableHeader.map((col, index) => (
+                <th
+                  key={col.key}
+                  className={`${
+                    index === 0 ? "pl-3 lg:pl-8" : ""
+                  } ${index === GenerateCSVTableHeader.length - 1 ? "pr-3 lg:pr-8" : ""} ${
+                    col.centered ? "text-center" : ""
+                  } pr-2`}
+                  style={{ width: col.width }}
+                >
+                  {col.title}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {cSVs.length > 0 ? (
+              cSVs.map((cSV, index) => (
+                <tr
+                  className="h-[50px] border-b border-hoverBg last:border-none"
+                  key={index}
+                >
+                  <CSVRows
+                    key={cSV.id}
+                    cSV={cSV}
+                    index={index}
+                    deleteEntry={deleteEntry}
+                  />
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={GenerateCSVTableHeader.length}
+                  className="py-4 text-center"
+                >
+                  No CSV available
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

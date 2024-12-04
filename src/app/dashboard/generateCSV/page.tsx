@@ -1,6 +1,5 @@
 "use client";
 
-import CustomTable from "@/components/shared/CustomTable";
 import DashButton from "@/components/shared/DashButton";
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import CSVRows from "@/components/shared/GenerateCSV/CSVRows";
@@ -11,7 +10,6 @@ import { useState } from "react";
 import { exportExcelPayout } from "../../../utils/export-utils";
 
 const GenerateCSVPage = () => {
-  const [loading, setLoading] = useState(true);
   const [cSVs, setCSVs] = useState<CSV[]>([]);
 
   const deleteEntry = (index: number): void => {

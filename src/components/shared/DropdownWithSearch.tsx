@@ -8,25 +8,20 @@ import Search from "./Search";
 interface IItem {
   value: number;
   label: string;
-  name?: string;
 }
 
 interface ITableRowSelect {
-  value: string | number;
+  value: number;
   label: string;
   items: IItem[];
-  searchInput: boolean;
-  onSelectHandler?: (selectedValue: number) => void;
-  onSelectStringHandler?: (selectedValue: string) => void;
+  onSelectHandler: (selectedValue: number) => void;
 }
 
-const TableRowSelect = ({
+const DropdownWithSearch = ({
   value,
   label,
   items,
-  searchInput,
   onSelectHandler,
-  onSelectStringHandler,
 }: ITableRowSelect) => {
   const [selectedValue, setSelectedValue] = useState<string | number>(value);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -56,25 +51,20 @@ const TableRowSelect = ({
     }
   }, [isOpen]);
 
-  const selectValue = (value: number | string) => {
+  const selectValue = (value: number) => {
     setSelectedValue(value);
     setSearchTerm("");
     setIsOpen(false);
+    onSelectHandler(value);
+  };
 
-    if (onSelectHandler && typeof value === "number") {
-      onSelectHandler(value);
-    } else if (onSelectStringHandler && typeof value === "string") {
-      onSelectStringHandler(value);
-    }
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
   };
 
   const filteredItems = items.filter((item) =>
     item.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
-  };
 
   return (
     <div className="relative w-full">
@@ -83,37 +73,29 @@ const TableRowSelect = ({
         onClick={() => setIsOpen(!isOpen)}
         className="shadowed relative w-full rounded-sm border border-divider p-2 text-start text-sm text-main"
       >
-        {selectedValue
-          ? items.find((item) => item.label === selectedValue)?.label ||
-            "No data"
-          : label}
-
-        {isOpen ? (
-          <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-180" />
-        ) : (
-          <ChevronDown className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2" />
-        )}
+        {items.find((item) => item.value === selectedValue)?.label || label}
+        <ChevronDown
+          className={`${isOpen ? "rotate-180" : ""} absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2`}
+        />
       </button>
       {isOpen && (
         <div
           className="absolute z-50 mt-1 rounded-sm border border-divider bg-white shadow-lg"
           ref={dropdownRef}
         >
-          {searchInput && (
-            <Search placeholder="Search" onSearch={handleSearch} />
-          )}
+          <Search placeholder="Search" onSearch={handleSearch} />
           <div className="dash_select-options max-h-60 overflow-y-auto">
             {filteredItems.map((item) => (
               <div
                 key={item.value}
-                onClick={() => selectValue(item.label)}
+                onClick={() => selectValue(item.value)}
                 className={cn(
                   "cursor-pointer px-3 py-2 transition-all duration-300 hover:bg-divider",
-                  selectedValue === item.label && "text-blue600",
+                  selectedValue === item.value && "text-blue600",
                 )}
               >
                 <div className="flex items-center">
-                  {selectedValue === item.label && (
+                  {selectedValue === item.value && (
                     <Check className="h-4 w-4 text-blue600" />
                   )}
                   <span className="ml-2">{item.label}</span>
@@ -127,4 +109,4 @@ const TableRowSelect = ({
   );
 };
 
-export default TableRowSelect;
+export default DropdownWithSearch;

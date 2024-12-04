@@ -1,8 +1,6 @@
 "use client";
 
-import { Header } from "@/types";
 import { useEffect, useState } from "react";
-import CustomTable from "../CustomTable";
 import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
 

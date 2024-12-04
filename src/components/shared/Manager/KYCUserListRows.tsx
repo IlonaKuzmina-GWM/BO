@@ -6,9 +6,6 @@ interface IKYCUserRowProps {
 }
 
 const KYCUserListRows = ({ user }: IKYCUserRowProps) => {
-  // const dateStyle =
-  //   "bg-hoverBg text-center p-1 border border-hoverBg rounded-[4px]";
-
   
   return (
     <>

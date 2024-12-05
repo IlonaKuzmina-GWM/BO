@@ -147,7 +147,7 @@ const Merchants = () => {
     );
   };
 
-  const updateProvider = (merchantId: number, selectedProviderId: number) => {
+  const updateProvider = (merchantId: number, selectedProviderId: string) => {
     console.log("updateProvider", merchantId, selectedProviderId);
     // setAllMerchants((prevUsers) =>
     //   prevUsers.map((user) =>
@@ -242,7 +242,7 @@ const Merchants = () => {
                         value: store.id,
                         label: store.name,
                       }))}
-                      onSelectHandler={(selectedStoreId) =>
+                      onSelectNumberHandler={(selectedStoreId) =>
                         updateStore(merchant.id, selectedStoreId)
                       }
                     />
@@ -270,7 +270,7 @@ const Merchants = () => {
                         value: provider.provider_id,
                         label: provider.provider_name,
                       }))}
-                      onSelectHandler={(selectedProviderId) =>
+                      onSelectStringHandler={(selectedProviderId) =>
                         updateProvider(merchant.id, selectedProviderId)
                       }
                     />

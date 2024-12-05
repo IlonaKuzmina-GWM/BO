@@ -14,14 +14,16 @@ interface ITableRowSelect {
   value: number;
   label: string;
   items: IItem[];
-  onSelectHandler: (selectedValue: number) => void;
+  onSelectNumberHandler?: (selectedValue: number) => void;
+  onSelectStringHandler?: (selectedValue: string) => void;
 }
 
 const DropdownWithSearch = ({
   value,
   label,
   items,
-  onSelectHandler,
+  onSelectNumberHandler,
+  onSelectStringHandler,
 }: ITableRowSelect) => {
   const [selectedValue, setSelectedValue] = useState<string | number>(value);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -33,7 +35,9 @@ const DropdownWithSearch = ({
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
@@ -51,11 +55,18 @@ const DropdownWithSearch = ({
     }
   }, [isOpen]);
 
-  const selectValue = (value: number) => {
+  const selectValue = (value: number | string) => {
     setSelectedValue(value);
     setSearchTerm("");
     setIsOpen(false);
-    onSelectHandler(value);
+
+    const selectedItem = items.find((item) => item.value === value);
+
+    if (onSelectNumberHandler && typeof value === "number") {
+      onSelectNumberHandler(value);
+    } else if (onSelectStringHandler && selectedItem ) {
+      onSelectStringHandler(selectedItem.label);
+    }
   };
 
   const handleSearch = (term: string) => {

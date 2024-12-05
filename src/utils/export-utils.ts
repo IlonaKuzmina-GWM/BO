@@ -81,11 +81,16 @@ export const exportExcelTransactions = (data: Transaction[]) => {
     "PROVIDER",
     "WEBHOOK CODE DESCR",
     "WEBHOOK COMPOUND STATE",
+    "ADDITIONAL INFO",
     "DATE OF CREATION",
     "UPDATE DATE",
-    "AMOUNT",
     "MERCHANT ID",
     "MERCHANT NAME",
+    "GEO",
+    "AMOUNT",
+    "GROSS TRASNACTION FEE",
+    "RESERVED FOR RR",
+    "CURRENCY",
   ];
 
   worksheet.addRow(headers);
@@ -101,11 +106,16 @@ export const exportExcelTransactions = (data: Transaction[]) => {
       key: "webhook_compound_state",
       width: 30,
     },
+    //aditional info
     { header: "DATE OF CREATION", key: "date_of_creation", width: 25 },
     { header: "UPDATE DATE", key: "update_date", width: 25 },
-    { header: "AMOUNT", key: "amount", width: 15 },
     { header: "MERCHANT ID", key: "merchant_id", width: 15 },
     { header: "MERCHANT NAME", key: "merchant_name", width: 25 },
+    // "GEO",
+    { header: "AMOUNT", key: "amount", width: 15 },
+    // "GROSS TRASNACTION FEE"
+    // "RESERVED FOR RR",
+    // "CURRENCY",
   ];
 
   data?.forEach((transaction) => {
@@ -118,12 +128,17 @@ export const exportExcelTransactions = (data: Transaction[]) => {
         ?.response_code_description,
       transaction.webhooks[transaction.webhooks.length - 1]?.originalRequest
         ?.compound_state,
+      //aditional info
       formatDate(transaction.createdAt),
       formatDate(transaction.updatedAt),
       transaction.initialRequest.merchantId,
       ,
       transaction.merchant.name,
+      // "GEO",
       Number(transaction.amount),
+      // "GROSS TRASNACTION FEE"
+      // "RESERVED FOR RR",
+      // "CURRENCY",
     ];
     worksheet.addRow(rowData);
   });

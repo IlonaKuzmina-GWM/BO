@@ -54,7 +54,7 @@ const PaginationComponent: React.FC<IPaginationComponentProps> = ({
       );
     }
 
-    if (startPage > 1) {
+    if (startPage > 2) {
       pageNumbers.unshift(
         <PaginationItem key="ellipsis-start">
           <PaginationEllipsis />
@@ -62,11 +62,39 @@ const PaginationComponent: React.FC<IPaginationComponentProps> = ({
       );
     }
 
-    if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
       pageNumbers.push(
         <PaginationItem key="ellipsis-end">
           <PaginationEllipsis />
         </PaginationItem>,
+      );
+    }
+
+    if (startPage > 2) {
+      pageNumbers.unshift(
+        <PaginationItem key={1}>
+          <PaginationLink
+            href="#"
+            isActive={currentPage === 1}
+            onClick={() => handlePageChange(1)}
+          >
+            1
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    if (endPage < totalPages - 1) {
+      pageNumbers.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink
+            href="#"
+            isActive={currentPage === totalPages}
+            onClick={() => handlePageChange(totalPages)}
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
       );
     }
 

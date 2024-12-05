@@ -45,7 +45,7 @@ const UserRows = ({ user, merchantsList, updateMerchant }: IUserRowProps) => {
           items={merchantsList.map((merchant) => ({
             value: merchant.id,
             label: merchant.label,
-            name: merchant.name
+            name: merchant.name,
           }))}
           searchInput
           onSelectStringHandler={setSelectedValues}

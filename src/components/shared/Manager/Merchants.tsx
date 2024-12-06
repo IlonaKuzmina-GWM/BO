@@ -72,7 +72,7 @@ const Merchants = () => {
       }));
 
       setAllMerchants(processedMerchants);
-      console.log("Fetched and processed merchants:", processedMerchants);
+      // console.log("Fetched and processed merchants:", processedMerchants);
 
       // setAllMerchants(allMerchants);
       // console.log("Fetched and processed merchants:", allMerchants);

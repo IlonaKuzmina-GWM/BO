@@ -34,14 +34,11 @@ const Integration = () => {
       if (response.ok) {
         const res = await response.json();
         setApiKeys(res);
-        // setBlurStates(true);
-        console.log("Keys response ok", res);
-        console.log("first feching blure status", blurStates);
       } else {
-        console.error("Failed to fetch API keys");
+        alertStore.setAlert("warning", "Failed to fetch API keys shown state.");
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -65,13 +62,11 @@ const Integration = () => {
         setApiKeys(res);
 
         setBlurStates(false);
-        console.log("Keys response data show key ok", res);
-        console.log("show key data blure status", blurStates);
       } else {
-        console.error("Failed to fetch API keys");
+        alertStore.setAlert("warning", "Failed to fetch API keys.");
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     }
   };
 
@@ -96,12 +91,11 @@ const Integration = () => {
             shownKeys: false,
             hasKeys: false,
           });
-          console.log(res);
         } else {
-          console.error("Failed to delete API keys");
+          alertStore.setAlert("warning", "Failed to delete API keys.");
         }
       } catch (error) {
-        console.error("Fetch error:", error);
+        alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
       }
     }
   };
@@ -145,13 +139,11 @@ const Integration = () => {
         const res = await response.json();
         setBlurStates(true);
         setApiKeys(res);
-
-        console.log("Keys response after generation ok", res);
       } else {
-        console.error("Failed to fetch API keys");
+        alertStore.setAlert("warning", "Failed to fetch API keys.");
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }

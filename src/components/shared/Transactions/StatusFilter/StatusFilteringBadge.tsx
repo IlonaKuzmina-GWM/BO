@@ -15,7 +15,6 @@ const StatusFilteringBadge = ({
   filterActive,
   onClickHandler,
 }: IStatusFilteringBadge) => {
-// console.log(name,value,filterActive)
 
   return (
     <button

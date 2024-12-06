@@ -72,7 +72,6 @@ const AllUser = () => {
   useEffect(() => {
     fetchAllUsersData();
     fetchMerchantsListData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateMerchant = async (id: number, merchantLabel: string) => {

@@ -82,7 +82,6 @@ const MainDashboardWrapper = () => {
         setMerchantsTableData(res.merchantStats);
 
         setLoading(false);
-        alertStore.setAlert("success", "Analytics data loaded successfully!");
       } else {
         alertStore.setAlert("warning", "Analytics data response failed.");
       }

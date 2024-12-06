@@ -10,7 +10,6 @@ export class AlertStore {
   }
 
   setAlert(type: "success" | "error" | "warning", message: string) {
-    console.log(`Setting alert: ${type}, ${message}`);
     this.alertType = type;
     this.alertMessage = message;
     this.isVisible = true;

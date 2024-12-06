@@ -1,4 +1,3 @@
-import { formatDateTime } from "@/helpers/dateFormater";
 import React from "react";
 
 interface IChartWrapper {
@@ -15,17 +14,17 @@ const ChartWrapper = ({
   children,
 }: IChartWrapper) => {
   const formatDate = (date?: string | Date) => {
-    if (!date) return "N/A"; // Handle undefined dates
+    if (!date) return "N/A"; 
     const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime())) return "N/A"; // Handle invalid dates
+    if (isNaN(parsedDate.getTime())) return "N/A"; 
     return new Intl.DateTimeFormat("en-GB", {
       day: "2-digit",
       month: "2-digit",
-    }).format(parsedDate); // Format as DD/MM
+    }).format(parsedDate); 
   };
 
   const formattedInterval = `${formatDate(dataInterval.from)} - ${formatDate(dataInterval.to)}`;
-  // console.log("dataInterval", dataInterval);
+
   return (
     <div className="h-full rounded-sm bg-white px-5 pt-5 shadow-sm">
       <div className="flex flex-col justify-between gap-4 ps-[63px] md:flex-row">

@@ -79,8 +79,6 @@ const TransactionsWrapper = observer(() => {
       if (response.ok) {
         const res = await response.json();
 
-        console.log("filterss data", res);
-
         setMerchantsList(res.merchants);
         setProvidersList(res.providers);
       } else {
@@ -142,8 +140,6 @@ const TransactionsWrapper = observer(() => {
 
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
-
-        console.log("transaction data", res);
       } else {
         alertStore.setAlert("warning", "Transactions data response failed.");
       }
@@ -367,8 +363,6 @@ const TransactionsWrapper = observer(() => {
     setChangedTransactionStatus(status);
     fetchTransactionsData();
   };
-
-  console.log("do i see merchant list", merchantsList);
 
   return (
     <div className="">

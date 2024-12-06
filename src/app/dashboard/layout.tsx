@@ -1,4 +1,3 @@
-import AllertWrapper from "@/components/AllertWrapper";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import SiderBar from "@/components/shared/SideBar/SideBar";
 import React from "react";

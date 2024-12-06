@@ -78,7 +78,6 @@ const CustomTransactionTable = ({
   };
 
   const handleSelectStatus = async (value: string, txId: String) => {
-    // console.log(value, txId);
     try {
       const response = await fetch("/api/post-transactions-status", {
         method: "POST",
@@ -203,6 +202,10 @@ const CustomTransactionTable = ({
       setTimeout(() => {
         setCopiedOrderID(null);
       }, 1500);
+      alertStore.setAlert(
+        "success",
+        `Transaction ID copied successfully!`,
+      );
     } catch (err) {
       console.error("Error copying to clipboard: ", err);
     }
@@ -255,8 +258,6 @@ const CustomTransactionTable = ({
             paginatedTransactions.map((transaction) => {
               const isExpanded = expandedRows.includes(transaction.id);
               const dynamicColor = rowBgColors[transaction.id];
-              // const expandedWebhooks = webhookExpanded[transaction.id] || {};
-              // console.log(transaction);
 
               return (
                 <React.Fragment key={transaction.id}>

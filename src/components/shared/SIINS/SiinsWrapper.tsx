@@ -75,13 +75,14 @@ const SiinsWrapper = observer(() => {
 
         setSiinsTransactions(res.response.siins);
         setTotalPages(res.response.totalPages);
-
-        console.log("Siins response", res.response.siins);
       } else {
-        // console.log("Siins response failed");
+        alertStore.setAlert(
+          "warning",
+          "Siins failed.",
+        );
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      alertStore.setAlert("error", `Error copying to clipboard: ${error}`);
     } finally {
       setLoading(false);
     }

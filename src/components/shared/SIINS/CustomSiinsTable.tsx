@@ -73,8 +73,6 @@ const CustomSiinsTable = ({
   };
 
   const handleSelectStatus = async (value: string, txId: String) => {
-    // console.log(value, txId);
-
     try {
       const response = await fetch("/api/post-transactions-status", {
         method: "POST",
@@ -89,12 +87,17 @@ const CustomSiinsTable = ({
       if (response.ok) {
         const res = await response.json();
 
-        console.log("Successfuly!", res);
       } else {
-        console.log("New status not found for this transaction in the");
+        alertStore.setAlert(
+          "warning",
+          "Status update failed for this transaction.",
+        );
       }
     } catch (error) {
-      console.error(`Oops! Something went wrong: ${error}`);
+      alertStore.setAlert(
+        "error",
+        `Something went wrong with the refund process. ${error}`,
+      );
     }
   };
 
@@ -195,8 +198,12 @@ const CustomSiinsTable = ({
       setTimeout(() => {
         setCopiedOrderID(null);
       }, 1500);
+      alertStore.setAlert(
+        "success",
+        `Transaction ID copied successfully!`,
+      );
     } catch (err) {
-      console.error("Error copying to clipboard: ", err);
+      alertStore.setAlert("error", `Error copying to clipboard: ${err}`);
     }
   };
 

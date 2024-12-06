@@ -23,8 +23,6 @@ const VerticalComposedChart = ({ data }: IVerticalComposedChart) => {
   const CustomizedLabel = (props: any) => {
     const { x, y, width, payload, value } = props;
 
-    // console.log("CustomizedLabel payload:", payload.value);
-
     return (
       <text
         x={x + width + 5}

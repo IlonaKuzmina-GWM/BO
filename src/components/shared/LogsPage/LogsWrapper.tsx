@@ -10,11 +10,12 @@ import CustomLogsTable from "./CustomLogsTable";
 import DashIntervalSelect from "../DashIntervalSelect";
 import DataLimitsSeter from "../DataLimitsSeter";
 import DatePickerWithRange from "../DatePickerWithRange";
-import { LoadingSpiner } from "../LoadingUISkeletons/LoadingSpiner";
 import PaginationComponent from "../PaginationComponent";
 import Search from "../Search";
+import { useStore } from "@/stores/StoreProvider";
 
 const LogsWrapper = () => {
+  const { alertStore } = useStore();
   const [logsData, setLogsData] = useState<Log[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
@@ -57,15 +58,14 @@ const LogsWrapper = () => {
 
       if (response.ok) {
         const res = await response.json();
-        // console.log("Event response ok", res);
 
         setLogsData(res.events || res.paginatedLogs);
         setTotalPages(res.totalPages);
       } else {
-        // console.log("Event response failed");
+        alertStore.setAlert("warning", "Logs data response failed.");
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }

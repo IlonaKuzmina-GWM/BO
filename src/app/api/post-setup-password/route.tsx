@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 
     if (!data.ok) {
       const errorData = await data.json();
-      console.log('errorData: ', errorData)
       return new NextResponse(
         JSON.stringify({
           error: errorData.error || errorData.message || "Failed to set up password",

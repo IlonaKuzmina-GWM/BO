@@ -8,8 +8,10 @@ import Paragraph from "../Paragraph";
 import KYCUserListRows from "./KYCUserListRows";
 import { KYCUser } from "@/types/kyc";
 import LoadingKYCUserListSkeleton from "../LoadingUISkeletons/LoadingKYCUserListSkeleton";
+import { useStore } from "@/stores/StoreProvider";
 
 const KYCUserList = () => {
+  const { alertStore } = useStore();
   const [loading, setLoading] = useState(true);
   const [kycUsersList, setKYCUsersList] = useState<KYCUser[]>([]);
 
@@ -30,10 +32,10 @@ const KYCUserList = () => {
 
         setKYCUsersList(res);
       } else {
-        // console.log("Filters response failed");
+        alertStore.setAlert("warning", "Analytics data response failed.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/utils";
 import Search from "./Search";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface IItem {
   value: number;
@@ -31,23 +32,7 @@ const DropdownWithSearch = ({
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
+  useOutsideClick(dropdownRef, buttonRef, () => setIsOpen(false));
 
   useEffect(() => {
     if (isOpen && buttonRef.current && dropdownRef.current) {
@@ -64,7 +49,7 @@ const DropdownWithSearch = ({
 
     if (onSelectNumberHandler && typeof value === "number") {
       onSelectNumberHandler(value);
-    } else if (onSelectStringHandler && selectedItem ) {
+    } else if (onSelectStringHandler && selectedItem) {
       onSelectStringHandler(selectedItem.label);
     }
   };

@@ -20,18 +20,18 @@ import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetai
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Siin[];
+  isLoading?:boolean;
   handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const CustomSiinsTable = ({
   columns,
-  data,
+  data, isLoading,
   handleStatusChangeToFetchActualeTRansaction,
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
 
-  const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
   const [checkedTransactions, setCheckedTransactions] = useState<{
@@ -73,8 +73,6 @@ const CustomSiinsTable = ({
   };
 
   const handleSelectStatus = async (value: string, txId: String) => {
-    // console.log(value, txId);
-
     try {
       const response = await fetch("/api/post-transactions-status", {
         method: "POST",
@@ -89,12 +87,17 @@ const CustomSiinsTable = ({
       if (response.ok) {
         const res = await response.json();
 
-        console.log("Successfuly!", res);
       } else {
-        console.log("New status not found for this transaction in the");
+        alertStore.setAlert(
+          "warning",
+          "Status update failed for this transaction.",
+        );
       }
     } catch (error) {
-      console.error(`Oops! Something went wrong: ${error}`);
+      alertStore.setAlert(
+        "error",
+        `Something went wrong with the refund process. ${error}`,
+      );
     }
   };
 
@@ -182,11 +185,6 @@ const CustomSiinsTable = ({
     );
   }, [checkedTransactions, data]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
 
   const handleCopyToClipboard = async (id: string) => {
     try {
@@ -195,8 +193,12 @@ const CustomSiinsTable = ({
       setTimeout(() => {
         setCopiedOrderID(null);
       }, 1500);
+      alertStore.setAlert(
+        "success",
+        `Transaction ID copied successfully!`,
+      );
     } catch (err) {
-      console.error("Error copying to clipboard: ", err);
+      alertStore.setAlert("error", `Error copying to clipboard: ${err}`);
     }
   };
 
@@ -236,7 +238,7 @@ const CustomSiinsTable = ({
         </thead>
 
         <tbody>
-          {loading ? (
+          {isLoading ? (
             <LoadingSiinTableSkeleton />
           ) : data.length === 0 ? (
             <tr className="bg-white">

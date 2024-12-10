@@ -67,8 +67,6 @@ const SiderBar: React.FC = observer(() => {
 
   let allowedRoutes: string[] = roleRoutes[userRole] || [];
 
-  // console.log("allowedRoutes", allowedRoutes);
-
   if (userRole === "developer") {
     allowedRoutes = menuItems.map((item) => item.link);
   }
@@ -86,8 +84,6 @@ const SiderBar: React.FC = observer(() => {
     authStore.setLogOut();
     router.push("/");
   };
-
-  // console.log("user role in sidebar", userRole);
 
   return (
     <aside

@@ -10,11 +10,12 @@ import CustomLogsTable from "./CustomLogsTable";
 import DashIntervalSelect from "../DashIntervalSelect";
 import DataLimitsSeter from "../DataLimitsSeter";
 import DatePickerWithRange from "../DatePickerWithRange";
-import { LoadingSpiner } from "../LoadingUISkeletons/LoadingSpiner";
 import PaginationComponent from "../PaginationComponent";
 import Search from "../Search";
+import { useStore } from "@/stores/StoreProvider";
 
 const LogsWrapper = () => {
+  const { alertStore } = useStore();
   const [logsData, setLogsData] = useState<Log[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
@@ -30,10 +31,15 @@ const LogsWrapper = () => {
     DateRange | undefined
   >(undefined);
 
-  const fetchLogsData = async () => {
-    setLoading(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
+  const fetchLogsData = async () => {
     let dateRange: number[] = [];
+
     if (selectedDateRange?.from && selectedDateRange.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
       adjustedToDate.setHours(23, 59, 59, 999);
@@ -57,17 +63,14 @@ const LogsWrapper = () => {
 
       if (response.ok) {
         const res = await response.json();
-        // console.log("Event response ok", res);
 
         setLogsData(res.events || res.paginatedLogs);
         setTotalPages(res.totalPages);
       } else {
-        // console.log("Event response failed");
+        alertStore.setAlert("warning", "Logs data response failed.");
       }
     } catch (error) {
-      console.error("Fetch error:", error);
-    } finally {
-      setLoading(false);
+      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
     }
   };
 
@@ -77,9 +80,10 @@ const LogsWrapper = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      setLoading(false);
       setSearchQuery(inputSearchQueryValue);
     }, 1000);
-
+    setLoading(true);
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);
 
@@ -137,7 +141,11 @@ const LogsWrapper = () => {
       </div>
 
       <div>
-        <CustomLogsTable columns={LogsTableHeader} data={logsData} />
+        <CustomLogsTable
+          columns={LogsTableHeader}
+          data={logsData}
+          isLoading={loading}
+        />
 
         <div className="relative">
           <DataLimitsSeter

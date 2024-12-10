@@ -33,7 +33,7 @@ const Info = ({
               <label className="mb-[8px] block text-[14px] text-[#333]">
                 {field.label}
               </label>
-              <DashSelectValueNumber
+              {/* <DashSelectValueNumber
                 value={[]}
                 label={"All Merchants"}
                 items={merchants.map((merchant) => ({
@@ -46,7 +46,7 @@ const Info = ({
                 onSelectHandler={onMerchantChange}
                 width="full"
                 isInvalid={validationErrors.includes(field.name)}
-              />
+              /> */}
             </>
           ) : (
             <Input

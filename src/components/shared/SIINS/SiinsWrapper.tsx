@@ -41,7 +41,6 @@ const SiinsWrapper = observer(() => {
   const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchSiinsData = async () => {
-    setLoading(true);
 
     let createdDateRange: [number, number] | boolean = false;
     if (selectedDateRange?.from && selectedDateRange.to) {
@@ -75,16 +74,15 @@ const SiinsWrapper = observer(() => {
 
         setSiinsTransactions(res.response.siins);
         setTotalPages(res.response.totalPages);
-
-        console.log("Siins response", res.response.siins);
       } else {
-        // console.log("Siins response failed");
+        alertStore.setAlert(
+          "warning",
+          "Siins failed.",
+        );
       }
     } catch (error) {
-      console.error("Fetch error:", error);
-    } finally {
-      setLoading(false);
-    }
+      alertStore.setAlert("error", `Error copying to clipboard: ${error}`);
+    } 
   };
 
   const sendExportSiinsData = async (exportType: "pdf" | "csv" | "excel") => {
@@ -135,10 +133,14 @@ const SiinsWrapper = observer(() => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   useEffect(() => {
     fetchSiinsData();
@@ -152,9 +154,10 @@ const SiinsWrapper = observer(() => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      setLoading(false);
       setSearchQuery(inputSearchQueryValue);
     }, 1000);
-
+    setLoading(true);
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);
 
@@ -228,6 +231,7 @@ const SiinsWrapper = observer(() => {
           data={siinsTransactions}
           columns={SiinsTableHeader}
           handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
+          isLoading={loading}
         />
 
         <div className="relative">

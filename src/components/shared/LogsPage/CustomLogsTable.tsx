@@ -11,19 +11,15 @@ import LoadingLogsTableSkeleton from "../LoadingUISkeletons/LoadingLogsTableSkel
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Log[];
+  isLoading:boolean
 }
 
 const CustomLogsTable = ({
   columns,
   data,
+  isLoading,
 }: ICustomSiinsTransactionTableProps) => {
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
 
   return (
     <div className="">
@@ -45,7 +41,7 @@ const CustomLogsTable = ({
         </thead>
 
         <tbody>
-          {loading ? (
+          {isLoading ? (
             <LoadingLogsTableSkeleton />
           ) : data.length === 0 ? (
             <tr className="bg-white">

@@ -11,11 +11,16 @@ import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
 import { Merchant } from "@/types/merchant";
 import PaginationComponent from "../PaginationComponent";
+import Search from "../Search";
 
 const AllUser = () => {
   const { alertStore } = useStore();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
+
+  const [inputSearchQueryValue, setInputSearchQueryValue] =
+    useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
@@ -40,8 +45,6 @@ const AllUser = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -64,15 +67,29 @@ const AllUser = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   useEffect(() => {
     fetchAllUsersData();
     fetchMerchantsListData();
   }, []);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+    }, []);
+
+  const filteredUsers = users.filter((user) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      user.lastName.toLowerCase().includes(query) ||
+      user.firstName.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query) ||
+      user.role.toLowerCase().includes(query)
+    );
+  });
 
   const updateMerchant = async (id: number, merchantLabel: string) => {
     try {
@@ -95,17 +112,24 @@ const AllUser = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
-  const totalPages = Math.ceil(users.length / limit);
+  const totalPages = Math.ceil(filteredUsers.length / limit);
 
-  const paginatedUsers = users.slice(
+  const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * limit,
     currentPage * limit,
   );
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setLoading(false);
+      setSearchQuery(inputSearchQueryValue);
+    }, 1000);
+    setLoading(true);
+    return () => clearTimeout(handler);
+  }, [inputSearchQueryValue]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -116,11 +140,30 @@ const AllUser = () => {
     setCurrentPage(1);
   };
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchQuery(inputSearchQueryValue);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [inputSearchQueryValue]);
+
+  const handleSearchChange = (value: string) => {
+    setInputSearchQueryValue(value);
+  };
+
   return (
     <div>
       <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white pt-[20px]">
-        <div className="pb-[16px] pl-[20px]">
+        <div className="flex justify-between px-[20px] pb-[16px]">
           <Paragraph text="All Users" />
+          <Search
+            placeholder="Enter name, host, label"
+            aditionalClass="max-w-[302px]"
+            onSearch={handleSearchChange}
+            searchValue={inputSearchQueryValue}
+            searchIcon
+          />
         </div>
 
         <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">

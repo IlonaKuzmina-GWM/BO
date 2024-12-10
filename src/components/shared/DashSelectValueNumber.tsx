@@ -4,6 +4,7 @@ import { cn } from "@/utils/utils";
 import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Search from "./Search";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface IItem {
   value: number;
@@ -14,8 +15,6 @@ interface IDashSelectValueNumber {
   value: number[];
   label: string;
   items: IItem[];
-  searchInput: boolean;
-  searchContext: string;
   isMulti?: boolean;
   onSelectHandler: (selectedValues: number[]) => void;
   disabled?: boolean;
@@ -27,8 +26,6 @@ const DashSelectValueNumber = ({
   value = [],
   label,
   items,
-  searchInput,
-  searchContext,
   isMulti = true,
   onSelectHandler,
   disabled,
@@ -39,22 +36,9 @@ const DashSelectValueNumber = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
+  useOutsideClick(dropdownRef, buttonRef, () => setIsOpen(false));
 
   const toggleValue = (itemValue: number) => {
     let newSelectedValues: number[];
@@ -90,8 +74,9 @@ const DashSelectValueNumber = ({
   };
 
   return (
-    <div className={`relative h-10 w-[${width}] `} ref={dropdownRef}>
+    <div className={`relative h-10 w-[${width}] `}>
       <button
+        ref={buttonRef}
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
@@ -122,13 +107,15 @@ const DashSelectValueNumber = ({
         <div className="text-[12px] text-error">This field is required.</div>
       )}
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg">
-          {searchInput && (
-            <Search placeholder="Search" onSearch={handleSearch} />
-          )}
+        <div
+          ref={dropdownRef}
+          className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg"
+        >
+          <Search placeholder="Search" onSearch={handleSearch} />
+
           <div className="dash_select-options max-h-60 overflow-y-auto">
             <div
-              className="cursor-pointer px-3 py-2 text-sm font-semibold hover:bg-divider text-start"
+              className="cursor-pointer px-3 py-2 text-start text-sm font-semibold hover:bg-divider"
               onClick={clearSelection}
             >
               {label}
@@ -139,15 +126,16 @@ const DashSelectValueNumber = ({
                 onClick={() => toggleValue(item.value)}
                 className={cn(
                   "cursor-pointer px-3 py-2 transition-all duration-300 hover:bg-divider",
-                  selectedValues.includes(item.value) &&
-                    "bg-accent text-accent-foreground",
+                  selectedValues.includes(item.value) && "text-blue600",
                 )}
               >
                 <div className="flex items-center">
                   {selectedValues.includes(item.value) && (
-                    <Check className="text-accent-foreground h-4 w-4" />
+                    <Check className="h-4 w-4 text-blue600" />
                   )}
-                  <span className="ml-2 text-[14px] text-start">{item.label}</span>
+                  <span className="ml-2 text-start text-[14px]">
+                    {item.label}
+                  </span>
                 </div>
               </div>
             ))}

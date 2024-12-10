@@ -17,9 +17,8 @@ import { observer } from "mobx-react-lite";
 import ExportButton from "../ExportButton";
 import { exportExcelTransactions } from "@/utils/export-utils";
 import DashSelectValueNumber from "../DashSelectValueNumber";
-import StatusFilteringBadgeWrapper from "./StatusFilter/StatusFilteringBadgeWrapper";
+import StatusFilteringBadgeWrapper from "./StatusFilteringBadgeWrapper";
 import { ROLES } from "@/constants/roles";
-import Alert from "@/components/shared/Alert";
 import { Transaction } from "@/types/transaction";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
@@ -44,6 +43,8 @@ const TransactionsWrapper = observer(() => {
 
   const [limit, setLimit] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalTransactionsCount, setTotalTransactionsCount] =
+    useState<number>(0);
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
@@ -53,8 +54,7 @@ const TransactionsWrapper = observer(() => {
   const [paginatedTransactions, setPaginatedTransactions] = useState<
     Transaction[]
   >([]);
-
-  const [statusList, setStatusList] = useState<{}>({});
+  const [allStats, setAllStats] = useState({});
 
   const [merchantsList, setMerchantsList] = useState<MerchantList[]>([]);
   const [providersList, setProvidersList] = useState<ProviderList[]>([]);
@@ -86,13 +86,17 @@ const TransactionsWrapper = observer(() => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchFiltersData();
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
   }, []);
 
   const fetchTransactionsData = async () => {
@@ -140,6 +144,9 @@ const TransactionsWrapper = observer(() => {
 
         setPaginatedTransactions(res.transactions);
         setTotalPages(res.totalPages);
+        setAllStats(res.stats);
+        setTotalTransactionsCount(res.totalTransactionsCount);
+        console.log(res);
       } else {
         alertStore.setAlert("warning", "Transactions data response failed.");
       }
@@ -149,8 +156,6 @@ const TransactionsWrapper = observer(() => {
   };
 
   const sendExportTransactionsData = async (exportType: "excel") => {
-    setLoading(true);
-
     let createdDateRange: [number, number] | boolean = false;
 
     if (selectedDateRange?.from && selectedDateRange.to) {
@@ -213,8 +218,6 @@ const TransactionsWrapper = observer(() => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -304,10 +307,11 @@ const TransactionsWrapper = observer(() => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      setLoading(false);
       setSearchQuery(inputSearchQueryValue);
       setSearchCountryCodeQuery(inputCountryCodeQueryValue);
-    }, 1000);
-
+    }, 1500);
+    setLoading(true);
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue, inputCountryCodeQueryValue]);
 
@@ -397,8 +401,6 @@ const TransactionsWrapper = observer(() => {
                   value: merchant.merchant_id,
                   label: merchant.merchant_name,
                 }))}
-                searchInput
-                searchContext="merchant"
                 onSelectHandler={handleMerchantSelect}
               />
 
@@ -409,8 +411,6 @@ const TransactionsWrapper = observer(() => {
                   value: provider.provider_id,
                   label: provider.provider_name,
                 }))}
-                searchInput
-                searchContext="provider"
                 onSelectHandler={handleProviderSelect}
               />
             </>
@@ -424,7 +424,6 @@ const TransactionsWrapper = observer(() => {
               label: status.label,
             }))}
             searchInput
-            searchContext="status"
             onSelectHandler={handleStatusSelect}
           />
 
@@ -436,7 +435,6 @@ const TransactionsWrapper = observer(() => {
               label: currency.label,
             }))}
             searchInput
-            searchContext="currency"
             onSelectHandler={handleCurrencySelect}
           />
 
@@ -458,10 +456,9 @@ const TransactionsWrapper = observer(() => {
       </div>
 
       <StatusFilteringBadgeWrapper
-        statusList={statusList}
-        statusFilters={statusFilters}
-        counter={paginatedTransactions.length.toString()}
+        statusList={allStats}
         activeStatusBadge={activeStatusBadge}
+        totalTransactionsCount={totalTransactionsCount}
         onClickHandler={activeFilterBageHandler}
       />
 
@@ -469,6 +466,7 @@ const TransactionsWrapper = observer(() => {
         paginatedTransactions={paginatedTransactions}
         columns={TransactionsTableHeader}
         handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
+        isLoading={loading}
       />
 
       <div className="relative">

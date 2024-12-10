@@ -4,6 +4,7 @@ import { cn } from "@/utils/utils";
 import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Search from "./Search";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface IItem {
   value: string;
@@ -15,7 +16,6 @@ interface ICustomMultiSelect {
   label: string;
   items: IItem[];
   searchInput: boolean;
-  searchContext: string;
   isMulti?: boolean;
   onSelectHandler: (selectedValues: string[]) => void;
   disabled?: boolean;
@@ -28,7 +28,6 @@ const CustomMultiSelect = ({
   label,
   items,
   searchInput,
-  searchContext,
   isMulti = true,
   onSelectHandler,
   disabled,
@@ -39,22 +38,9 @@ const CustomMultiSelect = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
+  useOutsideClick(dropdownRef, buttonRef, () => setIsOpen(false));
 
   const toggleValue = (itemValue: string) => {
     let newSelectedValues: string[];
@@ -91,11 +77,9 @@ const CustomMultiSelect = ({
   };
 
   return (
-    <div
-      className={`relative h-10 w-[${width}] min-w-[200px]`}
-      ref={dropdownRef}
-    >
+    <div className={`relative h-10 w-[${width}] min-w-[200px]`}>
       <button
+        ref={buttonRef}
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
@@ -126,7 +110,10 @@ const CustomMultiSelect = ({
         <div className="text-[12px] text-error">This field is required.</div>
       )}
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg">
+        <div
+          ref={dropdownRef}
+          className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg"
+        >
           {searchInput && (
             <Search placeholder="Search" onSearch={handleSearch} />
           )}
@@ -143,13 +130,12 @@ const CustomMultiSelect = ({
                 onClick={() => toggleValue(item.value)}
                 className={cn(
                   "cursor-pointer px-3 py-2 transition-all duration-300 hover:bg-divider",
-                  selectedValues.includes(item.value) &&
-                    "bg-accent text-accent-foreground",
+                  selectedValues.includes(item.value) && "text-blue600",
                 )}
               >
                 <div className="flex items-center">
                   {selectedValues.includes(item.value) && (
-                    <Check className="text-accent-foreground h-4 w-4" />
+                    <Check className="h-4 w-4 text-blue600" />
                   )}
                   <span className="ml-2 text-[14px]">{item.label}</span>
                 </div>

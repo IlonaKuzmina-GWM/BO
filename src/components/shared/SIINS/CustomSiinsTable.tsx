@@ -20,18 +20,18 @@ import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetai
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Siin[];
+  isLoading?:boolean;
   handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const CustomSiinsTable = ({
   columns,
-  data,
+  data, isLoading,
   handleStatusChangeToFetchActualeTRansaction,
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
 
-  const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
   const [checkedTransactions, setCheckedTransactions] = useState<{
@@ -185,11 +185,6 @@ const CustomSiinsTable = ({
     );
   }, [checkedTransactions, data]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
 
   const handleCopyToClipboard = async (id: string) => {
     try {
@@ -243,7 +238,7 @@ const CustomSiinsTable = ({
         </thead>
 
         <tbody>
-          {loading ? (
+          {isLoading ? (
             <LoadingSiinTableSkeleton />
           ) : data.length === 0 ? (
             <tr className="bg-white">

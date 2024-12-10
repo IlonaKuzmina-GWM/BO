@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/utils";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface IDashIntervalSelectProps {
   value: string;
@@ -18,6 +19,9 @@ const DashIntervalSelect = ({
   const [selectedValue, setSelectedValue] = useState<string>(value);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  useOutsideClick(dropdownRef, buttonRef, () => setIsOpen(false));
 
   const items = [
     { value: "0", label: "Today" },
@@ -26,22 +30,6 @@ const DashIntervalSelect = ({
     { value: "this-month", label: "This Month" },
     { value: "this-year", label: "This Year" },
   ];
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
 
   const selectValue = (itemValue: string) => {
     setSelectedValue(itemValue);
@@ -57,8 +45,9 @@ const DashIntervalSelect = ({
   };
 
   return (
-    <div className="h10 relative w-[130px]" ref={dropdownRef}>
+    <div className="h10 relative w-[130px]">
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="relative w-full rounded-sm border border-divider bg-white px-2 py-[9px] text-start text-sm text-main"
       >
@@ -71,7 +60,10 @@ const DashIntervalSelect = ({
         />
       </button>
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg">
+        <div
+          ref={dropdownRef}
+          className="absolute z-10 mt-1 w-full rounded-sm border border-divider bg-white shadow-lg"
+        >
           <div className="dash_select-options max-h-60 overflow-y-auto">
             <div
               className="cursor-pointer px-3 py-2 text-sm font-semibold hover:bg-divider"

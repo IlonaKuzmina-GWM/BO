@@ -21,17 +21,17 @@ interface ICustomTransactionTableProps {
   columns: Header[];
   paginatedTransactions: Transaction[];
   handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
+  isLoading?:boolean;
 }
 
 const CustomTransactionTable = ({
   columns,
-  paginatedTransactions,
+  paginatedTransactions,isLoading,
   handleStatusChangeToFetchActualeTRansaction,
 }: ICustomTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
 
   const userRole = authStore.role;
-  const [loading, setLoading] = useState(true);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
   const [checkedTransactions, setCheckedTransactions] = useState<{
@@ -43,12 +43,6 @@ const CustomTransactionTable = ({
     [key: number]: boolean;
   }>({});
   const [, setExpandedDropdowns] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
 
   const refundTransaction = async (txId: string) => {
     try {
@@ -243,7 +237,7 @@ const CustomTransactionTable = ({
         </thead>
 
         <tbody>
-          {loading ? (
+          {isLoading ? (
             <LoadingTransactionTableSkeleton />
           ) : paginatedTransactions?.length === 0 ? (
             <tr className="bg-white">

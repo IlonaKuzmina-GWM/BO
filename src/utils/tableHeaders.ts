@@ -47,6 +47,14 @@ export const ManagerMerchantsTableHeader: Header[] = [
   { title: "Action", key: "action", width: "4%" },
 ];
 
+export const AgentMerchantsTableHeader: Header[] = [
+  { title: "ID", key: "id", width: "12%" },
+  { title: "Name", key: "name", width: "22%" },
+  { title: "Label (api slug)", key: "label", width: "22%" },
+  { title: "Status", key: "status", width: "22%" },
+  { title: "Manager internal id", key: "internal", width: "22%" },
+];
+
 export const ManagerAllUsersTableHeader: Header[] = [
   { title: "ID", key: "id", width: "7%" },
   { title: "First name", key: "firstName", width: "11%" },

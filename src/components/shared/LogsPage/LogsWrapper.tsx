@@ -31,10 +31,15 @@ const LogsWrapper = () => {
     DateRange | undefined
   >(undefined);
 
-  const fetchLogsData = async () => {
-    setLoading(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
+  const fetchLogsData = async () => {
     let dateRange: number[] = [];
+
     if (selectedDateRange?.from && selectedDateRange.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
       adjustedToDate.setHours(23, 59, 59, 999);
@@ -66,8 +71,6 @@ const LogsWrapper = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -77,9 +80,10 @@ const LogsWrapper = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      setLoading(false);
       setSearchQuery(inputSearchQueryValue);
     }, 1000);
-
+    setLoading(true);
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);
 
@@ -137,7 +141,11 @@ const LogsWrapper = () => {
       </div>
 
       <div>
-        <CustomLogsTable columns={LogsTableHeader} data={logsData} />
+        <CustomLogsTable
+          columns={LogsTableHeader}
+          data={logsData}
+          isLoading={loading}
+        />
 
         <div className="relative">
           <DataLimitsSeter

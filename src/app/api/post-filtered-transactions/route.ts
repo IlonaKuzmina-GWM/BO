@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       totalPages: responseData.totalPages,
       totalTransactionsCount: responseData.totalTransactionsCount,
       transactions: responseData.transactions,
+      stats: responseData.stats,
     });
   } catch (error) {
     console.error("Failed to process transaction request", error);

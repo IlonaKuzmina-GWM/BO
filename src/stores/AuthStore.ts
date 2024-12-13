@@ -1,6 +1,8 @@
 import { User } from "@/types/user";
 import { makeAutoObservable } from "mobx";
 
+// key of roles
+
 export class AuthStore {
   logged = false;
   role: string | null = null;
@@ -36,7 +38,6 @@ export class AuthStore {
   setSecondRole(role: string) {
     if (this.role === "developer") {
       if (this.secondRole === role) {
-
         this.secondRole = "developer";
       } else {
         this.secondRole = role;
@@ -50,7 +51,7 @@ export class AuthStore {
   }
 
   get effectiveRole() {
-    return (this.role === "developer" && this.secondRole)
+    return this.role === "developer" && this.secondRole
       ? this.secondRole
       : this.role || "";
   }

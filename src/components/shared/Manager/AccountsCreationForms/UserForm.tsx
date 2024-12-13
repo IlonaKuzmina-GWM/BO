@@ -43,8 +43,6 @@ const UserForm = ({ disabled }: IMerchantForm) => {
       });
 
       if (response.ok) {
-        // const res = await response.json();
-
         alertStore.setAlert("success", `User was successfully created!`);
       } else {
         alertStore.setAlert("warning", "Invalid credentials.");
@@ -53,6 +51,12 @@ const UserForm = ({ disabled }: IMerchantForm) => {
       alertStore.setAlert("error", `Error while creating a new user: ${error}`);
     } finally {
       setSubmited(false);
+      setFormData({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+      });
     }
   };
 

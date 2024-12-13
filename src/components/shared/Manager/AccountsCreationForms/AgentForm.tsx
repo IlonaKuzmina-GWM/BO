@@ -86,6 +86,13 @@ const AgentForm = ({ disabled }: IMerchantForm) => {
       alertStore.setAlert("error", `Error while creating a agent: ${error}`);
     } finally {
       setSubmited(false);
+      setFormData({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        merchantIds: [] as number[],
+      });
     }
   };
 

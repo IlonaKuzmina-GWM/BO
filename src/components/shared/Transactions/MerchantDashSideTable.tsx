@@ -18,7 +18,7 @@ const MerchantDashSideTable = ({
   loading,
 }: IDashSideTableProps) => {
   return (
-    <div className="rounded-4px h-fit min-w-[300px] bg-white p-[20px]">
+    <div className="rounded-[4px] h-fit min-w-[300px] bg-white p-[20px]">
       <h3 className="p-[8px] pb-[16px] text-[20px] font-medium text-main">
         {title}
       </h3>
@@ -30,7 +30,7 @@ const MerchantDashSideTable = ({
             <span>{name}</span>
             <span>{amount}</span>
           </div>
-          <div className="max-h-[500px] overflow-y-auto dash_select-options">
+          <div className="max-h-[350px] overflow-y-auto dash_select-options">
             {data.sort((a,b) => b.totalAmount - a.totalAmount).map((item) => (
               <div
                 key={item.merchantName}

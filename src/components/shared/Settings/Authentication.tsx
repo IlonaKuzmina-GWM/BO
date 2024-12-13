@@ -23,7 +23,7 @@ const Authentication = () => {
   };
 
   return (
-    <div className="bg-white pt-[20px] rounded-tr-[4px] rounded-br-[4px] rounded-bl-[4px]">
+    <div className="rounded-bl-[4px] rounded-br-[4px] rounded-tr-[4px] bg-white pt-[20px]">
       <div className="pb-[16px] pl-[20px]">
         <Paragraph text="Protect your account with two-step verification codes." />
         <div className="mb-[24px] grid grid-cols-2 items-center">
@@ -54,21 +54,6 @@ const Authentication = () => {
               name="Manage"
               type="filled"
               onClickHandler={manage2FA}
-            />
-          </div>
-        </div>
-        <div className="grid grid-cols-2 items-center">
-          <div className="flex flex-row justify-between">
-            <div>
-              <p className="text-main">Change password</p>
-              <p className="text-secondary">Send reset confirmation.</p>
-            </div>
-          </div>
-          <div className="ml-[32px]">
-            <Dashbutton
-              name="Send Reset Confirmation"
-              type="empty"
-              onClickHandler={sendResetConfirmation}
             />
           </div>
         </div>

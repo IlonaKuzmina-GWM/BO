@@ -52,7 +52,7 @@ const MainDashboardWrapper = () => {
 
     if (selectedDateRange?.from && selectedDateRange?.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999); // Ensure the end of the day
+      adjustedToDate.setHours(23, 59, 59, 999); 
       createdDateRange = [
         selectedDateRange.from.getTime(),
         adjustedToDate.getTime(),

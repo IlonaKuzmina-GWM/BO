@@ -26,6 +26,7 @@ const Autorisation = () => {
 
     if (response.ok) {
       authStore.setLogged(data);
+      
       router.push("/dashboard");
     } else {
       setNotification({ success: false, message: data.error });

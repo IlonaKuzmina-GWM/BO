@@ -22,14 +22,13 @@ const SelectAccount: React.FC<SelectAccountProps> = ({
   const accountTypes = ["merchant", "support", "manager", "user", "agent"];
 
   const allowedRolesForAccounts = {
-    merchant: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER],
-    support: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER],
-    manager: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER],
-    user: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER],
+    merchant: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
+    support: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT] ,
+    manager: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER],
+    user: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
     agent: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER],
   };
 
-  // Filter account types based on user role
   const filteredAccountTypes = accountTypes.filter((type) => {
     const allowedRoles =
       allowedRolesForAccounts[type as keyof typeof allowedRolesForAccounts];
@@ -38,7 +37,7 @@ const SelectAccount: React.FC<SelectAccountProps> = ({
 
   useEffect(() => {
     if (!selectedAccount && filteredAccountTypes.length > 0) {
-      setInitialAccount(filteredAccountTypes[0]); // Set the first valid account type
+      setInitialAccount(filteredAccountTypes[0]);
     }
   }, [selectedAccount, filteredAccountTypes, setInitialAccount]);
 
@@ -48,7 +47,10 @@ const SelectAccount: React.FC<SelectAccountProps> = ({
         <p className="ml-[4px]">Select Account: </p>
         <div className="flex flex-row gap-[20px]">
           {filteredAccountTypes.map((account) => (
-            <div key={account} className="flex flex-row gap-[8px]">
+            <div
+              key={account}
+              className="flex cursor-pointer flex-row gap-[8px]"
+            >
               <input
                 type="radio"
                 id={account}
@@ -56,6 +58,7 @@ const SelectAccount: React.FC<SelectAccountProps> = ({
                 value={account}
                 checked={selectedAccount === account}
                 onChange={onAccountChange}
+                className="cursor-pointer"
               />
               <label htmlFor={account}>
                 {account.charAt(0).toUpperCase() + account.slice(1)}

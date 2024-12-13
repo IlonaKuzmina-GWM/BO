@@ -1,5 +1,5 @@
 import Input from "@/components/shared/Input";
-import { CSV, InputField } from "@/types";
+import { CSV } from "@/types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import DashButton from "../DashButton";
 import { formattedValueForMoney } from "../../../helpers/formattedValueForMoney";
@@ -21,7 +21,7 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
     created: "",
   });
 
-  const generateCSVInputFields: InputField[] = [
+  const generateCSVInputFields = [
     {
       label: "Name",
       name: "name",
@@ -129,7 +129,7 @@ const GenerationForm = ({ onSubmit }: GenerationFormProps) => {
       className="flex flex-row flex-wrap gap-[16px]"
       onSubmit={handleSubmit}
     >
-      {generateCSVInputFields.map((field: InputField) => (
+      {generateCSVInputFields.map((field) => (
         <Input
           key={field.name}
           label={field.label}

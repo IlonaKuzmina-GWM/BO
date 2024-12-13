@@ -34,13 +34,6 @@ export interface APIKey {
   signatureKey: string;
 }
 
-export interface InputField {
-  label: string;
-  name: string;
-  type: string;
-  placeholder: string;
-  inputWidth?: string;
-}
 
 export interface CSV {
   name: string;

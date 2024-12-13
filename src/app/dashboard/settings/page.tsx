@@ -8,9 +8,9 @@ import Tabs from "@/components/shared/Tabs";
 import { useState } from "react";
 
 const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState("Rules");
+  const [activeTab, setActiveTab] = useState("Integration");
 
-  const tabList = ["Rules", "Integration", "Authentication"];
+  const tabList = ["Integration"];
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -29,9 +29,10 @@ const SettingsPage = () => {
           onTabChange={handleTabChange}
           activeTab={activeTab}
         />
-        {activeTab === "Rules" && <Rules />}
         {activeTab === "Integration" && <Integration />}
-        {activeTab === "Authentication" && <Authentication />}
+
+        {/* {activeTab === "Rules" && <Rules />} */}
+        {/* {activeTab === "Authentication" && <Authentication />} */}
       </div>
     </div>
   );

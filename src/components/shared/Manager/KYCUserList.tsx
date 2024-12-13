@@ -98,7 +98,7 @@ const KYCUserList = () => {
                   <KYCUserListRows user={user} key={index} />
                 ))
               ) : (
-                <tr>
+                <tr className="h-[50px] border-b border-hoverBg last:border-none">
                   <td
                     colSpan={ManagerKYCUserTableHeader.length}
                     className="py-4 text-center"

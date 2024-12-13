@@ -100,6 +100,8 @@ const TransactionsWrapper = observer(() => {
   }, []);
 
   const fetchTransactionsData = async () => {
+    setLoading(true);
+
     let createdDateRange: [number, number] | boolean = false;
 
     if (selectedDateRange?.from && selectedDateRange.to) {
@@ -146,6 +148,7 @@ const TransactionsWrapper = observer(() => {
         setTotalPages(res.totalPages);
         setAllStats(res.stats);
         setTotalTransactionsCount(res.totalTransactionsCount);
+        setLoading(false);
         console.log(res);
       } else {
         alertStore.setAlert("warning", "Transactions data response failed.");
@@ -282,6 +285,10 @@ const TransactionsWrapper = observer(() => {
       label: "Refunded",
       value: "REFUNDED",
     },
+    {
+      label: "Declined",
+      value: "PAYMENT_DECLINED",
+    },
   ];
 
   const currencyFilters = [
@@ -296,6 +303,7 @@ const TransactionsWrapper = observer(() => {
   ];
 
   const activeFilterBageHandler = (name: string) => {
+
     if (name === "all") {
       setSelectedStatus([]);
       setActiveStatusBadge("all");
@@ -361,6 +369,7 @@ const TransactionsWrapper = observer(() => {
 
   const handleStatusSelect = (status: string[]) => {
     setSelectedStatus(status);
+    setActiveStatusBadge("all");
   };
 
   const handleStatusChange = (status: string) => {
@@ -423,6 +432,7 @@ const TransactionsWrapper = observer(() => {
               value: status.value,
               label: status.label,
             }))}
+
             searchInput
             onSelectHandler={handleStatusSelect}
           />

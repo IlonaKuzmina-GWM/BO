@@ -1,4 +1,4 @@
-import { formatDateTime } from "@/helpers/dateFormater";
+import { formatDateTime } from "@/utils/dateFormater";
 import { KYCUser } from "@/types/kyc";
 
 interface IKYCUserRowProps {

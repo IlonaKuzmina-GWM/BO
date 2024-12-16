@@ -2,7 +2,7 @@ import Input from "@/components/shared/Input";
 import { CSV } from "@/types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import DashButton from "../DashButton";
-import { formattedValueForMoney } from "../../../helpers/formattedValueForMoney";
+import { formattedValueForMoney } from "../../../utils/formattedValueForMoney";
 
 interface GenerationFormProps {
   onSubmit: (data: CSV) => void;

@@ -34,7 +34,7 @@ const StatusFilteringBadgeWrapper = ({
       </button>
 
       {Object.entries(statusList).map(([key, value]) => {
-  const label = STATUS_LABELS[key] || key;
+        const label = STATUS_LABELS[key] || key;
 
         return (
           <button

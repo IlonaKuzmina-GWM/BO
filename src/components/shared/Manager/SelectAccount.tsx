@@ -16,17 +16,16 @@ const SelectAccount: React.FC<SelectAccountProps> = ({
   setInitialAccount,
 }) => {
   const { authStore } = useStore();
-  const userRole = Object.values(ROLES).includes(authStore.role as ROLES)
-    ? (authStore.role as ROLES)
-    : null;
+  const userRole = authStore.role;
+
   const accountTypes = ["merchant", "support", "manager", "user", "agent"];
 
   const allowedRolesForAccounts = {
-    merchant: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
-    support: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT] ,
-    manager: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER],
-    user: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
-    agent: [ROLES.ADMIN, ROLES.OWNER, ROLES.DEVELOPER],
+    merchant: ["admin", "owner", "manager", "agent", "developer"],
+    support: ["admin", "owner", "manager", "agent", "developer"],
+    manager: ["admin", "owner", "developer"],
+    user: ["admin", "owner", "manager", "agent", "developer"],
+    agent: ["admin", "owner", "developer"],
   };
 
   const filteredAccountTypes = accountTypes.filter((type) => {

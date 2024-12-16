@@ -1,6 +1,6 @@
 "use client";
 
-import { ManagerKYCUserTableHeader } from "@/utils/tableHeaders";
+import { ManagerKYCUserTableHeader } from "@/constants/tableHeaders";
 import { useEffect, useState } from "react";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent";

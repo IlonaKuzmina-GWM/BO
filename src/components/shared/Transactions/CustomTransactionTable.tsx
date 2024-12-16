@@ -6,7 +6,7 @@ import StatusBadge from "../StatusBadge";
 import Image from "next/image";
 import React from "react";
 import CustomCheckbox from "@/components/shared/CustomCheckbox";
-import { formatDateTime } from "@/helpers/dateFormater";
+import { formatDateTime } from "@/utils/dateFormater";
 import LoadingTransactionTableSkeleton from "../LoadingUISkeletons/LoadingTransactionTableSkeleton";
 import { useStore } from "@/stores/StoreProvider";
 import {
@@ -21,12 +21,13 @@ interface ICustomTransactionTableProps {
   columns: Header[];
   paginatedTransactions: Transaction[];
   handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
-  isLoading?:boolean;
+  isLoading?: boolean;
 }
 
 const CustomTransactionTable = ({
   columns,
-  paginatedTransactions,isLoading,
+  paginatedTransactions,
+  isLoading,
   handleStatusChangeToFetchActualeTRansaction,
 }: ICustomTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
@@ -196,10 +197,7 @@ const CustomTransactionTable = ({
       setTimeout(() => {
         setCopiedOrderID(null);
       }, 1500);
-      alertStore.setAlert(
-        "success",
-        `Transaction ID copied successfully!`,
-      );
+      alertStore.setAlert("success", `Transaction ID copied successfully!`);
     } catch (err) {
       console.error("Error copying to clipboard: ", err);
     }

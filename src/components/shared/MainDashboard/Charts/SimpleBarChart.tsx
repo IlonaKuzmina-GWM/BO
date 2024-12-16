@@ -1,4 +1,4 @@
-import { formatXAxis } from "@/helpers/formatXAxis";
+import { formatXAxis } from "@/utils/formatXAxis";
 import {
   BarChart,
   Bar,
@@ -65,7 +65,8 @@ const SimpleBarChart = ({ data }: ISimpleBarChart) => {
           domain={[
             0,
             (dataMax: number) =>
-              Math.max(...data.map((d) => Math.max(d.success, d.declined))) * 1.1,
+              Math.max(...data.map((d) => Math.max(d.success, d.declined))) *
+              1.1,
           ]}
           tick={{ fill: "var(--secondary)" }}
           className="text-[10px]"

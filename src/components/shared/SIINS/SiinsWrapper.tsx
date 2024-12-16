@@ -9,14 +9,13 @@ import PaginationComponent from "../PaginationComponent";
 
 import CustomSiinsTable from "./CustomSiinsTable";
 import DataLimitsSeter from "../DataLimitsSeter";
-import { SiinsTableHeader } from "@/utils/tableHeaders";
+import { SiinsTableHeader } from "@/constants/tableHeaders";
 import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { exportExcelSiins } from "@/utils/export-utils";
 import ExportButton from "../ExportButton";
 import { useStore } from "@/stores/StoreProvider";
 import { observer } from "mobx-react-lite";
-import Alert from "@/components/shared/Alert";
 import { Siin } from "@/types/siin";
 
 const SiinsWrapper = observer(() => {
@@ -41,7 +40,6 @@ const SiinsWrapper = observer(() => {
   const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchSiinsData = async () => {
-
     let createdDateRange: [number, number] | boolean = false;
     if (selectedDateRange?.from && selectedDateRange.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
@@ -75,14 +73,11 @@ const SiinsWrapper = observer(() => {
         setSiinsTransactions(res.response.siins);
         setTotalPages(res.response.totalPages);
       } else {
-        alertStore.setAlert(
-          "warning",
-          "Siins failed.",
-        );
+        alertStore.setAlert("warning", "Siins failed.");
       }
     } catch (error) {
       alertStore.setAlert("error", `Error copying to clipboard: ${error}`);
-    } 
+    }
   };
 
   const sendExportSiinsData = async (exportType: "pdf" | "csv" | "excel") => {
@@ -133,7 +128,7 @@ const SiinsWrapper = observer(() => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -246,7 +241,6 @@ const SiinsWrapper = observer(() => {
           />
         </div>
       </div>
-
     </div>
   );
 });

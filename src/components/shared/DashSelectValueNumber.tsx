@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/utils";
 import { Check, ChevronDown } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Search from "./Search";
 import useOutsideClick from "@/hooks/useOutsideClick";
 

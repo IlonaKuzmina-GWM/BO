@@ -3,7 +3,7 @@ import { Header } from "@/types";
 import { useEffect, useState } from "react";
 import React from "react";
 import CustomCheckbox from "@/components/shared/CustomCheckbox";
-import { formatDateTime } from "@/helpers/dateFormater";
+import { formatDateTime } from "@/utils/dateFormater";
 import LoadingSiinTableSkeleton from "../LoadingUISkeletons/LoadingSiinTableSkeleton";
 import { Tooltip, TooltipProvider } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "@/components/UI/tooltip";
@@ -20,13 +20,14 @@ import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetai
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Siin[];
-  isLoading?:boolean;
+  isLoading?: boolean;
   handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const CustomSiinsTable = ({
   columns,
-  data, isLoading,
+  data,
+  isLoading,
   handleStatusChangeToFetchActualeTRansaction,
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
@@ -86,7 +87,6 @@ const CustomSiinsTable = ({
       });
       if (response.ok) {
         const res = await response.json();
-
       } else {
         alertStore.setAlert(
           "warning",
@@ -185,7 +185,6 @@ const CustomSiinsTable = ({
     );
   }, [checkedTransactions, data]);
 
-
   const handleCopyToClipboard = async (id: string) => {
     try {
       await navigator.clipboard.writeText(id);
@@ -193,10 +192,7 @@ const CustomSiinsTable = ({
       setTimeout(() => {
         setCopiedOrderID(null);
       }, 1500);
-      alertStore.setAlert(
-        "success",
-        `Transaction ID copied successfully!`,
-      );
+      alertStore.setAlert("success", `Transaction ID copied successfully!`);
     } catch (err) {
       alertStore.setAlert("error", `Error copying to clipboard: ${err}`);
     }

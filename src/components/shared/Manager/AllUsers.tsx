@@ -5,7 +5,7 @@ import Paragraph from "../Paragraph";
 import UserRows from "./UserRows";
 
 import DataLimitsSeter from "../DataLimitsSeter";
-import { ManagerAllUsersTableHeader } from "@/utils/tableHeaders";
+import { ManagerAllUsersTableHeader } from "@/constants/tableHeaders";
 import LoadingAllUsersSkeleton from "../LoadingUISkeletons/LoadingAllUsersSkeleton";
 import { User } from "@/types/user";
 import { useStore } from "@/stores/StoreProvider";
@@ -67,7 +67,7 @@ const AllUser = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -75,11 +75,11 @@ const AllUser = () => {
     fetchMerchantsListData();
   }, []);
 
-    useEffect(() => {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
-    }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   const filteredUsers = users.filter((user) => {
     const query = searchQuery.toLowerCase();
@@ -112,7 +112,7 @@ const AllUser = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    } 
+    }
   };
 
   const totalPages = Math.ceil(filteredUsers.length / limit);

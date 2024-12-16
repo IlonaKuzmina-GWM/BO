@@ -3,7 +3,7 @@ import React from "react";
 const   LoadingDashSideTableSkeleton = () => {
   return (
     <div>
-    {[...Array(5)].map((_, index) => (
+    {[...Array(11)].map((_, index) => (
       <div
         key={index}
         className="mb-[8px] flex justify-between p-[8px] animate-pulse"

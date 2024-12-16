@@ -1,7 +1,21 @@
+"use client";
+
 import DashPageTitle from "@/components/shared/DashPageTitle";
 import MainDashboardWrapper from "@/components/shared/MainDashboard/MainDashboardWrapper";
+import { useStore } from "@/stores/StoreProvider";
+import { ROLES } from "@/constants/roles";
 
 const MainDashPage = () => {
+  const { authStore } = useStore();
+  const userRole = authStore.role;
+
+  const allowedRoles = [
+    ROLES.ADMIN,
+    ROLES.MANAGER,
+    ROLES.DEVELOPER,
+    ROLES.AGENT,
+  ];
+
   return (
     <div className="flex w-full flex-col gap-4 xl:gap-6">
       <DashPageTitle
@@ -9,7 +23,7 @@ const MainDashPage = () => {
         description="Explore total volumes, success rates, and country-specific statistics"
       />
 
-      <MainDashboardWrapper />
+      {allowedRoles.includes(userRole as ROLES) && <MainDashboardWrapper />}
     </div>
   );
 };

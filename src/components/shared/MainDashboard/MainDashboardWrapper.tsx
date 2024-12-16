@@ -52,7 +52,7 @@ const MainDashboardWrapper = () => {
 
     if (selectedDateRange?.from && selectedDateRange?.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999); 
+      adjustedToDate.setHours(23, 59, 59, 999);
       createdDateRange = [
         selectedDateRange.from.getTime(),
         adjustedToDate.getTime(),
@@ -81,7 +81,9 @@ const MainDashboardWrapper = () => {
         setCountryTableData(res.geo);
         setMerchantsTableData(res.merchantStats);
 
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
       } else {
         alertStore.setAlert("warning", "Analytics data response failed.");
       }
@@ -132,6 +134,7 @@ const MainDashboardWrapper = () => {
           {grossVolumeChart && (
             <ChartWrapper
               title={`Gross`}
+              loading={isLoading}
               dataInterval={
                 selectedDateRange
                   ? {
@@ -154,6 +157,7 @@ const MainDashboardWrapper = () => {
           {paymentsRateBarChart && (
             <ChartWrapper
               title={"Payments Rate"}
+              loading={isLoading}
               dataInterval={
                 selectedDateRange
                   ? {
@@ -176,6 +180,7 @@ const MainDashboardWrapper = () => {
           {providersSuccessRateChart && (
             <ChartWrapper
               title={"Providers Success Rate"}
+              loading={isLoading}
               dataInterval={
                 selectedDateRange
                   ? {
@@ -212,7 +217,6 @@ const MainDashboardWrapper = () => {
           )}
         </div>
       </div>
-
     </div>
   );
 };

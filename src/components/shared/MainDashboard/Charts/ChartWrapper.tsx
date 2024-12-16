@@ -1,7 +1,9 @@
 import React from "react";
+import LoadingDashChartsSkeleton from "../../LoadingUISkeletons/LoadingDashChartsSkeleton";
 
 interface IChartWrapper {
   title: string;
+  loading?: boolean;
   dataInterval: { from: string; to: string };
   shortOverview?: { title: string; description: string }[];
   children: React.ReactNode;
@@ -9,21 +11,26 @@ interface IChartWrapper {
 
 const ChartWrapper = ({
   title,
+  loading,
   dataInterval,
   shortOverview,
   children,
 }: IChartWrapper) => {
   const formatDate = (date?: string | Date) => {
-    if (!date) return "N/A"; 
+    if (!date) return "N/A";
     const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime())) return "N/A"; 
+    if (isNaN(parsedDate.getTime())) return "N/A";
     return new Intl.DateTimeFormat("en-GB", {
       day: "2-digit",
       month: "2-digit",
-    }).format(parsedDate); 
+    }).format(parsedDate);
   };
 
   const formattedInterval = `${formatDate(dataInterval.from)} - ${formatDate(dataInterval.to)}`;
+
+  if (loading) {
+    return <LoadingDashChartsSkeleton />;
+  }
 
   return (
     <div className="h-full rounded-sm bg-white px-5 pt-5 shadow-sm">
@@ -43,7 +50,6 @@ const ChartWrapper = ({
                   </h2>
                   <p className="text-sm text-secondary">{item.description}</p>
                 </div>
-                {/* <div className="rounded-sm bg-secondary px-2 py-[3px]"></div> */}
               </div>
             ))}
           </div>

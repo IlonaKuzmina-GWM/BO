@@ -6,9 +6,8 @@ interface IKYCUserRowProps {
 }
 
 const KYCUserListRows = ({ user }: IKYCUserRowProps) => {
-  
   return (
-    <>
+    <tr className="h-[50px] border-b border-hoverBg last:border-none">
       <td className="pl-3 lg:pl-8">{user.name}</td>
       <td className="pr-2">{user.surname}</td>
       <td className="pr-2">{user.email}</td>
@@ -26,7 +25,7 @@ const KYCUserListRows = ({ user }: IKYCUserRowProps) => {
           <span>{formatDateTime(user.updatedAt).time}</span>
         </span>
       </td>
-    </>
+    </tr>
   );
 };
 

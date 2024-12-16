@@ -458,7 +458,7 @@ const TransactionsWrapper = observer(() => {
   return (
     <div className="">
       <div className="flex flex-row justify-between gap-6">
-        <div className="flex flex-row flex-wrap gap-5">
+        <div className="flex flex-row flex-wrap gap-3">
           <Search
             placeholder="Enter name, email, provider"
             aditionalClass="max-w-[302px] min-w-[250px]"
@@ -555,7 +555,7 @@ const TransactionsWrapper = observer(() => {
           />
         </div>
 
-        <div className="flex flex-wrap gap-5 justify-end">
+        <div className="flex flex-wrap xl:flex-nowrap gap-5 justify-end">
           <DashButton
             name={"Reset"}
             type={"empty"}

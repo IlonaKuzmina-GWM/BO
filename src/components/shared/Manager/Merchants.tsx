@@ -3,7 +3,7 @@
 import {
   ManagerMerchantsTableHeader,
   OtherMerchantsTableHeader,
-} from "@/utils/tableHeaders";
+} from "@/constants/tableHeaders";
 import { useEffect, useRef, useState } from "react";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent";

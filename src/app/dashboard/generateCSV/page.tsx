@@ -5,7 +5,7 @@ import DashPageTitle from "@/components/shared/DashPageTitle";
 import CSVRows from "@/components/shared/GenerateCSV/CSVRows";
 import GenerationForm from "@/components/shared/GenerateCSV/GenerationForm";
 import { CSV } from "@/types";
-import { GenerateCSVTableHeader } from "@/utils/tableHeaders";
+import { GenerateCSVTableHeader } from "@/constants/tableHeaders";
 import { useState } from "react";
 import { exportExcelPayout } from "../../../utils/export-utils";
 

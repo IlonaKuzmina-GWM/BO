@@ -1,7 +1,7 @@
 "use client";
 
 import TableRowSelect from "@/components/shared/TableRowSelect";
-import { formatDateTime } from "@/helpers/dateFormater";
+import { formatDateTime } from "@/utils/dateFormater";
 import { Merchant } from "@/types/merchant";
 import { User } from "@/types/user";
 import { useState } from "react";

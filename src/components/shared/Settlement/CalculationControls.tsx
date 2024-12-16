@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import DashButton from "../DashButton";
 import DashIntervalSelect from "../DashIntervalSelect";
-import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
 
 interface CalculationControlsProps {

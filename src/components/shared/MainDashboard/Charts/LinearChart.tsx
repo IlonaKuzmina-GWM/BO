@@ -1,4 +1,4 @@
-import { formatXAxis } from "@/helpers/formatXAxis";
+import { formatXAxis } from "@/utils/formatXAxis";
 import {
   LineChart,
   Line,
@@ -51,7 +51,7 @@ const LinearChart = ({ data }: ILinearChart) => {
 
   return (
     <ResponsiveContainer width="100%" height={410}>
-      <LineChart data={data}  margin={{ top: 20, right: 0, left: 0, bottom: 5 }}>
+      <LineChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 5 }}>
         <Legend content={<CustomLegend />} align="left" verticalAlign="top" />
         <CartesianGrid strokeDasharray="1 0" fillOpacity={0.5} />
         <Tooltip />
@@ -60,19 +60,19 @@ const LinearChart = ({ data }: ILinearChart) => {
           dataKey="date"
           tick={{ fill: "var(--secondary)" }}
           tickFormatter={formatXAxis}
-          className="text-[10px] "
+          className="text-[10px]"
           height={30}
         />
         <YAxis
-         tick={{ fill: "var(--secondary)" }}
+          tick={{ fill: "var(--secondary)" }}
           yAxisId="left"
           className="text-[10px]"
         />
         <YAxis
-         tick={{ fill: "var(--secondary)" }}
+          tick={{ fill: "var(--secondary)" }}
           yAxisId="right"
           orientation="right"
-          className="text-[10px] "
+          className="text-[10px]"
         />
 
         <Line

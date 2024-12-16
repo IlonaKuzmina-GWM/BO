@@ -1,6 +1,5 @@
-import { DashTableData } from "@/types";
 import LoadingDashSideTableSkeleton from "../LoadingUISkeletons/LoadingDashSideTableSkeleton";
-import { GeoCountryStat, MerchantStat } from "@/types/statistics";
+import { GeoCountryStat } from "@/types/statistics";
 
 type IDashSideTableProps = {
   title: string;

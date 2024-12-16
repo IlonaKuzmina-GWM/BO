@@ -6,7 +6,6 @@ import { DateRange } from "react-day-picker";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
 
-import { TransactionsTableHeader } from "@/utils/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
 import PaginationComponent from "../PaginationComponent";
 import CustomTransactionTable from "./CustomTransactionTable";
@@ -23,6 +22,7 @@ import { Transaction } from "@/types/transaction";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 import DashButton from "../DashButton";
+import { TransactionsTableHeader } from "@/constants/tableHeaders";
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();

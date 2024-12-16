@@ -12,19 +12,17 @@ import { observer } from "mobx-react-lite";
 import { ROLES } from "@/constants/roles";
 
 const ManagerPage = observer(() => {
-  const [activeTab, setActiveTab] = useState<string | null>(null);
-
   const { authStore } = useStore();
-
   const userRole = authStore.role;
 
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const tabList = ["Create", "Merchants", "All Users", "KYC User List"];
 
   const allowedRolesForTabs = {
-    Create: [ROLES.ADMIN, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
-    Merchants: [ROLES.ADMIN, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
-    "All Users": [ROLES.ADMIN, ROLES.DEVELOPER, ROLES.MANAGER, ROLES.AGENT],
-    "KYC User List": [ROLES.ADMIN, ROLES.DEVELOPER],
+    Create: ["admin", "manager", "agent", "developer"],
+    Merchants: ["admin", "manager", "agent", "developer"],
+    "All Users": ["admin", "manager", "agent", "developer"],
+    "KYC User List": ["admin", "developer"],
   };
 
   const filteredTabsByRole = tabList.filter((tab) => {
@@ -37,10 +35,10 @@ const ManagerPage = observer(() => {
     setActiveTab(tab);
   };
   useEffect(() => {
-    if (!activeTab && tabList.length > 0) {
-      setActiveTab(tabList[0]);
+    if (!activeTab && filteredTabsByRole.length > 0) {
+      setActiveTab(filteredTabsByRole[0]);
     }
-  }, [activeTab, tabList, setActiveTab]);
+  }, [activeTab, filteredTabsByRole]);
 
   return (
     <div className="flex min-h-screen w-full flex-col gap-4 xl:gap-6">

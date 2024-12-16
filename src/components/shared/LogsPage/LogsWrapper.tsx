@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Log } from "@/types/logs";
-import { LogsTableHeader } from "@/utils/tableHeaders";
+import { LogsTableHeader } from "@/constants/tableHeaders";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 
 import CustomLogsTable from "./CustomLogsTable";

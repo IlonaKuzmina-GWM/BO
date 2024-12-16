@@ -1,9 +1,8 @@
 "use client";
 
 import { Header } from "@/types";
-import { useEffect, useState } from "react";
 import React from "react";
-import { formatDateTime } from "@/helpers/dateFormater";
+import { formatDateTime } from "@/utils/dateFormater";
 
 import { Log } from "@/types/logs";
 import LoadingLogsTableSkeleton from "../LoadingUISkeletons/LoadingLogsTableSkeleton";
@@ -11,7 +10,7 @@ import LoadingLogsTableSkeleton from "../LoadingUISkeletons/LoadingLogsTableSkel
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Log[];
-  isLoading:boolean
+  isLoading: boolean;
 }
 
 const CustomLogsTable = ({
@@ -19,8 +18,6 @@ const CustomLogsTable = ({
   data,
   isLoading,
 }: ICustomSiinsTransactionTableProps) => {
-
-
   return (
     <div className="">
       <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">

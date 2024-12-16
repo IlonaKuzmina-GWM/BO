@@ -3,7 +3,7 @@ import {
   getProcessColor,
   getSuccessColor,
 } from "@/helpers/getColorByStatus";
-import { transformStatus } from "@/helpers/transformStatus ";
+import { transformStatus } from "@/utils/transformStatus ";
 import React from "react";
 
 interface IStatusBadge {

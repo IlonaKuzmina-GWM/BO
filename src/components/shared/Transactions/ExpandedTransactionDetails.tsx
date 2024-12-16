@@ -6,7 +6,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/UI/collapsible";
 import { ChevronDown } from "lucide-react";
-import { formatDateTime } from "@/helpers/dateFormater";
+import { formatDateTime } from "@/utils/dateFormater";
 import LogHistory from "../LogHistory";
 import DashButton from "../DashButton";
 import { STATUSES } from "@/constants/statuses";

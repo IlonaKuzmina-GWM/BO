@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/stores/StoreProvider";
@@ -26,7 +26,7 @@ const Autorisation = () => {
 
     if (response.ok) {
       authStore.setLogged(data);
-      
+
       router.push("/dashboard");
     } else {
       setNotification({ success: false, message: data.error });
@@ -57,7 +57,9 @@ const Autorisation = () => {
     setIsLoading(false);
   };
 
-  const handleEmailChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleEmailChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setEmailError("");
     setEmail(e.target.value);
   };
@@ -70,7 +72,9 @@ const Autorisation = () => {
     }
   };
 
-  const handlePasswordChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handlePasswordChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setPasswordError("");
     setPassword(e.target.value);
   };
@@ -83,7 +87,7 @@ const Autorisation = () => {
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     handleEmailBlur();
     handlePasswordBlur();

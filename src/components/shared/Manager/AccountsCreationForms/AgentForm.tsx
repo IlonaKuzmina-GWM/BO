@@ -4,10 +4,7 @@ import React, { useEffect, useState } from "react";
 import DashButton from "../../DashButton";
 import { useStore } from "@/stores/StoreProvider";
 import Spinner from "../../Spinner";
-import { ROLES } from "@/constants/roles";
-import { Merchant, MerchantList } from "@/types/merchant";
-import DashSelectValueNumber from "../../DashSelectValueNumber";
-import TableRowSelect from "../../TableRowSelect";
+import { Merchant } from "@/types/merchant";
 import DropdownWithSearch from "../../DropdownWithSearch";
 
 interface IMerchantForm {
@@ -15,7 +12,7 @@ interface IMerchantForm {
 }
 
 const AgentForm = ({ disabled }: IMerchantForm) => {
-  const { alertStore, authStore } = useStore();
+  const { alertStore } = useStore();
 
   const [submited, setSubmited] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);

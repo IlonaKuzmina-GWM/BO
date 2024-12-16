@@ -5,7 +5,7 @@ import Modal from "../Modal";
 import RuleRows from "./RuleRows";
 import { Rule } from "@/types";
 import PaginationComponent from "../PaginationComponent";
-import { SettingsRulesTableHeaader } from "@/utils/tableHeaders";
+import { SettingsRulesTableHeaader } from "@/constants/tableHeaders";
 import DataLimitsSeter from "../DataLimitsSeter";
 import CreateNewRule from "./CreateNewRule";
 

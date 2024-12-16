@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Dashbutton from "../DashButton";
 import Paragraph from "../Paragraph";
 import LoadingAPIKeySkeleton from "../LoadingUISkeletons/LoadingAPIKeysSkeleton";
-import { SettingsIntegrationTableHeader } from "@/utils/tableHeaders";
+import { SettingsIntegrationTableHeader } from "@/constants/tableHeaders";
 import { keysResponse } from "@/types/keysResponse";
 import {
   Tooltip,

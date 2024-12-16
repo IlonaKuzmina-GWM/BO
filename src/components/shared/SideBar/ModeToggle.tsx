@@ -10,7 +10,6 @@ interface IModeToggle {
 
 export default function ModeToggle({ isSidebarOpen }: IModeToggle) {
   const { theme, setTheme } = useTheme();
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

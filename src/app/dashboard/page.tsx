@@ -9,12 +9,7 @@ const MainDashPage = () => {
   const { authStore } = useStore();
   const userRole = authStore.role;
 
-  const allowedRoles = [
-    ROLES.ADMIN,
-    ROLES.MANAGER,
-    ROLES.DEVELOPER,
-    ROLES.AGENT,
-  ];
+  const allowedRoles = ["admin", "manager", "agent", "developer"];
 
   return (
     <div className="flex w-full flex-col gap-4 xl:gap-6">
@@ -23,7 +18,9 @@ const MainDashPage = () => {
         description="Explore total volumes, success rates, and country-specific statistics"
       />
 
-      {allowedRoles.includes(userRole as ROLES) && <MainDashboardWrapper />}
+      {allowedRoles.includes(userRole as keyof typeof ROLES) && (
+        <MainDashboardWrapper />
+      )}
     </div>
   );
 };

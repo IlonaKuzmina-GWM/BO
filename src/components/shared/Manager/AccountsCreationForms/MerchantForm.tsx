@@ -54,8 +54,6 @@ const MerchantForm = ({ disabled }: IMerchantForm) => {
       });
 
       if (response.ok) {
-        // const res = await response.json();
-
         if (userRole !== ROLES.MANAGER) {
           alertStore.setAlert(
             "success",
@@ -77,6 +75,15 @@ const MerchantForm = ({ disabled }: IMerchantForm) => {
       );
     } finally {
       setSubmited(false);
+      setFormData({
+        name: "",
+        host: "",
+        label: "",
+        email: "",
+        password: "",
+        settlementFee: "3.00",
+        settlementFixedFee: "0.8",
+      });
     }
   };
 

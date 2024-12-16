@@ -5,6 +5,7 @@ interface ITabs {
 }
 
 const Tabs = ({ tabList, activeTab, onTabChange }: ITabs) => {
+
   return (
     <>
       <button className="flex flex-row rounded-[4px]">

@@ -43,8 +43,6 @@ const ManagerForm = ({ disabled }: IMerchantForm) => {
       });
 
       if (response.ok) {
-        // const res = await response.json();
-
         alertStore.setAlert("success", `Manager was successfully created!`);
       } else {
         alertStore.setAlert("warning", "Invalid credentials.");
@@ -53,6 +51,12 @@ const ManagerForm = ({ disabled }: IMerchantForm) => {
       alertStore.setAlert("error", `Error while creating a new manager: ${error}`);
     } finally {
       setSubmited(false);
+      setFormData({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+      });
     }
   };
 

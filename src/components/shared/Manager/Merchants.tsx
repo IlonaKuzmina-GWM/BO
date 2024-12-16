@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  AgentMerchantsTableHeader,
   ManagerMerchantsTableHeader,
+  OtherMerchantsTableHeader,
 } from "@/utils/tableHeaders";
 import { useEffect, useRef, useState } from "react";
 import DataLimitsSeter from "../DataLimitsSeter";
@@ -37,8 +37,6 @@ const Merchants = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState<number>(10);
-
-
 
   const fetchAllMerchantsData = async () => {
     try {
@@ -84,6 +82,7 @@ const Merchants = () => {
       }));
 
       setAllMerchants(processedMerchants);
+      console.log(processedMerchants);
       // console.log("Fetched and processed merchants:", processedMerchants);
 
       // setAllMerchants(allMerchants);
@@ -125,9 +124,6 @@ const Merchants = () => {
 
       if (response.ok) {
         const res = await response.json();
-
-        console.log("res", res);
-
         setStoresList(res);
       } else {
         alertStore.setAlert("warning", "Get store response failed.");
@@ -143,7 +139,7 @@ const Merchants = () => {
     fetchStoresListData();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
@@ -214,6 +210,7 @@ const Merchants = () => {
   const handleSearchChange = (value: string) => {
     setInputSearchQueryValue(value);
   };
+  // admin, owner, developer includes roles kā stringus norādīt
 
   return (
     <div>
@@ -230,7 +227,8 @@ const Merchants = () => {
             />
           )}
         </div>
-        {userRole !== ROLES.AGENT ? (
+
+        {userRole !== ROLES.ADMIN ? (
           <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
             <thead className="h-[50px] bg-hoverBg font-semibold">
               <tr>
@@ -313,6 +311,25 @@ const Merchants = () => {
                     <td className="px-2">
                       <div
                         className={`flex justify-center rounded-[4px] px-[4px] py-[8px] ${
+                          merchant.sandbox
+                            ? "bg-successBg text-success"
+                            : "bg-errorBg text-error"
+                        }`}
+                      >
+                        {merchant.sandbox ? "Enabled" : "Disabled"}
+                      </div>
+                    </td>
+                    <td className="px-2 text-[--error] lg:pr-8">
+                      <Switcher
+                        id={`switcher-${merchant.label}`}
+                        checked={merchant.sandbox}
+                        onChange={() => toggleStatus(merchant.id)}
+                      />
+                    </td>
+
+                    <td className="px-2">
+                      <div
+                        className={`flex justify-center rounded-[4px] px-[4px] py-[8px] ${
                           merchant.disabled
                             ? "bg-successBg text-success"
                             : "bg-errorBg text-error"
@@ -346,12 +363,12 @@ const Merchants = () => {
           <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
             <thead className="h-[50px] bg-hoverBg font-semibold">
               <tr>
-                {AgentMerchantsTableHeader.map((col, index) => (
+                {OtherMerchantsTableHeader.map((col, index) => (
                   <th
                     key={col.key}
                     className={`${
                       index === 0 ? "pl-3 lg:pl-8" : ""
-                    } ${index === AgentMerchantsTableHeader.length - 1 ? "pr-3 lg:pr-8" : ""} ${
+                    } ${index === OtherMerchantsTableHeader.length - 1 ? "pr-3 lg:pr-8" : ""} ${
                       col.centered ? "text-center" : ""
                     } pr-2`}
                     style={{ width: col.width }}
@@ -404,7 +421,7 @@ const Merchants = () => {
               ) : (
                 <tr>
                   <td
-                    colSpan={AgentMerchantsTableHeader.length}
+                    colSpan={OtherMerchantsTableHeader.length}
                     className="py-4 text-center"
                   >
                     No merchants available

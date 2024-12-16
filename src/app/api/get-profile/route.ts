@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const responseData = await data.json();
 
     const userId = responseData.id;
-    const userRole = responseData.role;
+    const userRole = responseData.role.toLowerCase();
 
     const response = NextResponse.json(responseData, { status: 200 });
 

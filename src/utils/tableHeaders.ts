@@ -36,23 +36,25 @@ export const GenerateCSVTableHeader: Header[] = [
 ];
 
 export const ManagerMerchantsTableHeader: Header[] = [
-  { title: "ID", key: "id", width: "7%" },
+  { title: "ID", key: "id", width: "5%" },
   { title: "Name", key: "name", width: "15%" },
-  { title: "Store", key: "store", width: "15%", centered: true },
+  { title: "Store", key: "store", width: "13%", centered: true },
   { title: "Label", key: "label", width: "15%" },
-  { title: "Link", key: "host", width: "15%" },
-  { title: "Setl.Amount", key: "amount", width: "7%", centered: true },
-  { title: "Active Providers", key: "providers", width: "15%" },
-  { title: "Status", key: "status", width: "7%" },
-  { title: "Action", key: "action", width: "4%" },
+  { title: "Link", key: "host", width: "14%" },
+  { title: "Setl. Amount", key: "amount", width: "7%", centered: true },
+  { title: "Active Providers", key: "providers", width: "13%" },
+  { title: "Sandbox", key: "status", width: "6%" },
+  { title: "", key: "action", width: "3%" },
+  { title: "Status", key: "status", width: "6%" },
+  { title: "", key: "action", width: "3%" },
 ];
 
-export const AgentMerchantsTableHeader: Header[] = [
+export const OtherMerchantsTableHeader: Header[] = [
   { title: "ID", key: "id", width: "12%" },
   { title: "Name", key: "name", width: "22%" },
   { title: "Label (api slug)", key: "label", width: "22%" },
-  { title: "Status", key: "status", width: "22%" },
   { title: "Manager internal id", key: "internal", width: "22%" },
+  { title: "Status", key: "status", width: "22%" },
 ];
 
 export const ManagerAllUsersTableHeader: Header[] = [

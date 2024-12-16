@@ -5,16 +5,49 @@ import Rules from "@/components/shared/Settings/Rules";
 import Integration from "@/components/shared/Settings/Integration";
 import Authentication from "@/components/shared/Settings/Authentication";
 import Tabs from "@/components/shared/Tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ROLES } from "@/constants/roles";
+import { useStore } from "@/stores/StoreProvider";
 
 const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState("Integration");
+  const { authStore } = useStore();
+  const userRole = Object.values(ROLES).includes(authStore.role as ROLES)
+    ? (authStore.role as ROLES)
+    : null;
 
-  const tabList = ["Integration"];
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+
+  const tabList = ["Rules", "Integration", "Authentication"];
+
+  const allowedRolesForTabs = {
+    Rules: [ROLES.ADMIN, ROLES.DEVELOPER],
+    Integration: [ROLES.ADMIN, ROLES.DEVELOPER, ROLES.MERCHANT],
+    Authentication: [
+      ROLES.ADMIN,
+      ROLES.DEVELOPER,
+      ROLES.MANAGER,
+      ROLES.AGENT,
+      ROLES.USER,
+      ROLES.SUPPORT,
+      ROLES.MERCHANT,
+      ROLES.FINANCE,
+    ],
+  };
+
+  const filteredTabsByRole = tabList.filter((tab) => {
+    const allowedRoles =
+      allowedRolesForTabs[tab as keyof typeof allowedRolesForTabs];
+    return allowedRoles ? allowedRoles.includes(userRole as ROLES) : false;
+  });
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
+  useEffect(() => {
+    if (!activeTab && tabList.length > 0) {
+      setActiveTab(tabList[0]);
+    }
+  }, [activeTab, tabList, setActiveTab]);
 
   return (
     <div className="flex min-h-screen w-full flex-col gap-4 xl:gap-6">
@@ -25,14 +58,14 @@ const SettingsPage = () => {
 
       <div className="w-full">
         <Tabs
-          tabList={tabList}
+          tabList={filteredTabsByRole}
+          activeTab={activeTab || ""}
           onTabChange={handleTabChange}
-          activeTab={activeTab}
         />
         {activeTab === "Integration" && <Integration />}
 
-        {/* {activeTab === "Rules" && <Rules />} */}
-        {/* {activeTab === "Authentication" && <Authentication />} */}
+        {activeTab === "Rules" && <Rules />}
+        {activeTab === "Authentication" && <Authentication />}
       </div>
     </div>
   );

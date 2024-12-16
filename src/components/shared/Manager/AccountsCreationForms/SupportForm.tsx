@@ -44,8 +44,6 @@ const SupportForm = ({ disabled }: IMerchantForm) => {
       });
 
       if (response.ok) {
-        // const res = await response.json();
-
         alertStore.setAlert("success", `Support was successfully created!`);
       } else {
         alertStore.setAlert("warning", "Invalid credentials.");
@@ -57,6 +55,12 @@ const SupportForm = ({ disabled }: IMerchantForm) => {
       );
     } finally {
       setSubmited(false);
+      setFormData({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+      });
     }
   };
 

@@ -89,8 +89,12 @@ const TransactionsWrapper = observer(() => {
     }
   };
 
+
+
   useEffect(() => {
-    fetchFiltersData();
+    if(userRole !== ROLES.MERCHANT) {
+      fetchFiltersData();
+    }
   }, []);
 
   useEffect(() => {

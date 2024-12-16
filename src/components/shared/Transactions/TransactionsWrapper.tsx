@@ -22,6 +22,7 @@ import { ROLES } from "@/constants/roles";
 import { Transaction } from "@/types/transaction";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
+import DashButton from "../DashButton";
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
@@ -45,8 +46,14 @@ const TransactionsWrapper = observer(() => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalTransactionsCount, setTotalTransactionsCount] =
     useState<number>(0);
-  const [selectedInterval, setSelectedInterval] = useState("");
-  const [selectedDateRange, setSelectedDateRange] = useState<
+
+  const [selectedCreatedInterval, setSelectedCreatedInterval] = useState("");
+  const [selectedCreatedDateRange, setSelectedCreatedDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
+
+  const [selectedUpdatedInterval, setSelectedUpdatedInterval] = useState("");
+  const [selectedUpdatedDateRange, setSelectedUpdatedDateRange] = useState<
     DateRange | undefined
   >(undefined);
 
@@ -89,10 +96,8 @@ const TransactionsWrapper = observer(() => {
     }
   };
 
-
-
   useEffect(() => {
-    if(userRole !== ROLES.MERCHANT) {
+    if (userRole !== ROLES.MERCHANT) {
       fetchFiltersData();
     }
   }, []);
@@ -108,16 +113,25 @@ const TransactionsWrapper = observer(() => {
 
     let createdDateRange: [number, number] | boolean = false;
 
-    if (selectedDateRange?.from && selectedDateRange.to) {
-      const adjustedToDate = new Date(selectedDateRange.to);
+    if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
+      const adjustedToDate = new Date(selectedCreatedDateRange.to);
       adjustedToDate.setHours(23, 59, 59, 999);
       createdDateRange = [
-        selectedDateRange.from.getTime(),
+        selectedCreatedDateRange.from.getTime(),
         adjustedToDate.getTime(),
       ];
     }
 
-    const updatedDateRange: [number, number] | boolean = false;
+    let updatedDateRange: [number, number] | boolean = false;
+
+    if (selectedUpdatedDateRange?.from && selectedUpdatedDateRange.to) {
+      const adjustedToDate = new Date(selectedUpdatedDateRange.to);
+      adjustedToDate.setHours(23, 59, 59, 999);
+      updatedDateRange = [
+        selectedUpdatedDateRange.from.getTime(),
+        adjustedToDate.getTime(),
+      ];
+    }
 
     try {
       const response = await fetch("/api/post-filtered-transactions", {
@@ -165,16 +179,25 @@ const TransactionsWrapper = observer(() => {
   const sendExportTransactionsData = async (exportType: "excel") => {
     let createdDateRange: [number, number] | boolean = false;
 
-    if (selectedDateRange?.from && selectedDateRange.to) {
-      const adjustedToDate = new Date(selectedDateRange.to);
+    if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
+      const adjustedToDate = new Date(selectedCreatedDateRange.to);
       adjustedToDate.setHours(23, 59, 59, 999);
       createdDateRange = [
-        selectedDateRange.from.getTime(),
+        selectedCreatedDateRange.from.getTime(),
         adjustedToDate.getTime(),
       ];
     }
 
-    const updatedDateRange: [number, number] | boolean = false;
+    let updatedDateRange: [number, number] | boolean = false;
+
+    if (selectedUpdatedDateRange?.from && selectedUpdatedDateRange.to) {
+      const adjustedToDate = new Date(selectedUpdatedDateRange.to);
+      adjustedToDate.setHours(23, 59, 59, 999);
+      updatedDateRange = [
+        selectedUpdatedDateRange.from.getTime(),
+        adjustedToDate.getTime(),
+      ];
+    }
 
     try {
       const response = await fetch("/api/post-export-transactions", {
@@ -231,7 +254,8 @@ const TransactionsWrapper = observer(() => {
   useEffect(() => {
     fetchTransactionsData();
   }, [
-    selectedDateRange,
+    selectedCreatedDateRange,
+    selectedUpdatedDateRange,
     limit,
     searchQuery,
     currentPage,
@@ -307,7 +331,6 @@ const TransactionsWrapper = observer(() => {
   ];
 
   const activeFilterBageHandler = (name: string) => {
-
     if (name === "all") {
       setSelectedStatus([]);
       setActiveStatusBadge("all");
@@ -335,28 +358,50 @@ const TransactionsWrapper = observer(() => {
     setInputCountryCodeQueryValue(value);
   };
 
-  const handleIntervalChange = (interval: string) => {
+  const handleCreatedIntervalChange = (interval: string) => {
     setCurrentPage(1);
-    setSelectedInterval(interval);
+
+    setSelectedCreatedInterval(interval);
+    setSelectedCreatedDateRange(undefined);
+
+    setSelectedUpdatedInterval("");
+    setSelectedUpdatedDateRange(undefined);
 
     const startDate = getStartDateForInterval(interval);
     const now = new Date();
 
     if (startDate) {
-      const dateRange: DateRange = { from: startDate, to: now };
-      setSelectedDateRange(dateRange);
-    } else {
-      setSelectedDateRange(undefined);
+      setSelectedCreatedDateRange({ from: startDate, to: now });
     }
   };
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setSelectedDateRange(range);
-    setSelectedInterval("");
+  const handleCreatedDateRangeChange = (range: DateRange | undefined) => {
+    setSelectedCreatedDateRange(range);
+    setSelectedUpdatedDateRange(undefined);
+    setSelectedCreatedInterval("");
   };
 
-  const handleLimitChange = (limit: number) => {
-    setLimit(limit);
+  const handleUpdatedIntervalChange = (interval: string) => {
+    setCurrentPage(1);
+
+    setSelectedUpdatedInterval(interval);
+    setSelectedUpdatedDateRange(undefined);
+
+    setSelectedCreatedInterval("");
+    setSelectedCreatedDateRange(undefined);
+
+    const startDate = getStartDateForInterval(interval);
+    const now = new Date();
+
+    if (startDate) {
+      setSelectedUpdatedDateRange({ from: startDate, to: now });
+    }
+  };
+
+  const handleUpdatedDateRangeChange = (range: DateRange | undefined) => {
+    setSelectedUpdatedDateRange(range);
+    setSelectedCreatedDateRange(undefined);
+    setSelectedUpdatedInterval("");
   };
 
   const handleMerchantSelect = (merchants: number[]) => {
@@ -381,6 +426,35 @@ const TransactionsWrapper = observer(() => {
     fetchTransactionsData();
   };
 
+  const handleLimitChange = (limit: number) => {
+    setLimit(limit);
+  };
+
+  const handleResetFilters = () => {
+    setInputSearchQueryValue("");
+    setSearchQuery("");
+    setInputCountryCodeQueryValue("");
+    setSearchCountryCodeQuery("");
+
+    setSelectedCreatedInterval("");
+    setSelectedCreatedDateRange(undefined);
+
+    setSelectedUpdatedInterval("");
+    setSelectedUpdatedDateRange(undefined);
+
+    setSelectedMerchants([]);
+    setSelectedProviders([]);
+
+    setSelectedStatus([]);
+    setSelectedCurrency([]);
+
+    setActiveStatusBadge("all");
+    setCurrentPage(1);
+    setLimit(10);
+
+    // fetchTransactionsData();
+  };
+
   return (
     <div className="">
       <div className="flex flex-row justify-between gap-6">
@@ -395,13 +469,35 @@ const TransactionsWrapper = observer(() => {
 
           <div className="flex">
             <DashIntervalSelect
-              value={selectedInterval ? selectedInterval : "Select Interval"}
+              value={
+                selectedCreatedInterval
+                  ? selectedCreatedInterval
+                  : "Created Interval"
+              }
               label="No Interval"
-              onIntervalChange={handleIntervalChange}
+              onIntervalChange={handleCreatedIntervalChange}
             />
             <DatePickerWithRange
-              initialDate={selectedDateRange}
-              onDateChange={handleDateRangeChange}
+              initialDate={selectedCreatedDateRange}
+              onDateChange={handleCreatedDateRangeChange}
+              name="Created date range"
+            />
+          </div>
+
+          <div className="flex">
+            <DashIntervalSelect
+              value={
+                selectedUpdatedInterval
+                  ? selectedUpdatedInterval
+                  : "Updated Interval"
+              }
+              label="No Interval"
+              onIntervalChange={handleUpdatedIntervalChange}
+            />
+            <DatePickerWithRange
+              initialDate={selectedUpdatedDateRange}
+              onDateChange={handleUpdatedDateRangeChange}
+              name="Updated date range"
             />
           </div>
 
@@ -436,7 +532,6 @@ const TransactionsWrapper = observer(() => {
               value: status.value,
               label: status.label,
             }))}
-
             searchInput
             onSelectHandler={handleStatusSelect}
           />
@@ -460,13 +555,23 @@ const TransactionsWrapper = observer(() => {
           />
         </div>
 
-        <ExportButton
-          // onSelect={(exportType: "pdf" | "csv" | "excel") => {
-          onSelect={(exportType: "excel") => {
-            sendExportTransactionsData(exportType);
-          }}
-          disabled={loading}
-        />
+        <div className="flex flex-wrap gap-5 justify-end">
+          <DashButton
+            name={"Reset"}
+            type={"empty"}
+            onClickHandler={handleResetFilters}
+            additionalStyle="w-[115px]"
+          />
+
+          <ExportButton
+            // onSelect={(exportType: "pdf" | "csv" | "excel") => {
+            onSelect={(exportType: "excel") => {
+              sendExportTransactionsData(exportType);
+            }}
+            disabled={loading}
+            additionalStyle="w-[115px]"
+          />
+        </div>
       </div>
 
       <StatusFilteringBadgeWrapper

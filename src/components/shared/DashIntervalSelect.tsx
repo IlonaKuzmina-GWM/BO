@@ -45,7 +45,7 @@ const DashIntervalSelect = ({
   };
 
   return (
-    <div className="h10 relative w-[130px]">
+    <div className="h10 relative w-[145px]">
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}

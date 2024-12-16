@@ -19,8 +19,8 @@ const AuthenticationQR = ({ setIs2FAEnabled }: IAuthenticationQRProps) => {
   }, []);
 
   const generateRandomCode = () => {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setRandomCode(code);
+    // const code = Math.floor(100000 + Math.random() * 900000).toString();
+    // setRandomCode(code);
   };
 
   const handleChange = (

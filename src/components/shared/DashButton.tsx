@@ -4,7 +4,7 @@ interface IDashButton {
   name: string;
   type: "filled" | "empty";
   disabled?: boolean;
-  aditionlStyle?: string;
+  additionalStyle?: string;
   onClickHandler?: () => void;
   isFullWidth?: boolean;
 }
@@ -12,7 +12,7 @@ interface IDashButton {
 const DashButton = ({
   name,
   type,
-  aditionlStyle = "",
+  additionalStyle = "",
   disabled = false,
   onClickHandler,
   isFullWidth = false,
@@ -30,7 +30,7 @@ const DashButton = ({
     <button
       disabled={disabled}
       onClick={onClickHandler}
-      className={`${selectedStyle} ${aditionlStyle} ${disabled ? " cursor-not-allowed bg-fill text-secondary" : ""} ${isFullWidth ? "w-full" : ""} text-md rounded-sm px-8 py-2 font-semibold capitalize leading-normal transition-all duration-300 h-fit`}
+      className={`${selectedStyle} ${additionalStyle} ${disabled ? " cursor-not-allowed bg-fill text-secondary" : ""} ${isFullWidth ? "w-full" : ""} text-md rounded-sm px-8 py-2 font-semibold capitalize leading-normal transition-all duration-300 h-fit`}
     >
       {name}
     </button>

@@ -163,7 +163,7 @@ const SupportForm = ({ disabled }: IMerchantForm) => {
           type={"filled"}
           disabled={!isFormValid || disabled}
           isFullWidth
-          aditionlStyle="mt-10"
+          additionalStyle="mt-10"
         />
       </div>
     </form>

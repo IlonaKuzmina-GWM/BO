@@ -13,12 +13,14 @@ import { Button } from "../UI/button";
 interface IDatePickerWithRange extends React.HTMLAttributes<HTMLDivElement> {
   onDateChange: (range: DateRange | undefined) => void;
   className?: string;
+  name?: string;
   initialDate?: DateRange;
   width?: string;
 }
 
 const DatePickerWithRange = ({
   className,
+  name,
   onDateChange,
   initialDate,
   width = "300px",
@@ -64,7 +66,7 @@ const DatePickerWithRange = ({
                 format(date.from, "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>{name ? name : "Pick a date"}</span>
             )}
           </Button>
         </PopoverTrigger>

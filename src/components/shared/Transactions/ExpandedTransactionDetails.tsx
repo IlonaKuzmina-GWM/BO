@@ -19,8 +19,7 @@ interface ExpandedTransactionDetailsProps {
   userRole: string | null;
   copiedOrderID: string | null;
   handleCopyToClipboard: (id: string) => void;
-  handleSelectStatus: (value: string, txId: string) => void;
-  refundTransaction: (txId: string) => void;
+  handleSelectStatus: (type: string, value: string, txId: string) => void;
   expandedWebhooks: { [webhookId: number]: boolean };
   toggleWebhook: (webhookId: number) => void;
   getCurrency: (countryCode: string, provider: string) => string;
@@ -32,7 +31,6 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
   copiedOrderID,
   handleCopyToClipboard,
   handleSelectStatus,
-  refundTransaction,
   expandedWebhooks,
   toggleWebhook,
   getCurrency,
@@ -82,7 +80,7 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
           <select
             className={`cursor-pointer bg-transparent text-${getStatusColorClass(transaction.status)}`}
             onChange={(e) => (
-              handleSelectStatus(e.target.value, transaction.txId)
+              handleSelectStatus('status', e.target.value, transaction.txId)
             )}
             value={transaction.status}
           >
@@ -255,7 +253,7 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
         <DashButton
           name="Refund"
           type="empty"
-          onClickHandler={() => refundTransaction(transaction.txId)}
+          onClickHandler={() => handleSelectStatus('refunded', 'refund', transaction.txId)}
         />
       )}
     </div>

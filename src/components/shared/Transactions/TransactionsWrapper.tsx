@@ -23,6 +23,8 @@ import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 import DashButton from "../DashButton";
 import { TransactionsTableHeader } from "@/constants/tableHeaders";
+import createFilters from "@/utils/createStatusFilters";
+import createCurrencyFilters from "@/utils/createCurrencyFilters";
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
@@ -71,8 +73,6 @@ const TransactionsWrapper = observer(() => {
 
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [selectedCurrency, setSelectedCurrency] = useState<string[]>([]);
-
-  const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchFiltersData = async () => {
     try {
@@ -265,70 +265,11 @@ const TransactionsWrapper = observer(() => {
     selectedStatus,
     selectedCurrency,
     searchCountryCodeQuery,
-    changedTransactionStatus,
   ]);
 
-  const statusFilters = [
-    {
-      label: "Processing",
-      value: "PAYMENT_PROCESSING",
-    },
-    {
-      label: "Transferring",
-      value: "PAYMENT_TRANSFERRING",
-    },
-    {
-      label: "Success",
-      value: "PAYMENT_SUCCESS",
-    },
-    {
-      label: "Complete",
-      value: "PAYMENT_COMPLETE",
-    },
-    {
-      label: "Accepted",
-      value: "PAYMENT_ACCEPTED",
-    },
-    {
-      label: "Failed",
-      value: "PAYMENT_FAILED",
-    },
-    {
-      label: "Timeout",
-      value: "TIMEOUT",
-    },
-    {
-      label: "Aml blocked",
-      value: "AML_BLOCKED",
-    },
-    {
-      label: "Initiated",
-      value: "PAYMENT_INITIATED",
-    },
-    {
-      label: "Cancelled",
-      value: "PAYMENT_CANCELLED",
-    },
-    {
-      label: "Refunded",
-      value: "REFUNDED",
-    },
-    {
-      label: "Declined",
-      value: "PAYMENT_DECLINED",
-    },
-  ];
+  const statusFilters = createFilters();
 
-  const currencyFilters = [
-    {
-      label: "EUR",
-      value: "eur",
-    },
-    {
-      label: "GBP",
-      value: "gbp",
-    },
-  ];
+  const currencyFilters = createCurrencyFilters();
 
   const activeFilterBageHandler = (name: string) => {
     if (name === "all") {
@@ -421,9 +362,16 @@ const TransactionsWrapper = observer(() => {
     setActiveStatusBadge("all");
   };
 
-  const handleStatusChange = (status: string) => {
-    setChangedTransactionStatus(status);
-    fetchTransactionsData();
+  const handleStatusChange = (status: string, txId: string) => {
+    const updatedTransactions = paginatedTransactions.map(transaction => {
+      if (transaction.txId === txId) {
+        return { ...transaction, status };
+      }
+
+      return transaction;
+    });
+
+    setPaginatedTransactions(updatedTransactions);
   };
 
   const handleLimitChange = (limit: number) => {
@@ -584,7 +532,7 @@ const TransactionsWrapper = observer(() => {
       <CustomTransactionTable
         paginatedTransactions={paginatedTransactions}
         columns={TransactionsTableHeader}
-        handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
+        handleStatusChange={handleStatusChange}
         isLoading={loading}
       />
 

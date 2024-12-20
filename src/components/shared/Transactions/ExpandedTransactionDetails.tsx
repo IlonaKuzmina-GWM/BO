@@ -24,7 +24,6 @@ interface ExpandedTransactionDetailsProps {
   expandedWebhooks: { [webhookId: number]: boolean };
   toggleWebhook: (webhookId: number) => void;
   getCurrency: (countryCode: string, provider: string) => string;
-  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
 }
 
 const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
@@ -37,7 +36,6 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
   expandedWebhooks,
   toggleWebhook,
   getCurrency,
-  handleStatusChangeToFetchActualeTRansaction,
 }) => (
   <div className="flex flex-col flex-wrap justify-between gap-6 md:flex-row">
     <div className="flex w-5/12 min-w-[250px] flex-col gap-1 text-main">
@@ -84,8 +82,7 @@ const ExpandedTransactionDetails: React.FC<ExpandedTransactionDetailsProps> = ({
           <select
             className={`cursor-pointer bg-transparent text-${getStatusColorClass(transaction.status)}`}
             onChange={(e) => (
-              handleSelectStatus(e.target.value, transaction.txId),
-              handleStatusChangeToFetchActualeTRansaction(transaction.status)
+              handleSelectStatus(e.target.value, transaction.txId)
             )}
             value={transaction.status}
           >

@@ -184,9 +184,18 @@ const SiinsWrapper = observer(() => {
     setLimit(limit);
   };
 
-  const handleStatusChange = (status: string) => {
-    setChangedTransactionStatus(status);
-    fetchSiinsData();
+  const handleStatusChange = (status: string, txId: string) => {
+    const updatedTransactions = siinsTransactions.map(record => {
+      if (record.transaction.txId === txId) {
+        return {
+          ...record,
+          transaction: { ...record.transaction, status }
+        };
+      }
+      return record;
+    });
+  
+    setSiinsTransactions(updatedTransactions);
   };
 
   return (
@@ -225,7 +234,7 @@ const SiinsWrapper = observer(() => {
         <CustomSiinsTable
           data={siinsTransactions}
           columns={SiinsTableHeader}
-          handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
+          handleStatusChange={handleStatusChange}
           isLoading={loading}
         />
 

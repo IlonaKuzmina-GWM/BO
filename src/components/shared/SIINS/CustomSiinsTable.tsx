@@ -21,14 +21,14 @@ interface ICustomSiinsTransactionTableProps {
   columns: Header[];
   data: Siin[];
   isLoading?: boolean;
-  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
+  handleStatusChange: (status: string, txId: string) => void;
 }
 
 const CustomSiinsTable = ({
   columns,
   data,
   isLoading,
-  handleStatusChangeToFetchActualeTRansaction,
+  handleStatusChange,
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
@@ -44,21 +44,37 @@ const CustomSiinsTable = ({
   const [expandedWebhooks, setExpandedWebhooks] = useState<{
     [key: number]: boolean;
   }>({});
-  const [, setExpandedDropdowns] = useState(false);
 
-  const refundTransaction = async (txId: string) => {
+  const changeStatus = async (type: string, status: string, txId: string) => {
+    let body: object;
+    let route: string;
+
+    if (type === 'refund') {
+      route = '/api/post-refund';
+      body = {
+        txId,
+        isRefunded: true,
+      }
+    } else {
+      route = '/api/post-transactions-status';
+      body = {
+        txId,
+        status
+      }
+    }
+
     try {
-      const response = await fetch("/api/post-refund", {
+      const response = await fetch(route, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ txId: txId, isRefunded: false }),
+        body: JSON.stringify(body),
       });
       if (response.ok) {
-        const res = await response.json();
+        handleStatusChange(status, txId);
 
-        alertStore.setAlert("success", "Transaction refunded successfully!");
+        alertStore.setAlert("success", "Status changed successfully!");
       } else {
         alertStore.setAlert(
           "warning",
@@ -68,38 +84,10 @@ const CustomSiinsTable = ({
     } catch (error) {
       alertStore.setAlert(
         "error",
-        `Something went wrong with the refund process. ${error}`,
+        `Something went wrong with the updating process. ${error}`,
       );
     }
-  };
-
-  const handleSelectStatus = async (value: string, txId: String) => {
-    try {
-      const response = await fetch("/api/post-transactions-status", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          txId: txId,
-          status: value,
-        }),
-      });
-      if (response.ok) {
-        const res = await response.json();
-      } else {
-        alertStore.setAlert(
-          "warning",
-          "Status update failed for this transaction.",
-        );
-      }
-    } catch (error) {
-      alertStore.setAlert(
-        "error",
-        `Something went wrong with the refund process. ${error}`,
-      );
-    }
-  };
+  }
 
   const openAccordionBgColor = (status: string) => {
     switch (status) {
@@ -319,11 +307,7 @@ const CustomSiinsTable = ({
                           userRole={userRole}
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
-                          handleSelectStatus={handleSelectStatus}
-                          handleStatusChangeToFetchActualeTRansaction={
-                            handleStatusChangeToFetchActualeTRansaction
-                          }
-                          refundTransaction={refundTransaction}
+                          handleSelectStatus={changeStatus}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}
                           getCurrency={getCurrency}

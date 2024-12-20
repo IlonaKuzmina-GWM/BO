@@ -74,6 +74,9 @@ const TransactionsWrapper = observer(() => {
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [selectedCurrency, setSelectedCurrency] = useState<string[]>([]);
 
+  const [paymentIds, setPaymentIds] = useState<string[]>([]);
+  const [txList, setTxList] = useState<string[]>([]);
+
   const fetchFiltersData = async () => {
     try {
       const response = await fetch("/api/get-filters", {
@@ -108,9 +111,7 @@ const TransactionsWrapper = observer(() => {
     }, 1500);
   }, []);
 
-  const fetchTransactionsData = async () => {
-    setLoading(true);
-
+  const getDateRanges = () => {
     let createdDateRange: [number, number] | boolean = false;
 
     if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
@@ -133,30 +134,58 @@ const TransactionsWrapper = observer(() => {
       ];
     }
 
+    return {
+      createdDateRange,
+      updatedDateRange,
+    }
+  }
+
+  const getSearchInput = () => {
+    let search: string;
+
+    if (paymentIds.length > 0 || txList.length > 0) {
+      search = ""
+    } else {
+      search = searchQuery || "";
+    }
+
+    return search;
+  }
+
+  const getRequestBody = (search: string, createdDateRange: [number, number] | boolean, updatedDateRange: [number, number] | boolean) => {
+    return {
+      userId: userId,
+      searchInput: search,
+      amountSort: false,
+      createdSort: false,
+      updatedSort: false,
+      statusSort: selectedStatus,
+      createdDateRange,
+      updatedDateRange,
+      paginationPage: currentPage,
+      paginationPerPage: limit,
+      merchIds: selectedMerchants,
+      providerIds: selectedProviders,
+      currency: selectedCurrency,
+      txList,
+      paymentIds,
+      countryCode: searchCountryCodeQuery || "",
+    }
+  }
+
+  const fetchTransactionsData = async () => {
+    setLoading(true);
+
+    const { createdDateRange, updatedDateRange } = getDateRanges();
+    const search = getSearchInput();
+
     try {
       const response = await fetch("/api/post-filtered-transactions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: userId,
-          searchInput: searchQuery || "",
-          amountSort: false,
-          createdSort: false,
-          updatedSort: false,
-          statusSort: selectedStatus,
-          createdDateRange,
-          updatedDateRange,
-          paginationPage: currentPage,
-          paginationPerPage: limit,
-          merchIds: selectedMerchants,
-          providerIds: selectedProviders,
-          currency: selectedCurrency,
-          txList: [],
-          paymentIds: [],
-          countryCode: searchCountryCodeQuery || "",
-        }),
+        body: JSON.stringify(getRequestBody(search, createdDateRange, updatedDateRange)),
       });
 
       if (response.ok) {
@@ -177,27 +206,8 @@ const TransactionsWrapper = observer(() => {
   };
 
   const sendExportTransactionsData = async (exportType: "excel") => {
-    let createdDateRange: [number, number] | boolean = false;
-
-    if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
-      const adjustedToDate = new Date(selectedCreatedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      createdDateRange = [
-        selectedCreatedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
-
-    let updatedDateRange: [number, number] | boolean = false;
-
-    if (selectedUpdatedDateRange?.from && selectedUpdatedDateRange.to) {
-      const adjustedToDate = new Date(selectedUpdatedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      updatedDateRange = [
-        selectedUpdatedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
+    const { createdDateRange, updatedDateRange } = getDateRanges();
+    const search = getSearchInput();
 
     try {
       const response = await fetch("/api/post-export-transactions", {
@@ -205,24 +215,7 @@ const TransactionsWrapper = observer(() => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: userId,
-          searchInput: searchQuery || "",
-          amountSort: false,
-          createdSort: false,
-          updatedSort: false,
-          statusSort: selectedStatus,
-          createdDateRange,
-          updatedDateRange,
-          paginationPage: currentPage,
-          paginationPerPage: limit,
-          merchIds: selectedMerchants,
-          providerIds: selectedProviders,
-          currency: selectedCurrency,
-          txList: [],
-          paymentIds: [],
-          countryCode: searchCountryCodeQuery || "",
-        }),
+        body: JSON.stringify(getRequestBody(search, createdDateRange, updatedDateRange)),
       });
 
       if (response.ok) {
@@ -292,7 +285,28 @@ const TransactionsWrapper = observer(() => {
   }, [inputSearchQueryValue, inputCountryCodeQueryValue]);
 
   const handleSearchChange = (value: string) => {
-    setInputSearchQueryValue(value);
+    setInputSearchQueryValue(value)
+
+    const regex = /\b(\d+|[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}|[a-fA-F0-9]{32})\b/g;
+
+    const ids = value.match(regex);
+
+    if (ids) {
+      const paymentIds = ids.filter(id => /^\d+$/.test(id)).map(String);
+
+      if (paymentIds) {
+        setPaymentIds(paymentIds);
+      }
+
+      const txIds = ids.filter(id => !/^\d+$/.test(id)).map(String);
+
+      if (txIds) {
+        setTxList(txIds);
+      }
+    } else {
+      setTxList([]);
+      setPaymentIds([]);
+    }
   };
 
   const handleCountrySearchChange = (value: string) => {

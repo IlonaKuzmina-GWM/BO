@@ -20,7 +20,7 @@ import { Transaction } from "@/types/transaction";
 interface ICustomTransactionTableProps {
   columns: Header[];
   paginatedTransactions: Transaction[];
-  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
+  handleStatusChange: (status: string, txId: string) => void;
   isLoading?: boolean;
 }
 
@@ -28,7 +28,7 @@ const CustomTransactionTable = ({
   columns,
   paginatedTransactions,
   isLoading,
-  handleStatusChangeToFetchActualeTRansaction,
+  handleStatusChange,
 }: ICustomTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
 
@@ -72,7 +72,7 @@ const CustomTransactionTable = ({
     }
   };
 
-  const handleSelectStatus = async (value: string, txId: String) => {
+  const handleSelectStatus = async (value: string, txId: string) => {
     try {
       const response = await fetch("/api/post-transactions-status", {
         method: "POST",
@@ -85,7 +85,7 @@ const CustomTransactionTable = ({
         }),
       });
       if (response.ok) {
-        const res = await response.json();
+        handleStatusChange(value, txId)
 
         alertStore.setAlert("success", `Successfuly!`);
       } else {
@@ -326,9 +326,6 @@ const CustomTransactionTable = ({
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
                           handleSelectStatus={handleSelectStatus}
-                          handleStatusChangeToFetchActualeTRansaction={
-                            handleStatusChangeToFetchActualeTRansaction
-                          }
                           refundTransaction={refundTransaction}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}

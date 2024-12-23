@@ -45,8 +45,8 @@ export const ManagerMerchantsTableHeader: Header[] = [
   { title: "Active Providers", key: "providers", width: "13%" },
   { title: "Sandbox", key: "sandbox", width: "6%" },
   { title: "", key: "action", width: "3%" },
-  { title: "Status", key: "status", width: "6%" },
-  { title: "", key: "disabled", width: "3%" },
+  { title: "Disabled", key: "disabled", width: "6%" },
+  { title: "", key: "disabled-p", width: "3%" },
 ];
 
 export const OtherMerchantsTableHeader: Header[] = [

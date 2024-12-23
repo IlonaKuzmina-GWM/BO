@@ -6,6 +6,7 @@ import { useStore } from "@/stores/StoreProvider";
 import Spinner from "../../Spinner";
 import { Merchant } from "@/types/merchant";
 import DropdownWithSearch from "../../DropdownWithSearch";
+import DashSelectValueNumber from "../../DashSelectValueNumber";
 
 interface IMerchantForm {
   disabled?: boolean;
@@ -73,8 +74,6 @@ const AgentForm = ({ disabled }: IMerchantForm) => {
       });
 
       if (response.ok) {
-        // const res = await response.json();
-
         alertStore.setAlert("success", `Agent was successfully created!`);
       } else {
         alertStore.setAlert("warning", "Invalid credentials.");
@@ -111,11 +110,13 @@ const AgentForm = ({ disabled }: IMerchantForm) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleMerchantSelect = (merchantId: number) => {
+  const handleMerchantSelect = (merchantIds: number[]) => {
     setFormData((prev) => ({
       ...prev,
-      merchantIds: [merchantId],
+      merchantIds,
     }));
+
+    console.log(merchantIds)
   };
 
   return submited ? (
@@ -168,14 +169,14 @@ const AgentForm = ({ disabled }: IMerchantForm) => {
                 Select merchant(-s):
               </p>
 
-              <DropdownWithSearch
-                value={0}
-                label={"Select Merchant"}
+              <DashSelectValueNumber
                 items={merchantsList.map((merchant) => ({
                   value: merchant.id,
                   label: merchant.name,
                 }))}
-                onSelectNumberHandler={handleMerchantSelect}
+                value={formData.merchantIds}
+                label={"Select Merchant"}
+                onSelectHandler={handleMerchantSelect}
               />
             </div>
           </div>

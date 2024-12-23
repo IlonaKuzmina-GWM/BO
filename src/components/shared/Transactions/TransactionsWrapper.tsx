@@ -25,10 +25,12 @@ import DashButton from "../DashButton";
 import { TransactionsTableHeader } from "@/constants/tableHeaders";
 import createFilters from "@/utils/createStatusFilters";
 import createCurrencyFilters from "@/utils/createCurrencyFilters";
+import { useTransactionContext } from "@/context/TransactionContext";
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
   const { alertStore } = useStore();
+  const { checkedTransactions } = useTransactionContext();
   const userId = authStore.user?.id;
   const userRole = authStore.role;
 
@@ -167,7 +169,7 @@ const TransactionsWrapper = observer(() => {
       merchIds: selectedMerchants,
       providerIds: selectedProviders,
       currency: selectedCurrency,
-      txList,
+      txList: checkedTransactions.length > 0 ? checkedTransactions : txList,
       paymentIds,
       countryCode: searchCountryCodeQuery || "",
     }

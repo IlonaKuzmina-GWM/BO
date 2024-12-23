@@ -7,6 +7,7 @@ import { cn } from "@/utils/utils";
 import { FetchProvider } from "@/components/Providers";
 import { StoreProvider } from "@/stores/StoreProvider";
 import AllertWrapper from "@/components/AllertWrapper";
+import { TransactionProvider } from "@/context/TransactionContext";
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -51,8 +52,10 @@ export default function RootLayout({
         >
           <StoreProvider>
             <FetchProvider>
-              {children}
-              <AllertWrapper />
+              <TransactionProvider>
+                {children}
+                <AllertWrapper />
+              </TransactionProvider>
             </FetchProvider>
           </StoreProvider>
         </ThemeProvider>

@@ -21,9 +21,9 @@ import { Siin } from "@/types/siin";
 const SiinsWrapper = observer(() => {
   const { alertStore } = useStore();
   const [siinsTransactions, setSiinsTransactions] = useState<Siin[]>([]);
-  const [siinExportnTransactions, setExportSiinsTransactions] = useState<
-    Siin[]
-  >([]);
+  // const [siinExportnTransactions, setExportSiinsTransactions] = useState<
+  //   Siin[]
+  // >([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +40,8 @@ const SiinsWrapper = observer(() => {
   const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchSiinsData = async () => {
+    setLoading(true);
+
     let createdDateRange: [number, number] | boolean = false;
     if (selectedDateRange?.from && selectedDateRange.to) {
       const adjustedToDate = new Date(selectedDateRange.to);
@@ -77,10 +79,14 @@ const SiinsWrapper = observer(() => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Error copying to clipboard: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const sendExportSiinsData = async (exportType: "pdf" | "csv" | "excel") => {
+    setLoading(true);
+
     let createdDateRange: [number, number] | boolean = false;
 
     if (selectedDateRange?.from && selectedDateRange.to) {
@@ -128,14 +134,10 @@ const SiinsWrapper = observer(() => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
 
   useEffect(() => {
     fetchSiinsData();
@@ -149,10 +151,8 @@ const SiinsWrapper = observer(() => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setLoading(false);
       setSearchQuery(inputSearchQueryValue);
     }, 1000);
-    setLoading(true);
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue]);
 
@@ -185,16 +185,16 @@ const SiinsWrapper = observer(() => {
   };
 
   const handleStatusChange = (status: string, txId: string) => {
-    const updatedTransactions = siinsTransactions.map(record => {
+    const updatedTransactions = siinsTransactions.map((record) => {
       if (record.transaction.txId === txId) {
         return {
           ...record,
-          transaction: { ...record.transaction, status }
+          transaction: { ...record.transaction, status },
         };
       }
       return record;
     });
-  
+
     setSiinsTransactions(updatedTransactions);
   };
 

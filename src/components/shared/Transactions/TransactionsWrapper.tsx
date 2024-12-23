@@ -1,31 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Search from "../Search";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import DashSelect from "../DashSelect";
 import DatePickerWithRange from "../DatePickerWithRange";
+import Search from "../Search";
 
-import DataLimitsSeter from "../DataLimitsSeter";
-import PaginationComponent from "../PaginationComponent";
-import CustomTransactionTable from "./CustomTransactionTable";
-import DashIntervalSelect from "../DashIntervalSelect";
+import { ROLES } from "@/constants/roles";
+import { TransactionsTableHeader } from "@/constants/tableHeaders";
+import { useTransactionContext } from "@/context/TransactionContext";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { useStore } from "@/stores/StoreProvider";
-import { observer } from "mobx-react-lite";
-import ExportButton from "../ExportButton";
-import { exportExcelTransactions } from "@/utils/export-utils";
-import DashSelectValueNumber from "../DashSelectValueNumber";
-import StatusFilteringBadgeWrapper from "./StatusFilteringBadgeWrapper";
-import { ROLES } from "@/constants/roles";
-import { Transaction } from "@/types/transaction";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
-import DashButton from "../DashButton";
-import { TransactionsTableHeader } from "@/constants/tableHeaders";
-import createFilters from "@/utils/createStatusFilters";
+import { Transaction } from "@/types/transaction";
 import createCurrencyFilters from "@/utils/createCurrencyFilters";
-import { useTransactionContext } from "@/context/TransactionContext";
+import createFilters from "@/utils/createStatusFilters";
+import { exportExcelTransactions } from "@/utils/export-utils";
+import { observer } from "mobx-react-lite";
+import DashButton from "../DashButton";
+import DashIntervalSelect from "../DashIntervalSelect";
+import DashSelectValueNumber from "../DashSelectValueNumber";
+import DataLimitsSeter from "../DataLimitsSeter";
+import ExportButton from "../ExportButton";
+import PaginationComponent from "../PaginationComponent";
+import CustomTransactionTable from "./CustomTransactionTable";
+import StatusFilteringBadgeWrapper from "./StatusFilteringBadgeWrapper";
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
@@ -107,12 +107,6 @@ const TransactionsWrapper = observer(() => {
     }
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
-
   const getDateRanges = () => {
     let createdDateRange: [number, number] | boolean = false;
 
@@ -139,22 +133,26 @@ const TransactionsWrapper = observer(() => {
     return {
       createdDateRange,
       updatedDateRange,
-    }
-  }
+    };
+  };
 
   const getSearchInput = () => {
     let search: string;
 
     if (paymentIds.length > 0 || txList.length > 0) {
-      search = ""
+      search = "";
     } else {
       search = searchQuery || "";
     }
 
     return search;
-  }
+  };
 
-  const getRequestBody = (search: string, createdDateRange: [number, number] | boolean, updatedDateRange: [number, number] | boolean) => {
+  const getRequestBody = (
+    search: string,
+    createdDateRange: [number, number] | boolean,
+    updatedDateRange: [number, number] | boolean,
+  ) => {
     return {
       userId: userId,
       searchInput: search,
@@ -172,8 +170,8 @@ const TransactionsWrapper = observer(() => {
       txList: checkedTransactions.length > 0 ? checkedTransactions : txList,
       paymentIds,
       countryCode: searchCountryCodeQuery || "",
-    }
-  }
+    };
+  };
 
   const fetchTransactionsData = async () => {
     setLoading(true);
@@ -187,7 +185,9 @@ const TransactionsWrapper = observer(() => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(getRequestBody(search, createdDateRange, updatedDateRange)),
+        body: JSON.stringify(
+          getRequestBody(search, createdDateRange, updatedDateRange),
+        ),
       });
 
       if (response.ok) {
@@ -197,13 +197,13 @@ const TransactionsWrapper = observer(() => {
         setTotalPages(res.totalPages);
         setAllStats(res.stats);
         setTotalTransactionsCount(res.totalTransactionsCount);
-        setLoading(false);
-        console.log(res);
       } else {
         alertStore.setAlert("warning", "Transactions data response failed.");
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -217,7 +217,9 @@ const TransactionsWrapper = observer(() => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(getRequestBody(search, createdDateRange, updatedDateRange)),
+        body: JSON.stringify(
+          getRequestBody(search, createdDateRange, updatedDateRange),
+        ),
       });
 
       if (response.ok) {
@@ -278,29 +280,28 @@ const TransactionsWrapper = observer(() => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setLoading(false);
       setSearchQuery(inputSearchQueryValue);
       setSearchCountryCodeQuery(inputCountryCodeQueryValue);
     }, 1500);
-    setLoading(true);
     return () => clearTimeout(handler);
   }, [inputSearchQueryValue, inputCountryCodeQueryValue]);
 
   const handleSearchChange = (value: string) => {
-    setInputSearchQueryValue(value)
+    setInputSearchQueryValue(value);
 
-    const regex = /\b(\d+|[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}|[a-fA-F0-9]{32})\b/g;
+    const regex =
+      /\b(\d+|[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}|[a-fA-F0-9]{32})\b/g;
 
     const ids = value.match(regex);
 
     if (ids) {
-      const paymentIds = ids.filter(id => /^\d+$/.test(id)).map(String);
+      const paymentIds = ids.filter((id) => /^\d+$/.test(id)).map(String);
 
       if (paymentIds) {
         setPaymentIds(paymentIds);
       }
 
-      const txIds = ids.filter(id => !/^\d+$/.test(id)).map(String);
+      const txIds = ids.filter((id) => !/^\d+$/.test(id)).map(String);
 
       if (txIds) {
         setTxList(txIds);
@@ -379,7 +380,7 @@ const TransactionsWrapper = observer(() => {
   };
 
   const handleStatusChange = (status: string, txId: string) => {
-    const updatedTransactions = paginatedTransactions.map(transaction => {
+    const updatedTransactions = paginatedTransactions.map((transaction) => {
       if (transaction.txId === txId) {
         return { ...transaction, status };
       }
@@ -519,7 +520,7 @@ const TransactionsWrapper = observer(() => {
           />
         </div>
 
-        <div className="flex flex-wrap xl:flex-nowrap gap-5 justify-end">
+        <div className="flex flex-wrap justify-end gap-5 xl:flex-nowrap">
           <DashButton
             name={"Reset"}
             type={"empty"}

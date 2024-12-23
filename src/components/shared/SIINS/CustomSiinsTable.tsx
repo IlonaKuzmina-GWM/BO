@@ -1,11 +1,6 @@
 "use client";
-import { Header } from "@/types";
-import { useEffect, useState } from "react";
-import React from "react";
+
 import CustomCheckbox from "@/components/shared/CustomCheckbox";
-import { formatDateTime } from "@/utils/dateFormater";
-import LoadingSiinTableSkeleton from "../LoadingUISkeletons/LoadingSiinTableSkeleton";
-import { Tooltip, TooltipProvider } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "@/components/UI/tooltip";
 import {
   getFailedColor,
@@ -13,10 +8,15 @@ import {
   getSuccessColor,
 } from "@/helpers/getColorByStatus";
 import { useStore } from "@/stores/StoreProvider";
+import { Header } from "@/types";
+import { formatDateTime } from "@/utils/dateFormater";
+import { Tooltip, TooltipProvider } from "@radix-ui/react-tooltip";
+import React, { useEffect, useState } from "react";
+import LoadingSiinTableSkeleton from "../LoadingUISkeletons/LoadingSiinTableSkeleton";
 
+import { useSiinsContext } from "@/context/SiinsContext";
 import { Siin } from "@/types/siin";
 import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetails";
-import { useSiinsContext } from "@/context/SiinsContext";
 
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
@@ -33,7 +33,13 @@ const CustomSiinsTable = ({
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
-  const { toggleAllSiins, toggleSiin, resetCheckBoxSiins, checkedSiins, allSiinsChecked } = useSiinsContext()
+  const {
+    toggleAllSiins,
+    toggleSiin,
+    resetCheckBoxSiins,
+    checkedSiins,
+    allSiinsChecked,
+  } = useSiinsContext();
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
 
@@ -46,18 +52,18 @@ const CustomSiinsTable = ({
     let body: object;
     let route: string;
 
-    if (type === 'refund') {
-      route = '/api/post-refund';
+    if (type === "refund") {
+      route = "/api/post-refund";
       body = {
         txId,
         isRefunded: true,
-      }
+      };
     } else {
-      route = '/api/post-transactions-status';
+      route = "/api/post-transactions-status";
       body = {
         txId,
-        status
-      }
+        status,
+      };
     }
 
     try {
@@ -84,7 +90,7 @@ const CustomSiinsTable = ({
         `Something went wrong with the updating process. ${error}`,
       );
     }
-  }
+  };
 
   const openAccordionBgColor = (status: string) => {
     switch (status) {
@@ -144,18 +150,15 @@ const CustomSiinsTable = ({
     toggleAllSiins(ids);
   };
 
-  const handleCheckboxChange = (
-    id: number,
-    event: React.MouseEvent,
-  ) => {
+  const handleCheckboxChange = (id: number, event: React.MouseEvent) => {
     event.stopPropagation();
-    toggleSiin(id)
+    toggleSiin(id);
   };
 
   useEffect(() => {
     return () => {
-      resetCheckBoxSiins()
-    }
+      resetCheckBoxSiins();
+    };
   }, []);
 
   const handleCopyToClipboard = async (id: string) => {

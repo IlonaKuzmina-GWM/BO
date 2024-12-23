@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       const errorData = await data.json();
       return new NextResponse(
         JSON.stringify({
-          error: errorData.error || "Failed to fetch transaction status change",
+          error: errorData.error || "Failed to fetch transaction status change.",
         }),
         {
           status: data.status,

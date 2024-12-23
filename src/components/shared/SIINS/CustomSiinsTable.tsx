@@ -16,6 +16,7 @@ import { useStore } from "@/stores/StoreProvider";
 
 import { Siin } from "@/types/siin";
 import ExpandedTransactionDetails from "../Transactions/ExpandedTransactionDetails";
+import { useSiinsContext } from "@/context/SiinsContext";
 
 interface ICustomSiinsTransactionTableProps {
   columns: Header[];
@@ -32,13 +33,9 @@ const CustomSiinsTable = ({
 }: ICustomSiinsTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
   const userRole = authStore.role;
-
+  const { toggleAllSiins, toggleSiin, resetCheckBoxSiins, checkedSiins, allSiinsChecked } = useSiinsContext()
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
-  const [checkedTransactions, setCheckedTransactions] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const [allChecked, setAllChecked] = useState(false);
 
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
   const [expandedWebhooks, setExpandedWebhooks] = useState<{
@@ -127,7 +124,6 @@ const CustomSiinsTable = ({
 
     if (!expandedRows.includes(id)) {
       const colorType = transformStatus(status);
-      const bgColor = bgColorMap[colorType];
 
       setRowBgColors((prevBgColors) => ({
         ...prevBgColors,
@@ -144,34 +140,23 @@ const CustomSiinsTable = ({
   };
 
   const handleAllCheckboxChange = () => {
-    setAllChecked(!allChecked);
-    const newCheckedState = data.reduce(
-      (acc, transaction) => {
-        acc[transaction.id] = !allChecked;
-        return acc;
-      },
-      {} as { [key: number]: boolean },
-    );
-    setCheckedTransactions(newCheckedState);
+    const ids = data.map((record) => record.id);
+    toggleAllSiins(ids);
   };
 
   const handleCheckboxChange = (
-    transactionId: number,
+    id: number,
     event: React.MouseEvent,
   ) => {
     event.stopPropagation();
-
-    setCheckedTransactions((prevState) => ({
-      ...prevState,
-      [transactionId]: !prevState[transactionId],
-    }));
+    toggleSiin(id)
   };
 
   useEffect(() => {
-    setAllChecked(
-      data.every((transaction) => checkedTransactions[transaction.id]),
-    );
-  }, [checkedTransactions, data]);
+    return () => {
+      resetCheckBoxSiins()
+    }
+  }, []);
 
   const handleCopyToClipboard = async (id: string) => {
     try {
@@ -203,7 +188,7 @@ const CustomSiinsTable = ({
             <th className="w-[3%] min-w-[35px] pl-3 lg:pl-3">
               {" "}
               <CustomCheckbox
-                isChecked={allChecked}
+                isChecked={allSiinsChecked}
                 handleCheckboxChange={handleAllCheckboxChange}
               />
             </th>
@@ -240,7 +225,6 @@ const CustomSiinsTable = ({
               const isExpanded =
                 expandedRows.includes(siin.id) && transactionsTableHeader;
               const dynamicColor = rowBgColors[siin.id];
-              // const expandedWebhooks = webhookExpanded[siin.id] || {};
 
               return (
                 <React.Fragment key={siin.id}>
@@ -250,7 +234,7 @@ const CustomSiinsTable = ({
                   >
                     <td className="pl-3">
                       <CustomCheckbox
-                        isChecked={checkedTransactions[siin.id] || false}
+                        isChecked={checkedSiins.includes(siin.id) || false}
                         handleCheckboxChange={(event) =>
                           handleCheckboxChange(siin.id, event)
                         }

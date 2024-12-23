@@ -40,6 +40,9 @@ const AllUser = () => {
         const res = await response.json();
 
         setUsers(res);
+
+        console.log(res)
+
       } else {
         alertStore.setAlert("warning", "Data feching failed.");
       }
@@ -60,6 +63,7 @@ const AllUser = () => {
 
       if (response.ok) {
         const res = await response.json();
+        console.log(res)
 
         setMerchantsList(res);
       } else {

@@ -16,6 +16,7 @@ import {
 } from "@/helpers/getColorByStatus";
 import ExpandedTransactionDetails from "./ExpandedTransactionDetails";
 import { Transaction } from "@/types/transaction";
+import { useTransactionContext } from "@/context/TransactionContext";
 
 interface ICustomTransactionTableProps {
   columns: Header[];
@@ -31,14 +32,11 @@ const CustomTransactionTable = ({
   handleStatusChange,
 }: ICustomTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
-
+  const { checkedTransactions, toggleTransaction, toggleAllTransactions, resetCheckBoxTransactions } =
+    useTransactionContext();
   const userRole = authStore.role;
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [rowBgColors, setRowBgColors] = useState<{ [key: number]: string }>({});
-  const [checkedTransactions, setCheckedTransactions] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const [allChecked, setAllChecked] = useState(false);
   const [copiedOrderID, setCopiedOrderID] = useState<string | null>(null);
   const [expandedWebhooks, setExpandedWebhooks] = useState<{
     [key: number]: boolean;
@@ -56,8 +54,6 @@ const CustomTransactionTable = ({
       }
     } else {
       route = '/api/post-transactions-status';
-      console.log('txId: ', txId);
-      console.log('status: ', status);
       body = {
         txId,
         status
@@ -145,30 +141,20 @@ const CustomTransactionTable = ({
   };
 
   const handleAllCheckboxChange = () => {
-    setAllChecked(!allChecked);
-    const newCheckedState = paginatedTransactions.reduce(
-      (acc, transaction) => {
-        acc[transaction.id] = !allChecked;
-        return acc;
-      },
-      {} as { [key: number]: boolean },
-    );
-    setCheckedTransactions(newCheckedState);
+    const transactionIds = paginatedTransactions.map((t) => t.txId);
+    toggleAllTransactions(transactionIds);
   };
 
-  const handleCheckboxChange = (
-    transactionId: number,
-    event: React.MouseEvent,
-  ) => {
+  const handleCheckboxChange = (transactionId: string, event: React.MouseEvent) => {
     event.stopPropagation();
-
-    setCheckedTransactions((prevState) => ({
-      ...prevState,
-      [transactionId]: !prevState[transactionId],
-    }));
+    toggleTransaction(transactionId);
   };
 
-  useEffect(() => {}, [paginatedTransactions]);
+  useEffect(() => {
+    return () => {
+      resetCheckBoxTransactions()
+    }
+  }, []);
 
   const handleCopyToClipboard = async (id: string) => {
     try {
@@ -239,9 +225,9 @@ const CustomTransactionTable = ({
                   >
                     <td className="pl-3">
                       <CustomCheckbox
-                        isChecked={checkedTransactions[transaction.id] || false}
+                        isChecked={checkedTransactions.includes(transaction.txId)}
                         handleCheckboxChange={(event) =>
-                          handleCheckboxChange(transaction.id, event)
+                          handleCheckboxChange(transaction.txId, event)
                         }
                       />
                     </td>

@@ -282,8 +282,8 @@ const Merchants = () => {
                       {merchant.id}
                     </td>
                     <td
-                      className="cursor-pointer border-e border-hoverBg px-2"
-                      onClick={openMerchantCongigBar}
+                      className="border-e border-hoverBg px-2"
+                      // onClick={openMerchantCongigBar}
                     >
                       {merchant.name}
                     </td>

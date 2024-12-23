@@ -23,6 +23,8 @@ import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 import DashButton from "../DashButton";
 import { TransactionsTableHeader } from "@/constants/tableHeaders";
+import createFilters from "@/utils/createStatusFilters";
+import createCurrencyFilters from "@/utils/createCurrencyFilters";
 
 const TransactionsWrapper = observer(() => {
   const { authStore } = useStore();
@@ -72,7 +74,8 @@ const TransactionsWrapper = observer(() => {
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [selectedCurrency, setSelectedCurrency] = useState<string[]>([]);
 
-  const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
+  const [paymentIds, setPaymentIds] = useState<string[]>([]);
+  const [txList, setTxList] = useState<string[]>([]);
 
   const fetchFiltersData = async () => {
     try {
@@ -108,9 +111,7 @@ const TransactionsWrapper = observer(() => {
     }, 1500);
   }, []);
 
-  const fetchTransactionsData = async () => {
-    setLoading(true);
-
+  const getDateRanges = () => {
     let createdDateRange: [number, number] | boolean = false;
 
     if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
@@ -133,30 +134,58 @@ const TransactionsWrapper = observer(() => {
       ];
     }
 
+    return {
+      createdDateRange,
+      updatedDateRange,
+    }
+  }
+
+  const getSearchInput = () => {
+    let search: string;
+
+    if (paymentIds.length > 0 || txList.length > 0) {
+      search = ""
+    } else {
+      search = searchQuery || "";
+    }
+
+    return search;
+  }
+
+  const getRequestBody = (search: string, createdDateRange: [number, number] | boolean, updatedDateRange: [number, number] | boolean) => {
+    return {
+      userId: userId,
+      searchInput: search,
+      amountSort: false,
+      createdSort: false,
+      updatedSort: false,
+      statusSort: selectedStatus,
+      createdDateRange,
+      updatedDateRange,
+      paginationPage: currentPage,
+      paginationPerPage: limit,
+      merchIds: selectedMerchants,
+      providerIds: selectedProviders,
+      currency: selectedCurrency,
+      txList,
+      paymentIds,
+      countryCode: searchCountryCodeQuery || "",
+    }
+  }
+
+  const fetchTransactionsData = async () => {
+    setLoading(true);
+
+    const { createdDateRange, updatedDateRange } = getDateRanges();
+    const search = getSearchInput();
+
     try {
       const response = await fetch("/api/post-filtered-transactions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: userId,
-          searchInput: searchQuery || "",
-          amountSort: false,
-          createdSort: false,
-          updatedSort: false,
-          statusSort: selectedStatus,
-          createdDateRange,
-          updatedDateRange,
-          paginationPage: currentPage,
-          paginationPerPage: limit,
-          merchIds: selectedMerchants,
-          providerIds: selectedProviders,
-          currency: selectedCurrency,
-          txList: [],
-          paymentIds: [],
-          countryCode: searchCountryCodeQuery || "",
-        }),
+        body: JSON.stringify(getRequestBody(search, createdDateRange, updatedDateRange)),
       });
 
       if (response.ok) {
@@ -177,27 +206,8 @@ const TransactionsWrapper = observer(() => {
   };
 
   const sendExportTransactionsData = async (exportType: "excel") => {
-    let createdDateRange: [number, number] | boolean = false;
-
-    if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
-      const adjustedToDate = new Date(selectedCreatedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      createdDateRange = [
-        selectedCreatedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
-
-    let updatedDateRange: [number, number] | boolean = false;
-
-    if (selectedUpdatedDateRange?.from && selectedUpdatedDateRange.to) {
-      const adjustedToDate = new Date(selectedUpdatedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      updatedDateRange = [
-        selectedUpdatedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
+    const { createdDateRange, updatedDateRange } = getDateRanges();
+    const search = getSearchInput();
 
     try {
       const response = await fetch("/api/post-export-transactions", {
@@ -205,24 +215,7 @@ const TransactionsWrapper = observer(() => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: userId,
-          searchInput: searchQuery || "",
-          amountSort: false,
-          createdSort: false,
-          updatedSort: false,
-          statusSort: selectedStatus,
-          createdDateRange,
-          updatedDateRange,
-          paginationPage: currentPage,
-          paginationPerPage: limit,
-          merchIds: selectedMerchants,
-          providerIds: selectedProviders,
-          currency: selectedCurrency,
-          txList: [],
-          paymentIds: [],
-          countryCode: searchCountryCodeQuery || "",
-        }),
+        body: JSON.stringify(getRequestBody(search, createdDateRange, updatedDateRange)),
       });
 
       if (response.ok) {
@@ -265,70 +258,11 @@ const TransactionsWrapper = observer(() => {
     selectedStatus,
     selectedCurrency,
     searchCountryCodeQuery,
-    changedTransactionStatus,
   ]);
 
-  const statusFilters = [
-    {
-      label: "Processing",
-      value: "PAYMENT_PROCESSING",
-    },
-    {
-      label: "Transferring",
-      value: "PAYMENT_TRANSFERRING",
-    },
-    {
-      label: "Success",
-      value: "PAYMENT_SUCCESS",
-    },
-    {
-      label: "Complete",
-      value: "PAYMENT_COMPLETE",
-    },
-    {
-      label: "Accepted",
-      value: "PAYMENT_ACCEPTED",
-    },
-    {
-      label: "Failed",
-      value: "PAYMENT_FAILED",
-    },
-    {
-      label: "Timeout",
-      value: "TIMEOUT",
-    },
-    {
-      label: "Aml blocked",
-      value: "AML_BLOCKED",
-    },
-    {
-      label: "Initiated",
-      value: "PAYMENT_INITIATED",
-    },
-    {
-      label: "Cancelled",
-      value: "PAYMENT_CANCELLED",
-    },
-    {
-      label: "Refunded",
-      value: "REFUNDED",
-    },
-    {
-      label: "Declined",
-      value: "PAYMENT_DECLINED",
-    },
-  ];
+  const statusFilters = createFilters();
 
-  const currencyFilters = [
-    {
-      label: "EUR",
-      value: "eur",
-    },
-    {
-      label: "GBP",
-      value: "gbp",
-    },
-  ];
+  const currencyFilters = createCurrencyFilters();
 
   const activeFilterBageHandler = (name: string) => {
     if (name === "all") {
@@ -351,7 +285,28 @@ const TransactionsWrapper = observer(() => {
   }, [inputSearchQueryValue, inputCountryCodeQueryValue]);
 
   const handleSearchChange = (value: string) => {
-    setInputSearchQueryValue(value);
+    setInputSearchQueryValue(value)
+
+    const regex = /\b(\d+|[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}|[a-fA-F0-9]{32})\b/g;
+
+    const ids = value.match(regex);
+
+    if (ids) {
+      const paymentIds = ids.filter(id => /^\d+$/.test(id)).map(String);
+
+      if (paymentIds) {
+        setPaymentIds(paymentIds);
+      }
+
+      const txIds = ids.filter(id => !/^\d+$/.test(id)).map(String);
+
+      if (txIds) {
+        setTxList(txIds);
+      }
+    } else {
+      setTxList([]);
+      setPaymentIds([]);
+    }
   };
 
   const handleCountrySearchChange = (value: string) => {
@@ -421,9 +376,16 @@ const TransactionsWrapper = observer(() => {
     setActiveStatusBadge("all");
   };
 
-  const handleStatusChange = (status: string) => {
-    setChangedTransactionStatus(status);
-    fetchTransactionsData();
+  const handleStatusChange = (status: string, txId: string) => {
+    const updatedTransactions = paginatedTransactions.map(transaction => {
+      if (transaction.txId === txId) {
+        return { ...transaction, status };
+      }
+
+      return transaction;
+    });
+
+    setPaginatedTransactions(updatedTransactions);
   };
 
   const handleLimitChange = (limit: number) => {
@@ -584,7 +546,7 @@ const TransactionsWrapper = observer(() => {
       <CustomTransactionTable
         paginatedTransactions={paginatedTransactions}
         columns={TransactionsTableHeader}
-        handleStatusChangeToFetchActualeTRansaction={handleStatusChange}
+        handleStatusChange={handleStatusChange}
         isLoading={loading}
       />
 

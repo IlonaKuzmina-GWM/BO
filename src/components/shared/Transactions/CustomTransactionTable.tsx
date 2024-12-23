@@ -20,7 +20,7 @@ import { Transaction } from "@/types/transaction";
 interface ICustomTransactionTableProps {
   columns: Header[];
   paginatedTransactions: Transaction[];
-  handleStatusChangeToFetchActualeTRansaction: (value: string) => void;
+  handleStatusChange: (status: string, txId: string) => void;
   isLoading?: boolean;
 }
 
@@ -28,7 +28,7 @@ const CustomTransactionTable = ({
   columns,
   paginatedTransactions,
   isLoading,
-  handleStatusChangeToFetchActualeTRansaction,
+  handleStatusChange,
 }: ICustomTransactionTableProps) => {
   const { authStore, alertStore } = useStore();
 
@@ -43,21 +43,39 @@ const CustomTransactionTable = ({
   const [expandedWebhooks, setExpandedWebhooks] = useState<{
     [key: number]: boolean;
   }>({});
-  const [, setExpandedDropdowns] = useState(false);
 
-  const refundTransaction = async (txId: string) => {
+  const changeStatus = async (type: string, status: string, txId: string) => {
+    let body: object;
+    let route: string;
+
+    if (type === 'refund') {
+      route = '/api/post-refund';
+      body = {
+        txId,
+        isRefunded: true,
+      }
+    } else {
+      route = '/api/post-transactions-status';
+      console.log('txId: ', txId);
+      console.log('status: ', status);
+      body = {
+        txId,
+        status
+      }
+    }
+
     try {
-      const response = await fetch("/api/post-refund", {
+      const response = await fetch(route, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ txId: txId, isRefunded: false }),
+        body: JSON.stringify(body),
       });
       if (response.ok) {
-        const res = await response.json();
+        handleStatusChange(status, txId);
 
-        alertStore.setAlert("success", "Transaction refunded successfully!");
+        alertStore.setAlert("success", "Status changed successfully!");
       } else {
         alertStore.setAlert(
           "warning",
@@ -67,40 +85,10 @@ const CustomTransactionTable = ({
     } catch (error) {
       alertStore.setAlert(
         "error",
-        `Something went wrong with the refund process. ${error}`,
+        `Something went wrong with the updating process. ${error}`,
       );
     }
-  };
-
-  const handleSelectStatus = async (value: string, txId: String) => {
-    try {
-      const response = await fetch("/api/post-transactions-status", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          txId: txId,
-          status: value,
-        }),
-      });
-      if (response.ok) {
-        const res = await response.json();
-
-        alertStore.setAlert("success", `Successfuly!`);
-      } else {
-        alertStore.setAlert(
-          "warning",
-          "New status not found for this transaction in the Bank.",
-        );
-      }
-    } catch (error) {
-      alertStore.setAlert(
-        "error",
-        "Something went wrong with the refund process.",
-      );
-    }
-  };
+  }
 
   const openAccordionBgColor = (status: string) => {
     switch (status) {
@@ -179,14 +167,6 @@ const CustomTransactionTable = ({
       [transactionId]: !prevState[transactionId],
     }));
   };
-
-  // useEffect(() => {
-  //   setAllChecked(
-  //     paginatedTransactions.every(
-  //       (transaction) => checkedTransactions[transaction.id],
-  //     ),
-  //   );
-  // }, [checkedTransactions, paginatedTransactions]);
 
   useEffect(() => {}, [paginatedTransactions]);
 
@@ -325,11 +305,7 @@ const CustomTransactionTable = ({
                           userRole={userRole}
                           copiedOrderID={copiedOrderID}
                           handleCopyToClipboard={handleCopyToClipboard}
-                          handleSelectStatus={handleSelectStatus}
-                          handleStatusChangeToFetchActualeTRansaction={
-                            handleStatusChangeToFetchActualeTRansaction
-                          }
-                          refundTransaction={refundTransaction}
+                          handleSelectStatus={changeStatus}
                           expandedWebhooks={expandedWebhooks}
                           toggleWebhook={toggleWebhook}
                           getCurrency={getCurrency}

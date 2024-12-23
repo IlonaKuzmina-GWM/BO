@@ -149,33 +149,54 @@ const Merchants = () => {
     fetchAllMerchantsData();
   }, [searchQuery]);
 
-  const toggleStatus = (id: number) => {
+  const toggleStatus = (type: 'sandbox' | 'disabled', merchantId: number) => {
     setAllMerchants((prevMerchants) =>
       prevMerchants.map((merchant) =>
-        merchant.id === id
-          ? { ...merchant, disabled: !merchant.disabled }
+        merchant.id === merchantId
+          ? { ...merchant, [type]: !merchant[type] }
           : merchant,
       ),
     );
   };
 
-  const updateProvider = (merchantId: number, selectedProviderId: string) => {
-    console.log("updateProvider", merchantId, selectedProviderId);
-    // setAllMerchants((prevUsers) =>
-    //   prevUsers.map((user) =>
-    //     user.id === merchantId ? { ...user, merchant: selectedProviderId } : user,
-    //   ),
-    // );
-  };
+  const updateMerchant = async (type: 'providerId' | 'storeId' | 'sandbox' | 'disabled', merchantId: number, value: number | boolean) => {
+    try {
+      const response = await fetch("/api/post-admin-update-merchant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          field: type,
+          id: merchantId,
+          value
+        })
+      });
 
-  const updateStore = (merchantId: number, storeId: number) => {
-    console.log("updateStore", merchantId, storeId);
-    // setAllMerchants((prevUsers) =>
-    //   prevUsers.map((user) =>
-    //     user.id === merchantId ? { ...user, merchant: storeId } : user,
-    //   ),
-    // );
-  };
+      const res = await response.json();
+
+      if (response.ok && res.success) {
+        if (type === 'sandbox' || type === 'disabled') {
+          toggleStatus(type, merchantId);    
+        }
+
+        alertStore.setAlert(
+          "success",
+          "Merchant successfully updated.",
+        );
+      } else {
+        alertStore.setAlert(
+          "warning",
+          "Failed to update merchant.",
+        );
+      }
+    } catch (error) {
+      alertStore.setAlert(
+        "error",
+        "Failed to send request.",
+      );
+    }
+  }
 
   const openMerchantCongigBar = () => {
     console.log("openMerchantCongigBar");
@@ -275,7 +296,7 @@ const Merchants = () => {
                           label: store.name,
                         }))}
                         onSelectNumberHandler={(selectedStoreId) =>
-                          updateStore(merchant.id, selectedStoreId)
+                          updateMerchant('storeId', merchant.id, selectedStoreId)
                         }
                       />
                     </td>
@@ -302,9 +323,9 @@ const Merchants = () => {
                           value: provider.provider_id,
                           label: provider.provider_name,
                         }))}
-                        onSelectStringHandler={(selectedProviderId) =>
-                          updateProvider(merchant.id, selectedProviderId)
-                        }
+                        // onSelectNumberHandler={(selectedProviderId) =>
+                        //   updateMerchant('providerId', merchant.id, selectedProviderId)
+                        // }
                       />
                     </td>
 
@@ -323,7 +344,7 @@ const Merchants = () => {
                       <Switcher
                         id={`switcher-${merchant.label}`}
                         checked={merchant.sandbox}
-                        onChange={() => toggleStatus(merchant.id)}
+                        onChange={() => updateMerchant('sandbox', merchant.id, !merchant.sandbox)}
                       />
                     </td>
 
@@ -342,7 +363,7 @@ const Merchants = () => {
                       <Switcher
                         id={`switcher-${merchant.id}`}
                         checked={merchant.disabled}
-                        onChange={() => toggleStatus(merchant.id)}
+                        onChange={() => updateMerchant('disabled', merchant.id, !merchant.disabled)}
                       />
                     </td>
                   </tr>

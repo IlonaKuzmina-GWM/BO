@@ -50,11 +50,13 @@ export const ManagerMerchantsTableHeader: Header[] = [
 ];
 
 export const OtherMerchantsTableHeader: Header[] = [
-  { title: "ID", key: "id", width: "12%" },
+  { title: "ID", key: "id", width: "11%" },
   { title: "Name", key: "name", width: "22%" },
   { title: "Label (api slug)", key: "label", width: "22%" },
   { title: "Manager internal id", key: "internal", width: "22%" },
-  { title: "Status", key: "status", width: "22%" },
+  { title: "Sandbox", key: "sandbox", width: "10%",centered: true  },
+  { title: "Status", key: "status", width: "10%", centered: true },
+  { title: "", key: "disabled-p", width: "3%" },
 ];
 
 export const ManagerAllUsersTableHeader: Header[] = [

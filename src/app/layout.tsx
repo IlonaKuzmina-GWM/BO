@@ -8,6 +8,7 @@ import { FetchProvider } from "@/components/Providers";
 import { StoreProvider } from "@/stores/StoreProvider";
 import AllertWrapper from "@/components/AllertWrapper";
 import { TransactionProvider } from "@/context/TransactionContext";
+import AppProviders from "@/components/shared/AppProviders";
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -44,21 +45,9 @@ export default function RootLayout({
           fontBody.variable,
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <StoreProvider>
-            <FetchProvider>
-              <TransactionProvider>
-                {children}
-                <AllertWrapper />
-              </TransactionProvider>
-            </FetchProvider>
-          </StoreProvider>
-        </ThemeProvider>
+        <AppProviders>
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

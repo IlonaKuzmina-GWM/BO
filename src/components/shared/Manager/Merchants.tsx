@@ -149,7 +149,7 @@ const Merchants = () => {
     fetchAllMerchantsData();
   }, [searchQuery]);
 
-  const toggleStatus = (type: 'sandbox' | 'disabled', merchantId: number) => {
+  const toggleStatus = (type: "sandbox" | "disabled", merchantId: number) => {
     setAllMerchants((prevMerchants) =>
       prevMerchants.map((merchant) =>
         merchant.id === merchantId
@@ -159,7 +159,11 @@ const Merchants = () => {
     );
   };
 
-  const updateMerchant = async (type: 'providerId' | 'storeId' | 'sandbox' | 'disabled', merchantId: number, value: number | boolean) => {
+  const updateMerchant = async (
+    type: "providerId" | "storeId" | "sandbox" | "disabled",
+    merchantId: number,
+    value: number | boolean,
+  ) => {
     try {
       const response = await fetch("/api/post-admin-update-merchant", {
         method: "POST",
@@ -169,34 +173,25 @@ const Merchants = () => {
         body: JSON.stringify({
           field: type,
           id: merchantId,
-          value
-        })
+          value,
+        }),
       });
 
       const res = await response.json();
 
       if (response.ok && res.success) {
-        if (type === 'sandbox' || type === 'disabled') {
-          toggleStatus(type, merchantId);    
+        if (type === "sandbox" || type === "disabled") {
+          toggleStatus(type, merchantId);
         }
 
-        alertStore.setAlert(
-          "success",
-          "Merchant successfully updated.",
-        );
+        alertStore.setAlert("success", "Merchant successfully updated.");
       } else {
-        alertStore.setAlert(
-          "warning",
-          "Failed to update merchant.",
-        );
+        alertStore.setAlert("warning", "Failed to update merchant.");
       }
     } catch (error) {
-      alertStore.setAlert(
-        "error",
-        "Failed to send request.",
-      );
+      alertStore.setAlert("error", "Failed to send request.");
     }
-  }
+  };
 
   const openMerchantCongigBar = () => {
     console.log("openMerchantCongigBar");
@@ -249,7 +244,7 @@ const Merchants = () => {
           )}
         </div>
 
-        {userRole !== ROLES.ADMIN ? (
+        {["admin", "developer"].includes(userRole as ROLES) ? (
           <table className="min-w-full table-auto border-y border-hoverBg text-left text-sm leading-[18px] text-main">
             <thead className="h-[50px] bg-hoverBg font-semibold">
               <tr>
@@ -296,7 +291,11 @@ const Merchants = () => {
                           label: store.name,
                         }))}
                         onSelectNumberHandler={(selectedStoreId) =>
-                          updateMerchant('storeId', merchant.id, selectedStoreId)
+                          updateMerchant(
+                            "storeId",
+                            merchant.id,
+                            selectedStoreId,
+                          )
                         }
                       />
                     </td>
@@ -344,7 +343,13 @@ const Merchants = () => {
                       <Switcher
                         id={`switcher-${merchant.label}`}
                         checked={merchant.sandbox}
-                        onChange={() => updateMerchant('sandbox', merchant.id, !merchant.sandbox)}
+                        onChange={() =>
+                          updateMerchant(
+                            "sandbox",
+                            merchant.id,
+                            !merchant.sandbox,
+                          )
+                        }
                       />
                     </td>
 
@@ -363,7 +368,13 @@ const Merchants = () => {
                       <Switcher
                         id={`switcher-${merchant.id}`}
                         checked={merchant.disabled}
-                        onChange={() => updateMerchant('disabled', merchant.id, !merchant.disabled)}
+                        onChange={() =>
+                          updateMerchant(
+                            "disabled",
+                            merchant.id,
+                            !merchant.disabled,
+                          )
+                        }
                       />
                     </td>
                   </tr>
@@ -429,6 +440,18 @@ const Merchants = () => {
                     <td className="px-2">
                       <div
                         className={`flex justify-center rounded-[4px] px-[4px] py-[8px] ${
+                          merchant.sandbox
+                            ? "bg-successBg text-success"
+                            : "bg-errorBg text-error"
+                        }`}
+                      >
+                        {merchant.sandbox ? "Enabled" : "Disabled"}
+                      </div>
+                    </td>
+
+                    <td className="px-2">
+                      <div
+                        className={`flex justify-center rounded-[4px] px-[4px] py-[8px] ${
                           merchant.disabled
                             ? "bg-successBg text-success"
                             : "bg-errorBg text-error"
@@ -436,6 +459,19 @@ const Merchants = () => {
                       >
                         {merchant.disabled ? "Enabled" : "Disabled"}
                       </div>
+                    </td>
+                    <td className="px-2 text-[--error] lg:pr-8">
+                      <Switcher
+                        id={`switcher-${merchant.id}`}
+                        checked={merchant.disabled}
+                        onChange={() =>
+                          updateMerchant(
+                            "disabled",
+                            merchant.id,
+                            !merchant.disabled,
+                          )
+                        }
+                      />
                     </td>
                   </tr>
                 ))

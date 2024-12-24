@@ -6,10 +6,10 @@ import Create from "@/components/shared/Manager/Create";
 import KYCUserList from "@/components/shared/Manager/KYCUserList";
 import Merchants from "@/components/shared/Manager/Merchants";
 import Tabs from "@/components/shared/Tabs";
-import { useEffect, useState } from "react";
+import { ROLES } from "@/constants/roles";
 import { useStore } from "@/stores/StoreProvider";
 import { observer } from "mobx-react-lite";
-import { ROLES } from "@/constants/roles";
+import { useEffect, useState } from "react";
 
 const ManagerPage = observer(() => {
   const { authStore } = useStore();

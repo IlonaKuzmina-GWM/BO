@@ -47,6 +47,7 @@ export default function RootLayout({
       >
         <AppProviders>
           {children}
+          <AllertWrapper />
         </AppProviders>
       </body>
     </html>

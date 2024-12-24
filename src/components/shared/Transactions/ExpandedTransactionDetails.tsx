@@ -1,18 +1,18 @@
-import React from "react";
-import Image from "next/image";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/UI/collapsible";
-import { ChevronDown } from "lucide-react";
-import { formatDateTime } from "@/utils/dateFormater";
-import LogHistory from "../LogHistory";
-import DashButton from "../DashButton";
-import { STATUSES } from "@/constants/statuses";
 import { ROLES } from "@/constants/roles";
+import { STATUSES } from "@/constants/statuses";
 import { getStatusColorClass } from "@/helpers/getColorByStatus";
 import { Transaction } from "@/types/transaction";
+import { formatDateTime } from "@/utils/dateFormater";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import React from "react";
+import DashButton from "../DashButton";
+import LogHistory from "../LogHistory";
 
 interface ExpandedTransactionDetailsProps {
   transaction: Transaction;

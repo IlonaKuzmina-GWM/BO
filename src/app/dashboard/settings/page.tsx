@@ -1,13 +1,13 @@
 "use client";
 
 import DashPageTitle from "@/components/shared/DashPageTitle";
-import Rules from "@/components/shared/Settings/Rules";
-import Integration from "@/components/shared/Settings/Integration";
 import Authentication from "@/components/shared/Settings/Authentication";
+import Integration from "@/components/shared/Settings/Integration";
+import Rules from "@/components/shared/Settings/Rules";
 import Tabs from "@/components/shared/Tabs";
-import { useEffect, useState } from "react";
 import { ROLES } from "@/constants/roles";
 import { useStore } from "@/stores/StoreProvider";
+import { useEffect, useState } from "react";
 
 const SettingsPage = () => {
   const { authStore } = useStore();

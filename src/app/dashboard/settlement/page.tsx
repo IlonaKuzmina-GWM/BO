@@ -42,38 +42,7 @@ const SettlementPage = () => {
     setSettlements(justMockedSettlementData);
     setIsLoading(false);
 
-    // const fetchSettlementData = async () => {
-    //   try {
-    //     const params = new URLSearchParams();
-
-    //     params.append("manager", manager);
-
-    //     params.append("merchant", selectedMerchants.join(","));
-
-    //     if (dateRange && dateRange.from && dateRange.to) {
-    //       params.append("from", dateRange.from.toISOString());
-    //       params.append("to", dateRange.to.toISOString());
-    //     } else if (interval) {
-    //       params.append("interval", interval);
-    //     }
-
-    //     const response = await fetch(
-    //       `/api/get-all-settlements?${params.toString()}`, // there is no such route yet
-    //       {
-    //         method: "POST",
-    //       },
-    //     );
-
-    //     const {
-    //       settlements,
-    //     }: {
-    //       settlements: any[];
-    //     } = await response.json();
-    //     setSettlements(settlements);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // };
+ 
   };
 
   return (

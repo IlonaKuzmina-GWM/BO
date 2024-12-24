@@ -1,16 +1,19 @@
 "use client";
 
 import ChartWrapper from "@/components/shared/MainDashboard/Charts/ChartWrapper";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
+import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
+import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
 import SimpleBarChart from "@/components/shared/MainDashboard/Charts/SimpleBarChart";
 import VerticalComposedChart from "@/components/shared/MainDashboard/Charts/VerticalComposedChart";
-import DatePickerWithRange from "@/components/shared/DatePickerWithRange";
-import DashIntervalSelect from "@/components/shared/DashIntervalSelect";
 
-import { useStore } from "@/stores/StoreProvider";
 import LinearChart from "@/components/shared/MainDashboard/Charts/LinearChart";
+import GeoDashSideTable from "@/components/shared/Transactions/GeoDashSideTable";
+import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { getDateRanges } from "@/hooks/getDateRanges";
+import { useStore } from "@/stores/StoreProvider";
 import {
   Geo,
   MerchantStat,
@@ -18,9 +21,7 @@ import {
   Rate,
   Volume,
 } from "@/types/statistics";
-import GeoDashSideTable from "@/components/shared/Transactions/GeoDashSideTable";
 import MerchantDashSideTable from "../Transactions/MerchantDashSideTable";
-import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 
 const MainDashboardWrapper = () => {
   const { alertStore } = useStore();
@@ -48,16 +49,7 @@ const MainDashboardWrapper = () => {
   const fetchStatisticsData = async () => {
     setLoading(true);
 
-    let createdDateRange: [number, number] | undefined;
-
-    if (selectedDateRange?.from && selectedDateRange?.to) {
-      const adjustedToDate = new Date(selectedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      createdDateRange = [
-        selectedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
+    const { createdDateRange } = getDateRanges(selectedDateRange);
 
     try {
       const response = await fetch("/api/post-statistics", {

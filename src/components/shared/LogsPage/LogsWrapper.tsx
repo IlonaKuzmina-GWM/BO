@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { Log } from "@/types/logs";
 import { LogsTableHeader } from "@/constants/tableHeaders";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { Log } from "@/types/logs";
+import { useEffect, useState } from "react";
+import { DateRange } from "react-day-picker";
 
-import CustomLogsTable from "./CustomLogsTable";
+import { useStore } from "@/stores/StoreProvider";
 import DashIntervalSelect from "../DashIntervalSelect";
 import DataLimitsSeter from "../DataLimitsSeter";
 import DatePickerWithRange from "../DatePickerWithRange";
 import PaginationComponent from "../PaginationComponent";
 import Search from "../Search";
-import { useStore } from "@/stores/StoreProvider";
+import CustomLogsTable from "./CustomLogsTable";
 
 const LogsWrapper = () => {
   const { alertStore } = useStore();
@@ -31,13 +31,9 @@ const LogsWrapper = () => {
     DateRange | undefined
   >(undefined);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
-
   const fetchLogsData = async () => {
+    setLoading(true);
+
     let dateRange: number[] = [];
 
     if (selectedDateRange?.from && selectedDateRange.to) {
@@ -71,6 +67,8 @@ const LogsWrapper = () => {
       }
     } catch (error) {
       alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 

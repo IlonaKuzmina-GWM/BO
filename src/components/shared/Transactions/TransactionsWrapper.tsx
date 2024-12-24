@@ -10,13 +10,18 @@ import { ROLES } from "@/constants/roles";
 import { TransactionsTableHeader } from "@/constants/tableHeaders";
 import { useTransactionContext } from "@/context/TransactionContext";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
+import { getDateRanges } from "@/hooks/getDateRanges";
 import { useStore } from "@/stores/StoreProvider";
 import { MerchantList } from "@/types/merchant";
 import { ProviderList } from "@/types/provider";
 import { Transaction } from "@/types/transaction";
 import createCurrencyFilters from "@/utils/createCurrencyFilters";
 import createFilters from "@/utils/createStatusFilters";
-import { exportExcelTransactions } from "@/utils/export-utils";
+import {
+  exportCSVTransactions,
+  exportExcelTransactions,
+  exportPDFTransactions,
+} from "@/utils/export-utils";
 import { observer } from "mobx-react-lite";
 import DashButton from "../DashButton";
 import DashIntervalSelect from "../DashIntervalSelect";
@@ -107,35 +112,6 @@ const TransactionsWrapper = observer(() => {
     }
   }, []);
 
-  const getDateRanges = () => {
-    let createdDateRange: [number, number] | boolean = false;
-
-    if (selectedCreatedDateRange?.from && selectedCreatedDateRange.to) {
-      const adjustedToDate = new Date(selectedCreatedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      createdDateRange = [
-        selectedCreatedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
-
-    let updatedDateRange: [number, number] | boolean = false;
-
-    if (selectedUpdatedDateRange?.from && selectedUpdatedDateRange.to) {
-      const adjustedToDate = new Date(selectedUpdatedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      updatedDateRange = [
-        selectedUpdatedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
-
-    return {
-      createdDateRange,
-      updatedDateRange,
-    };
-  };
-
   const getSearchInput = () => {
     let search: string;
 
@@ -176,7 +152,10 @@ const TransactionsWrapper = observer(() => {
   const fetchTransactionsData = async () => {
     setLoading(true);
 
-    const { createdDateRange, updatedDateRange } = getDateRanges();
+    const { createdDateRange, updatedDateRange } = getDateRanges(
+      selectedCreatedDateRange,
+      selectedUpdatedDateRange,
+    );
     const search = getSearchInput();
 
     try {
@@ -207,8 +186,14 @@ const TransactionsWrapper = observer(() => {
     }
   };
 
-  const sendExportTransactionsData = async (exportType: "excel") => {
-    const { createdDateRange, updatedDateRange } = getDateRanges();
+  const sendExportTransactionsData = async (
+    exportType: "csv" | "pdf" | "excel",
+  ) => {
+    const { createdDateRange, updatedDateRange } = getDateRanges(
+      selectedCreatedDateRange,
+      selectedUpdatedDateRange,
+    );
+
     const search = getSearchInput();
 
     try {
@@ -226,15 +211,13 @@ const TransactionsWrapper = observer(() => {
         const res = await response.json();
 
         const transactionData = res;
-        // console.log(transactionData);
 
         if (exportType === "excel") {
-          // console.log("exporting excel", transactionData);
           exportExcelTransactions(transactionData);
         } else if (exportType === "csv") {
-          //      exportCsvTransactions(transactionData);
+          exportCSVTransactions(transactionData);
         } else if (exportType === "pdf") {
-          //       exportPdfTransactions(transactionData);
+          exportPDFTransactions(transactionData);
         }
         alertStore.setAlert(
           "success",
@@ -529,8 +512,7 @@ const TransactionsWrapper = observer(() => {
           />
 
           <ExportButton
-            // onSelect={(exportType: "pdf" | "csv" | "excel") => {
-            onSelect={(exportType: "excel") => {
+            onSelect={(exportType: "pdf" | "csv" | "excel") => {
               sendExportTransactionsData(exportType);
             }}
             disabled={loading}

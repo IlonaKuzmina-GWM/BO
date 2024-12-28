@@ -2,31 +2,28 @@ import { userUrl } from "@/helpers/useUrl";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   const cookiesStore = await cookies();
   const token = cookiesStore.get("authToken")?.value;
 
   try {
-    const twoFactorAuthenticationCod = await request.json();
 
-    console.log(twoFactorAuthenticationCod);
-
-    const apiUrl = userUrl("/auth/2fa/turn-on");
+    const apiUrl = userUrl("/auth/2fa/status");
 
     const data = await fetch(apiUrl, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(twoFactorAuthenticationCod),
     });
 
     if (!data.ok) {
       const errorData = await data.json();
+
       return new NextResponse(
         JSON.stringify({
-          error: errorData.error || "Wrong code",
+          error: errorData.error || "Failed to fetch 2fa status",
         }),
         {
           status: data.status,

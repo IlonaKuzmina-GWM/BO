@@ -1,21 +1,27 @@
-import { NextRequest, NextResponse } from "next/server";
 import { userUrl } from "@/helpers/useUrl";
 import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const cookiesStore = await cookies();
-
   const token = cookiesStore.get("authToken")?.value;
+  const twoFactorCode = request.headers.get("x-auth-code");
 
   try {
     const apiUrl = userUrl("/auth/profile");
 
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    if (twoFactorCode) {
+      headers["x-auth-code"] = twoFactorCode;
+    }
+
     const data = await fetch(apiUrl, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     });
 
     if (!data.ok) {

@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Dashbutton from "../DashButton";
-import Paragraph from "../Paragraph";
-import LoadingAPIKeySkeleton from "../LoadingUISkeletons/LoadingAPIKeysSkeleton";
-import { SettingsIntegrationTableHeader } from "@/constants/tableHeaders";
-import { keysResponse } from "@/types/keysResponse";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/UI/tooltip";
+import { SettingsIntegrationTableHeader } from "@/constants/tableHeaders";
 import { useStore } from "@/stores/StoreProvider";
+import { keysResponse } from "@/types/keysResponse";
+import { useEffect, useState } from "react";
+import Dashbutton from "../DashButton";
+import LoadingAPIKeySkeleton from "../LoadingUISkeletons/LoadingAPIKeysSkeleton";
+import Paragraph from "../Paragraph";
 
 const Integration = () => {
   const { alertStore } = useStore();

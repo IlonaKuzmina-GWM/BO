@@ -9,9 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const twoFactorAuthenticationCod = await request.json();
 
-    console.log(twoFactorAuthenticationCod);
-
-    const apiUrl = userUrl("/auth/2fa/turn-on");
+    const apiUrl = userUrl("/auth/2fa/turn-off");
 
     const data = await fetch(apiUrl, {
       method: "POST",

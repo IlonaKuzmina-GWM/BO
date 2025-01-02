@@ -61,7 +61,6 @@ const SettingsPage = () => {
           onTabChange={handleTabChange}
         />
         {activeTab === "Integration" && <Integration />}
-
         {activeTab === "Rules" && <Rules />}
         {activeTab === "Authentication" && <Authentication />}
       </div>

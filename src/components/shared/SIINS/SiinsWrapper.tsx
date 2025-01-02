@@ -1,22 +1,27 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import Search from "../Search";
-import DatePickerWithRange from "../DatePickerWithRange";
 import { DateRange } from "react-day-picker";
+import DatePickerWithRange from "../DatePickerWithRange";
 import PaginationComponent from "../PaginationComponent";
+import Search from "../Search";
 
-import CustomSiinsTable from "./CustomSiinsTable";
-import DataLimitsSeter from "../DataLimitsSeter";
 import { SiinsTableHeader } from "@/constants/tableHeaders";
-import DashIntervalSelect from "../DashIntervalSelect";
 import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
-import { exportExcelSiins } from "@/utils/export-utils";
-import ExportButton from "../ExportButton";
+import { getDateRanges } from "@/hooks/getDateRanges";
 import { useStore } from "@/stores/StoreProvider";
-import { observer } from "mobx-react-lite";
 import { Siin } from "@/types/siin";
+import {
+  exportExcelSiins,
+  exportSiinCSV,
+  exportSiinPDF,
+} from "@/utils/export-utils";
+import { observer } from "mobx-react-lite";
+import DashIntervalSelect from "../DashIntervalSelect";
+import DataLimitsSeter from "../DataLimitsSeter";
+import ExportButton from "../ExportButton";
+import CustomSiinsTable from "./CustomSiinsTable";
 
 const SiinsWrapper = observer(() => {
   const { alertStore } = useStore();
@@ -33,26 +38,26 @@ const SiinsWrapper = observer(() => {
 
   const [limit, setLimit] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [selectedInterval, setSelectedInterval] = useState("");
-  const [selectedDateRange, setSelectedDateRange] = useState<
+
+  const [selectedCreatedInterval, setSelectedCreatedInterval] = useState("");
+  const [selectedCreatedDateRange, setSelectedCreatedDateRange] = useState<
     DateRange | undefined
   >(undefined);
+
+  const [selectedUpdatedInterval, setSelectedUpdatedInterval] = useState("");
+  const [selectedUpdatedDateRange, setSelectedUpdatedDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
+
   const [changedTransactionStatus, setChangedTransactionStatus] = useState("");
 
   const fetchSiinsData = async () => {
     setLoading(true);
 
-    let createdDateRange: [number, number] | boolean = false;
-    if (selectedDateRange?.from && selectedDateRange.to) {
-      const adjustedToDate = new Date(selectedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      createdDateRange = [
-        selectedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
-
-    const updatedDateRange: [number, number] | boolean = false;
+    const { createdDateRange, updatedDateRange } = getDateRanges(
+      selectedCreatedDateRange,
+      selectedUpdatedDateRange,
+    );
 
     try {
       const response = await fetch("/api/post-siin-all", {
@@ -87,18 +92,10 @@ const SiinsWrapper = observer(() => {
   const sendExportSiinsData = async (exportType: "pdf" | "csv" | "excel") => {
     setLoading(true);
 
-    let createdDateRange: [number, number] | boolean = false;
-
-    if (selectedDateRange?.from && selectedDateRange.to) {
-      const adjustedToDate = new Date(selectedDateRange.to);
-      adjustedToDate.setHours(23, 59, 59, 999);
-      createdDateRange = [
-        selectedDateRange.from.getTime(),
-        adjustedToDate.getTime(),
-      ];
-    }
-
-    const updatedDateRange: [number, number] | boolean = false;
+    const { createdDateRange, updatedDateRange } = getDateRanges(
+      selectedCreatedDateRange,
+      selectedUpdatedDateRange,
+    );
 
     try {
       const response = await fetch("/api/post-export-siin", {
@@ -115,16 +112,25 @@ const SiinsWrapper = observer(() => {
 
       if (response.ok) {
         const res = await response.json();
-
         const siinsData = res.siins;
 
-        if (exportType === "excel") {
-          exportExcelSiins(siinsData);
-        } else if (exportType === "csv") {
-          // exportSiinCSV(siinsData);
-        } else if (exportType === "pdf") {
-          // exportSiinPDF(siinsData);
+        switch (exportType) {
+          case "excel":
+            exportExcelSiins(siinsData);
+            break;
+          case "csv":
+            exportSiinCSV(siinsData);
+            break;
+          case "pdf":
+            exportSiinPDF(siinsData);
+            break;
+          default:
+            alertStore.setAlert(
+              "warning",
+              `Unknown export type: ${exportType}`,
+            );
         }
+
         alertStore.setAlert(
           "success",
           `Transactions data exported successfully!`,
@@ -145,7 +151,8 @@ const SiinsWrapper = observer(() => {
     searchQuery,
     limit,
     currentPage,
-    selectedDateRange,
+    selectedCreatedDateRange,
+    selectedUpdatedDateRange,
     changedTransactionStatus,
   ]);
 
@@ -160,24 +167,50 @@ const SiinsWrapper = observer(() => {
     setInputSearchQueryValue(value);
   };
 
-  const handleIntervalChange = (interval: string) => {
+  const handleCreatedIntervalChange = (interval: string) => {
     setCurrentPage(1);
-    setSelectedInterval(interval);
+
+    setSelectedCreatedInterval(interval);
+    setSelectedCreatedDateRange(undefined);
+
+    setSelectedUpdatedInterval("");
+    setSelectedUpdatedDateRange(undefined);
 
     const startDate = getStartDateForInterval(interval);
     const now = new Date();
 
     if (startDate) {
-      const dateRange: DateRange = { from: startDate, to: now };
-      setSelectedDateRange(dateRange);
-    } else {
-      setSelectedDateRange(undefined);
+      setSelectedCreatedDateRange({ from: startDate, to: now });
     }
   };
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setSelectedDateRange(range);
-    setSelectedInterval("");
+  const handleCreatedDateRangeChange = (range: DateRange | undefined) => {
+    setSelectedCreatedDateRange(range);
+    setSelectedUpdatedDateRange(undefined);
+    setSelectedCreatedInterval("");
+  };
+
+  const handleUpdatedIntervalChange = (interval: string) => {
+    setCurrentPage(1);
+
+    setSelectedUpdatedInterval(interval);
+    setSelectedUpdatedDateRange(undefined);
+
+    setSelectedCreatedInterval("");
+    setSelectedCreatedDateRange(undefined);
+
+    const startDate = getStartDateForInterval(interval);
+    const now = new Date();
+
+    if (startDate) {
+      setSelectedUpdatedDateRange({ from: startDate, to: now });
+    }
+  };
+
+  const handleUpdatedDateRangeChange = (range: DateRange | undefined) => {
+    setSelectedUpdatedDateRange(range);
+    setSelectedCreatedDateRange(undefined);
+    setSelectedUpdatedInterval("");
   };
 
   const handleLimitChange = (limit: number) => {
@@ -209,15 +242,37 @@ const SiinsWrapper = observer(() => {
             searchValue={inputSearchQueryValue}
           />
 
-          <div className="flex flex-col md:flex-row">
+          <div className="flex">
             <DashIntervalSelect
-              value={selectedInterval || "Select Interval"}
+              value={
+                selectedCreatedInterval
+                  ? selectedCreatedInterval
+                  : "Created Interval"
+              }
               label="No Interval"
-              onIntervalChange={handleIntervalChange}
+              onIntervalChange={handleCreatedIntervalChange}
             />
             <DatePickerWithRange
-              initialDate={selectedDateRange}
-              onDateChange={handleDateRangeChange}
+              initialDate={selectedCreatedDateRange}
+              onDateChange={handleCreatedDateRangeChange}
+              name="Created date range"
+            />
+          </div>
+
+          <div className="flex">
+            <DashIntervalSelect
+              value={
+                selectedUpdatedInterval
+                  ? selectedUpdatedInterval
+                  : "Updated Interval"
+              }
+              label="No Interval"
+              onIntervalChange={handleUpdatedIntervalChange}
+            />
+            <DatePickerWithRange
+              initialDate={selectedUpdatedDateRange}
+              onDateChange={handleUpdatedDateRangeChange}
+              name="Updated date range"
             />
           </div>
         </div>

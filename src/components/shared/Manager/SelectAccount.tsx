@@ -59,7 +59,7 @@ const SelectAccount: React.FC<SelectAccountProps> = ({
                 onChange={onAccountChange}
                 className="cursor-pointer"
               />
-              <label htmlFor={account}>
+              <label htmlFor={account} className="cursor-pointer">
                 {account.charAt(0).toUpperCase() + account.slice(1)}
               </label>
             </div>

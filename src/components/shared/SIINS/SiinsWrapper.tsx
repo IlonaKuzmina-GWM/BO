@@ -12,7 +12,11 @@ import { getStartDateForInterval } from "@/helpers/getStartDateForInterval";
 import { getDateRanges } from "@/hooks/getDateRanges";
 import { useStore } from "@/stores/StoreProvider";
 import { Siin } from "@/types/siin";
-import { exportExcelSiins, exportSiinCSV, exportSiinPDF } from "@/utils/export-utils";
+import {
+  exportExcelSiins,
+  exportSiinCSV,
+  exportSiinPDF,
+} from "@/utils/export-utils";
 import { observer } from "mobx-react-lite";
 import DashIntervalSelect from "../DashIntervalSelect";
 import DataLimitsSeter from "../DataLimitsSeter";
@@ -108,16 +112,25 @@ const SiinsWrapper = observer(() => {
 
       if (response.ok) {
         const res = await response.json();
-
         const siinsData = res.siins;
 
-        if (exportType === "excel") {
-          exportExcelSiins(siinsData);
-        } else if (exportType === "csv") {
-          exportSiinCSV(siinsData);
-        } else if (exportType === "pdf") {
-          exportSiinPDF(siinsData);
+        switch (exportType) {
+          case "excel":
+            exportExcelSiins(siinsData);
+            break;
+          case "csv":
+            exportSiinCSV(siinsData);
+            break;
+          case "pdf":
+            exportSiinPDF(siinsData);
+            break;
+          default:
+            alertStore.setAlert(
+              "warning",
+              `Unknown export type: ${exportType}`,
+            );
         }
+
         alertStore.setAlert(
           "success",
           `Transactions data exported successfully!`,

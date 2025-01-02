@@ -108,8 +108,8 @@ const Autorisation = () => {
     setIsLoading(false);
   };
 
-  const onSubmitTwoFactor = (code: string) => {
-    getProfileWith2FA(code);
+  const onSubmitTwoFactor = async (code: string) => {
+    await getProfileWith2FA(code);
   };
 
   const handleEmailChange = (e: {

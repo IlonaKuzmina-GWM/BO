@@ -19,6 +19,12 @@ const ExportButton = ({
     ? "cursor-not-allowed bg-fill text-secondary"
     : "bg-blue500 text-white hover:bg-blue600 active:bg-blue700";
 
+  const exportOptions = [
+    { type: "pdf" as const, label: "Export as PDF" },
+    { type: "csv" as const, label: "Export as CSV" },
+    { type: "excel" as const, label: "Export as Excel" },
+  ];
+
   return (
     <div
       className={`relative inline-block text-left ${isFullWidth ? "w-full" : ""}`}
@@ -35,33 +41,20 @@ const ExportButton = ({
         <div className="absolute right-0 z-10 pt-1">
           <div className="w-40 rounded-sm bg-white shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="py-1">
-              <button
-                onClick={() => {
-                  setIsDropdownOpen(false);
-                  onSelect("pdf");
-                }}
-                className="text-md block w-full px-4 py-2 text-left text-main hover:bg-gray-100"
-              >
-                Export as PDF
-              </button>
-              <button
-                onClick={() => {
-                  setIsDropdownOpen(false);
-                  onSelect("csv");
-                }}
-                className="text-md block w-full px-4 py-2 text-left text-main hover:bg-gray-100"
-              >
-                Export as CSV
-              </button>
-              <button
-                onClick={() => {
-                  setIsDropdownOpen(false);
-                  onSelect("excel");
-                }}
-                className="text-md block w-full px-4 py-2 text-left text-main hover:bg-gray-100"
-              >
-                Export as Excel
-              </button>
+              {
+                exportOptions.map((option) => (
+                  <button
+                    key={option.type}
+                    onClick={() => {
+                      onSelect(option.type);
+                      setIsDropdownOpen(false);
+                    }}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    {option.label}
+                  </button>
+                ))
+              }
             </div>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import { useStore } from "@/stores/StoreProvider";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import DashButton from "../../DashButton";
 import Modal from "../../Modal";
 import Disable2faModal from "./Disable2faModal";
 import Enable2faModal from "./Enable2faModal";
-import DashButton from "../../DashButton";
 
 const Authentication = () => {
   const { alertStore } = useStore();
@@ -66,11 +66,11 @@ const Authentication = () => {
     generateQRCode();
   };
 
-  const handle2FAEnabled = async (code: string) => {
-    // e.preventDefault();
+  const toggle2FA = async (code: string, isDisabled: boolean) => {
+    const route = isDisabled ? "/api/post-2fa-on" : " /api/post-2fa-off";
 
     try {
-      const response = await fetch("/api/post-2fa-on", {
+      const response = await fetch(route, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,9 +83,14 @@ const Authentication = () => {
       if (response.ok) {
         const res = await response.json();
         if (res.success) {
-          setIs2FAEnabled(true);
-          setEnableModalOpen(false);
-          alertStore.setAlert("success", "Two-factor authentication enabled!");
+          isDisabled
+            ? (setEnableModalOpen(false), setIs2FAEnabled(true))
+            : (setDisableModalOpen(false), setIs2FAEnabled(false));
+
+          alertStore.setAlert(
+            "success",
+            `Two-factor authentication ${isDisabled ? "enabled" : "disabled"}!`,
+          );
         } else {
           alertStore.setAlert("error", `Incorrect verification code`);
         }
@@ -102,35 +107,6 @@ const Authentication = () => {
 
   const handleDisableModal = () => {
     setDisableModalOpen(true);
-  };
-
-  const handle2FADisabled = async (code: string) => {
-    try {
-      const response = await fetch("/api/post-2fa-off", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          twoFactorAuthenticationCode: code,
-        }),
-      });
-
-      if (response.ok) {
-        const res = await response.json();
-        if (res.success) {
-          setIs2FAEnabled(false);
-          setDisableModalOpen(false);
-          alertStore.setAlert("success", "Two-factor authentication disabled!");
-        } else {
-          throw new Error("Incorrect verification code");
-        }
-      } else {
-        throw new Error("Failed to enable two-factor authentication");
-      }
-    } catch (error) {
-      alertStore.setAlert("error", `Oops! Something went wrong: ${error}`);
-    }
   };
 
   return (
@@ -203,7 +179,10 @@ const Authentication = () => {
           onClose={() => setEnableModalOpen(false)}
           title="Enable 2FA"
         >
-          <Enable2faModal setIs2FAEnabled={handle2FAEnabled} QRCode={QRCode} />
+          <Enable2faModal
+            setIs2FAEnabled={(code: string) => toggle2FA(code, true)}
+            QRCode={QRCode}
+          />
         </Modal>
       )}
 
@@ -214,7 +193,7 @@ const Authentication = () => {
           title="Disable 2FA"
         >
           <Disable2faModal
-            setIs2FADisabled={handle2FADisabled}
+            setIs2FADisabled={(code: string) => toggle2FA(code, false)}
             subitBtnName="Submit code"
           />
         </Modal>

@@ -7,9 +7,7 @@ export async function POST(request: NextRequest) {
   const token = cookiesStore.get("authToken")?.value;
 
   try {
-    const twoFactorAuthenticationCod = await request.json();
-
-    console.log(twoFactorAuthenticationCod);
+    const twoFactorAuthenticationCode = await request.json();
 
     const apiUrl = userUrl("/auth/2fa/turn-on");
 
@@ -19,7 +17,7 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(twoFactorAuthenticationCod),
+      body: JSON.stringify(twoFactorAuthenticationCode),
     });
 
     if (!data.ok) {

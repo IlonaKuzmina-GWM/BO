@@ -1,7 +1,7 @@
 "use client";
 
 import DashPageTitle from "@/components/shared/DashPageTitle";
-import Authentication from "@/components/shared/Settings/Authentication/Authentication";
+import Authentication from "@/components/shared/Settings/Authentication";
 import Integration from "@/components/shared/Settings/Integration";
 import Rules from "@/components/shared/Settings/Rules";
 import Tabs from "@/components/shared/Tabs";

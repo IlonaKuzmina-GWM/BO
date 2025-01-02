@@ -209,16 +209,25 @@ const TransactionsWrapper = observer(() => {
 
       if (response.ok) {
         const res = await response.json();
-
         const transactionData = res;
 
-        if (exportType === "excel") {
-          exportExcelTransactions(transactionData);
-        } else if (exportType === "csv") {
-          exportCSVTransactions(transactionData);
-        } else if (exportType === "pdf") {
-          exportPDFTransactions(transactionData);
+        switch (exportType) {
+          case "csv":
+            exportCSVTransactions(transactionData);
+            break;
+          case "pdf":
+            exportPDFTransactions(transactionData);
+            break;
+          case "excel":
+            exportExcelTransactions(transactionData);
+            break;
+          default:
+            alertStore.setAlert(
+              "warning",
+              `Unknown export type: ${exportType}`,
+            );
         }
+
         alertStore.setAlert(
           "success",
           `Transactions data exported successfully!`,
